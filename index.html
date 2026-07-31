@@ -256,6 +256,15 @@
             font-size: 12px;
         }
 
+        .btn-warning {
+            background: #ed8936;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #dd6b20;
+        }
+
         /* BUSCA */
         .search-box {
             padding: 20px 25px;
@@ -572,7 +581,7 @@
         }
 
         /* ============================================
-           IMPRESSÃO - LOGO OCUPA TODA A PARTE SUPERIOR
+           IMPRESSÃO - COM CONFIGURAÇÕES DE TAMANHO
            ============================================ */
         #printContent {
             padding: 0;
@@ -582,9 +591,7 @@
             margin: 0 auto;
         }
 
-        /* TOPO COM LOGO EM DESTAQUE */
         #printContent .header-print {
-            background: linear-gradient(135deg, #1a3a5c 0%, #2c5f8a 100%);
             padding: 30px 20px 20px 20px;
             text-align: center;
             border-bottom: 4px solid #ffd700;
@@ -599,8 +606,6 @@
         }
 
         #printContent .header-print .logo-print img {
-            max-height: 100px;
-            max-width: 250px;
             object-fit: contain;
             background: white;
             border-radius: 12px;
@@ -609,8 +614,6 @@
         }
 
         #printContent .header-print .endereco {
-            font-size: 13px;
-            color: rgba(255,255,255,0.9);
             line-height: 1.6;
             font-weight: 500;
             letter-spacing: 0.5px;
@@ -620,13 +623,11 @@
             color: #ffd700;
         }
 
-        /* Informações do Cliente */
         #printContent .info-cliente {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 5px 30px;
             padding: 15px 20px;
-            background: #f8f9fa;
             border-radius: 8px;
             margin: 0 20px 20px 20px;
             border: 1px solid #dee2e6;
@@ -635,39 +636,29 @@
         #printContent .info-cliente .info-item {
             display: flex;
             gap: 5px;
-            font-size: 12px;
             padding: 3px 0;
         }
 
         #printContent .info-cliente .info-item strong {
-            color: #1a3a5c;
             min-width: 80px;
         }
 
-        /* Origem/Destino */
         #printContent .info-origem {
             display: flex;
             justify-content: space-between;
             padding: 10px 20px;
-            background: #e9ecef;
             border-radius: 6px;
             margin: 0 20px 20px 20px;
-            font-size: 14px;
             font-weight: 600;
-            color: #1a3a5c;
         }
 
-        /* Tabela de Fretes */
         #printContent .tabela-fretes {
             width: calc(100% - 40px);
             margin: 0 20px 20px 20px;
             border-collapse: collapse;
-            font-size: 12px;
         }
 
         #printContent .tabela-fretes th {
-            background: #1a3a5c;
-            color: white;
             padding: 10px 12px;
             text-align: left;
             border: 1px solid #1a3a5c;
@@ -686,7 +677,6 @@
             background: #e9ecef;
         }
 
-        /* Rodapé */
         #printContent .rodape-print {
             margin: 0 20px 20px 20px;
             padding-top: 15px;
@@ -699,7 +689,6 @@
         }
 
         #printContent .rodape-print .dados-adicionais {
-            font-size: 13px;
             line-height: 1.8;
             color: #333;
         }
@@ -711,7 +700,6 @@
         #printContent .rodape-print .assinaturas {
             display: flex;
             gap: 40px;
-            font-size: 12px;
             text-align: center;
         }
 
@@ -725,13 +713,10 @@
             margin-bottom: 5px;
         }
 
-        /* Observação */
         #printContent .observacao-print {
             margin: 0 20px 20px 20px;
             padding: 10px 15px;
-            background: #f7fafc;
             border-radius: 6px;
-            font-size: 13px;
             border: 1px solid #dee2e6;
         }
 
@@ -739,11 +724,9 @@
             color: #1a3a5c;
         }
 
-        /* Data de emissão */
         #printContent .data-emissao {
             text-align: center;
             color: #a0aec0;
-            font-size: 11px;
             padding: 0 20px 15px 20px;
         }
 
@@ -903,6 +886,67 @@
                 max-width: 180px !important;
             }
         }
+
+        /* ============================================
+           ESTILOS PARA CONFIGURAÇÃO DE IMPRESSÃO
+           ============================================ */
+        .config-section {
+            background: #f7fafc;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .config-section h4 {
+            color: #1a3a5c;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .config-section .form-group textarea {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            min-height: 100px;
+        }
+
+        .config-section .form-group input[type="color"] {
+            padding: 4px;
+            height: 45px;
+            cursor: pointer;
+        }
+
+        .config-section .form-group input[type="number"] {
+            width: 100%;
+        }
+
+        .config-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .preview-box {
+            background: white;
+            border: 2px dashed #cbd5e0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            min-height: 60px;
+            font-size: 13px;
+            color: #718096;
+            text-align: center;
+        }
+
+        .preview-box .preview-content {
+            color: #333;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
@@ -921,7 +965,6 @@
                 </div>
             </div>
             <div class="header-badge">
-                <!-- BOTÃO DE STATUS DA CONEXÃO -->
                 <div id="statusConexao" class="badge-status checking" onclick="verificarConexao()" title="Clique para verificar a conexão com o JSONBin">
                     <span class="status-dot"></span>
                     <span id="statusTexto">Verificando...</span>
@@ -938,6 +981,7 @@
             <div class="panel-header">
                 <h2>📋 Tabelas de Fretes</h2>
                 <div class="btn-group">
+                    <button id="btnConfigurar" class="btn btn-warning">⚙️ Configurar Impressão</button>
                     <button id="btnNovo" class="btn btn-primary">+ Nova Tabela</button>
                 </div>
             </div>
@@ -974,6 +1018,183 @@
                 <span>Total de Tabelas: <strong id="totalTabelas">0</strong></span>
                 <span>Última atualização: <strong id="ultimaAtualizacao">-</strong></span>
             </div>
+        </div>
+    </div>
+
+    <!-- MODAL CONFIGURAÇÃO DE IMPRESSÃO -->
+    <div id="modalConfig" class="modal">
+        <div class="modal-content" style="max-width: 950px;">
+            <div class="modal-header">
+                <h3>⚙️ Configuração do Layout de Impressão</h3>
+                <span class="close-config">&times;</span>
+            </div>
+            <form id="formConfig">
+                <!-- CORES E TAMANHOS - CABEÇALHO -->
+                <div class="config-section">
+                    <h4>📌 Cabeçalho</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Cor de Fundo</label>
+                            <input type="color" id="headerBgColor" value="#1a3a5c">
+                        </div>
+                        <div class="form-group">
+                            <label>Cor do Texto</label>
+                            <input type="color" id="headerTextColor" value="#ffffff">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Cor da Borda</label>
+                            <input type="color" id="headerBorderColor" value="#ffd700">
+                        </div>
+                        <div class="form-group">
+                            <label>Tamanho da Fonte (px)</label>
+                            <input type="number" id="headerFontSize" value="13" min="8" max="24">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Altura Máxima da Logo (px)</label>
+                            <input type="number" id="logoMaxHeight" value="100" min="40" max="200">
+                        </div>
+                        <div class="form-group">
+                            <label>Espaçamento Interno (px)</label>
+                            <input type="number" id="headerPadding" value="30" min="10" max="60">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group form-row-full">
+                            <label>Endereço da Empresa (use &lt;br&gt; para quebra de linha)</label>
+                            <textarea id="enderecoEmpresa" rows="2">RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NÚMERO: 129
+CIDADE: SINOP-MT | CEP: 78556-788</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CORES E TAMANHOS - CLIENTE -->
+                <div class="config-section">
+                    <h4>📋 Informações do Cliente</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Cor de Fundo</label>
+                            <input type="color" id="clienteBgColor" value="#f8f9fa">
+                        </div>
+                        <div class="form-group">
+                            <label>Cor do Texto</label>
+                            <input type="color" id="clienteTextColor" value="#333333">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Tamanho da Fonte (px)</label>
+                            <input type="number" id="clienteFontSize" value="12" min="8" max="20">
+                        </div>
+                        <div class="form-group">
+                            <label>Espaçamento (px)</label>
+                            <input type="number" id="clientePadding" value="15" min="5" max="30">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group form-row-full">
+                            <label>Campos a exibir (separados por vírgula)</label>
+                            <input type="text" id="camposCliente" value="NOME,CNPJ/CPF,TELEFONE,NÚMERO,BAIRRO,RUA,CEP,CIDADE,IE,EMAIL" placeholder="NOME,CNPJ,TELEFONE...">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CORES E TAMANHOS - TABELA -->
+                <div class="config-section">
+                    <h4>📊 Tabela de Fretes</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Cor do Cabeçalho</label>
+                            <input type="color" id="tabelaHeaderBg" value="#1a3a5c">
+                        </div>
+                        <div class="form-group">
+                            <label>Cor do Texto do Cabeçalho</label>
+                            <input type="color" id="tabelaHeaderText" value="#ffffff">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Tamanho Fonte Cabeçalho (px)</label>
+                            <input type="number" id="tabelaHeaderFontSize" value="12" min="8" max="20">
+                        </div>
+                        <div class="form-group">
+                            <label>Tamanho Fonte Dados (px)</label>
+                            <input type="number" id="tabelaDataFontSize" value="12" min="8" max="20">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Cor da Linha Par</label>
+                            <input type="color" id="tabelaLinhaPar" value="#f8f9fa">
+                        </div>
+                        <div class="form-group">
+                            <label>Cor da Linha Ímpar</label>
+                            <input type="color" id="tabelaLinhaImpar" value="#ffffff">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CORES E TAMANHOS - RODAPÉ -->
+                <div class="config-section">
+                    <h4>📞 Rodapé</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Texto do Contato</label>
+                            <input type="text" id="textoContato" value="CONTATO / WHATSAPP: (93) 8418-4950">
+                        </div>
+                        <div class="form-group">
+                            <label>Tamanho da Fonte (px)</label>
+                            <input type="number" id="rodapeFontSize" value="13" min="8" max="20">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Texto da Assinatura 1</label>
+                            <input type="text" id="assinatura1" value="SINOP-MT">
+                        </div>
+                        <div class="form-group">
+                            <label>Texto da Assinatura 2</label>
+                            <input type="text" id="assinatura2" value="ASSINATURA">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Mostrar Data de Emissão</label>
+                            <select id="mostrarDataEmissao">
+                                <option value="true">Sim</option>
+                                <option value="false">Não</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Largura Máxima (px)</label>
+                            <input type="number" id="larguraMaxima" value="1000" min="600" max="1200">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PRÉ-VISUALIZAÇÃO -->
+                <div class="config-section">
+                    <h4>👁️ Pré-visualização</h4>
+                    <div class="preview-box" id="previewBox">
+                        <div class="preview-content" id="previewContent">
+                            <strong>Pré-visualização do cabeçalho:</strong><br>
+                            <span style="color:#1a3a5c;background:#f8f9fa;padding:4px 8px;border-radius:4px;">
+                                [LOGO] - Transports e Logística
+                            </span><br>
+                            Endereço: RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NÚMERO: 129
+                        </div>
+                    </div>
+                </div>
+
+                <div class="config-actions">
+                    <button type="submit" class="btn btn-primary">💾 Salvar Configurações</button>
+                    <button type="button" id="btnResetConfig" class="btn btn-secondary">🔄 Restaurar Padrão</button>
+                    <button type="button" id="btnFecharConfig" class="btn btn-outline">Fechar</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -1102,7 +1323,7 @@
 
     <script>
         // ============================================
-        // CONFIGURAÇÃO JSONBIN - ATUALIZADO!
+        // CONFIGURAÇÃO JSONBIN
         // ============================================
         const CONFIG = {
             BIN_ID: '6a6d0e9ada38895dfeaa4556',
@@ -1110,6 +1331,40 @@
         };
 
         const API_URL = `https://api.jsonbin.io/v3/b/${CONFIG.BIN_ID}`;
+
+        // ============================================
+        // CONFIGURAÇÕES DE IMPRESSÃO (SALVAS LOCALMENTE)
+        // ============================================
+        let configImpressao = {
+            // Cabeçalho
+            headerBgColor: '#1a3a5c',
+            headerTextColor: '#ffffff',
+            headerBorderColor: '#ffd700',
+            headerFontSize: 13,
+            headerPadding: 30,
+            logoMaxHeight: 100,
+            enderecoEmpresa: 'RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NÚMERO: 129\nCIDADE: SINOP-MT | CEP: 78556-788',
+            // Cliente
+            clienteBgColor: '#f8f9fa',
+            clienteTextColor: '#333333',
+            clienteFontSize: 12,
+            clientePadding: 15,
+            camposCliente: 'NOME,CNPJ/CPF,TELEFONE,NÚMERO,BAIRRO,RUA,CEP,CIDADE,IE,EMAIL',
+            // Tabela
+            tabelaHeaderBg: '#1a3a5c',
+            tabelaHeaderText: '#ffffff',
+            tabelaHeaderFontSize: 12,
+            tabelaDataFontSize: 12,
+            tabelaLinhaPar: '#f8f9fa',
+            tabelaLinhaImpar: '#ffffff',
+            // Rodapé
+            textoContato: 'CONTATO / WHATSAPP: (93) 8418-4950',
+            rodapeFontSize: 13,
+            assinatura1: 'SINOP-MT',
+            assinatura2: 'ASSINATURA',
+            mostrarDataEmissao: true,
+            larguraMaxima: 1000
+        };
 
         // ============================================
         // ESTADO DA APLICAÇÃO
@@ -1128,6 +1383,7 @@
             ultimaAtualizacao: document.getElementById('ultimaAtualizacao'),
             searchInput: document.getElementById('searchInput'),
             btnNovo: document.getElementById('btnNovo'),
+            btnConfigurar: document.getElementById('btnConfigurar'),
             btnBuscar: document.getElementById('btnBuscar'),
             btnLimpar: document.getElementById('btnLimpar'),
             
@@ -1160,13 +1416,98 @@
             btnFecharPrint: document.getElementById('btnFecharPrint'),
             btnGerarPDF: document.getElementById('btnGerarPDF'),
             
-            // Status
+            modalConfig: document.getElementById('modalConfig'),
+            closeConfig: document.querySelector('.close-config'),
+            btnFecharConfig: document.getElementById('btnFecharConfig'),
+            btnResetConfig: document.getElementById('btnResetConfig'),
+            formConfig: document.getElementById('formConfig'),
+            previewContent: document.getElementById('previewContent'),
+            
             statusConexao: document.getElementById('statusConexao'),
             statusTexto: document.getElementById('statusTexto')
         };
 
         // ============================================
-        // FUNÇÃO PARA VERIFICAR CONEXÃO COM JSONBIN
+        // CARREGAR/SALVAR CONFIGURAÇÕES LOCALMENTE
+        // ============================================
+        function carregarConfiguracoes() {
+            const salvo = localStorage.getItem('configImpressao');
+            if (salvo) {
+                try {
+                    const parsed = JSON.parse(salvo);
+                    configImpressao = { ...configImpressao, ...parsed };
+                } catch (e) {
+                    console.log('Erro ao carregar configurações');
+                }
+            }
+        }
+
+        function salvarConfiguracoesLocal() {
+            localStorage.setItem('configImpressao', JSON.stringify(configImpressao));
+        }
+
+        // ============================================
+        // PREENCHER FORMULÁRIO DE CONFIGURAÇÃO
+        // ============================================
+        function preencherFormConfig() {
+            document.getElementById('headerBgColor').value = configImpressao.headerBgColor;
+            document.getElementById('headerTextColor').value = configImpressao.headerTextColor;
+            document.getElementById('headerBorderColor').value = configImpressao.headerBorderColor;
+            document.getElementById('headerFontSize').value = configImpressao.headerFontSize;
+            document.getElementById('headerPadding').value = configImpressao.headerPadding;
+            document.getElementById('logoMaxHeight').value = configImpressao.logoMaxHeight;
+            document.getElementById('enderecoEmpresa').value = configImpressao.enderecoEmpresa;
+            document.getElementById('clienteBgColor').value = configImpressao.clienteBgColor;
+            document.getElementById('clienteTextColor').value = configImpressao.clienteTextColor;
+            document.getElementById('clienteFontSize').value = configImpressao.clienteFontSize;
+            document.getElementById('clientePadding').value = configImpressao.clientePadding;
+            document.getElementById('camposCliente').value = configImpressao.camposCliente;
+            document.getElementById('tabelaHeaderBg').value = configImpressao.tabelaHeaderBg;
+            document.getElementById('tabelaHeaderText').value = configImpressao.tabelaHeaderText;
+            document.getElementById('tabelaHeaderFontSize').value = configImpressao.tabelaHeaderFontSize;
+            document.getElementById('tabelaDataFontSize').value = configImpressao.tabelaDataFontSize;
+            document.getElementById('tabelaLinhaPar').value = configImpressao.tabelaLinhaPar;
+            document.getElementById('tabelaLinhaImpar').value = configImpressao.tabelaLinhaImpar;
+            document.getElementById('textoContato').value = configImpressao.textoContato;
+            document.getElementById('rodapeFontSize').value = configImpressao.rodapeFontSize;
+            document.getElementById('assinatura1').value = configImpressao.assinatura1;
+            document.getElementById('assinatura2').value = configImpressao.assinatura2;
+            document.getElementById('mostrarDataEmissao').value = configImpressao.mostrarDataEmissao ? 'true' : 'false';
+            document.getElementById('larguraMaxima').value = configImpressao.larguraMaxima;
+            
+            atualizarPreview();
+        }
+
+        // ============================================
+        // ATUALIZAR PRÉ-VISUALIZAÇÃO
+        // ============================================
+        function atualizarPreview() {
+            const bg = document.getElementById('headerBgColor').value;
+            const text = document.getElementById('headerTextColor').value;
+            const border = document.getElementById('headerBorderColor').value;
+            const fontSize = document.getElementById('headerFontSize').value;
+            const endereco = document.getElementById('enderecoEmpresa').value.replace(/\n/g, '<br>');
+            
+            elements.previewContent.innerHTML = `
+                <div style="background:${bg};color:${text};padding:12px;border-radius:8px;border-bottom:3px solid ${border};font-size:${fontSize}px;">
+                    <strong>🖼️ [LOGO] Transports e Logística</strong><br>
+                    <span style="font-size:${Math.max(10, fontSize-1)}px;opacity:0.9;">${endereco}</span>
+                </div>
+                <div style="margin-top:10px;font-size:${document.getElementById('clienteFontSize').value}px;color:#666;">
+                    <strong>Cliente:</strong> Distribuidora de Molas<br>
+                    <strong>CNPJ:</strong> 7306297000167
+                </div>
+                <div style="margin-top:8px;font-size:${document.getElementById('tabelaDataFontSize').value}px;color:#666;background:#f8f9fa;padding:8px;border-radius:4px;">
+                    <strong>Tabela:</strong> Cidades | UF | Frete | KG | %
+                </div>
+                <div style="margin-top:8px;font-size:${document.getElementById('rodapeFontSize').value}px;color:#999;">
+                    📞 ${document.getElementById('textoContato').value}
+                </div>
+            `;
+        }
+
+        // ============================================
+        // FUNÇÃO PARA VERIFICAR CONEXÃO
         // ============================================
         async function verificarConexao() {
             const statusEl = elements.statusConexao;
@@ -1183,18 +1524,17 @@
                 if (response.ok) {
                     statusEl.className = 'badge-status online';
                     textoEl.textContent = '✅ Online';
-                    mostrarToast('✅ Conexão com JSONBin estabelecida com sucesso!', 'success');
+                    mostrarToast('✅ Conexão com JSONBin estabelecida!', 'success');
                     await carregarDados();
                 } else {
                     statusEl.className = 'badge-status offline';
                     textoEl.textContent = '❌ Offline';
-                    mostrarToast('❌ Erro ao conectar com JSONBin. Verifique suas credenciais.', 'error');
+                    mostrarToast('❌ Erro ao conectar com JSONBin.', 'error');
                 }
             } catch (error) {
                 statusEl.className = 'badge-status offline';
                 textoEl.textContent = '❌ Offline';
-                mostrarToast('❌ Não foi possível conectar ao JSONBin. Verifique sua internet.', 'error');
-                console.error('Erro de conexão:', error);
+                mostrarToast('❌ Erro de rede.', 'error');
             }
         }
 
@@ -1257,7 +1597,6 @@
                 elements.statusConexao.className = 'badge-status online';
                 elements.statusTexto.textContent = '✅ Online';
                 
-                mostrarToast('Dados carregados com sucesso!', 'success');
                 return tabelas;
             } catch (error) {
                 console.error('Erro ao carregar:', error);
@@ -1275,6 +1614,9 @@
 
         async function salvarDados() {
             try {
+                elements.statusConexao.className = 'badge-status checking';
+                elements.statusTexto.textContent = '⏳ Salvando...';
+                
                 const response = await fetch(API_URL, {
                     method: 'PUT',
                     headers: {
@@ -1284,20 +1626,25 @@
                     body: JSON.stringify(tabelas)
                 });
                 
-                if (!response.ok) throw new Error('Erro ao salvar');
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status}`);
+                }
+                
+                const resultado = await response.json();
+                console.log('✅ Dados salvos:', resultado);
                 
                 elements.statusConexao.className = 'badge-status online';
                 elements.statusTexto.textContent = '✅ Online';
                 
-                mostrarToast('Dados salvos com sucesso!', 'success');
+                mostrarToast('✅ Dados salvos com sucesso!', 'success');
                 return true;
             } catch (error) {
-                console.error('Erro ao salvar:', error);
+                console.error('❌ Erro ao salvar:', error);
                 
                 elements.statusConexao.className = 'badge-status offline';
                 elements.statusTexto.textContent = '❌ Offline';
                 
-                mostrarToast('Erro ao salvar. Verifique sua conexão.', 'error');
+                mostrarToast('❌ Erro ao salvar: ' + error.message, 'error');
                 return false;
             }
         }
@@ -1520,10 +1867,16 @@
             if (!confirm('Tem certeza que deseja excluir esta tabela?')) return;
             
             tabelas = tabelas.filter(t => t.id !== id);
-            await salvarDados();
-            renderizarTabelas();
-            atualizarTotalizadores();
-            mostrarToast('Tabela excluída com sucesso!', 'success');
+            const salvou = await salvarDados();
+            
+            if (salvou) {
+                renderizarTabelas();
+                atualizarTotalizadores();
+                mostrarToast('Tabela excluída com sucesso!', 'success');
+            } else {
+                await carregarDados();
+                mostrarToast('Erro ao excluir. Dados restaurados.', 'error');
+            }
         }
 
         // ============================================
@@ -1566,15 +1919,21 @@
                 tabelas.push({ id: novoId, ...dados });
             }
             
-            await salvarDados();
-            renderizarTabelas();
-            atualizarTotalizadores();
-            elements.modal.style.display = 'none';
-            mostrarToast(`Tabela ${editandoId ? 'atualizada' : 'criada'} com sucesso!`, 'success');
+            const salvou = await salvarDados();
+            
+            if (salvou) {
+                renderizarTabelas();
+                atualizarTotalizadores();
+                elements.modal.style.display = 'none';
+                mostrarToast(`Tabela ${editandoId ? 'atualizada' : 'criada'} com sucesso!`, 'success');
+            } else {
+                await carregarDados();
+                mostrarToast('Erro ao salvar. Dados restaurados.', 'error');
+            }
         }
 
         // ============================================
-        // IMPRESSÃO E PDF - REMOVIDO "GELHETA"
+        // IMPRESSÃO E PDF - COM CONFIGURAÇÕES DE TAMANHO
         // ============================================
         let currentPrintId = null;
 
@@ -1594,6 +1953,30 @@
         function gerarHTMLImpressao(tabela) {
             const logoPrint = 'https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png';
             
+            // Carregar configurações
+            const cfg = configImpressao;
+            
+            // Campos do cliente
+            const campos = cfg.camposCliente.split(',').map(c => c.trim());
+            const mapaCampos = {
+                'NOME': `<div class="info-item"><strong>NOME:</strong> ${tabela.cliente}</div>`,
+                'CNPJ/CPF': `<div class="info-item"><strong>CNPJ/CPF:</strong> ${tabela.cnpj || 'Não informado'}</div>`,
+                'TELEFONE': `<div class="info-item"><strong>TELEFONE:</strong> ${tabela.telefone || 'Não informado'}</div>`,
+                'NÚMERO': `<div class="info-item"><strong>NÚMERO:</strong> ${tabela.id}</div>`,
+                'BAIRRO': `<div class="info-item"><strong>BAIRRO:</strong> ${tabela.endereco ? tabela.endereco.split(',')[1]?.trim() || '-' : '-'}</div>`,
+                'RUA': `<div class="info-item"><strong>RUA:</strong> ${tabela.endereco ? tabela.endereco.split(',')[0] || '-' : '-'}</div>`,
+                'CEP': `<div class="info-item"><strong>CEP:</strong> 78557-171</div>`,
+                'CIDADE': `<div class="info-item"><strong>CIDADE:</strong> SINOP MT</div>`,
+                'IE': `<div class="info-item"><strong>IE:</strong> ${tabela.ie || 'Não informado'}</div>`,
+                'EMAIL': `<div class="info-item"><strong>EMAIL:</strong> ${tabela.email || 'Não informado'}</div>`
+            };
+            
+            const camposHTML = campos.filter(c => mapaCampos[c]).map(c => mapaCampos[c]).join('');
+            
+            // Endereço
+            const enderecoHTML = cfg.enderecoEmpresa.replace(/\n/g, '<br>');
+            
+            // Cidades
             const cidadesHTML = tabela.cidades.map(c => `
                 <tr>
                     <td>${c.nome}</td>
@@ -1604,48 +1987,37 @@
                 </tr>
             `).join('');
 
+            const dataEmissao = cfg.mostrarDataEmissao ? 
+                `<div class="data-emissao">Documento emitido em ${new Date().toLocaleString('pt-BR')}</div>` : '';
+
             const html = `
-                <div id="printContent">
-                    <!-- TOPO COM LOGO EM DESTAQUE OCUPANDO TODA A LARGURA -->
-                    <div class="header-print">
+                <div id="printContent" style="max-width:${cfg.larguraMaxima}px;">
+                    <div class="header-print" style="background:${cfg.headerBgColor};color:${cfg.headerTextColor};border-bottom-color:${cfg.headerBorderColor};padding:${cfg.headerPadding}px 20px 20px 20px;font-size:${cfg.headerFontSize}px;">
                         <div class="logo-print">
-                            <img src="${logoPrint}" alt="Logo Transports e Logística">
+                            <img src="${logoPrint}" alt="Logo Transports e Logística" style="max-height:${cfg.logoMaxHeight}px;">
                         </div>
-                        <div class="endereco">
-                            <strong>RUA:</strong> INTERLAGOS | <strong>BAIRRO:</strong> IBERAPUERA | <strong>NÚMERO:</strong> 129<br>
-                            <strong>CIDADE:</strong> SINOP-MT | <strong>CEP:</strong> 78556-788
+                        <div class="endereco" style="color:${cfg.headerTextColor};font-size:${cfg.headerFontSize}px;">
+                            ${enderecoHTML}
                         </div>
                     </div>
                     
-                    <!-- INFORMAÇÕES DO CLIENTE -->
-                    <div class="info-cliente">
-                        <div class="info-item"><strong>NOME:</strong> ${tabela.cliente}</div>
-                        <div class="info-item"><strong>CNPJ/CPF:</strong> ${tabela.cnpj || 'Não informado'}</div>
-                        <div class="info-item"><strong>TELEFONE:</strong> ${tabela.telefone || 'Não informado'}</div>
-                        <div class="info-item"><strong>NÚMERO:</strong> ${tabela.id}</div>
-                        <div class="info-item"><strong>BAIRRO:</strong> ${tabela.endereco ? tabela.endereco.split(',')[1]?.trim() || '-' : '-'}</div>
-                        <div class="info-item"><strong>RUA:</strong> ${tabela.endereco ? tabela.endereco.split(',')[0] || '-' : '-'}</div>
-                        <div class="info-item"><strong>CEP:</strong> 78557-171</div>
-                        <div class="info-item"><strong>CIDADE:</strong> SINOP MT</div>
-                        <div class="info-item"><strong>IE:</strong> ${tabela.ie || 'Não informado'}</div>
-                        <div class="info-item"><strong>EMAIL:</strong> ${tabela.email || 'Não informado'}</div>
+                    <div class="info-cliente" style="background:${cfg.clienteBgColor};color:${cfg.clienteTextColor};padding:${cfg.clientePadding}px 20px;font-size:${cfg.clienteFontSize}px;">
+                        ${camposHTML}
                     </div>
                     
-                    <!-- ORIGEM E DESTINO -->
-                    <div class="info-origem">
+                    <div class="info-origem" style="font-size:${Math.max(12, cfg.clienteFontSize + 2)}px;">
                         <span>📍 ORIGEM: ${tabela.origem}</span>
                         <span>🎯 DESTINO: ${tabela.destino}</span>
                     </div>
                     
-                    <!-- TABELA DE FRETES -->
-                    <table class="tabela-fretes">
+                    <table class="tabela-fretes" style="font-size:${cfg.tabelaDataFontSize}px;">
                         <thead>
                             <tr>
-                                <th>Cidades Atendidas</th>
-                                <th>UF</th>
-                                <th>Frete</th>
-                                <th>Preço por KG / TON</th>
-                                <th>% Sobre Valor NF</th>
+                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;">Cidades Atendidas</th>
+                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;">UF</th>
+                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;">Frete</th>
+                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;">Preço por KG / TON</th>
+                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;">% Sobre Valor NF</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1653,30 +2025,25 @@
                         </tbody>
                     </table>
                     
-                    <!-- RODAPÉ - SEM GELHETA -->
-                    <div class="rodape-print">
+                    <div class="rodape-print" style="font-size:${cfg.rodapeFontSize}px;">
                         <div class="dados-adicionais">
-                            <strong>CONTATO / WHATSAPP:</strong> (93) 8418-4950
+                            <strong>${cfg.textoContato}</strong>
                         </div>
-                        <div class="assinaturas">
+                        <div class="assinaturas" style="font-size:${Math.max(10, cfg.rodapeFontSize - 1)}px;">
                             <div>
                                 <div class="linha"></div>
-                                <small>SINOP-MT</small>
+                                <small>${cfg.assinatura1}</small>
                             </div>
                             <div>
                                 <div class="linha"></div>
-                                <small>ASSINATURA</small>
+                                <small>${cfg.assinatura2}</small>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- OBSERVAÇÃO -->
-                    ${tabela.observacao ? `<div class="observacao-print"><strong>📝 Observação:</strong> ${tabela.observacao}</div>` : ''}
+                    ${tabela.observacao ? `<div class="observacao-print" style="font-size:${Math.max(10, cfg.rodapeFontSize - 1)}px;"><strong>📝 Observação:</strong> ${tabela.observacao}</div>` : ''}
                     
-                    <!-- DATA DE EMISSÃO -->
-                    <div class="data-emissao">
-                        Documento emitido em ${new Date().toLocaleString('pt-BR')}
-                    </div>
+                    ${dataEmissao}
                 </div>
             `;
             
@@ -1713,6 +2080,86 @@
                 btn.disabled = false;
                 mostrarToast('Erro ao gerar PDF. Tente novamente.', 'error');
             });
+        }
+
+        // ============================================
+        // SALVAR CONFIGURAÇÕES
+        // ============================================
+        function salvarConfiguracoes(event) {
+            event.preventDefault();
+            
+            configImpressao = {
+                // Cabeçalho
+                headerBgColor: document.getElementById('headerBgColor').value,
+                headerTextColor: document.getElementById('headerTextColor').value,
+                headerBorderColor: document.getElementById('headerBorderColor').value,
+                headerFontSize: parseInt(document.getElementById('headerFontSize').value) || 13,
+                headerPadding: parseInt(document.getElementById('headerPadding').value) || 30,
+                logoMaxHeight: parseInt(document.getElementById('logoMaxHeight').value) || 100,
+                enderecoEmpresa: document.getElementById('enderecoEmpresa').value,
+                // Cliente
+                clienteBgColor: document.getElementById('clienteBgColor').value,
+                clienteTextColor: document.getElementById('clienteTextColor').value,
+                clienteFontSize: parseInt(document.getElementById('clienteFontSize').value) || 12,
+                clientePadding: parseInt(document.getElementById('clientePadding').value) || 15,
+                camposCliente: document.getElementById('camposCliente').value,
+                // Tabela
+                tabelaHeaderBg: document.getElementById('tabelaHeaderBg').value,
+                tabelaHeaderText: document.getElementById('tabelaHeaderText').value,
+                tabelaHeaderFontSize: parseInt(document.getElementById('tabelaHeaderFontSize').value) || 12,
+                tabelaDataFontSize: parseInt(document.getElementById('tabelaDataFontSize').value) || 12,
+                tabelaLinhaPar: document.getElementById('tabelaLinhaPar').value,
+                tabelaLinhaImpar: document.getElementById('tabelaLinhaImpar').value,
+                // Rodapé
+                textoContato: document.getElementById('textoContato').value,
+                rodapeFontSize: parseInt(document.getElementById('rodapeFontSize').value) || 13,
+                assinatura1: document.getElementById('assinatura1').value,
+                assinatura2: document.getElementById('assinatura2').value,
+                mostrarDataEmissao: document.getElementById('mostrarDataEmissao').value === 'true',
+                larguraMaxima: parseInt(document.getElementById('larguraMaxima').value) || 1000
+            };
+            
+            salvarConfiguracoesLocal();
+            elements.modalConfig.style.display = 'none';
+            mostrarToast('✅ Configurações salvas com sucesso!', 'success');
+        }
+
+        // ============================================
+        // RESTAURAR CONFIGURAÇÕES PADRÃO
+        // ============================================
+        function restaurarConfiguracoes() {
+            if (!confirm('Tem certeza que deseja restaurar as configurações padrão?')) return;
+            
+            configImpressao = {
+                headerBgColor: '#1a3a5c',
+                headerTextColor: '#ffffff',
+                headerBorderColor: '#ffd700',
+                headerFontSize: 13,
+                headerPadding: 30,
+                logoMaxHeight: 100,
+                enderecoEmpresa: 'RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NÚMERO: 129\nCIDADE: SINOP-MT | CEP: 78556-788',
+                clienteBgColor: '#f8f9fa',
+                clienteTextColor: '#333333',
+                clienteFontSize: 12,
+                clientePadding: 15,
+                camposCliente: 'NOME,CNPJ/CPF,TELEFONE,NÚMERO,BAIRRO,RUA,CEP,CIDADE,IE,EMAIL',
+                tabelaHeaderBg: '#1a3a5c',
+                tabelaHeaderText: '#ffffff',
+                tabelaHeaderFontSize: 12,
+                tabelaDataFontSize: 12,
+                tabelaLinhaPar: '#f8f9fa',
+                tabelaLinhaImpar: '#ffffff',
+                textoContato: 'CONTATO / WHATSAPP: (93) 8418-4950',
+                rodapeFontSize: 13,
+                assinatura1: 'SINOP-MT',
+                assinatura2: 'ASSINATURA',
+                mostrarDataEmissao: true,
+                larguraMaxima: 1000
+            };
+            
+            salvarConfiguracoesLocal();
+            preencherFormConfig();
+            mostrarToast('✅ Configurações restauradas!', 'success');
         }
 
         // ============================================
@@ -1760,6 +2207,26 @@
             elements.modalPrint.style.display = 'none';
         });
 
+        // Configuração
+        elements.btnConfigurar.addEventListener('click', () => {
+            preencherFormConfig();
+            elements.modalConfig.style.display = 'block';
+        });
+        elements.closeConfig.addEventListener('click', () => {
+            elements.modalConfig.style.display = 'none';
+        });
+        elements.btnFecharConfig.addEventListener('click', () => {
+            elements.modalConfig.style.display = 'none';
+        });
+        elements.btnResetConfig.addEventListener('click', restaurarConfiguracoes);
+        elements.formConfig.addEventListener('submit', salvarConfiguracoes);
+
+        // Preview em tempo real
+        document.querySelectorAll('#formConfig input, #formConfig select, #formConfig textarea').forEach(el => {
+            el.addEventListener('input', atualizarPreview);
+            el.addEventListener('change', atualizarPreview);
+        });
+
         elements.btnAddCidade.addEventListener('click', adicionarCidade);
 
         elements.selectCidade.addEventListener('keyup', (e) => {
@@ -1785,6 +2252,9 @@
             if (e.target === elements.modalPrint) {
                 elements.modalPrint.style.display = 'none';
             }
+            if (e.target === elements.modalConfig) {
+                elements.modalConfig.style.display = 'none';
+            }
         });
 
         elements.form.addEventListener('submit', salvarTabela);
@@ -1793,6 +2263,7 @@
         // INICIALIZAÇÃO
         // ============================================
         document.addEventListener('DOMContentLoaded', async () => {
+            carregarConfiguracoes();
             await atualizarStatusInicial();
             await carregarDados();
         });
