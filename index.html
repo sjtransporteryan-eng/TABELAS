@@ -256,15 +256,6 @@
             font-size: 12px;
         }
 
-        .btn-warning {
-            background: #ed8936;
-            color: white;
-        }
-
-        .btn-warning:hover {
-            background: #dd6b20;
-        }
-
         /* BUSCA */
         .search-box {
             padding: 20px 25px;
@@ -580,48 +571,64 @@
             margin-left: 5px;
         }
 
-        /* IMPRESSÃO - ESTILO IGUAL À FOTO COM LOGO COMPLETA */
+        /* ============================================
+           IMPRESSÃO - LOGO OCUPA TODA A PARTE SUPERIOR
+           ============================================ */
         #printContent {
-            padding: 30px;
+            padding: 0;
             font-family: 'Courier New', monospace;
             background: white;
             max-width: 1000px;
             margin: 0 auto;
         }
 
+        /* TOPO COM LOGO EM DESTAQUE */
         #printContent .header-print {
+            background: linear-gradient(135deg, #1a3a5c 0%, #2c5f8a 100%);
+            padding: 30px 20px 20px 20px;
             text-align: center;
-            border-bottom: 2px solid #333;
-            padding-bottom: 15px;
+            border-bottom: 4px solid #ffd700;
             margin-bottom: 20px;
         }
 
         #printContent .header-print .logo-print {
             display: flex;
             justify-content: center;
-            margin-bottom: 8px;
+            align-items: center;
+            margin-bottom: 10px;
         }
 
         #printContent .header-print .logo-print img {
-            max-height: 80px;
-            max-width: 200px;
+            max-height: 100px;
+            max-width: 250px;
             object-fit: contain;
+            background: white;
+            border-radius: 12px;
+            padding: 8px 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
         #printContent .header-print .endereco {
             font-size: 13px;
-            color: #555;
+            color: rgba(255,255,255,0.9);
             line-height: 1.6;
+            font-weight: 500;
+            letter-spacing: 0.5px;
         }
 
+        #printContent .header-print .endereco strong {
+            color: #ffd700;
+        }
+
+        /* Informações do Cliente */
         #printContent .info-cliente {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 5px 30px;
-            padding: 15px;
+            padding: 15px 20px;
             background: #f8f9fa;
             border-radius: 8px;
-            margin-bottom: 20px;
+            margin: 0 20px 20px 20px;
             border: 1px solid #dee2e6;
         }
 
@@ -633,25 +640,28 @@
         }
 
         #printContent .info-cliente .info-item strong {
-            color: #2d3748;
+            color: #1a3a5c;
             min-width: 80px;
         }
 
+        /* Origem/Destino */
         #printContent .info-origem {
             display: flex;
             justify-content: space-between;
-            padding: 10px 15px;
+            padding: 10px 20px;
             background: #e9ecef;
             border-radius: 6px;
-            margin-bottom: 20px;
+            margin: 0 20px 20px 20px;
             font-size: 14px;
             font-weight: 600;
+            color: #1a3a5c;
         }
 
+        /* Tabela de Fretes */
         #printContent .tabela-fretes {
-            width: 100%;
+            width: calc(100% - 40px);
+            margin: 0 20px 20px 20px;
             border-collapse: collapse;
-            margin: 15px 0;
             font-size: 12px;
         }
 
@@ -676,8 +686,9 @@
             background: #e9ecef;
         }
 
+        /* Rodapé */
         #printContent .rodape-print {
-            margin-top: 25px;
+            margin: 0 20px 20px 20px;
             padding-top: 15px;
             border-top: 2px solid #333;
             display: flex;
@@ -690,6 +701,11 @@
         #printContent .rodape-print .dados-adicionais {
             font-size: 13px;
             line-height: 1.8;
+            color: #333;
+        }
+
+        #printContent .rodape-print .dados-adicionais strong {
+            color: #1a3a5c;
         }
 
         #printContent .rodape-print .assinaturas {
@@ -707,6 +723,28 @@
             border-top: 1px solid #333;
             width: 100%;
             margin-bottom: 5px;
+        }
+
+        /* Observação */
+        #printContent .observacao-print {
+            margin: 0 20px 20px 20px;
+            padding: 10px 15px;
+            background: #f7fafc;
+            border-radius: 6px;
+            font-size: 13px;
+            border: 1px solid #dee2e6;
+        }
+
+        #printContent .observacao-print strong {
+            color: #1a3a5c;
+        }
+
+        /* Data de emissão */
+        #printContent .data-emissao {
+            text-align: center;
+            color: #a0aec0;
+            font-size: 11px;
+            padding: 0 20px 15px 20px;
         }
 
         .print-actions {
@@ -767,7 +805,7 @@
                 left: 0;
                 top: 0;
                 background: white;
-                padding: 10px;
+                padding: 0;
                 width: 100%;
                 min-height: 100vh;
             }
@@ -782,7 +820,14 @@
                 display: none !important;
             }
             #printContent {
-                padding: 20px !important;
+                padding: 0 !important;
+            }
+            #printContent .header-print {
+                padding: 20px 15px 15px 15px !important;
+            }
+            #printContent .header-print .logo-print img {
+                max-height: 80px !important;
+                max-width: 200px !important;
             }
             #printContent .tabela-fretes {
                 font-size: 11px !important;
@@ -831,14 +876,31 @@
             }
             #printContent .info-cliente {
                 grid-template-columns: 1fr;
+                margin: 0 10px 15px 10px;
+            }
+            #printContent .info-origem {
+                flex-direction: column;
+                gap: 5px;
+                text-align: center;
+                margin: 0 10px 15px 10px;
+            }
+            #printContent .tabela-fretes {
+                width: calc(100% - 20px);
+                margin: 0 10px 15px 10px;
+                font-size: 10px;
             }
             #printContent .rodape-print {
                 flex-direction: column;
                 align-items: stretch;
+                margin: 0 10px 15px 10px;
             }
             #printContent .rodape-print .assinaturas {
                 flex-direction: column;
                 gap: 20px;
+            }
+            #printContent .header-print .logo-print img {
+                max-height: 70px !important;
+                max-width: 180px !important;
             }
         }
     </style>
@@ -1040,10 +1102,10 @@
 
     <script>
         // ============================================
-        // CONFIGURAÇÃO JSONBIN - CONFIGURADO!
+        // CONFIGURAÇÃO JSONBIN - ATUALIZADO!
         // ============================================
         const CONFIG = {
-            BIN_ID: '6a6cf543f5f4af5e29db5c2a',
+            BIN_ID: '6a6d0e9ada38895dfeaa4556',
             API_KEY: '$2a$10$0EbWZN1ffJTVxiSBmGU2C.oQJmRipuyPINdyEyftI/b.mVMPnsZt.'
         };
 
@@ -1110,7 +1172,6 @@
             const statusEl = elements.statusConexao;
             const textoEl = elements.statusTexto;
             
-            // Muda para status de verificação
             statusEl.className = 'badge-status checking';
             textoEl.textContent = 'Verificando...';
             
@@ -1120,21 +1181,16 @@
                 });
                 
                 if (response.ok) {
-                    // Conexão bem sucedida
                     statusEl.className = 'badge-status online';
                     textoEl.textContent = '✅ Online';
                     mostrarToast('✅ Conexão com JSONBin estabelecida com sucesso!', 'success');
-                    
-                    // Recarrega os dados para garantir que estão atualizados
                     await carregarDados();
                 } else {
-                    // Erro na resposta
                     statusEl.className = 'badge-status offline';
                     textoEl.textContent = '❌ Offline';
                     mostrarToast('❌ Erro ao conectar com JSONBin. Verifique suas credenciais.', 'error');
                 }
             } catch (error) {
-                // Erro de rede
                 statusEl.className = 'badge-status offline';
                 textoEl.textContent = '❌ Offline';
                 mostrarToast('❌ Não foi possível conectar ao JSONBin. Verifique sua internet.', 'error');
@@ -1198,7 +1254,6 @@
                 renderizarTabelas();
                 atualizarTotalizadores();
                 
-                // Atualiza status para online se conseguiu carregar
                 elements.statusConexao.className = 'badge-status online';
                 elements.statusTexto.textContent = '✅ Online';
                 
@@ -1210,7 +1265,6 @@
                 renderizarTabelas();
                 atualizarTotalizadores();
                 
-                // Atualiza status para offline
                 elements.statusConexao.className = 'badge-status offline';
                 elements.statusTexto.textContent = '❌ Offline';
                 
@@ -1232,7 +1286,6 @@
                 
                 if (!response.ok) throw new Error('Erro ao salvar');
                 
-                // Atualiza status para online
                 elements.statusConexao.className = 'badge-status online';
                 elements.statusTexto.textContent = '✅ Online';
                 
@@ -1241,7 +1294,6 @@
             } catch (error) {
                 console.error('Erro ao salvar:', error);
                 
-                // Atualiza status para offline
                 elements.statusConexao.className = 'badge-status offline';
                 elements.statusTexto.textContent = '❌ Offline';
                 
@@ -1522,7 +1574,7 @@
         }
 
         // ============================================
-        // IMPRESSÃO E PDF
+        // IMPRESSÃO E PDF - LOGO OCUPA A PARTE SUPERIOR
         // ============================================
         let currentPrintId = null;
 
@@ -1554,16 +1606,18 @@
 
             const html = `
                 <div id="printContent">
+                    <!-- TOPO COM LOGO EM DESTAQUE OCUPANDO TODA A LARGURA -->
                     <div class="header-print">
                         <div class="logo-print">
                             <img src="${logoPrint}" alt="Logo Transports e Logística">
                         </div>
                         <div class="endereco">
-                            RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NÚMERO: 129<br>
-                            CIDADE: SINOP-MT | CEP: 78556-788
+                            <strong>RUA:</strong> INTERLAGOS | <strong>BAIRRO:</strong> IBERAPUERA | <strong>NÚMERO:</strong> 129<br>
+                            <strong>CIDADE:</strong> SINOP-MT | <strong>CEP:</strong> 78556-788
                         </div>
                     </div>
                     
+                    <!-- INFORMAÇÕES DO CLIENTE -->
                     <div class="info-cliente">
                         <div class="info-item"><strong>NOME:</strong> ${tabela.cliente}</div>
                         <div class="info-item"><strong>CNPJ/CPF:</strong> ${tabela.cnpj || 'Não informado'}</div>
@@ -1577,11 +1631,13 @@
                         <div class="info-item"><strong>EMAIL:</strong> ${tabela.email || 'Não informado'}</div>
                     </div>
                     
+                    <!-- ORIGEM E DESTINO -->
                     <div class="info-origem">
                         <span>📍 ORIGEM: ${tabela.origem}</span>
                         <span>🎯 DESTINO: ${tabela.destino}</span>
                     </div>
                     
+                    <!-- TABELA DE FRETES -->
                     <table class="tabela-fretes">
                         <thead>
                             <tr>
@@ -1597,6 +1653,7 @@
                         </tbody>
                     </table>
                     
+                    <!-- RODAPÉ -->
                     <div class="rodape-print">
                         <div class="dados-adicionais">
                             <strong>GELHETA:</strong> 130<br>
@@ -1614,9 +1671,11 @@
                         </div>
                     </div>
                     
-                    ${tabela.observacao ? `<div style="margin-top: 15px; padding: 10px; background: #f7fafc; border-radius: 6px; font-size: 13px; border: 1px solid #dee2e6;"><strong>📝 Observação:</strong> ${tabela.observacao}</div>` : ''}
+                    <!-- OBSERVAÇÃO -->
+                    ${tabela.observacao ? `<div class="observacao-print"><strong>📝 Observação:</strong> ${tabela.observacao}</div>` : ''}
                     
-                    <div style="margin-top: 10px; text-align: center; color: #a0aec0; font-size: 11px;">
+                    <!-- DATA DE EMISSÃO -->
+                    <div class="data-emissao">
                         Documento emitido em ${new Date().toLocaleString('pt-BR')}
                     </div>
                 </div>
@@ -1638,7 +1697,7 @@
             const element = document.getElementById('printContent');
             
             const opt = {
-                margin:        [10, 10, 10, 10],
+                margin:        [0, 0, 0, 0],
                 filename:     `tabela_frete_${tabelaImpressaoAtual?.id || 'sem_id'}.pdf`,
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
@@ -1735,9 +1794,7 @@
         // INICIALIZAÇÃO
         // ============================================
         document.addEventListener('DOMContentLoaded', async () => {
-            // Primeiro verifica o status
             await atualizarStatusInicial();
-            // Depois carrega os dados
             await carregarDados();
         });
     </script>
