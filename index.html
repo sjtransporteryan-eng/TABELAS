@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Tabela de Fretes - Transportes e Logística</title>
+    <title>Sistema de Tabela de Fretes - Transports e Logística</title>
     <!-- Incluindo html2pdf para gerar PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
@@ -78,6 +78,8 @@
         .header-badge {
             display: flex;
             gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
         .badge {
@@ -88,6 +90,65 @@
             font-size: 13px;
             font-weight: 600;
             border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .badge-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .badge-status:hover {
+            transform: scale(1.05);
+        }
+
+        .badge-status .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .badge-status.online .status-dot {
+            background: #48bb78;
+            box-shadow: 0 0 8px rgba(72, 187, 120, 0.5);
+        }
+
+        .badge-status.offline .status-dot {
+            background: #fc8181;
+            box-shadow: 0 0 8px rgba(252, 129, 129, 0.5);
+        }
+
+        .badge-status.checking .status-dot {
+            background: #f6ad55;
+            animation: pulse 0.8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .badge-status.online {
+            background: rgba(72, 187, 120, 0.25);
+            border-color: rgba(72, 187, 120, 0.4);
+        }
+
+        .badge-status.offline {
+            background: rgba(252, 129, 129, 0.25);
+            border-color: rgba(252, 129, 129, 0.4);
+        }
+
+        .badge-status.checking {
+            background: rgba(246, 173, 85, 0.25);
+            border-color: rgba(246, 173, 85, 0.4);
         }
 
         /* CONTAINER */
@@ -519,7 +580,7 @@
             margin-left: 5px;
         }
 
-        /* IMPRESSÃO - ESTILO IGUAL À FOTO */
+        /* IMPRESSÃO - ESTILO IGUAL À FOTO COM LOGO COMPLETA */
         #printContent {
             padding: 30px;
             font-family: 'Courier New', monospace;
@@ -537,29 +598,19 @@
 
         #printContent .header-print .logo-print {
             display: flex;
-            align-items: center;
             justify-content: center;
-            gap: 15px;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
         }
 
         #printContent .header-print .logo-print img {
-            max-height: 60px;
-            max-width: 60px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        #printContent .header-print h2 {
-            font-size: 22px;
-            color: #1a3a5c;
-            font-weight: 700;
+            max-height: 80px;
+            max-width: 200px;
+            object-fit: contain;
         }
 
         #printContent .header-print .endereco {
             font-size: 13px;
             color: #555;
-            margin-top: 5px;
             line-height: 1.6;
         }
 
@@ -793,7 +844,7 @@
     </style>
 </head>
 <body>
-    <!-- HEADER COM LOGO -->
+    <!-- HEADER COM LOGO E STATUS -->
     <header>
         <div class="header-content">
             <div class="header-left">
@@ -803,11 +854,16 @@
                     </a>
                 </div>
                 <div class="header-title">
-                    <h1>Transportes e Logística</h1>
+                    <h1>Transports e Logística</h1>
                     <p>Sistema de Gerenciamento de Tabelas de Fretes</p>
                 </div>
             </div>
             <div class="header-badge">
+                <!-- BOTÃO DE STATUS DA CONEXÃO -->
+                <div id="statusConexao" class="badge-status checking" onclick="verificarConexao()" title="Clique para verificar a conexão com o JSONBin">
+                    <span class="status-dot"></span>
+                    <span id="statusTexto">Verificando...</span>
+                </div>
                 <span class="badge">📦 Fretes</span>
                 <span class="badge">📋 Tabelas</span>
             </div>
@@ -1040,8 +1096,73 @@
             conteudoImpressao: document.getElementById('conteudoImpressao'),
             closePrint: document.querySelector('.close-print'),
             btnFecharPrint: document.getElementById('btnFecharPrint'),
-            btnGerarPDF: document.getElementById('btnGerarPDF')
+            btnGerarPDF: document.getElementById('btnGerarPDF'),
+            
+            // Status
+            statusConexao: document.getElementById('statusConexao'),
+            statusTexto: document.getElementById('statusTexto')
         };
+
+        // ============================================
+        // FUNÇÃO PARA VERIFICAR CONEXÃO COM JSONBIN
+        // ============================================
+        async function verificarConexao() {
+            const statusEl = elements.statusConexao;
+            const textoEl = elements.statusTexto;
+            
+            // Muda para status de verificação
+            statusEl.className = 'badge-status checking';
+            textoEl.textContent = 'Verificando...';
+            
+            try {
+                const response = await fetch(API_URL, {
+                    headers: { 'X-Master-Key': CONFIG.API_KEY }
+                });
+                
+                if (response.ok) {
+                    // Conexão bem sucedida
+                    statusEl.className = 'badge-status online';
+                    textoEl.textContent = '✅ Online';
+                    mostrarToast('✅ Conexão com JSONBin estabelecida com sucesso!', 'success');
+                    
+                    // Recarrega os dados para garantir que estão atualizados
+                    await carregarDados();
+                } else {
+                    // Erro na resposta
+                    statusEl.className = 'badge-status offline';
+                    textoEl.textContent = '❌ Offline';
+                    mostrarToast('❌ Erro ao conectar com JSONBin. Verifique suas credenciais.', 'error');
+                }
+            } catch (error) {
+                // Erro de rede
+                statusEl.className = 'badge-status offline';
+                textoEl.textContent = '❌ Offline';
+                mostrarToast('❌ Não foi possível conectar ao JSONBin. Verifique sua internet.', 'error');
+                console.error('Erro de conexão:', error);
+            }
+        }
+
+        // ============================================
+        // FUNÇÃO PARA ATUALIZAR STATUS INICIAL
+        // ============================================
+        async function atualizarStatusInicial() {
+            try {
+                const response = await fetch(API_URL, {
+                    headers: { 'X-Master-Key': CONFIG.API_KEY }
+                });
+                
+                if (response.ok) {
+                    elements.statusConexao.className = 'badge-status online';
+                    elements.statusTexto.textContent = '✅ Online';
+                } else {
+                    elements.statusConexao.className = 'badge-status offline';
+                    elements.statusTexto.textContent = '❌ Offline';
+                }
+            } catch (error) {
+                elements.statusConexao.className = 'badge-status offline';
+                elements.statusTexto.textContent = '❌ Offline';
+            }
+        }
 
         // ============================================
         // TABELA DE FRETES PADRÃO
@@ -1076,6 +1197,11 @@
                 tabelas = data.record || [];
                 renderizarTabelas();
                 atualizarTotalizadores();
+                
+                // Atualiza status para online se conseguiu carregar
+                elements.statusConexao.className = 'badge-status online';
+                elements.statusTexto.textContent = '✅ Online';
+                
                 mostrarToast('Dados carregados com sucesso!', 'success');
                 return tabelas;
             } catch (error) {
@@ -1083,6 +1209,11 @@
                 tabelas = getDadosExemplo();
                 renderizarTabelas();
                 atualizarTotalizadores();
+                
+                // Atualiza status para offline
+                elements.statusConexao.className = 'badge-status offline';
+                elements.statusTexto.textContent = '❌ Offline';
+                
                 mostrarToast('Usando dados de exemplo (offline)', 'error');
                 return tabelas;
             }
@@ -1100,10 +1231,20 @@
                 });
                 
                 if (!response.ok) throw new Error('Erro ao salvar');
+                
+                // Atualiza status para online
+                elements.statusConexao.className = 'badge-status online';
+                elements.statusTexto.textContent = '✅ Online';
+                
                 mostrarToast('Dados salvos com sucesso!', 'success');
                 return true;
             } catch (error) {
                 console.error('Erro ao salvar:', error);
+                
+                // Atualiza status para offline
+                elements.statusConexao.className = 'badge-status offline';
+                elements.statusTexto.textContent = '❌ Offline';
+                
                 mostrarToast('Erro ao salvar. Verifique sua conexão.', 'error');
                 return false;
             }
@@ -1399,7 +1540,6 @@
         }
 
         function gerarHTMLImpressao(tabela) {
-            // Logo para impressão
             const logoPrint = 'https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png';
             
             const cidadesHTML = tabela.cidades.map(c => `
@@ -1417,7 +1557,6 @@
                     <div class="header-print">
                         <div class="logo-print">
                             <img src="${logoPrint}" alt="Logo Transports e Logística">
-                            <h2>🚛 Transports e Logística</h2>
                         </div>
                         <div class="endereco">
                             RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NÚMERO: 129<br>
@@ -1595,8 +1734,11 @@
         // ============================================
         // INICIALIZAÇÃO
         // ============================================
-        document.addEventListener('DOMContentLoaded', () => {
-            carregarDados();
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Primeiro verifica o status
+            await atualizarStatusInicial();
+            // Depois carrega os dados
+            await carregarDados();
         });
     </script>
 </body>
