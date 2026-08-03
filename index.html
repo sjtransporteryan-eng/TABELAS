@@ -117,12 +117,12 @@
 
         .badge-status.online .status-dot {
             background: #48bb78;
-            box-shadow: 0 0 8px rgba(72, 187, 120, 0.5);
+            box-shadow: 0 0 8px rgba(72,187,120,0.5);
         }
 
         .badge-status.offline .status-dot {
             background: #fc8181;
-            box-shadow: 0 0 8px rgba(252, 129, 129, 0.5);
+            box-shadow: 0 0 8px rgba(252,129,129,0.5);
         }
 
         .badge-status.checking .status-dot {
@@ -131,23 +131,23 @@
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 1; }
+            0%,100% { opacity: 1; }
             50% { opacity: 0.3; }
         }
 
         .badge-status.online {
-            background: rgba(72, 187, 120, 0.25);
-            border-color: rgba(72, 187, 120, 0.4);
+            background: rgba(72,187,120,0.25);
+            border-color: rgba(72,187,120,0.4);
         }
 
         .badge-status.offline {
-            background: rgba(252, 129, 129, 0.25);
-            border-color: rgba(252, 129, 129, 0.4);
+            background: rgba(252,129,129,0.25);
+            border-color: rgba(252,129,129,0.4);
         }
 
         .badge-status.checking {
-            background: rgba(246, 173, 85, 0.25);
-            border-color: rgba(246, 173, 85, 0.4);
+            background: rgba(246,173,85,0.25);
+            border-color: rgba(246,173,85,0.4);
         }
 
         .container {
@@ -206,7 +206,7 @@
         .btn-primary:hover {
             background: #1a3a5c;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(44, 95, 138, 0.3);
+            box-shadow: 0 4px 12px rgba(44,95,138,0.3);
         }
 
         .btn-success {
@@ -284,7 +284,7 @@
         .search-box input:focus {
             outline: none;
             border-color: #2c5f8a;
-            box-shadow: 0 0 0 3px rgba(44, 95, 138, 0.1);
+            box-shadow: 0 0 0 3px rgba(44,95,138,0.1);
         }
 
         .table-responsive {
@@ -370,14 +370,8 @@
         }
 
         @keyframes slideIn {
-            from {
-                transform: translateY(-30px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         .modal-header {
@@ -421,9 +415,7 @@
         }
 
         @media (max-width: 600px) {
-            .form-row {
-                grid-template-columns: 1fr;
-            }
+            .form-row { grid-template-columns: 1fr; }
         }
 
         .form-group {
@@ -454,7 +446,7 @@
         .form-group textarea:focus {
             outline: none;
             border-color: #2c5f8a;
-            box-shadow: 0 0 0 3px rgba(44, 95, 138, 0.1);
+            box-shadow: 0 0 0 3px rgba(44,95,138,0.1);
         }
 
         .form-group textarea {
@@ -522,9 +514,7 @@
         }
 
         @media (max-width: 768px) {
-            .add-cidade-row {
-                grid-template-columns: 1fr 1fr;
-            }
+            .add-cidade-row { grid-template-columns: 1fr 1fr; }
         }
 
         .add-cidade-row select,
@@ -590,7 +580,6 @@
             border-radius: 12px;
             padding: 8px 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            /* A altura será controlada via JS inline */
         }
 
         #printContent .header-print .endereco {
@@ -731,34 +720,22 @@
         .toast-success {
             background: #48bb78;
         }
-
         .toast-error {
             background: #fc8181;
         }
-
         .toast-info {
             background: #4299e1;
         }
 
         @keyframes slideUp {
-            from {
-                transform: translateY(20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
-        /* PRINT STYLES */
+        /* PRINT */
         @media print {
-            body * {
-                visibility: hidden;
-            }
-            #modalImprimir, #modalImprimir * {
-                visibility: visible;
-            }
+            body * { visibility: hidden; }
+            #modalImprimir, #modalImprimir * { visibility: visible; }
             #modalImprimir {
                 position: absolute;
                 left: 0;
@@ -778,12 +755,8 @@
             .modal-header, .print-actions, .close-print, #btnFecharPrint {
                 display: none !important;
             }
-            #printContent {
-                padding: 0 !important;
-            }
-            #printContent .header-print {
-                padding: 20px 15px 15px 15px !important;
-            }
+            #printContent { padding: 0 !important; }
+            #printContent .header-print { padding: 20px 15px 15px 15px !important; }
             #printContent .header-print .logo-print img {
                 max-height: 80px !important;
                 max-width: 200px !important;
@@ -1278,12 +1251,12 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
 
     <script>
         // ============================================
-        // CONFIGURAÇÃO JSONBIN
+        // CONFIGURAÇÃO JSONBIN - ATUALIZADO!
         // ============================================
         const CONFIG = {
-    BIN_ID: '6a6d0e9ada38895dfeaa4556',
-    API_KEY: '$2a$10$0EbWZN1ffJTVxiSBmGU2C.oQJmRipuyPINdyEyftI/b.mVMPnsZt.'
-};
+            BIN_ID: '6a708f6af5f4af5e29e50603',
+            API_KEY: '$2a$10$Ov1iERWTABmAIMBUwvKxOuWDmoSwt22lf4rvS92xaAPb.9IfCIMz6'
+        };
 
         const API_URL = `https://api.jsonbin.io/v3/b/${CONFIG.BIN_ID}`;
 
@@ -1559,9 +1532,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 elements.statusConexao.className = 'badge-status checking';
                 elements.statusTexto.textContent = '⏳ Salvando...';
                 
-                // Verifica se há dados para salvar
                 if (!tabelas || tabelas.length === 0) {
-                    // Se não houver dados, cria um array vazio
                     tabelas = [];
                 }
                 
@@ -1873,7 +1844,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         }
 
         // ============================================
-        // IMPRESSÃO - CORRIGIDA
+        // IMPRESSÃO
         // ============================================
         let currentPrintId = null;
 
@@ -1892,11 +1863,8 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
 
         function gerarHTMLImpressao(tabela) {
             const logoPrint = 'https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png';
-            
-            // Carregar configurações
             const cfg = configImpressao;
             
-            // Campos do cliente
             const campos = cfg.camposCliente.split(',').map(c => c.trim());
             const mapaCampos = {
                 'NOME': `<div class="info-item"><strong>NOME:</strong> ${tabela.cliente}</div>`,
@@ -1912,25 +1880,8 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             };
             
             const camposHTML = campos.filter(c => mapaCampos[c]).map(c => mapaCampos[c]).join('');
-            
-            // Endereço
             const enderecoHTML = cfg.enderecoEmpresa.replace(/\n/g, '<br>');
             
-            // Cidades
-            const cidadesHTML = tabela.cidades.map(c => `
-                <tr>
-                    <td>${c.nome}</td>
-                    <td>PA</td>
-                    <td>R$ ${c.frete.toFixed(2)}</td>
-                    <td>R$ ${c.kg.toFixed(2)}/kg</td>
-                    <td>${c.percentual.toFixed(2)}%</td>
-                </tr>
-            `).join('');
-
-            // Definir cores das linhas da tabela
-            const corPar = cfg.tabelaLinhaPar || '#f8f9fa';
-            const corImpar = cfg.tabelaLinhaImpar || '#ffffff';
-
             const dataEmissao = cfg.mostrarDataEmissao ? 
                 `<div class="data-emissao">Documento emitido em ${new Date().toLocaleString('pt-BR')}</div>` : '';
 
@@ -1966,7 +1917,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                         </thead>
                         <tbody>
                             ${tabela.cidades.map((c, index) => `
-                                <tr style="background:${index % 2 === 0 ? corPar : corImpar};">
+                                <tr style="background:${index % 2 === 0 ? cfg.tabelaLinhaPar : cfg.tabelaLinhaImpar};">
                                     <td>${c.nome}</td>
                                     <td>PA</td>
                                     <td>R$ ${c.frete.toFixed(2)}</td>
