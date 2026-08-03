@@ -60,7 +60,7 @@
         .footer-stats { padding: 15px 25px; background: #f7fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-size: 14px; }
         .footer-stats strong { color: #2c5f8a; }
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); overflow-y: auto; padding: 20px; }
-        .modal-content { background: white; max-width: 950px; margin: 40px auto; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: slideIn 0.3s ease; }
+        .modal-content { background: white; max-width: 1200px; margin: 40px auto; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: slideIn 0.3s ease; }
         @keyframes slideIn { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .modal-header { padding: 20px 25px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
         .modal-header h3 { font-size: 20px; color: #1a3a5c; }
@@ -69,7 +69,8 @@
         form { padding: 25px; }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
         .form-row-full { grid-column: 1 / -1; }
-        @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+        .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } .form-row-3 { grid-template-columns: 1fr; } }
         .form-group { display: flex; flex-direction: column; gap: 5px; }
         .form-group label { font-weight: 600; font-size: 13px; color: #2d3748; }
         .form-group input, .form-group select, .form-group textarea { padding: 10px 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 14px; transition: all 0.3s; font-family: inherit; }
@@ -92,6 +93,7 @@
         .empty-state .icon { font-size: 36px; margin-bottom: 5px; }
         .cidade-count { font-size: 12px; color: #718096; margin-left: 5px; }
 
+        /* IMPRESSÃO */
         #printContent { padding: 0; font-family: 'Courier New', monospace; background: white; margin: 0 auto; }
         #printContent .header-print { padding: 30px 20px 20px 20px; text-align: center; border-bottom: 4px solid #ffd700; margin-bottom: 20px; }
         #printContent .header-print .logo-print { display: flex; justify-content: center; align-items: center; margin-bottom: 10px; }
@@ -123,7 +125,23 @@
         .toast-info { background: #4299e1; }
         @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        @media print { body * { visibility: hidden; } #modalImprimir, #modalImprimir * { visibility: visible; } #modalImprimir { position: absolute; left: 0; top: 0; background: white; padding: 0; width: 100%; min-height: 100vh; } .modal-content { box-shadow: none !important; margin: 0 !important; padding: 0 !important; max-width: 100% !important; border-radius: 0 !important; } .modal-header, .print-actions, .close-print, #btnFecharPrint { display: none !important; } #printContent { padding: 0 !important; } #printContent .header-print { padding: 20px 15px 15px 15px !important; } #printContent .header-print .logo-print img { max-height: 80px !important; max-width: 200px !important; } }
+        @media print {
+            body * { visibility: hidden; }
+            #modalImprimir, #modalImprimir * { visibility: visible; }
+            #modalImprimir { position: absolute; left: 0; top: 0; background: white; padding: 0; width: 100%; min-height: 100vh; margin: 0 !important; }
+            .modal-content { box-shadow: none !important; margin: 0 !important; padding: 0 !important; max-width: 100% !important; border-radius: 0 !important; background: white !important; }
+            @page { margin: 0.5cm; size: A4; }
+            @page { @top-center { content: none !important; } @bottom-center { content: none !important; } @top-right { content: none !important; } @bottom-right { content: none !important; } @top-left { content: none !important; } @bottom-left { content: none !important; } @top-right-corner { content: none !important; } @bottom-right-corner { content: none !important; } @top-left-corner { content: none !important; } @bottom-left-corner { content: none !important; } }
+            html, body { margin: 0 !important; padding: 0 !important; background: white !important; }
+            .modal-header, .print-actions, .close-print, #btnFecharPrint, .close { display: none !important; }
+            #printContent { padding: 20px !important; max-width: 100% !important; margin: 0 auto !important; }
+            #printContent .header-print { padding: 20px 15px 15px 15px !important; }
+            #printContent .header-print .logo-print img { max-height: 80px !important; max-width: 200px !important; }
+            #printContent .tabela-fretes { font-size: 11px !important; width: 100% !important; margin: 10px 0 !important; }
+            #printContent .info-cliente, #printContent .info-origem, #printContent .rodape-print, #printContent .observacao-print { margin: 10px 0 !important; padding: 10px !important; }
+            #printContent { page-break-after: avoid; }
+        }
+
         .loading { display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: white; animation: spin 0.8s ease-in-out infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
@@ -135,8 +153,176 @@
         .config-section .form-group input[type="color"] { padding: 4px; height: 45px; cursor: pointer; }
         .config-section .form-group input[type="number"] { width: 100%; }
         .config-actions { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
-        .preview-box { background: white; border: 2px dashed #cbd5e0; border-radius: 8px; padding: 15px; margin-top: 15px; min-height: 60px; font-size: 13px; color: #718096; text-align: center; }
-        .preview-box .preview-content { color: #333; font-family: 'Courier New', monospace; font-size: 12px; text-align: left; }
+
+        /* PREVIEW EM TEMPO REAL - DOCUMENTO COMPLETO */
+        .preview-documento {
+            background: white;
+            border: 2px dashed #cbd5e0;
+            border-radius: 8px;
+            padding: 0;
+            margin-top: 15px;
+            max-height: 600px;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        .preview-documento #previewPrintContent {
+            transform: scale(0.7);
+            transform-origin: top center;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .preview-documento .header-print {
+            padding: 20px 15px 15px 15px;
+            text-align: center;
+            border-bottom: 3px solid #ffd700;
+            margin-bottom: 15px;
+        }
+
+        .preview-documento .header-print .logo-print {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .preview-documento .header-print .logo-print img {
+            max-height: 60px;
+            max-width: 150px;
+            object-fit: contain;
+            background: white;
+            border-radius: 8px;
+            padding: 4px 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .preview-documento .header-print .endereco {
+            font-size: 11px;
+            line-height: 1.4;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .preview-documento .header-print .endereco strong {
+            color: #ffd700;
+        }
+
+        .preview-documento .info-cliente {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3px 20px;
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            margin: 0 15px 15px 15px;
+            border: 1px solid #dee2e6;
+            font-size: 10px;
+        }
+
+        .preview-documento .info-cliente .info-item {
+            display: flex;
+            gap: 3px;
+            padding: 2px 0;
+        }
+
+        .preview-documento .info-cliente .info-item strong {
+            min-width: 60px;
+            font-size: 10px;
+        }
+
+        .preview-documento .info-origem {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 15px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin: 0 15px 15px 15px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .preview-documento .tabela-fretes {
+            width: calc(100% - 30px);
+            margin: 0 15px 15px 15px;
+            border-collapse: collapse;
+            font-size: 10px;
+        }
+
+        .preview-documento .tabela-fretes th {
+            padding: 6px 8px;
+            text-align: left;
+            border: 1px solid #1a3a5c;
+            font-size: 10px;
+        }
+
+        .preview-documento .tabela-fretes td {
+            padding: 5px 8px;
+            border: 1px solid #dee2e6;
+            font-size: 10px;
+        }
+
+        .preview-documento .rodape-print {
+            margin: 0 15px 15px 15px;
+            padding-top: 10px;
+            border-top: 1.5px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 10px;
+        }
+
+        .preview-documento .rodape-print .assinaturas {
+            display: flex;
+            gap: 30px;
+            text-align: center;
+            font-size: 10px;
+        }
+
+        .preview-documento .rodape-print .assinaturas div {
+            min-width: 100px;
+        }
+
+        .preview-documento .rodape-print .assinaturas .linha {
+            border-top: 1px solid #333;
+            width: 100%;
+            margin-bottom: 3px;
+        }
+
+        .preview-documento .observacao-print {
+            margin: 0 15px 15px 15px;
+            padding: 6px 10px;
+            border-radius: 4px;
+            border: 1px solid #dee2e6;
+            font-size: 10px;
+        }
+
+        .preview-documento .data-emissao {
+            text-align: center;
+            color: #a0aec0;
+            font-size: 9px;
+            padding: 0 15px 10px 15px;
+        }
+
+        .preview-label {
+            font-size: 12px;
+            color: #718096;
+            text-align: center;
+            padding: 8px;
+            background: #f7fafc;
+            border-radius: 6px 6px 0 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .fonte-preview {
+            font-size: 12px;
+            padding: 4px 8px;
+            background: #edf2f7;
+            border-radius: 4px;
+            color: #4a5568;
+        }
     </style>
 </head>
 <body>
@@ -204,177 +390,271 @@
         </div>
     </div>
 
+    <!-- MODAL CONFIGURAÇÃO DE IMPRESSÃO - MELHORADO -->
     <div id="modalConfig" class="modal">
-        <div class="modal-content">
+        <div class="modal-content" style="max-width:1200px;">
             <div class="modal-header">
-                <h3>Configuração do Layout de Impressão</h3>
+                <h3>⚙️ Configuração do Layout de Impressão</h3>
                 <span class="close-config">&times;</span>
             </div>
             <form id="formConfig">
-                <div class="config-section">
-                    <h4>Cabeçalho</h4>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Cor de Fundo</label>
-                            <input type="color" id="headerBgColor" value="#1a3a5c">
-                        </div>
-                        <div class="form-group">
-                            <label>Cor do Texto</label>
-                            <input type="color" id="headerTextColor" value="#ffffff">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Cor da Borda</label>
-                            <input type="color" id="headerBorderColor" value="#ffd700">
-                        </div>
-                        <div class="form-group">
-                            <label>Tamanho da Fonte (px)</label>
-                            <input type="number" id="headerFontSize" value="13" min="8" max="24">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Altura da Logo (px)</label>
-                            <input type="number" id="logoMaxHeight" value="100" min="30" max="200">
-                        </div>
-                        <div class="form-group">
-                            <label>Espaçamento Interno (px)</label>
-                            <input type="number" id="headerPadding" value="30" min="10" max="60">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group form-row-full">
-                            <label>Endereço da Empresa</label>
-                            <textarea id="enderecoEmpresa" rows="2">RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NÚMERO: 129
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; padding:0 25px;">
+                    <!-- COLUNA ESQUERDA - CONFIGURAÇÕES -->
+                    <div style="max-height:700px; overflow-y:auto; padding-right:10px;">
+                        <!-- CABEÇALHO -->
+                        <div class="config-section">
+                            <h4>📌 Cabeçalho</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Cor de Fundo</label>
+                                    <input type="color" id="headerBgColor" value="#1a3a5c">
+                                </div>
+                                <div class="form-group">
+                                    <label>Cor do Texto</label>
+                                    <input type="color" id="headerTextColor" value="#ffffff">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Cor da Borda</label>
+                                    <input type="color" id="headerBorderColor" value="#ffd700">
+                                </div>
+                                <div class="form-group">
+                                    <label>Altura da Logo (px)</label>
+                                    <input type="number" id="logoMaxHeight" value="100" min="30" max="200">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Espaçamento Interno (px)</label>
+                                    <input type="number" id="headerPadding" value="30" min="10" max="60">
+                                </div>
+                                <div class="form-group">
+                                    <label>Fonte do Cabeçalho</label>
+                                    <select id="headerFont">
+                                        <option value="Arial, sans-serif">Arial</option>
+                                        <option value="'Times New Roman', serif">Times New Roman</option>
+                                        <option value="'Courier New', monospace" selected>Courier New</option>
+                                        <option value="Georgia, serif">Georgia</option>
+                                        <option value="Verdana, sans-serif">Verdana</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Tamanho da Fonte (px)</label>
+                                    <input type="number" id="headerFontSize" value="13" min="8" max="24">
+                                </div>
+                                <div class="form-group">
+                                    <label>Alinhamento</label>
+                                    <select id="headerAlign">
+                                        <option value="center">Centro</option>
+                                        <option value="left">Esquerda</option>
+                                        <option value="right">Direita</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group form-row-full">
+                                    <label>Endereço da Empresa</label>
+                                    <textarea id="enderecoEmpresa" rows="2">RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NÚMERO: 129
 CIDADE: SINOP-MT | CEP: 78556-788</textarea>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="config-section">
-                    <h4>Informações do Cliente</h4>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Cor de Fundo</label>
-                            <input type="color" id="clienteBgColor" value="#f8f9fa">
+                        <!-- CLIENTE -->
+                        <div class="config-section">
+                            <h4>📋 Informações do Cliente</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Cor de Fundo</label>
+                                    <input type="color" id="clienteBgColor" value="#f8f9fa">
+                                </div>
+                                <div class="form-group">
+                                    <label>Cor do Texto</label>
+                                    <input type="color" id="clienteTextColor" value="#333333">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Tamanho da Fonte (px)</label>
+                                    <input type="number" id="clienteFontSize" value="12" min="8" max="20">
+                                </div>
+                                <div class="form-group">
+                                    <label>Fonte do Cliente</label>
+                                    <select id="clienteFont">
+                                        <option value="Arial, sans-serif">Arial</option>
+                                        <option value="'Times New Roman', serif">Times New Roman</option>
+                                        <option value="'Courier New', monospace" selected>Courier New</option>
+                                        <option value="Georgia, serif">Georgia</option>
+                                        <option value="Verdana, sans-serif">Verdana</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Espaçamento (px)</label>
+                                    <input type="number" id="clientePadding" value="15" min="5" max="30">
+                                </div>
+                                <div class="form-group">
+                                    <label>Alinhamento</label>
+                                    <select id="clienteAlign">
+                                        <option value="left">Esquerda</option>
+                                        <option value="center">Centro</option>
+                                        <option value="right">Direita</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group form-row-full">
+                                    <label>Campos a exibir (separados por vírgula)</label>
+                                    <input type="text" id="camposCliente" value="NOME,CNPJ/CPF,TELEFONE,NÚMERO,BAIRRO,RUA,CEP,CIDADE,IE,EMAIL">
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>Cor do Texto</label>
-                            <input type="color" id="clienteTextColor" value="#333333">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Tamanho da Fonte (px)</label>
-                            <input type="number" id="clienteFontSize" value="12" min="8" max="20">
-                        </div>
-                        <div class="form-group">
-                            <label>Espaçamento (px)</label>
-                            <input type="number" id="clientePadding" value="15" min="5" max="30">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group form-row-full">
-                            <label>Campos a exibir (separados por vírgula)</label>
-                            <input type="text" id="camposCliente" value="NOME,CNPJ/CPF,TELEFONE,NÚMERO,BAIRRO,RUA,CEP,CIDADE,IE,EMAIL">
-                        </div>
-                    </div>
-                </div>
 
-                <div class="config-section">
-                    <h4>Tabela de Fretes</h4>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Cor do Cabeçalho</label>
-                            <input type="color" id="tabelaHeaderBg" value="#1a3a5c">
+                        <!-- TABELA -->
+                        <div class="config-section">
+                            <h4>📊 Tabela de Fretes</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Cor do Cabeçalho</label>
+                                    <input type="color" id="tabelaHeaderBg" value="#1a3a5c">
+                                </div>
+                                <div class="form-group">
+                                    <label>Cor do Texto do Cabeçalho</label>
+                                    <input type="color" id="tabelaHeaderText" value="#ffffff">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Tamanho Fonte Cabeçalho (px)</label>
+                                    <input type="number" id="tabelaHeaderFontSize" value="12" min="8" max="20">
+                                </div>
+                                <div class="form-group">
+                                    <label>Tamanho Fonte Dados (px)</label>
+                                    <input type="number" id="tabelaDataFontSize" value="12" min="8" max="20">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Fonte da Tabela</label>
+                                    <select id="tabelaFont">
+                                        <option value="Arial, sans-serif">Arial</option>
+                                        <option value="'Times New Roman', serif">Times New Roman</option>
+                                        <option value="'Courier New', monospace" selected>Courier New</option>
+                                        <option value="Georgia, serif">Georgia</option>
+                                        <option value="Verdana, sans-serif">Verdana</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Alinhamento</label>
+                                    <select id="tabelaAlign">
+                                        <option value="left">Esquerda</option>
+                                        <option value="center">Centro</option>
+                                        <option value="right">Direita</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Cor da Linha Par</label>
+                                    <input type="color" id="tabelaLinhaPar" value="#f8f9fa">
+                                </div>
+                                <div class="form-group">
+                                    <label>Cor da Linha Ímpar</label>
+                                    <input type="color" id="tabelaLinhaImpar" value="#ffffff">
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>Cor do Texto do Cabeçalho</label>
-                            <input type="color" id="tabelaHeaderText" value="#ffffff">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Tamanho Fonte Cabeçalho (px)</label>
-                            <input type="number" id="tabelaHeaderFontSize" value="12" min="8" max="20">
-                        </div>
-                        <div class="form-group">
-                            <label>Tamanho Fonte Dados (px)</label>
-                            <input type="number" id="tabelaDataFontSize" value="12" min="8" max="20">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Cor da Linha Par</label>
-                            <input type="color" id="tabelaLinhaPar" value="#f8f9fa">
-                        </div>
-                        <div class="form-group">
-                            <label>Cor da Linha Ímpar</label>
-                            <input type="color" id="tabelaLinhaImpar" value="#ffffff">
-                        </div>
-                    </div>
-                </div>
 
-                <div class="config-section">
-                    <h4>Rodapé</h4>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Texto do Contato</label>
-                            <input type="text" id="textoContato" value="CONTATO / WHATSAPP: (93) 8418-4950">
+                        <!-- RODAPÉ -->
+                        <div class="config-section">
+                            <h4>📞 Rodapé</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Texto do Contato</label>
+                                    <input type="text" id="textoContato" value="CONTATO / WHATSAPP: (93) 8418-4950">
+                                </div>
+                                <div class="form-group">
+                                    <label>Tamanho da Fonte (px)</label>
+                                    <input type="number" id="rodapeFontSize" value="13" min="8" max="20">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Fonte do Rodapé</label>
+                                    <select id="rodapeFont">
+                                        <option value="Arial, sans-serif">Arial</option>
+                                        <option value="'Times New Roman', serif">Times New Roman</option>
+                                        <option value="'Courier New', monospace" selected>Courier New</option>
+                                        <option value="Georgia, serif">Georgia</option>
+                                        <option value="Verdana, sans-serif">Verdana</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Alinhamento</label>
+                                    <select id="rodapeAlign">
+                                        <option value="center">Centro</option>
+                                        <option value="left">Esquerda</option>
+                                        <option value="right">Direita</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Texto da Assinatura 1</label>
+                                    <input type="text" id="assinatura1" value="SINOP-MT">
+                                </div>
+                                <div class="form-group">
+                                    <label>Texto da Assinatura 2</label>
+                                    <input type="text" id="assinatura2" value="ASSINATURA">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Mostrar Data de Emissão</label>
+                                    <select id="mostrarDataEmissao">
+                                        <option value="true">Sim</option>
+                                        <option value="false">Não</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Largura Máxima (px)</label>
+                                    <input type="number" id="larguraMaxima" value="1000" min="600" max="1200">
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>Tamanho da Fonte (px)</label>
-                            <input type="number" id="rodapeFontSize" value="13" min="8" max="20">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Texto da Assinatura 1</label>
-                            <input type="text" id="assinatura1" value="SINOP-MT">
-                        </div>
-                        <div class="form-group">
-                            <label>Texto da Assinatura 2</label>
-                            <input type="text" id="assinatura2" value="ASSINATURA">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Mostrar Data de Emissão</label>
-                            <select id="mostrarDataEmissao">
-                                <option value="true">Sim</option>
-                                <option value="false">Não</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Largura Máxima (px)</label>
-                            <input type="number" id="larguraMaxima" value="1000" min="600" max="1200">
-                        </div>
-                    </div>
-                </div>
 
-                <div class="config-section">
-                    <h4>Pré-visualização</h4>
-                    <div class="preview-box" id="previewBox">
-                        <div class="preview-content" id="previewContent">
-                            <strong>Pré-visualização:</strong><br>
-                            <span style="color:#1a3a5c;background:#f8f9fa;padding:4px 8px;border-radius:4px;">
-                                [LOGO] - Transports e Logística
-                            </span><br>
-                            Endereço: RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NÚMERO: 129
+                        <div class="config-actions">
+                            <button type="submit" class="btn btn-primary">💾 Salvar Configurações</button>
+                            <button type="button" id="btnResetConfig" class="btn btn-secondary">🔄 Restaurar Padrão</button>
+                            <button type="button" id="btnFecharConfig" class="btn btn-outline">Fechar</button>
                         </div>
                     </div>
-                </div>
 
-                <div class="config-actions">
-                    <button type="submit" class="btn btn-primary">Salvar Configurações</button>
-                    <button type="button" id="btnResetConfig" class="btn btn-secondary">Restaurar Padrão</button>
-                    <button type="button" id="btnFecharConfig" class="btn btn-outline">Fechar</button>
+                    <!-- COLUNA DIREITA - PRÉ-VISUALIZAÇÃO EM TEMPO REAL -->
+                    <div>
+                        <div class="config-section" style="height:100%;">
+                            <h4>👁️ Pré-visualização em Tempo Real</h4>
+                            <div class="preview-label">
+                                <span class="fonte-preview" id="previewFonteInfo">Fonte: Courier New</span>
+                                <span style="margin-left:15px;" id="previewAlignInfo">Alinhamento: Centro</span>
+                            </div>
+                            <div class="preview-documento" id="previewDocumento">
+                                <div id="previewPrintContent">
+                                    <!-- Conteúdo gerado dinamicamente -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
 
+    <!-- MODAL CADASTRO -->
     <div id="modalTabela" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -383,7 +663,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             </div>
             <form id="formTabela">
                 <input type="hidden" id="tabelaId">
-                
                 <div class="form-row">
                     <div class="form-group">
                         <label>Cliente *</label>
@@ -394,7 +673,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                         <input type="text" id="cnpj" placeholder="7306297000167">
                     </div>
                 </div>
-
                 <div class="form-row">
                     <div class="form-group">
                         <label>Telefone</label>
@@ -405,7 +683,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                         <input type="email" id="email" placeholder="cliente@email.com">
                     </div>
                 </div>
-
                 <div class="form-row">
                     <div class="form-group">
                         <label>Endereço</label>
@@ -416,7 +693,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                         <input type="text" id="ie" placeholder="Inscrição Estadual">
                     </div>
                 </div>
-
                 <div class="form-row">
                     <div class="form-group">
                         <label>Origem *</label>
@@ -427,18 +703,12 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                         <input type="text" id="destino" placeholder="DIVERSOS (PA)" required>
                     </div>
                 </div>
-
                 <div class="form-row form-row-full">
                     <div class="form-group">
                         <label>Cidades Atendidas * <span class="cidade-count" id="cidadeCount">(0 adicionadas)</span></label>
                         <div class="cidades-list" id="cidadesList">
-                            <div class="empty-state" style="padding: 15px;">
-                                <div class="icon">📍</div>
-                                <p>Nenhuma cidade adicionada</p>
-                                <p style="font-size: 12px;">Adicione as cidades abaixo</p>
-                            </div>
+                            <div class="empty-state" style="padding:15px;"><div class="icon">📍</div><p>Nenhuma cidade adicionada</p><p style="font-size:12px;">Adicione as cidades abaixo</p></div>
                         </div>
-                        
                         <div class="add-cidade-row">
                             <select id="selectCidade">
                                 <option value="">Selecione uma cidade</option>
@@ -464,31 +734,28 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                         </div>
                     </div>
                 </div>
-
                 <div class="form-row">
                     <div class="form-group form-row-full">
                         <label>Observação</label>
                         <textarea id="observacao" placeholder="Informações adicionais..."></textarea>
                     </div>
                 </div>
-
-                <button type="submit" class="btn btn-primary" style="width:100%; margin-top:10px; padding: 14px;">
-                    Salvar Tabela
-                </button>
+                <button type="submit" class="btn btn-primary" style="width:100%; margin-top:10px; padding:14px;">Salvar Tabela</button>
             </form>
         </div>
     </div>
 
+    <!-- MODAL IMPRESSÃO -->
     <div id="modalImprimir" class="modal">
-        <div class="modal-content" style="max-width: 950px;">
+        <div class="modal-content" style="max-width:950px;">
             <div class="modal-header">
                 <h3>Tabela de Fretes</h3>
                 <span class="close-print">&times;</span>
             </div>
             <div id="conteudoImpressao"></div>
             <div class="print-actions">
-                <button onclick="imprimirRecibo()" class="btn btn-primary">Imprimir</button>
-                <button onclick="gerarPDF()" class="btn btn-success" id="btnGerarPDF">Gerar PDF</button>
+                <button onclick="imprimirRecibo()" class="btn btn-primary">🖨️ Imprimir</button>
+                <button onclick="gerarPDF()" class="btn btn-success" id="btnGerarPDF">📄 Gerar PDF</button>
                 <button id="btnFecharPrint" class="btn btn-secondary">Fechar</button>
             </div>
         </div>
@@ -496,39 +763,46 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
 
     <script>
         // ============================================
-        // CONFIGURAÇÃO JSONBIN - FRONTEND DIRETO
+        // CONFIGURAÇÃO JSONBIN
         // ============================================
         const CONFIG = {
             BIN_ID: '6a708f6af5f4af5e29e50603',
             MASTER_KEY: '$2a$10$XHYsaSwZh2v6lebsk9vvEugA6omdPattDTtGC3BPZP1FauxoGHy72'
         };
-
         const API_URL = `https://api.jsonbin.io/v3/b/${CONFIG.BIN_ID}`;
 
         // ============================================
-        // CONFIGURAÇÕES DE IMPRESSÃO
+        // CONFIGURAÇÕES DE IMPRESSÃO - ATUALIZADO
         // ============================================
         let configImpressao = {
             headerBgColor: '#1a3a5c',
             headerTextColor: '#ffffff',
             headerBorderColor: '#ffd700',
             headerFontSize: 13,
+            headerFont: "'Courier New', monospace",
+            headerAlign: 'center',
             headerPadding: 30,
             logoMaxHeight: 100,
             enderecoEmpresa: 'RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NÚMERO: 129\nCIDADE: SINOP-MT | CEP: 78556-788',
             clienteBgColor: '#f8f9fa',
             clienteTextColor: '#333333',
             clienteFontSize: 12,
+            clienteFont: "'Courier New', monospace",
+            clienteAlign: 'left',
             clientePadding: 15,
             camposCliente: 'NOME,CNPJ/CPF,TELEFONE,NÚMERO,BAIRRO,RUA,CEP,CIDADE,IE,EMAIL',
             tabelaHeaderBg: '#1a3a5c',
             tabelaHeaderText: '#ffffff',
             tabelaHeaderFontSize: 12,
             tabelaDataFontSize: 12,
+            tabelaFont: "'Courier New', monospace",
+            tabelaAlign: 'left',
             tabelaLinhaPar: '#f8f9fa',
             tabelaLinhaImpar: '#ffffff',
             textoContato: 'CONTATO / WHATSAPP: (93) 8418-4950',
             rodapeFontSize: 13,
+            rodapeFont: "'Courier New', monospace",
+            rodapeAlign: 'center',
             assinatura1: 'SINOP-MT',
             assinatura2: 'ASSINATURA',
             mostrarDataEmissao: true,
@@ -542,6 +816,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         let editandoId = null;
         let cidadesTemp = [];
         let tabelaImpressaoAtual = null;
+        let previewTimeout = null;
 
         // ============================================
         // REFERÊNCIAS
@@ -587,7 +862,9 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             btnFecharConfig: document.getElementById('btnFecharConfig'),
             btnResetConfig: document.getElementById('btnResetConfig'),
             formConfig: document.getElementById('formConfig'),
-            previewContent: document.getElementById('previewContent'),
+            previewContent: document.getElementById('previewPrintContent'),
+            previewFonteInfo: document.getElementById('previewFonteInfo'),
+            previewAlignInfo: document.getElementById('previewAlignInfo'),
             statusConexao: document.getElementById('statusConexao'),
             statusTexto: document.getElementById('statusTexto')
         };
@@ -614,22 +891,30 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             document.getElementById('headerTextColor').value = configImpressao.headerTextColor;
             document.getElementById('headerBorderColor').value = configImpressao.headerBorderColor;
             document.getElementById('headerFontSize').value = configImpressao.headerFontSize;
+            document.getElementById('headerFont').value = configImpressao.headerFont;
+            document.getElementById('headerAlign').value = configImpressao.headerAlign;
             document.getElementById('headerPadding').value = configImpressao.headerPadding;
             document.getElementById('logoMaxHeight').value = configImpressao.logoMaxHeight;
             document.getElementById('enderecoEmpresa').value = configImpressao.enderecoEmpresa;
             document.getElementById('clienteBgColor').value = configImpressao.clienteBgColor;
             document.getElementById('clienteTextColor').value = configImpressao.clienteTextColor;
             document.getElementById('clienteFontSize').value = configImpressao.clienteFontSize;
+            document.getElementById('clienteFont').value = configImpressao.clienteFont;
+            document.getElementById('clienteAlign').value = configImpressao.clienteAlign;
             document.getElementById('clientePadding').value = configImpressao.clientePadding;
             document.getElementById('camposCliente').value = configImpressao.camposCliente;
             document.getElementById('tabelaHeaderBg').value = configImpressao.tabelaHeaderBg;
             document.getElementById('tabelaHeaderText').value = configImpressao.tabelaHeaderText;
             document.getElementById('tabelaHeaderFontSize').value = configImpressao.tabelaHeaderFontSize;
             document.getElementById('tabelaDataFontSize').value = configImpressao.tabelaDataFontSize;
+            document.getElementById('tabelaFont').value = configImpressao.tabelaFont;
+            document.getElementById('tabelaAlign').value = configImpressao.tabelaAlign;
             document.getElementById('tabelaLinhaPar').value = configImpressao.tabelaLinhaPar;
             document.getElementById('tabelaLinhaImpar').value = configImpressao.tabelaLinhaImpar;
             document.getElementById('textoContato').value = configImpressao.textoContato;
             document.getElementById('rodapeFontSize').value = configImpressao.rodapeFontSize;
+            document.getElementById('rodapeFont').value = configImpressao.rodapeFont;
+            document.getElementById('rodapeAlign').value = configImpressao.rodapeAlign;
             document.getElementById('assinatura1').value = configImpressao.assinatura1;
             document.getElementById('assinatura2').value = configImpressao.assinatura2;
             document.getElementById('mostrarDataEmissao').value = configImpressao.mostrarDataEmissao ? 'true' : 'false';
@@ -637,28 +922,120 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             atualizarPreview();
         }
 
+        // ============================================
+        // PRÉ-VISUALIZAÇÃO EM TEMPO REAL
+        // ============================================
         function atualizarPreview() {
-            const bg = document.getElementById('headerBgColor').value;
-            const text = document.getElementById('headerTextColor').value;
-            const border = document.getElementById('headerBorderColor').value;
-            const fontSize = document.getElementById('headerFontSize').value;
-            const endereco = document.getElementById('enderecoEmpresa').value.replace(/\n/g, '<br>');
-            elements.previewContent.innerHTML = `
-                <div style="background:${bg};color:${text};padding:12px;border-radius:8px;border-bottom:3px solid ${border};font-size:${fontSize}px;">
-                    <strong>[LOGO] Transports e Logística</strong><br>
-                    <span style="font-size:${Math.max(10, fontSize-1)}px;opacity:0.9;">${endereco}</span>
-                </div>
-                <div style="margin-top:10px;font-size:${document.getElementById('clienteFontSize').value}px;color:#666;">
-                    <strong>Cliente:</strong> Distribuidora de Molas<br>
-                    <strong>CNPJ:</strong> 7306297000167
-                </div>
-                <div style="margin-top:8px;font-size:${document.getElementById('tabelaDataFontSize').value}px;color:#666;background:#f8f9fa;padding:8px;border-radius:4px;">
-                    <strong>Tabela:</strong> Cidades | UF | Frete | KG | %
-                </div>
-                <div style="margin-top:8px;font-size:${document.getElementById('rodapeFontSize').value}px;color:#999;">
-                    ${document.getElementById('textoContato').value}
+            // Usa um timeout para não travar a UI
+            if (previewTimeout) clearTimeout(previewTimeout);
+            previewTimeout = setTimeout(() => {
+                gerarPreviewHTML();
+            }, 300);
+        }
+
+        function gerarPreviewHTML() {
+            const cfg = configImpressao;
+            const logoPrint = 'https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png';
+            
+            // Dados de exemplo para preview
+            const tabelaExemplo = {
+                id: 1,
+                cliente: 'DISTRIBUIDORA DE MOLAS MATO GROSSO LTDA',
+                cnpj: '7306297000167',
+                telefone: '(66) 3515-9853',
+                email: 'contato@molasmt.com.br',
+                endereco: 'RUA VALDIR DOERNER, 666 - DIST. INDL.',
+                ie: '132989689',
+                origem: 'SINOP - MT',
+                destino: 'DIVERSOS (PA)',
+                observacao: 'Tabela de fretes para o Pará',
+                cidades: [
+                    { nome: 'Cachoeira da Serra', frete: 75.00, kg: 650.00, percentual: 3.00 },
+                    { nome: 'Castelo dos Sonhos', frete: 75.00, kg: 650.00, percentual: 3.00 },
+                    { nome: 'Novo Progresso', frete: 80.00, kg: 700.00, percentual: 3.50 },
+                    { nome: 'Santarém', frete: 130.00, kg: 1100.00, percentual: 4.50 }
+                ]
+            };
+
+            const campos = cfg.camposCliente.split(',').map(c => c.trim());
+            const mapaCampos = {
+                'NOME': `<div class="info-item"><strong>NOME:</strong> ${tabelaExemplo.cliente}</div>`,
+                'CNPJ/CPF': `<div class="info-item"><strong>CNPJ/CPF:</strong> ${tabelaExemplo.cnpj}</div>`,
+                'TELEFONE': `<div class="info-item"><strong>TELEFONE:</strong> ${tabelaExemplo.telefone}</div>`,
+                'NÚMERO': `<div class="info-item"><strong>NÚMERO:</strong> ${tabelaExemplo.id}</div>`,
+                'BAIRRO': `<div class="info-item"><strong>BAIRRO:</strong> ${tabelaExemplo.endereco ? tabelaExemplo.endereco.split(',')[1]?.trim() || '-' : '-'}</div>`,
+                'RUA': `<div class="info-item"><strong>RUA:</strong> ${tabelaExemplo.endereco ? tabelaExemplo.endereco.split(',')[0] || '-' : '-'}</div>`,
+                'CEP': `<div class="info-item"><strong>CEP:</strong> 78557-171</div>`,
+                'CIDADE': `<div class="info-item"><strong>CIDADE:</strong> SINOP MT</div>`,
+                'IE': `<div class="info-item"><strong>IE:</strong> ${tabelaExemplo.ie}</div>`,
+                'EMAIL': `<div class="info-item"><strong>EMAIL:</strong> ${tabelaExemplo.email}</div>`
+            };
+            const camposHTML = campos.filter(c => mapaCampos[c]).map(c => mapaCampos[c]).join('');
+            const enderecoHTML = cfg.enderecoEmpresa.replace(/\n/g, '<br>');
+            
+            // Atualiza info de fonte e alinhamento
+            const nomeFonte = cfg.headerFont.replace(/'/g, '').replace(/,.*$/, '').trim() || 'Courier New';
+            elements.previewFonteInfo.textContent = `Fonte: ${nomeFonte}`;
+            elements.previewAlignInfo.textContent = `Alinhamento: ${cfg.headerAlign.charAt(0).toUpperCase() + cfg.headerAlign.slice(1)}`;
+
+            const html = `
+                <div style="max-width:${cfg.larguraMaxima}px; margin:0 auto; font-family:${cfg.headerFont};">
+                    <div class="header-print" style="background:${cfg.headerBgColor};color:${cfg.headerTextColor};border-bottom-color:${cfg.headerBorderColor};padding:${cfg.headerPadding}px 20px 15px 20px;font-size:${cfg.headerFontSize}px;text-align:${cfg.headerAlign};">
+                        <div class="logo-print">
+                            <img src="${logoPrint}" alt="Logo" style="max-height:${cfg.logoMaxHeight}px;width:auto;height:auto;">
+                        </div>
+                        <div class="endereco" style="color:${cfg.headerTextColor};font-size:${cfg.headerFontSize}px;font-family:${cfg.headerFont};text-align:${cfg.headerAlign};">
+                            ${enderecoHTML}
+                        </div>
+                    </div>
+                    
+                    <div class="info-cliente" style="background:${cfg.clienteBgColor};color:${cfg.clienteTextColor};padding:${cfg.clientePadding}px 20px;font-size:${cfg.clienteFontSize}px;font-family:${cfg.clienteFont};text-align:${cfg.clienteAlign};">
+                        ${camposHTML}
+                    </div>
+                    
+                    <div class="info-origem" style="font-size:${Math.max(12, cfg.clienteFontSize + 2)}px;background:#e9ecef;color:#1a3a5c;font-family:${cfg.tabelaFont};">
+                        <span>ORIGEM: ${tabelaExemplo.origem}</span>
+                        <span>DESTINO: ${tabelaExemplo.destino}</span>
+                    </div>
+                    
+                    <table class="tabela-fretes" style="font-size:${cfg.tabelaDataFontSize}px;font-family:${cfg.tabelaFont};text-align:${cfg.tabelaAlign};">
+                        <thead>
+                            <tr>
+                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};">Cidades Atendidas</th>
+                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};">UF</th>
+                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};">Frete</th>
+                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};">Preço por KG</th>
+                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};">% NF</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${tabelaExemplo.cidades.map((c, index) => `
+                                <tr style="background:${index % 2 === 0 ? cfg.tabelaLinhaPar : cfg.tabelaLinhaImpar};">
+                                    <td style="text-align:${cfg.tabelaAlign};">${c.nome}</td>
+                                    <td style="text-align:${cfg.tabelaAlign};">PA</td>
+                                    <td style="text-align:${cfg.tabelaAlign};">R$ ${c.frete.toFixed(2)}</td>
+                                    <td style="text-align:${cfg.tabelaAlign};">R$ ${c.kg.toFixed(2)}/kg</td>
+                                    <td style="text-align:${cfg.tabelaAlign};">${c.percentual.toFixed(2)}%</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                    
+                    <div class="rodape-print" style="font-size:${cfg.rodapeFontSize}px;font-family:${cfg.rodapeFont};text-align:${cfg.rodapeAlign};">
+                        <div class="dados-adicionais"><strong>${cfg.textoContato}</strong></div>
+                        <div class="assinaturas" style="font-size:${Math.max(10, cfg.rodapeFontSize - 1)}px;">
+                            <div><div class="linha"></div><small>${cfg.assinatura1}</small></div>
+                            <div><div class="linha"></div><small>${cfg.assinatura2}</small></div>
+                        </div>
+                    </div>
+                    
+                    ${tabelaExemplo.observacao ? `<div class="observacao-print" style="font-size:${Math.max(10, cfg.rodapeFontSize - 1)}px;font-family:${cfg.rodapeFont};"><strong>Observação:</strong> ${tabelaExemplo.observacao}</div>` : ''}
+                    
+                    ${cfg.mostrarDataEmissao ? `<div class="data-emissao" style="font-family:${cfg.rodapeFont};">Documento emitido em ${new Date().toLocaleString('pt-BR')}</div>` : ''}
                 </div>
             `;
+            
+            elements.previewContent.innerHTML = html;
         }
 
         // ============================================
@@ -687,7 +1064,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 statusEl.className = 'badge-status offline';
                 textoEl.textContent = 'Offline';
                 mostrarToast('Erro de rede.', 'error');
-                console.error('Erro de conexão:', error);
             }
         }
 
@@ -728,7 +1104,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         };
 
         // ============================================
-        // JSONBIN - CARREGAR DADOS
+        // JSONBIN
         // ============================================
         async function carregarDados() {
             try {
@@ -755,9 +1131,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             }
         }
 
-        // ============================================
-        // JSONBIN - SALVAR DADOS
-        // ============================================
         async function salvarDados() {
             try {
                 elements.statusConexao.className = 'badge-status checking';
@@ -790,9 +1163,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             }
         }
 
-        // ============================================
-        // DADOS DE EXEMPLO
-        // ============================================
         function getDadosExemplo() {
             const hoje = new Date().toISOString().split('T')[0];
             return [{
@@ -1051,47 +1421,47 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             const dataEmissao = cfg.mostrarDataEmissao ? `<div class="data-emissao">Documento emitido em ${new Date().toLocaleString('pt-BR')}</div>` : '';
             const html = `
                 <div id="printContent" style="max-width:${cfg.larguraMaxima}px;">
-                    <div class="header-print" style="background:${cfg.headerBgColor};color:${cfg.headerTextColor};border-bottom-color:${cfg.headerBorderColor};padding:${cfg.headerPadding}px 20px 20px 20px;font-size:${cfg.headerFontSize}px;">
+                    <div class="header-print" style="background:${cfg.headerBgColor};color:${cfg.headerTextColor};border-bottom-color:${cfg.headerBorderColor};padding:${cfg.headerPadding}px 20px 20px 20px;font-size:${cfg.headerFontSize}px;font-family:${cfg.headerFont};text-align:${cfg.headerAlign};">
                         <div class="logo-print">
                             <img src="${logoPrint}" alt="Logo" style="max-height:${cfg.logoMaxHeight}px;width:auto;height:auto;">
                         </div>
-                        <div class="endereco" style="color:${cfg.headerTextColor};font-size:${cfg.headerFontSize}px;">${enderecoHTML}</div>
+                        <div class="endereco" style="color:${cfg.headerTextColor};font-size:${cfg.headerFontSize}px;font-family:${cfg.headerFont};text-align:${cfg.headerAlign};">${enderecoHTML}</div>
                     </div>
-                    <div class="info-cliente" style="background:${cfg.clienteBgColor};color:${cfg.clienteTextColor};padding:${cfg.clientePadding}px 20px;font-size:${cfg.clienteFontSize}px;">${camposHTML}</div>
-                    <div class="info-origem" style="font-size:${Math.max(12, cfg.clienteFontSize + 2)}px;background:#e9ecef;color:#1a3a5c;">
+                    <div class="info-cliente" style="background:${cfg.clienteBgColor};color:${cfg.clienteTextColor};padding:${cfg.clientePadding}px 20px;font-size:${cfg.clienteFontSize}px;font-family:${cfg.clienteFont};text-align:${cfg.clienteAlign};">${camposHTML}</div>
+                    <div class="info-origem" style="font-size:${Math.max(12, cfg.clienteFontSize + 2)}px;background:#e9ecef;color:#1a3a5c;font-family:${cfg.tabelaFont};">
                         <span>ORIGEM: ${tabela.origem}</span>
                         <span>DESTINO: ${tabela.destino}</span>
                     </div>
-                    <table class="tabela-fretes" style="font-size:${cfg.tabelaDataFontSize}px;">
+                    <table class="tabela-fretes" style="font-size:${cfg.tabelaDataFontSize}px;font-family:${cfg.tabelaFont};text-align:${cfg.tabelaAlign};">
                         <thead>
                             <tr>
-                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;">Cidades Atendidas</th>
-                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;">UF</th>
-                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;">Frete</th>
-                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;">Preço por KG / TON</th>
-                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;">% Sobre Valor NF</th>
+                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};">Cidades Atendidas</th>
+                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};">UF</th>
+                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};">Frete</th>
+                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};">Preço por KG / TON</th>
+                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};">% Sobre Valor NF</th>
                             </tr>
                         </thead>
                         <tbody>
                             ${tabela.cidades.map((c, index) => `
                                 <tr style="background:${index % 2 === 0 ? cfg.tabelaLinhaPar : cfg.tabelaLinhaImpar};">
-                                    <td>${c.nome}</td>
-                                    <td>PA</td>
-                                    <td>R$ ${c.frete.toFixed(2)}</td>
-                                    <td>R$ ${c.kg.toFixed(2)}/kg</td>
-                                    <td>${c.percentual.toFixed(2)}%</td>
+                                    <td style="text-align:${cfg.tabelaAlign};">${c.nome}</td>
+                                    <td style="text-align:${cfg.tabelaAlign};">PA</td>
+                                    <td style="text-align:${cfg.tabelaAlign};">R$ ${c.frete.toFixed(2)}</td>
+                                    <td style="text-align:${cfg.tabelaAlign};">R$ ${c.kg.toFixed(2)}/kg</td>
+                                    <td style="text-align:${cfg.tabelaAlign};">${c.percentual.toFixed(2)}%</td>
                                 </tr>
                             `).join('')}
                         </tbody>
                     </table>
-                    <div class="rodape-print" style="font-size:${cfg.rodapeFontSize}px;">
+                    <div class="rodape-print" style="font-size:${cfg.rodapeFontSize}px;font-family:${cfg.rodapeFont};text-align:${cfg.rodapeAlign};">
                         <div class="dados-adicionais"><strong>${cfg.textoContato}</strong></div>
                         <div class="assinaturas" style="font-size:${Math.max(10, cfg.rodapeFontSize - 1)}px;">
                             <div><div class="linha"></div><small>${cfg.assinatura1}</small></div>
                             <div><div class="linha"></div><small>${cfg.assinatura2}</small></div>
                         </div>
                     </div>
-                    ${tabela.observacao ? `<div class="observacao-print" style="font-size:${Math.max(10, cfg.rodapeFontSize - 1)}px;"><strong>Observação:</strong> ${tabela.observacao}</div>` : ''}
+                    ${tabela.observacao ? `<div class="observacao-print" style="font-size:${Math.max(10, cfg.rodapeFontSize - 1)}px;font-family:${cfg.rodapeFont};"><strong>Observação:</strong> ${tabela.observacao}</div>` : ''}
                     ${dataEmissao}
                 </div>
             `;
@@ -1128,36 +1498,52 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         }
 
         // ============================================
-        // CONFIGURAÇÕES
+        // CONFIGURAÇÕES - SALVAR
         // ============================================
         function salvarConfiguracoes(event) {
             event.preventDefault();
+            
+            // Lê todos os valores do formulário
+            const headerFont = document.getElementById('headerFont').value;
+            const clienteFont = document.getElementById('clienteFont').value;
+            const tabelaFont = document.getElementById('tabelaFont').value;
+            const rodapeFont = document.getElementById('rodapeFont').value;
+
             configImpressao = {
                 headerBgColor: document.getElementById('headerBgColor').value,
                 headerTextColor: document.getElementById('headerTextColor').value,
                 headerBorderColor: document.getElementById('headerBorderColor').value,
                 headerFontSize: parseInt(document.getElementById('headerFontSize').value) || 13,
+                headerFont: headerFont,
+                headerAlign: document.getElementById('headerAlign').value,
                 headerPadding: parseInt(document.getElementById('headerPadding').value) || 30,
                 logoMaxHeight: parseInt(document.getElementById('logoMaxHeight').value) || 100,
                 enderecoEmpresa: document.getElementById('enderecoEmpresa').value,
                 clienteBgColor: document.getElementById('clienteBgColor').value,
                 clienteTextColor: document.getElementById('clienteTextColor').value,
                 clienteFontSize: parseInt(document.getElementById('clienteFontSize').value) || 12,
+                clienteFont: clienteFont,
+                clienteAlign: document.getElementById('clienteAlign').value,
                 clientePadding: parseInt(document.getElementById('clientePadding').value) || 15,
                 camposCliente: document.getElementById('camposCliente').value,
                 tabelaHeaderBg: document.getElementById('tabelaHeaderBg').value,
                 tabelaHeaderText: document.getElementById('tabelaHeaderText').value,
                 tabelaHeaderFontSize: parseInt(document.getElementById('tabelaHeaderFontSize').value) || 12,
                 tabelaDataFontSize: parseInt(document.getElementById('tabelaDataFontSize').value) || 12,
+                tabelaFont: tabelaFont,
+                tabelaAlign: document.getElementById('tabelaAlign').value,
                 tabelaLinhaPar: document.getElementById('tabelaLinhaPar').value,
                 tabelaLinhaImpar: document.getElementById('tabelaLinhaImpar').value,
                 textoContato: document.getElementById('textoContato').value,
                 rodapeFontSize: parseInt(document.getElementById('rodapeFontSize').value) || 13,
+                rodapeFont: rodapeFont,
+                rodapeAlign: document.getElementById('rodapeAlign').value,
                 assinatura1: document.getElementById('assinatura1').value,
                 assinatura2: document.getElementById('assinatura2').value,
                 mostrarDataEmissao: document.getElementById('mostrarDataEmissao').value === 'true',
                 larguraMaxima: parseInt(document.getElementById('larguraMaxima').value) || 1000
             };
+            
             salvarConfiguracoesLocal();
             elements.modalConfig.style.display = 'none';
             mostrarToast('Configurações salvas com sucesso!', 'success');
@@ -1170,22 +1556,30 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 headerTextColor: '#ffffff',
                 headerBorderColor: '#ffd700',
                 headerFontSize: 13,
+                headerFont: "'Courier New', monospace",
+                headerAlign: 'center',
                 headerPadding: 30,
                 logoMaxHeight: 100,
                 enderecoEmpresa: 'RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NÚMERO: 129\nCIDADE: SINOP-MT | CEP: 78556-788',
                 clienteBgColor: '#f8f9fa',
                 clienteTextColor: '#333333',
                 clienteFontSize: 12,
+                clienteFont: "'Courier New', monospace",
+                clienteAlign: 'left',
                 clientePadding: 15,
                 camposCliente: 'NOME,CNPJ/CPF,TELEFONE,NÚMERO,BAIRRO,RUA,CEP,CIDADE,IE,EMAIL',
                 tabelaHeaderBg: '#1a3a5c',
                 tabelaHeaderText: '#ffffff',
                 tabelaHeaderFontSize: 12,
                 tabelaDataFontSize: 12,
+                tabelaFont: "'Courier New', monospace",
+                tabelaAlign: 'left',
                 tabelaLinhaPar: '#f8f9fa',
                 tabelaLinhaImpar: '#ffffff',
                 textoContato: 'CONTATO / WHATSAPP: (93) 8418-4950',
                 rodapeFontSize: 13,
+                rodapeFont: "'Courier New', monospace",
+                rodapeAlign: 'center',
                 assinatura1: 'SINOP-MT',
                 assinatura2: 'ASSINATURA',
                 mostrarDataEmissao: true,
@@ -1226,16 +1620,66 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         elements.btnFecharConfig.addEventListener('click', () => elements.modalConfig.style.display = 'none');
         elements.btnResetConfig.addEventListener('click', restaurarConfiguracoes);
         elements.formConfig.addEventListener('submit', salvarConfiguracoes);
+        
+        // Event listeners para atualizar preview em tempo real
         document.querySelectorAll('#formConfig input, #formConfig select, #formConfig textarea').forEach(el => {
-            el.addEventListener('input', atualizarPreview);
-            el.addEventListener('change', atualizarPreview);
+            el.addEventListener('input', () => {
+                // Atualiza a configuração em tempo real
+                const headerFont = document.getElementById('headerFont').value;
+                const clienteFont = document.getElementById('clienteFont').value;
+                const tabelaFont = document.getElementById('tabelaFont').value;
+                const rodapeFont = document.getElementById('rodapeFont').value;
+
+                configImpressao = {
+                    ...configImpressao,
+                    headerBgColor: document.getElementById('headerBgColor').value,
+                    headerTextColor: document.getElementById('headerTextColor').value,
+                    headerBorderColor: document.getElementById('headerBorderColor').value,
+                    headerFontSize: parseInt(document.getElementById('headerFontSize').value) || 13,
+                    headerFont: headerFont,
+                    headerAlign: document.getElementById('headerAlign').value,
+                    headerPadding: parseInt(document.getElementById('headerPadding').value) || 30,
+                    logoMaxHeight: parseInt(document.getElementById('logoMaxHeight').value) || 100,
+                    enderecoEmpresa: document.getElementById('enderecoEmpresa').value,
+                    clienteBgColor: document.getElementById('clienteBgColor').value,
+                    clienteTextColor: document.getElementById('clienteTextColor').value,
+                    clienteFontSize: parseInt(document.getElementById('clienteFontSize').value) || 12,
+                    clienteFont: clienteFont,
+                    clienteAlign: document.getElementById('clienteAlign').value,
+                    clientePadding: parseInt(document.getElementById('clientePadding').value) || 15,
+                    camposCliente: document.getElementById('camposCliente').value,
+                    tabelaHeaderBg: document.getElementById('tabelaHeaderBg').value,
+                    tabelaHeaderText: document.getElementById('tabelaHeaderText').value,
+                    tabelaHeaderFontSize: parseInt(document.getElementById('tabelaHeaderFontSize').value) || 12,
+                    tabelaDataFontSize: parseInt(document.getElementById('tabelaDataFontSize').value) || 12,
+                    tabelaFont: tabelaFont,
+                    tabelaAlign: document.getElementById('tabelaAlign').value,
+                    tabelaLinhaPar: document.getElementById('tabelaLinhaPar').value,
+                    tabelaLinhaImpar: document.getElementById('tabelaLinhaImpar').value,
+                    textoContato: document.getElementById('textoContato').value,
+                    rodapeFontSize: parseInt(document.getElementById('rodapeFontSize').value) || 13,
+                    rodapeFont: rodapeFont,
+                    rodapeAlign: document.getElementById('rodapeAlign').value,
+                    assinatura1: document.getElementById('assinatura1').value,
+                    assinatura2: document.getElementById('assinatura2').value,
+                    mostrarDataEmissao: document.getElementById('mostrarDataEmissao').value === 'true',
+                    larguraMaxima: parseInt(document.getElementById('larguraMaxima').value) || 1000
+                };
+                atualizarPreview();
+            });
+            el.addEventListener('change', () => {
+                // Força atualização do preview
+                atualizarPreview();
+            });
         });
+
         elements.btnAddCidade.addEventListener('click', adicionarCidade);
         elements.selectCidade.addEventListener('keyup', (e) => { if (e.key === 'Enter') adicionarCidade(); });
         elements.cidadePersonalizada.addEventListener('keyup', (e) => { if (e.key === 'Enter') adicionarCidade(); });
         elements.freteCidade.addEventListener('keyup', (e) => { if (e.key === 'Enter') adicionarCidade(); });
         elements.kgCidade.addEventListener('keyup', (e) => { if (e.key === 'Enter') adicionarCidade(); });
         elements.percentualCidade.addEventListener('keyup', (e) => { if (e.key === 'Enter') adicionarCidade(); });
+        
         window.addEventListener('click', (e) => {
             if (e.target === elements.modal) elements.modal.style.display = 'none';
             if (e.target === elements.modalPrint) elements.modalPrint.style.display = 'none';
