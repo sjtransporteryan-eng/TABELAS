@@ -1,0 +1,1194 @@
+================================================================================
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Tabela de Fretes - Transports e Logística</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f6f9; color: #333; }
+        header { background: linear-gradient(135deg, #1a3a5c 0%, #2c5f8a 100%); color: white; padding: 20px 0; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .header-content { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .header-left { display: flex; align-items: center; gap: 20px; }
+        .header-logo { width: 70px; height: 70px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; padding: 5px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+        .header-logo img { width: 100%; height: 100%; object-fit: contain; border-radius: 50%; }
+        .header-title h1 { font-size: 28px; font-weight: 700; }
+        .header-title p { opacity: 0.9; margin-top: 5px; }
+        .header-badge { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        .badge { background: rgba(255,255,255,0.2); color: white; padding: 6px 15px; border-radius: 20px; font-size: 13px; font-weight: 600; border: 1px solid rgba(255,255,255,0.1); }
+        .badge-status { display: inline-flex; align-items: center; gap: 6px; padding: 6px 15px; border-radius: 20px; font-size: 13px; font-weight: 600; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; transition: all 0.3s ease; }
+        .badge-status:hover { transform: scale(1.05); }
+        .badge-status .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+        .badge-status.online .status-dot { background: #48bb78; box-shadow: 0 0 8px rgba(72,187,120,0.5); }
+        .badge-status.offline .status-dot { background: #fc8181; box-shadow: 0 0 8px rgba(252,129,129,0.5); }
+        .badge-status.checking .status-dot { background: #f6ad55; animation: pulse 0.8s ease-in-out infinite; }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+        .badge-status.online { background: rgba(72,187,120,0.25); border-color: rgba(72,187,120,0.4); }
+        .badge-status.offline { background: rgba(252,129,129,0.25); border-color: rgba(252,129,129,0.4); }
+        .badge-status.checking { background: rgba(246,173,85,0.25); border-color: rgba(246,173,85,0.4); }
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        .panel { background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); overflow: hidden; }
+        .panel-header { padding: 20px 25px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .panel-header h2 { font-size: 20px; color: #1a3a5c; }
+        .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-primary { background: #2c5f8a; color: white; }
+        .btn-primary:hover { background: #1a3a5c; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(44,95,138,0.3); }
+        .btn-success { background: #48bb78; color: white; }
+        .btn-success:hover { background: #38a169; transform: translateY(-2px); }
+        .btn-secondary { background: #e2e8f0; color: #2d3748; }
+        .btn-secondary:hover { background: #cbd5e0; }
+        .btn-danger { background: #fc8181; color: white; }
+        .btn-danger:hover { background: #e53e3e; }
+        .btn-outline { background: transparent; color: #2c5f8a; border: 2px solid #2c5f8a; }
+        .btn-outline:hover { background: #2c5f8a; color: white; }
+        .btn-sm { padding: 6px 12px; font-size: 12px; }
+        .btn-warning { background: #ed8936; color: white; }
+        .btn-warning:hover { background: #dd6b20; }
+        .search-box { padding: 20px 25px; display: flex; gap: 10px; flex-wrap: wrap; background: #fafbfc; border-bottom: 1px solid #e2e8f0; }
+        .search-box input { flex: 1; min-width: 200px; padding: 10px 15px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 14px; transition: all 0.3s; }
+        .search-box input:focus { outline: none; border-color: #2c5f8a; box-shadow: 0 0 0 3px rgba(44,95,138,0.1); }
+        .table-responsive { overflow-x: auto; padding: 0 25px 25px 25px; }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        thead { background: #f7fafc; border-bottom: 2px solid #e2e8f0; }
+        thead th { padding: 15px 12px; text-align: left; font-weight: 600; color: #2d3748; white-space: nowrap; }
+        tbody tr { border-bottom: 1px solid #edf2f7; transition: background 0.2s; }
+        tbody tr:hover { background: #f7fafc; }
+        tbody td { padding: 12px; vertical-align: middle; }
+        tbody td:last-child { display: flex; gap: 8px; flex-wrap: wrap; }
+        .footer-stats { padding: 15px 25px; background: #f7fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-size: 14px; }
+        .footer-stats strong { color: #2c5f8a; }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); overflow-y: auto; padding: 20px; }
+        .modal-content { background: white; max-width: 950px; margin: 40px auto; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: slideIn 0.3s ease; }
+        @keyframes slideIn { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .modal-header { padding: 20px 25px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h3 { font-size: 20px; color: #1a3a5c; }
+        .close { font-size: 28px; font-weight: 700; color: #a0aec0; cursor: pointer; transition: color 0.3s; }
+        .close:hover { color: #e53e3e; }
+        form { padding: 25px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .form-row-full { grid-column: 1 / -1; }
+        @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+        .form-group { display: flex; flex-direction: column; gap: 5px; }
+        .form-group label { font-weight: 600; font-size: 13px; color: #2d3748; }
+        .form-group input, .form-group select, .form-group textarea { padding: 10px 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 14px; transition: all 0.3s; font-family: inherit; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #2c5f8a; box-shadow: 0 0 0 3px rgba(44,95,138,0.1); }
+        .form-group textarea { resize: vertical; min-height: 60px; }
+        .form-group input[readonly] { background: #f7fafc; cursor: not-allowed; }
+        .cidades-list { border: 2px solid #e2e8f0; border-radius: 8px; padding: 10px; max-height: 250px; overflow-y: auto; background: #fafbfc; margin-bottom: 10px; }
+        .cidade-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid #edf2f7; gap: 10px; }
+        .cidade-item:last-child { border-bottom: none; }
+        .cidade-item .cidade-info { flex: 1; font-size: 13px; }
+        .cidade-item .cidade-info strong { color: #2d3748; }
+        .btn-remove-cidade { background: #fc8181; color: white; border: none; border-radius: 4px; padding: 4px 10px; cursor: pointer; font-size: 12px; font-weight: 600; }
+        .btn-remove-cidade:hover { background: #e53e3e; }
+        .add-cidade-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 10px; margin-top: 5px; }
+        @media (max-width: 768px) { .add-cidade-row { grid-template-columns: 1fr 1fr; } }
+        .add-cidade-row select, .add-cidade-row input { padding: 8px 12px; border: 2px solid #e2e8f0; border-radius: 6px; font-size: 13px; }
+        .add-cidade-row select:focus, .add-cidade-row input:focus { outline: none; border-color: #2c5f8a; }
+        .badge-success { background: #48bb78; }
+        .empty-state { text-align: center; padding: 20px; color: #a0aec0; }
+        .empty-state .icon { font-size: 36px; margin-bottom: 5px; }
+        .cidade-count { font-size: 12px; color: #718096; margin-left: 5px; }
+
+        #printContent { padding: 0; font-family: 'Courier New', monospace; background: white; margin: 0 auto; }
+        #printContent .header-print { padding: 30px 20px 20px 20px; text-align: center; border-bottom: 4px solid #ffd700; margin-bottom: 20px; }
+        #printContent .header-print .logo-print { display: flex; justify-content: center; align-items: center; margin-bottom: 10px; }
+        #printContent .header-print .logo-print img { object-fit: contain; background: white; border-radius: 12px; padding: 8px 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        #printContent .header-print .endereco { line-height: 1.6; font-weight: 500; letter-spacing: 0.5px; }
+        #printContent .header-print .endereco strong { color: #ffd700; }
+        #printContent .info-cliente { display: grid; grid-template-columns: 1fr 1fr; gap: 5px 30px; padding: 15px 20px; border-radius: 8px; margin: 0 20px 20px 20px; border: 1px solid #dee2e6; }
+        #printContent .info-cliente .info-item { display: flex; gap: 5px; padding: 3px 0; }
+        #printContent .info-cliente .info-item strong { min-width: 80px; }
+        #printContent .info-origem { display: flex; justify-content: space-between; padding: 10px 20px; border-radius: 6px; margin: 0 20px 20px 20px; font-weight: 600; }
+        #printContent .tabela-fretes { width: calc(100% - 40px); margin: 0 20px 20px 20px; border-collapse: collapse; }
+        #printContent .tabela-fretes th { padding: 10px 12px; text-align: left; border: 1px solid #1a3a5c; }
+        #printContent .tabela-fretes td { padding: 8px 12px; border: 1px solid #dee2e6; }
+        #printContent .tabela-fretes tr:nth-child(even) { background: #f8f9fa; }
+        #printContent .rodape-print { margin: 0 20px 20px 20px; padding-top: 15px; border-top: 2px solid #333; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        #printContent .rodape-print .dados-adicionais { line-height: 1.8; color: #333; }
+        #printContent .rodape-print .dados-adicionais strong { color: #1a3a5c; }
+        #printContent .rodape-print .assinaturas { display: flex; gap: 40px; text-align: center; }
+        #printContent .rodape-print .assinaturas div { min-width: 150px; }
+        #printContent .rodape-print .assinaturas .linha { border-top: 1px solid #333; width: 100%; margin-bottom: 5px; }
+        #printContent .observacao-print { margin: 0 20px 20px 20px; padding: 10px 15px; border-radius: 6px; border: 1px solid #dee2e6; }
+        #printContent .observacao-print strong { color: #1a3a5c; }
+        #printContent .data-emissao { text-align: center; color: #a0aec0; padding: 0 20px 15px 20px; }
+        .print-actions { display: flex; gap: 10px; padding: 0 25px 25px 25px; flex-wrap: wrap; }
+
+        .toast { position: fixed; bottom: 30px; right: 30px; padding: 15px 25px; border-radius: 10px; color: white; font-weight: 600; z-index: 2000; animation: slideUp 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.2); max-width: 400px; }
+        .toast-success { background: #48bb78; }
+        .toast-error { background: #fc8181; }
+        .toast-info { background: #4299e1; }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        @media print { body * { visibility: hidden; } #modalImprimir, #modalImprimir * { visibility: visible; } #modalImprimir { position: absolute; left: 0; top: 0; background: white; padding: 0; width: 100%; min-height: 100vh; } .modal-content { box-shadow: none !important; margin: 0 !important; padding: 0 !important; max-width: 100% !important; border-radius: 0 !important; } .modal-header, .print-actions, .close-print, #btnFecharPrint { display: none !important; } #printContent { padding: 0 !important; } #printContent .header-print { padding: 20px 15px 15px 15px !important; } #printContent .header-print .logo-print img { max-height: 80px !important; max-width: 200px !important; } }
+        .loading { display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: white; animation: spin 0.8s ease-in-out infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @media (max-width: 600px) { .header-content { flex-direction: column; text-align: center; } .header-left { flex-direction: column; } .header-title h1 { font-size: 20px; } .panel-header { flex-direction: column; align-items: stretch; } .search-box { flex-direction: column; } .search-box input { min-width: auto; } .add-cidade-row { grid-template-columns: 1fr; } #printContent .info-cliente { grid-template-columns: 1fr; margin: 0 10px 15px 10px; } #printContent .info-origem { flex-direction: column; gap: 5px; text-align: center; margin: 0 10px 15px 10px; } #printContent .tabela-fretes { width: calc(100% - 20px); margin: 0 10px 15px 10px; font-size: 10px; } #printContent .rodape-print { flex-direction: column; align-items: stretch; margin: 0 10px 15px 10px; } #printContent .rodape-print .assinaturas { flex-direction: column; gap: 20px; } }
+
+        .config-section { background: #f7fafc; border-radius: 8px; padding: 20px; margin-bottom: 20px; border: 1px solid #e2e8f0; }
+        .config-section h4 { color: #1a3a5c; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .config-section .form-group textarea { font-family: 'Courier New', monospace; font-size: 13px; min-height: 100px; }
+        .config-section .form-group input[type="color"] { padding: 4px; height: 45px; cursor: pointer; }
+        .config-section .form-group input[type="number"] { width: 100%; }
+        .config-actions { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
+        .preview-box { background: white; border: 2px dashed #cbd5e0; border-radius: 8px; padding: 15px; margin-top: 15px; min-height: 60px; font-size: 13px; color: #718096; text-align: center; }
+        .preview-box .preview-content { color: #333; font-family: 'Courier New', monospace; font-size: 12px; text-align: left; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="header-left">
+                <div class="header-logo">
+                    <a href="https://ibb.co/5gkwpWJj" target="_blank">
+                        <img src="https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png" alt="Logo Transports e Logística">
+                    </a>
+                </div>
+                <div class="header-title">
+                    <h1>Transports e Logística</h1>
+                    <p>Sistema de Gerenciamento de Tabelas de Fretes</p>
+                </div>
+            </div>
+            <div class="header-badge">
+                <div id="statusConexao" class="badge-status checking" onclick="verificarConexao()" title="Clique para verificar a conexão com o servidor">
+                    <span class="status-dot"></span>
+                    <span id="statusTexto">Verificando...</span>
+                </div>
+                <span class="badge">Fretes</span>
+                <span class="badge">Tabelas</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="panel">
+            <div class="panel-header">
+                <h2>Tabelas de Fretes</h2>
+                <div class="btn-group">
+                    <button id="btnConfigurar" class="btn btn-warning">Configurar Impressão</button>
+                    <button id="btnNovo" class="btn btn-primary">+ Nova Tabela</button>
+                </div>
+            </div>
+            
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Buscar por cliente, origem ou destino..." />
+                <button id="btnBuscar" class="btn btn-secondary">Buscar</button>
+                <button id="btnLimpar" class="btn btn-outline">Limpar</button>
+            </div>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Cliente</th>
+                            <th>Origem</th>
+                            <th>Destino</th>
+                            <th>Cidades</th>
+                            <th>Data</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="corpoTabela"></tbody>
+                </table>
+            </div>
+
+            <div class="footer-stats">
+                <span>Total de Tabelas: <strong id="totalTabelas">0</strong></span>
+                <span>Última atualização: <strong id="ultimaAtualizacao">-</strong></span>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalConfig" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Configuração do Layout de Impressão</h3>
+                <span class="close-config">&times;</span>
+            </div>
+            <form id="formConfig">
+                <div class="config-section">
+                    <h4>Cabeçalho</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Cor de Fundo</label>
+                            <input type="color" id="headerBgColor" value="#1a3a5c">
+                        </div>
+                        <div class="form-group">
+                            <label>Cor do Texto</label>
+                            <input type="color" id="headerTextColor" value="#ffffff">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Cor da Borda</label>
+                            <input type="color" id="headerBorderColor" value="#ffd700">
+                        </div>
+                        <div class="form-group">
+                            <label>Tamanho da Fonte (px)</label>
+                            <input type="number" id="headerFontSize" value="13" min="8" max="24">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Altura da Logo (px)</label>
+                            <input type="number" id="logoMaxHeight" value="100" min="30" max="200">
+                        </div>
+                        <div class="form-group">
+                            <label>Espaçamento Interno (px)</label>
+                            <input type="number" id="headerPadding" value="30" min="10" max="60">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group form-row-full">
+                            <label>Endereço da Empresa</label>
+                            <textarea id="enderecoEmpresa" rows="2">RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NÚMERO: 129
+CIDADE: SINOP-MT | CEP: 78556-788</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="config-section">
+                    <h4>Informações do Cliente</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Cor de Fundo</label>
+                            <input type="color" id="clienteBgColor" value="#f8f9fa">
+                        </div>
+                        <div class="form-group">
+                            <label>Cor do Texto</label>
+                            <input type="color" id="clienteTextColor" value="#333333">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Tamanho da Fonte (px)</label>
+                            <input type="number" id="clienteFontSize" value="12" min="8" max="20">
+                        </div>
+                        <div class="form-group">
+                            <label>Espaçamento (px)</label>
+                            <input type="number" id="clientePadding" value="15" min="5" max="30">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group form-row-full">
+                            <label>Campos a exibir (separados por vírgula)</label>
+                            <input type="text" id="camposCliente" value="NOME,CNPJ/CPF,TELEFONE,NÚMERO,BAIRRO,RUA,CEP,CIDADE,IE,EMAIL">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="config-section">
+                    <h4>Tabela de Fretes</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Cor do Cabeçalho</label>
+                            <input type="color" id="tabelaHeaderBg" value="#1a3a5c">
+                        </div>
+                        <div class="form-group">
+                            <label>Cor do Texto do Cabeçalho</label>
+                            <input type="color" id="tabelaHeaderText" value="#ffffff">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Tamanho Fonte Cabeçalho (px)</label>
+                            <input type="number" id="tabelaHeaderFontSize" value="12" min="8" max="20">
+                        </div>
+                        <div class="form-group">
+                            <label>Tamanho Fonte Dados (px)</label>
+                            <input type="number" id="tabelaDataFontSize" value="12" min="8" max="20">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Cor da Linha Par</label>
+                            <input type="color" id="tabelaLinhaPar" value="#f8f9fa">
+                        </div>
+                        <div class="form-group">
+                            <label>Cor da Linha Ímpar</label>
+                            <input type="color" id="tabelaLinhaImpar" value="#ffffff">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="config-section">
+                    <h4>Rodapé</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Texto do Contato</label>
+                            <input type="text" id="textoContato" value="CONTATO / WHATSAPP: (93) 8418-4950">
+                        </div>
+                        <div class="form-group">
+                            <label>Tamanho da Fonte (px)</label>
+                            <input type="number" id="rodapeFontSize" value="13" min="8" max="20">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Texto da Assinatura 1</label>
+                            <input type="text" id="assinatura1" value="SINOP-MT">
+                        </div>
+                        <div class="form-group">
+                            <label>Texto da Assinatura 2</label>
+                            <input type="text" id="assinatura2" value="ASSINATURA">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Mostrar Data de Emissão</label>
+                            <select id="mostrarDataEmissao">
+                                <option value="true">Sim</option>
+                                <option value="false">Não</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Largura Máxima (px)</label>
+                            <input type="number" id="larguraMaxima" value="1000" min="600" max="1200">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="config-section">
+                    <h4>Pré-visualização</h4>
+                    <div class="preview-box" id="previewBox">
+                        <div class="preview-content" id="previewContent">
+                            <strong>Pré-visualização:</strong><br>
+                            <span style="color:#1a3a5c;background:#f8f9fa;padding:4px 8px;border-radius:4px;">
+                                [LOGO] - Transports e Logística
+                            </span><br>
+                            Endereço: RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NÚMERO: 129
+                        </div>
+                    </div>
+                </div>
+
+                <div class="config-actions">
+                    <button type="submit" class="btn btn-primary">Salvar Configurações</button>
+                    <button type="button" id="btnResetConfig" class="btn btn-secondary">Restaurar Padrão</button>
+                    <button type="button" id="btnFecharConfig" class="btn btn-outline">Fechar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modalTabela" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Nova Tabela de Frete</h3>
+                <span class="close">&times;</span>
+            </div>
+            <form id="formTabela">
+                <input type="hidden" id="tabelaId">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Cliente *</label>
+                        <input type="text" id="cliente" placeholder="Nome do cliente" required>
+                    </div>
+                    <div class="form-group">
+                        <label>CNPJ/CPF</label>
+                        <input type="text" id="cnpj" placeholder="7306297000167">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Telefone</label>
+                        <input type="text" id="telefone" placeholder="(66) 3515-9853">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="email" placeholder="cliente@email.com">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Endereço</label>
+                        <input type="text" id="endereco" placeholder="Rua, número, bairro">
+                    </div>
+                    <div class="form-group">
+                        <label>IE</label>
+                        <input type="text" id="ie" placeholder="Inscrição Estadual">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Origem *</label>
+                        <input type="text" id="origem" value="SINOP - MT" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Destino *</label>
+                        <input type="text" id="destino" placeholder="DIVERSOS (PA)" required>
+                    </div>
+                </div>
+
+                <div class="form-row form-row-full">
+                    <div class="form-group">
+                        <label>Cidades Atendidas * <span class="cidade-count" id="cidadeCount">(0 adicionadas)</span></label>
+                        <div class="cidades-list" id="cidadesList">
+                            <div class="empty-state" style="padding: 15px;">
+                                <div class="icon">📍</div>
+                                <p>Nenhuma cidade adicionada</p>
+                                <p style="font-size: 12px;">Adicione as cidades abaixo</p>
+                            </div>
+                        </div>
+                        
+                        <div class="add-cidade-row">
+                            <select id="selectCidade">
+                                <option value="">Selecione uma cidade</option>
+                                <option value="Cachoeira da Serra">Cachoeira da Serra</option>
+                                <option value="Castelo dos Sonhos">Castelo dos Sonhos</option>
+                                <option value="Novo Progresso">Novo Progresso</option>
+                                <option value="Moraes Almeida">Moraes Almeida</option>
+                                <option value="Bela Vista do Caracol">Bela Vista do Caracol</option>
+                                <option value="Trairão">Trairão</option>
+                                <option value="Km 30 / Campo Verde">Km 30 / Campo Verde</option>
+                                <option value="Mirituba">Mirituba</option>
+                                <option value="Itaituba">Itaituba</option>
+                                <option value="Rurópolis">Rurópolis</option>
+                                <option value="Mojul dos Campos">Mojul dos Campos</option>
+                                <option value="Santarém">Santarém</option>
+                                <option value="OUTRA">➕ Outra cidade...</option>
+                            </select>
+                            <input type="text" id="cidadePersonalizada" placeholder="Nome da cidade" style="display:none;">
+                            <input type="number" id="freteCidade" placeholder="Frete R$" step="0.01">
+                            <input type="number" id="kgCidade" placeholder="Preço KG" step="0.01">
+                            <input type="number" id="percentualCidade" placeholder="% NF" step="0.01">
+                            <button type="button" id="btnAddCidade" class="btn btn-success btn-sm">+ Adicionar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group form-row-full">
+                        <label>Observação</label>
+                        <textarea id="observacao" placeholder="Informações adicionais..."></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width:100%; margin-top:10px; padding: 14px;">
+                    Salvar Tabela
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modalImprimir" class="modal">
+        <div class="modal-content" style="max-width: 950px;">
+            <div class="modal-header">
+                <h3>Tabela de Fretes</h3>
+                <span class="close-print">&times;</span>
+            </div>
+            <div id="conteudoImpressao"></div>
+            <div class="print-actions">
+                <button onclick="imprimirRecibo()" class="btn btn-primary">Imprimir</button>
+                <button onclick="gerarPDF()" class="btn btn-success" id="btnGerarPDF">Gerar PDF</button>
+                <button id="btnFecharPrint" class="btn btn-secondary">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+
+        let configImpressao = {
+            headerBgColor: '#1a3a5c',
+            headerTextColor: '#ffffff',
+            headerBorderColor: '#ffd700',
+            headerFontSize: 13,
+            headerPadding: 30,
+            logoMaxHeight: 100,
+            enderecoEmpresa: 'RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NÚMERO: 129\nCIDADE: SINOP-MT | CEP: 78556-788',
+            clienteBgColor: '#f8f9fa',
+            clienteTextColor: '#333333',
+            clienteFontSize: 12,
+            clientePadding: 15,
+            camposCliente: 'NOME,CNPJ/CPF,TELEFONE,NÚMERO,BAIRRO,RUA,CEP,CIDADE,IE,EMAIL',
+            tabelaHeaderBg: '#1a3a5c',
+            tabelaHeaderText: '#ffffff',
+            tabelaHeaderFontSize: 12,
+            tabelaDataFontSize: 12,
+            tabelaLinhaPar: '#f8f9fa',
+            tabelaLinhaImpar: '#ffffff',
+            textoContato: 'CONTATO / WHATSAPP: (93) 8418-4950',
+            rodapeFontSize: 13,
+            assinatura1: 'SINOP-MT',
+            assinatura2: 'ASSINATURA',
+            mostrarDataEmissao: true,
+            larguraMaxima: 1000
+        };
+
+        let tabelas = [];
+        let editandoId = null;
+        let cidadesTemp = [];
+        let tabelaImpressaoAtual = null;
+
+        const elements = {
+            corpoTabela: document.getElementById('corpoTabela'),
+            totalTabelas: document.getElementById('totalTabelas'),
+            ultimaAtualizacao: document.getElementById('ultimaAtualizacao'),
+            searchInput: document.getElementById('searchInput'),
+            btnNovo: document.getElementById('btnNovo'),
+            btnConfigurar: document.getElementById('btnConfigurar'),
+            btnBuscar: document.getElementById('btnBuscar'),
+            btnLimpar: document.getElementById('btnLimpar'),
+            modal: document.getElementById('modalTabela'),
+            modalTitle: document.getElementById('modalTitle'),
+            form: document.getElementById('formTabela'),
+            tabelaId: document.getElementById('tabelaId'),
+            cliente: document.getElementById('cliente'),
+            cnpj: document.getElementById('cnpj'),
+            telefone: document.getElementById('telefone'),
+            email: document.getElementById('email'),
+            endereco: document.getElementById('endereco'),
+            ie: document.getElementById('ie'),
+            origem: document.getElementById('origem'),
+            destino: document.getElementById('destino'),
+            observacao: document.getElementById('observacao'),
+            cidadesList: document.getElementById('cidadesList'),
+            cidadeCount: document.getElementById('cidadeCount'),
+            selectCidade: document.getElementById('selectCidade'),
+            cidadePersonalizada: document.getElementById('cidadePersonalizada'),
+            freteCidade: document.getElementById('freteCidade'),
+            kgCidade: document.getElementById('kgCidade'),
+            percentualCidade: document.getElementById('percentualCidade'),
+            btnAddCidade: document.getElementById('btnAddCidade'),
+            closeBtn: document.querySelector('.close'),
+            modalPrint: document.getElementById('modalImprimir'),
+            conteudoImpressao: document.getElementById('conteudoImpressao'),
+            closePrint: document.querySelector('.close-print'),
+            btnFecharPrint: document.getElementById('btnFecharPrint'),
+            btnGerarPDF: document.getElementById('btnGerarPDF'),
+            modalConfig: document.getElementById('modalConfig'),
+            closeConfig: document.querySelector('.close-config'),
+            btnFecharConfig: document.getElementById('btnFecharConfig'),
+            btnResetConfig: document.getElementById('btnResetConfig'),
+            formConfig: document.getElementById('formConfig'),
+            previewContent: document.getElementById('previewContent'),
+            statusConexao: document.getElementById('statusConexao'),
+            statusTexto: document.getElementById('statusTexto')
+        };
+
+        function carregarConfiguracoes() {
+            const salvo = localStorage.getItem('configImpressao');
+            if (salvo) {
+                try {
+                    const parsed = JSON.parse(salvo);
+                    configImpressao = { ...configImpressao, ...parsed };
+                } catch (e) { console.log('Erro ao carregar configurações'); }
+            }
+        }
+
+        function salvarConfiguracoesLocal() {
+            localStorage.setItem('configImpressao', JSON.stringify(configImpressao));
+        }
+
+        function preencherFormConfig() {
+            document.getElementById('headerBgColor').value = configImpressao.headerBgColor;
+            document.getElementById('headerTextColor').value = configImpressao.headerTextColor;
+            document.getElementById('headerBorderColor').value = configImpressao.headerBorderColor;
+            document.getElementById('headerFontSize').value = configImpressao.headerFontSize;
+            document.getElementById('headerPadding').value = configImpressao.headerPadding;
+            document.getElementById('logoMaxHeight').value = configImpressao.logoMaxHeight;
+            document.getElementById('enderecoEmpresa').value = configImpressao.enderecoEmpresa;
+            document.getElementById('clienteBgColor').value = configImpressao.clienteBgColor;
+            document.getElementById('clienteTextColor').value = configImpressao.clienteTextColor;
+            document.getElementById('clienteFontSize').value = configImpressao.clienteFontSize;
+            document.getElementById('clientePadding').value = configImpressao.clientePadding;
+            document.getElementById('camposCliente').value = configImpressao.camposCliente;
+            document.getElementById('tabelaHeaderBg').value = configImpressao.tabelaHeaderBg;
+            document.getElementById('tabelaHeaderText').value = configImpressao.tabelaHeaderText;
+            document.getElementById('tabelaHeaderFontSize').value = configImpressao.tabelaHeaderFontSize;
+            document.getElementById('tabelaDataFontSize').value = configImpressao.tabelaDataFontSize;
+            document.getElementById('tabelaLinhaPar').value = configImpressao.tabelaLinhaPar;
+            document.getElementById('tabelaLinhaImpar').value = configImpressao.tabelaLinhaImpar;
+            document.getElementById('textoContato').value = configImpressao.textoContato;
+            document.getElementById('rodapeFontSize').value = configImpressao.rodapeFontSize;
+            document.getElementById('assinatura1').value = configImpressao.assinatura1;
+            document.getElementById('assinatura2').value = configImpressao.assinatura2;
+            document.getElementById('mostrarDataEmissao').value = configImpressao.mostrarDataEmissao ? 'true' : 'false';
+            document.getElementById('larguraMaxima').value = configImpressao.larguraMaxima;
+            atualizarPreview();
+        }
+
+        function atualizarPreview() {
+            const bg = document.getElementById('headerBgColor').value;
+            const text = document.getElementById('headerTextColor').value;
+            const border = document.getElementById('headerBorderColor').value;
+            const fontSize = document.getElementById('headerFontSize').value;
+            const endereco = document.getElementById('enderecoEmpresa').value.replace(/\n/g, '<br>');
+            elements.previewContent.innerHTML = `
+                <div style="background:${bg};color:${text};padding:12px;border-radius:8px;border-bottom:3px solid ${border};font-size:${fontSize}px;">
+                    <strong>[LOGO] Transports e Logística</strong><br>
+                    <span style="font-size:${Math.max(10, fontSize-1)}px;opacity:0.9;">${endereco}</span>
+                </div>
+                <div style="margin-top:10px;font-size:${document.getElementById('clienteFontSize').value}px;color:#666;">
+                    <strong>Cliente:</strong> Distribuidora de Molas<br>
+                    <strong>CNPJ:</strong> 7306297000167
+                </div>
+                <div style="margin-top:8px;font-size:${document.getElementById('tabelaDataFontSize').value}px;color:#666;background:#f8f9fa;padding:8px;border-radius:4px;">
+                    <strong>Tabela:</strong> Cidades | UF | Frete | KG | %
+                </div>
+                <div style="margin-top:8px;font-size:${document.getElementById('rodapeFontSize').value}px;color:#999;">
+                    ${document.getElementById('textoContato').value}
+                </div>
+            `;
+        }
+
+        async function verificarConexao() {
+            const statusEl = elements.statusConexao;
+            const textoEl = elements.statusTexto;
+            statusEl.className = 'badge-status checking';
+            textoEl.textContent = 'Verificando...';
+            try {
+                const response = await fetch(`${API_URL}/status`);
+                const data = await response.json();
+                if (data.success) {
+                    statusEl.className = 'badge-status online';
+                    textoEl.textContent = 'Online';
+                    mostrarToast('Conectado ao servidor!', 'success');
+                    await carregarDados();
+                } else {
+                    statusEl.className = 'badge-status offline';
+                    textoEl.textContent = 'Offline';
+                    mostrarToast('Servidor offline. Verifique se o backend está rodando.', 'error');
+                }
+            } catch (error) {
+                statusEl.className = 'badge-status offline';
+                textoEl.textContent = 'Offline';
+                mostrarToast('Não foi possível conectar ao servidor.', 'error');
+                console.error('Erro de conexão:', error);
+            }
+        }
+
+        async function atualizarStatusInicial() {
+            try {
+                const response = await fetch(`${API_URL}/status`);
+                const data = await response.json();
+                if (data.success) {
+                    elements.statusConexao.className = 'badge-status online';
+                    elements.statusTexto.textContent = 'Online';
+                } else {
+                    elements.statusConexao.className = 'badge-status offline';
+                    elements.statusTexto.textContent = 'Offline';
+                }
+            } catch (error) {
+                elements.statusConexao.className = 'badge-status offline';
+                elements.statusTexto.textContent = 'Offline';
+            }
+        }
+
+        const FRETES_PADRAO = {
+            'Cachoeira da Serra': { frete: 75.00, kg: 650.00, percentual: 3.00 },
+            'Castelo dos Sonhos': { frete: 75.00, kg: 650.00, percentual: 3.00 },
+            'Novo Progresso': { frete: 80.00, kg: 700.00, percentual: 3.50 },
+            'Moraes Almeida': { frete: 90.00, kg: 800.00, percentual: 4.00 },
+            'Bela Vista do Caracol': { frete: 100.00, kg: 900.00, percentual: 4.00 },
+            'Trairão': { frete: 100.00, kg: 900.00, percentual: 4.00 },
+            'Km 30 / Campo Verde': { frete: 100.00, kg: 900.00, percentual: 4.00 },
+            'Mirituba': { frete: 110.00, kg: 900.00, percentual: 4.00 },
+            'Itaituba': { frete: 110.00, kg: 900.00, percentual: 4.00 },
+            'Rurópolis': { frete: 120.00, kg: 1000.00, percentual: 4.50 },
+            'Mojul dos Campos': { frete: 130.00, kg: 1100.00, percentual: 4.50 },
+            'Santarém': { frete: 130.00, kg: 1100.00, percentual: 4.50 }
+        };
+
+        async function carregarDados() {
+            try {
+                const response = await fetch(`${API_URL}/dados`);
+                const data = await response.json();
+                if (data.success) {
+                    tabelas = data.dados || [];
+                    renderizarTabelas();
+                    atualizarTotalizadores();
+                    elements.statusConexao.className = 'badge-status online';
+                    elements.statusTexto.textContent = 'Online';
+                    return tabelas;
+                } else {
+                    throw new Error(data.error || 'Erro ao carregar dados');
+                }
+            } catch (error) {
+                console.error('Erro ao carregar:', error);
+                tabelas = getDadosExemplo();
+                renderizarTabelas();
+                atualizarTotalizadores();
+                elements.statusConexao.className = 'badge-status offline';
+                elements.statusTexto.textContent = 'Offline';
+                mostrarToast('Usando dados de exemplo (offline)', 'error');
+                return tabelas;
+            }
+        }
+
+        async function salvarDados() {
+            try {
+                elements.statusConexao.className = 'badge-status checking';
+                elements.statusTexto.textContent = 'Salvando...';
+                if (!tabelas || tabelas.length === 0) { tabelas = []; }
+                const response = await fetch(`${API_URL}/dados`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(tabelas)
+                });
+                const data = await response.json();
+                if (data.success) {
+                    console.log('Dados salvos:', data);
+                    elements.statusConexao.className = 'badge-status online';
+                    elements.statusTexto.textContent = 'Online';
+                    mostrarToast('Dados salvos com sucesso!', 'success');
+                    return true;
+                } else {
+                    throw new Error(data.error || 'Erro ao salvar');
+                }
+            } catch (error) {
+                console.error('Erro ao salvar:', error);
+                elements.statusConexao.className = 'badge-status offline';
+                elements.statusTexto.textContent = 'Offline';
+                mostrarToast('Erro ao salvar: ' + error.message, 'error');
+                return false;
+            }
+        }
+
+        function getDadosExemplo() {
+            const hoje = new Date().toISOString().split('T')[0];
+            return [{
+                id: 1,
+                cliente: 'DISTRIBUIDORA DE MOLAS MATO GROSSO LTDA',
+                cnpj: '7306297000167',
+                telefone: '(66) 3515-9853',
+                email: '',
+                endereco: 'RUA VALDIR DOERNER, 666 - DIST. INDL.',
+                ie: '132989689',
+                origem: 'SINOP - MT',
+                destino: 'DIVERSOS (PA)',
+                observacao: 'Tabela de fretes para o Pará',
+                data: hoje,
+                cidades: [
+                    { nome: 'Cachoeira da Serra', frete: 75.00, kg: 650.00, percentual: 3.00 },
+                    { nome: 'Castelo dos Sonhos', frete: 75.00, kg: 650.00, percentual: 3.00 },
+                    { nome: 'Novo Progresso', frete: 80.00, kg: 700.00, percentual: 3.50 },
+                    { nome: 'Moraes Almeida', frete: 90.00, kg: 800.00, percentual: 4.00 },
+                    { nome: 'Santarém', frete: 130.00, kg: 1100.00, percentual: 4.50 }
+                ]
+            }];
+        }
+
+        function renderizarTabelas(filtro = '') {
+            let dados = filtro ? tabelas.filter(t => 
+                t.cliente.toLowerCase().includes(filtro.toLowerCase()) ||
+                t.origem.toLowerCase().includes(filtro.toLowerCase()) ||
+                t.destino.toLowerCase().includes(filtro.toLowerCase())
+            ) : tabelas;
+            if (dados.length === 0) {
+                elements.corpoTabela.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:40px;color:#a0aec0;">Nenhuma tabela encontrada</td></tr>`;
+                return;
+            }
+            elements.corpoTabela.innerHTML = dados.map(tabela => `
+                <tr>
+                    <td><strong>#${tabela.id}</strong></td>
+                    <td>${tabela.cliente}</td>
+                    <td>${tabela.origem}</td>
+                    <td>${tabela.destino}</td>
+                    <td><span class="badge badge-success">${tabela.cidades.length} cidades</span></td>
+                    <td>${formatarData(tabela.data)}</td>
+                    <td>
+                        <button class="btn btn-sm btn-success" onclick="abrirImpressao(${tabela.id})">Imprimir</button>
+                        <button class="btn btn-sm btn-primary" onclick="editarTabela(${tabela.id})">Editar</button>
+                        <button class="btn btn-sm btn-danger" onclick="excluirTabela(${tabela.id})">Excluir</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function atualizarTotalizadores() {
+            elements.totalTabelas.textContent = tabelas.length;
+            const agora = new Date();
+            elements.ultimaAtualizacao.textContent = agora.toLocaleString('pt-BR');
+        }
+
+        function formatarData(data) {
+            if (!data) return '-';
+            const d = new Date(data + 'T00:00:00');
+            return d.toLocaleDateString('pt-BR');
+        }
+
+        function renderizarCidadesForm() {
+            elements.cidadeCount.textContent = `(${cidadesTemp.length} adicionadas)`;
+            if (cidadesTemp.length === 0) {
+                elements.cidadesList.innerHTML = `<div class="empty-state" style="padding:15px;"><div class="icon">📍</div><p>Nenhuma cidade adicionada</p><p style="font-size:12px;">Adicione as cidades abaixo</p></div>`;
+                return;
+            }
+            elements.cidadesList.innerHTML = cidadesTemp.map((c, index) => `
+                <div class="cidade-item">
+                    <div class="cidade-info">
+                        <strong>${c.nome}</strong>
+                        <span style="color:#718096;">| Frete: R$ ${c.frete.toFixed(2)} | KG: R$ ${c.kg.toFixed(2)} | %: ${c.percentual.toFixed(2)}%</span>
+                    </div>
+                    <button type="button" class="btn-remove-cidade" onclick="removerCidade(${index})">✕</button>
+                </div>
+            `).join('');
+        }
+
+        function adicionarCidade() {
+            let nome = elements.selectCidade.value;
+            if (nome === 'OUTRA') {
+                nome = elements.cidadePersonalizada.value.trim();
+                if (!nome) { mostrarToast('Digite o nome da cidade!', 'error'); return; }
+            }
+            const frete = parseFloat(elements.freteCidade.value);
+            const kg = parseFloat(elements.kgCidade.value);
+            const percentual = parseFloat(elements.percentualCidade.value);
+            if (!nome) { mostrarToast('Selecione ou digite uma cidade!', 'error'); return; }
+            if (isNaN(frete) || isNaN(kg) || isNaN(percentual)) { mostrarToast('Preencha todos os valores da cidade!', 'error'); return; }
+            if (frete <= 0 || kg <= 0 || percentual <= 0) { mostrarToast('Os valores devem ser maiores que zero!', 'error'); return; }
+            if (cidadesTemp.some(c => c.nome.toLowerCase() === nome.toLowerCase())) { mostrarToast('Esta cidade já foi adicionada!', 'error'); return; }
+            cidadesTemp.push({ nome, frete, kg, percentual });
+            renderizarCidadesForm();
+            elements.selectCidade.value = '';
+            elements.cidadePersonalizada.value = '';
+            elements.cidadePersonalizada.style.display = 'none';
+            elements.freteCidade.value = '';
+            elements.kgCidade.value = '';
+            elements.percentualCidade.value = '';
+            mostrarToast(`Cidade "${nome}" adicionada!`, 'success');
+        }
+
+        function removerCidade(index) {
+            const nome = cidadesTemp[index].nome;
+            cidadesTemp.splice(index, 1);
+            renderizarCidadesForm();
+            mostrarToast(`Cidade "${nome}" removida`, 'info');
+        }
+
+        elements.selectCidade.addEventListener('change', function() {
+            if (this.value === 'OUTRA') {
+                elements.cidadePersonalizada.style.display = 'block';
+                elements.cidadePersonalizada.focus();
+            } else {
+                elements.cidadePersonalizada.style.display = 'none';
+                elements.cidadePersonalizada.value = '';
+            }
+        });
+
+        function abrirModalNovo() {
+            editandoId = null;
+            elements.modalTitle.textContent = 'Nova Tabela de Frete';
+            elements.form.reset();
+            elements.tabelaId.value = '';
+            elements.origem.value = 'SINOP - MT';
+            elements.destino.value = 'DIVERSOS (PA)';
+            cidadesTemp = [];
+            renderizarCidadesForm();
+            elements.modal.style.display = 'block';
+        }
+
+        function editarTabela(id) {
+            const tabela = tabelas.find(t => t.id === id);
+            if (!tabela) return;
+            editandoId = id;
+            elements.modalTitle.textContent = 'Editar Tabela de Frete';
+            elements.tabelaId.value = tabela.id;
+            elements.cliente.value = tabela.cliente;
+            elements.cnpj.value = tabela.cnpj || '';
+            elements.telefone.value = tabela.telefone || '';
+            elements.email.value = tabela.email || '';
+            elements.endereco.value = tabela.endereco || '';
+            elements.ie.value = tabela.ie || '';
+            elements.origem.value = tabela.origem;
+            elements.destino.value = tabela.destino;
+            elements.observacao.value = tabela.observacao || '';
+            cidadesTemp = JSON.parse(JSON.stringify(tabela.cidades));
+            renderizarCidadesForm();
+            elements.modal.style.display = 'block';
+        }
+
+        async function excluirTabela(id) {
+            if (!confirm('Tem certeza que deseja excluir esta tabela?')) return;
+            tabelas = tabelas.filter(t => t.id !== id);
+            const salvou = await salvarDados();
+            if (salvou) {
+                renderizarTabelas();
+                atualizarTotalizadores();
+                mostrarToast('Tabela excluída com sucesso!', 'success');
+            } else {
+                await carregarDados();
+                mostrarToast('Erro ao excluir. Dados restaurados.', 'error');
+            }
+        }
+
+        async function salvarTabela(event) {
+            event.preventDefault();
+            if (cidadesTemp.length === 0) {
+                mostrarToast('Adicione pelo menos uma cidade!', 'error');
+                return;
+            }
+            const dados = {
+                cliente: elements.cliente.value.trim(),
+                cnpj: elements.cnpj.value.trim() || '',
+                telefone: elements.telefone.value.trim() || '',
+                email: elements.email.value.trim() || '',
+                endereco: elements.endereco.value.trim() || '',
+                ie: elements.ie.value.trim() || '',
+                origem: elements.origem.value.trim(),
+                destino: elements.destino.value.trim(),
+                observacao: elements.observacao.value.trim() || '',
+                data: new Date().toISOString().split('T')[0],
+                cidades: JSON.parse(JSON.stringify(cidadesTemp))
+            };
+            if (!dados.cliente || !dados.origem || !dados.destino) {
+                mostrarToast('Preencha todos os campos obrigatórios!', 'error');
+                return;
+            }
+            if (editandoId) {
+                const index = tabelas.findIndex(t => t.id === editandoId);
+                if (index !== -1) {
+                    tabelas[index] = { ...tabelas[index], ...dados };
+                }
+            } else {
+                const novoId = tabelas.length > 0 ? Math.max(...tabelas.map(t => t.id)) + 1 : 1;
+                tabelas.push({ id: novoId, ...dados });
+            }
+            const salvou = await salvarDados();
+            if (salvou) {
+                renderizarTabelas();
+                atualizarTotalizadores();
+                elements.modal.style.display = 'none';
+                mostrarToast(`Tabela ${editandoId ? 'atualizada' : 'criada'} com sucesso!`, 'success');
+            } else {
+                await carregarDados();
+                mostrarToast('Erro ao salvar. Dados restaurados.', 'error');
+            }
+        }
+
+        let currentPrintId = null;
+
+        function abrirImpressao(id) {
+            currentPrintId = id;
+            const tabela = tabelas.find(t => t.id === id);
+            if (!tabela) {
+                mostrarToast('Tabela não encontrada!', 'error');
+                return;
+            }
+            tabelaImpressaoAtual = tabela;
+            gerarHTMLImpressao(tabela);
+            elements.modalPrint.style.display = 'block';
+        }
+
+        function gerarHTMLImpressao(tabela) {
+            const logoPrint = 'https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png';
+            const cfg = configImpressao;
+            const campos = cfg.camposCliente.split(',').map(c => c.trim());
+            const mapaCampos = {
+                'NOME': `<div class="info-item"><strong>NOME:</strong> ${tabela.cliente}</div>`,
+                'CNPJ/CPF': `<div class="info-item"><strong>CNPJ/CPF:</strong> ${tabela.cnpj || 'Não informado'}</div>`,
+                'TELEFONE': `<div class="info-item"><strong>TELEFONE:</strong> ${tabela.telefone || 'Não informado'}</div>`,
+                'NÚMERO': `<div class="info-item"><strong>NÚMERO:</strong> ${tabela.id}</div>`,
+                'BAIRRO': `<div class="info-item"><strong>BAIRRO:</strong> ${tabela.endereco ? tabela.endereco.split(',')[1]?.trim() || '-' : '-'}</div>`,
+                'RUA': `<div class="info-item"><strong>RUA:</strong> ${tabela.endereco ? tabela.endereco.split(',')[0] || '-' : '-'}</div>`,
+                'CEP': `<div class="info-item"><strong>CEP:</strong> 78557-171</div>`,
+                'CIDADE': `<div class="info-item"><strong>CIDADE:</strong> SINOP MT</div>`,
+                'IE': `<div class="info-item"><strong>IE:</strong> ${tabela.ie || 'Não informado'}</div>`,
+                'EMAIL': `<div class="info-item"><strong>EMAIL:</strong> ${tabela.email || 'Não informado'}</div>`
+            };
+            const camposHTML = campos.filter(c => mapaCampos[c]).map(c => mapaCampos[c]).join('');
+            const enderecoHTML = cfg.enderecoEmpresa.replace(/\n/g, '<br>');
+            const dataEmissao = cfg.mostrarDataEmissao ? `<div class="data-emissao">Documento emitido em ${new Date().toLocaleString('pt-BR')}</div>` : '';
+            const html = `
+                <div id="printContent" style="max-width:${cfg.larguraMaxima}px;">
+                    <div class="header-print" style="background:${cfg.headerBgColor};color:${cfg.headerTextColor};border-bottom-color:${cfg.headerBorderColor};padding:${cfg.headerPadding}px 20px 20px 20px;font-size:${cfg.headerFontSize}px;">
+                        <div class="logo-print">
+                            <img src="${logoPrint}" alt="Logo" style="max-height:${cfg.logoMaxHeight}px;width:auto;height:auto;">
+                        </div>
+                        <div class="endereco" style="color:${cfg.headerTextColor};font-size:${cfg.headerFontSize}px;">${enderecoHTML}</div>
+                    </div>
+                    <div class="info-cliente" style="background:${cfg.clienteBgColor};color:${cfg.clienteTextColor};padding:${cfg.clientePadding}px 20px;font-size:${cfg.clienteFontSize}px;">${camposHTML}</div>
+                    <div class="info-origem" style="font-size:${Math.max(12, cfg.clienteFontSize + 2)}px;background:#e9ecef;color:#1a3a5c;">
+                        <span>ORIGEM: ${tabela.origem}</span>
+                        <span>DESTINO: ${tabela.destino}</span>
+                    </div>
+                    <table class="tabela-fretes" style="font-size:${cfg.tabelaDataFontSize}px;">
+                        <thead>
+                            <tr>
+                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;">Cidades Atendidas</th>
+                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;">UF</th>
+                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;">Frete</th>
+                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;">Preço por KG / TON</th>
+                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;">% Sobre Valor NF</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${tabela.cidades.map((c, index) => `
+                                <tr style="background:${index % 2 === 0 ? cfg.tabelaLinhaPar : cfg.tabelaLinhaImpar};">
+                                    <td>${c.nome}</td>
+                                    <td>PA</td>
+                                    <td>R$ ${c.frete.toFixed(2)}</td>
+                                    <td>R$ ${c.kg.toFixed(2)}/kg</td>
+                                    <td>${c.percentual.toFixed(2)}%</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                    <div class="rodape-print" style="font-size:${cfg.rodapeFontSize}px;">
+                        <div class="dados-adicionais"><strong>${cfg.textoContato}</strong></div>
+                        <div class="assinaturas" style="font-size:${Math.max(10, cfg.rodapeFontSize - 1)}px;">
+                            <div><div class="linha"></div><small>${cfg.assinatura1}</small></div>
+                            <div><div class="linha"></div><small>${cfg.assinatura2}</small></div>
+                        </div>
+                    </div>
+                    ${tabela.observacao ? `<div class="observacao-print" style="font-size:${Math.max(10, cfg.rodapeFontSize - 1)}px;"><strong>Observação:</strong> ${tabela.observacao}</div>` : ''}
+                    ${dataEmissao}
+                </div>
+            `;
+            elements.conteudoImpressao.innerHTML = html;
+        }
+
+        function imprimirRecibo() {
+            window.print();
+        }
+
+        function gerarPDF() {
+            const btn = elements.btnGerarPDF;
+            const textoOriginal = btn.innerHTML;
+            btn.innerHTML = '<span class="loading"></span> Gerando...';
+            btn.disabled = true;
+            const element = document.getElementById('printContent');
+            const opt = {
+                margin: [0, 0, 0, 0],
+                filename: `tabela_frete_${tabelaImpressaoAtual?.id || 'sem_id'}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save().then(() => {
+                btn.innerHTML = textoOriginal;
+                btn.disabled = false;
+                mostrarToast('PDF gerado com sucesso!', 'success');
+            }).catch((error) => {
+                console.error('Erro ao gerar PDF:', error);
+                btn.innerHTML = textoOriginal;
+                btn.disabled = false;
+                mostrarToast('Erro ao gerar PDF: ' + error.message, 'error');
+            });
+        }
+
+        function salvarConfiguracoes(event) {
+            event.preventDefault();
+            configImpressao = {
+                headerBgColor: document.getElementById('headerBgColor').value,
+                headerTextColor: document.getElementById('headerTextColor').value,
+                headerBorderColor: document.getElementById('headerBorderColor').value,
+                headerFontSize: parseInt(document.getElementById('headerFontSize').value) || 13,
+                headerPadding: parseInt(document.getElementById('headerPadding').value) || 30,
+                logoMaxHeight: parseInt(document.getElementById('logoMaxHeight').value) || 100,
+                enderecoEmpresa: document.getElementById('enderecoEmpresa').value,
+                clienteBgColor: document.getElementById('clienteBgColor').value,
+                clienteTextColor: document.getElementById('clienteTextColor').value,
+                clienteFontSize: parseInt(document.getElementById('clienteFontSize').value) || 12,
+                clientePadding: parseInt(document.getElementById('clientePadding').value) || 15,
+                camposCliente: document.getElementById('camposCliente').value,
+                tabelaHeaderBg: document.getElementById('tabelaHeaderBg').value,
+                tabelaHeaderText: document.getElementById('tabelaHeaderText').value,
+                tabelaHeaderFontSize: parseInt(document.getElementById('tabelaHeaderFontSize').value) || 12,
+                tabelaDataFontSize: parseInt(document.getElementById('tabelaDataFontSize').value) || 12,
+                tabelaLinhaPar: document.getElementById('tabelaLinhaPar').value,
+                tabelaLinhaImpar: document.getElementById('tabelaLinhaImpar').value,
+                textoContato: document.getElementById('textoContato').value,
+                rodapeFontSize: parseInt(document.getElementById('rodapeFontSize').value) || 13,
+                assinatura1: document.getElementById('assinatura1').value,
+                assinatura2: document.getElementById('assinatura2').value,
+                mostrarDataEmissao: document.getElementById('mostrarDataEmissao').value === 'true',
+                larguraMaxima: parseInt(document.getElementById('larguraMaxima').value) || 1000
+            };
+            salvarConfiguracoesLocal();
+            elements.modalConfig.style.display = 'none';
+            mostrarToast('Configurações salvas com sucesso!', 'success');
+        }
+
+        function restaurarConfiguracoes() {
+            if (!confirm('Tem certeza que deseja restaurar as configurações padrão?')) return;
+            configImpressao = {
+                headerBgColor: '#1a3a5c',
+                headerTextColor: '#ffffff',
+                headerBorderColor: '#ffd700',
+                headerFontSize: 13,
+                headerPadding: 30,
+                logoMaxHeight: 100,
+                enderecoEmpresa: 'RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NÚMERO: 129\nCIDADE: SINOP-MT | CEP: 78556-788',
+                clienteBgColor: '#f8f9fa',
+                clienteTextColor: '#333333',
+                clienteFontSize: 12,
+                clientePadding: 15,
+                camposCliente: 'NOME,CNPJ/CPF,TELEFONE,NÚMERO,BAIRRO,RUA,CEP,CIDADE,IE,EMAIL',
+                tabelaHeaderBg: '#1a3a5c',
+                tabelaHeaderText: '#ffffff',
+                tabelaHeaderFontSize: 12,
+                tabelaDataFontSize: 12,
+                tabelaLinhaPar: '#f8f9fa',
+                tabelaLinhaImpar: '#ffffff',
+                textoContato: 'CONTATO / WHATSAPP: (93) 8418-4950',
+                rodapeFontSize: 13,
+                assinatura1: 'SINOP-MT',
+                assinatura2: 'ASSINATURA',
+                mostrarDataEmissao: true,
+                larguraMaxima: 1000
+            };
+            salvarConfiguracoesLocal();
+            preencherFormConfig();
+            mostrarToast('Configurações restauradas!', 'success');
+        }
+
+        function mostrarToast(mensagem, tipo = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${tipo}`;
+            toast.textContent = mensagem;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.5s';
+                setTimeout(() => toast.remove(), 500);
+            }, 3000);
+        }
+
+        elements.btnBuscar.addEventListener('click', () => renderizarTabelas(elements.searchInput.value));
+        elements.searchInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') renderizarTabelas(elements.searchInput.value); });
+        elements.btnLimpar.addEventListener('click', () => { elements.searchInput.value = ''; renderizarTabelas(); });
+        elements.btnNovo.addEventListener('click', abrirModalNovo);
+        elements.closeBtn.addEventListener('click', () => elements.modal.style.display = 'none');
+        elements.closePrint.addEventListener('click', () => elements.modalPrint.style.display = 'none');
+        elements.btnFecharPrint.addEventListener('click', () => elements.modalPrint.style.display = 'none');
+        elements.btnConfigurar.addEventListener('click', () => { preencherFormConfig(); elements.modalConfig.style.display = 'block'; });
+        elements.closeConfig.addEventListener('click', () => elements.modalConfig.style.display = 'none');
+        elements.btnFecharConfig.addEventListener('click', () => elements.modalConfig.style.display = 'none');
+        elements.btnResetConfig.addEventListener('click', restaurarConfiguracoes);
+        elements.formConfig.addEventListener('submit', salvarConfiguracoes);
+        document.querySelectorAll('#formConfig input, #formConfig select, #formConfig textarea').forEach(el => {
+            el.addEventListener('input', atualizarPreview);
+            el.addEventListener('change', atualizarPreview);
+        });
+        elements.btnAddCidade.addEventListener('click', adicionarCidade);
+        elements.selectCidade.addEventListener('keyup', (e) => { if (e.key === 'Enter') adicionarCidade(); });
+        elements.cidadePersonalizada.addEventListener('keyup', (e) => { if (e.key === 'Enter') adicionarCidade(); });
+        elements.freteCidade.addEventListener('keyup', (e) => { if (e.key === 'Enter') adicionarCidade(); });
+        elements.kgCidade.addEventListener('keyup', (e) => { if (e.key === 'Enter') adicionarCidade(); });
+        elements.percentualCidade.addEventListener('keyup', (e) => { if (e.key === 'Enter') adicionarCidade(); });
+        window.addEventListener('click', (e) => {
+            if (e.target === elements.modal) elements.modal.style.display = 'none';
+            if (e.target === elements.modalPrint) elements.modalPrint.style.display = 'none';
+            if (e.target === elements.modalConfig) elements.modalConfig.style.display = 'none';
+        });
+        elements.form.addEventListener('submit', salvarTabela);
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            carregarConfiguracoes();
+            await atualizarStatusInicial();
+            await carregarDados();
+        });
+    </script>
+</body>
+</html>
