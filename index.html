@@ -1,4 +1,3 @@
-================================================================================
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -155,7 +154,7 @@
                 </div>
             </div>
             <div class="header-badge">
-                <div id="statusConexao" class="badge-status checking" onclick="verificarConexao()" title="Clique para verificar a conexão com o servidor">
+                <div id="statusConexao" class="badge-status checking" onclick="verificarConexao()" title="Clique para verificar a conexão com o JSONBin">
                     <span class="status-dot"></span>
                     <span id="statusTexto">Verificando...</span>
                 </div>
@@ -496,8 +495,19 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
     </div>
 
     <script>
-        const API_URL = 'http://localhost:3000/api';
+        // ============================================
+        // CONFIGURAÇÃO JSONBIN - FRONTEND DIRETO
+        // ============================================
+        const CONFIG = {
+            BIN_ID: '6a708f6af5f4af5e29e50603',
+            MASTER_KEY: '$2a$10$XHYsaSwZh2v6lebsk9vvEugA6omdPattDTtGC3BPZP1FauxoGHy72'
+        };
 
+        const API_URL = `https://api.jsonbin.io/v3/b/${CONFIG.BIN_ID}`;
+
+        // ============================================
+        // CONFIGURAÇÕES DE IMPRESSÃO
+        // ============================================
         let configImpressao = {
             headerBgColor: '#1a3a5c',
             headerTextColor: '#ffffff',
@@ -525,11 +535,17 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             larguraMaxima: 1000
         };
 
+        // ============================================
+        // ESTADO
+        // ============================================
         let tabelas = [];
         let editandoId = null;
         let cidadesTemp = [];
         let tabelaImpressaoAtual = null;
 
+        // ============================================
+        // REFERÊNCIAS
+        // ============================================
         const elements = {
             corpoTabela: document.getElementById('corpoTabela'),
             totalTabelas: document.getElementById('totalTabelas'),
@@ -576,6 +592,9 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             statusTexto: document.getElementById('statusTexto')
         };
 
+        // ============================================
+        // CONFIGURAÇÕES LOCAL
+        // ============================================
         function carregarConfiguracoes() {
             const salvo = localStorage.getItem('configImpressao');
             if (salvo) {
@@ -642,37 +661,42 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             `;
         }
 
+        // ============================================
+        // VERIFICAR CONEXÃO
+        // ============================================
         async function verificarConexao() {
             const statusEl = elements.statusConexao;
             const textoEl = elements.statusTexto;
             statusEl.className = 'badge-status checking';
             textoEl.textContent = 'Verificando...';
             try {
-                const response = await fetch(`${API_URL}/status`);
-                const data = await response.json();
-                if (data.success) {
+                const response = await fetch(API_URL, {
+                    headers: { 'X-Master-Key': CONFIG.MASTER_KEY }
+                });
+                if (response.ok) {
                     statusEl.className = 'badge-status online';
                     textoEl.textContent = 'Online';
-                    mostrarToast('Conectado ao servidor!', 'success');
+                    mostrarToast('Conectado ao JSONBin!', 'success');
                     await carregarDados();
                 } else {
                     statusEl.className = 'badge-status offline';
                     textoEl.textContent = 'Offline';
-                    mostrarToast('Servidor offline. Verifique se o backend está rodando.', 'error');
+                    mostrarToast('Erro ao conectar ao JSONBin.', 'error');
                 }
             } catch (error) {
                 statusEl.className = 'badge-status offline';
                 textoEl.textContent = 'Offline';
-                mostrarToast('Não foi possível conectar ao servidor.', 'error');
+                mostrarToast('Erro de rede.', 'error');
                 console.error('Erro de conexão:', error);
             }
         }
 
         async function atualizarStatusInicial() {
             try {
-                const response = await fetch(`${API_URL}/status`);
-                const data = await response.json();
-                if (data.success) {
+                const response = await fetch(API_URL, {
+                    headers: { 'X-Master-Key': CONFIG.MASTER_KEY }
+                });
+                if (response.ok) {
                     elements.statusConexao.className = 'badge-status online';
                     elements.statusTexto.textContent = 'Online';
                 } else {
@@ -685,6 +709,9 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             }
         }
 
+        // ============================================
+        // FRETES PADRÃO
+        // ============================================
         const FRETES_PADRAO = {
             'Cachoeira da Serra': { frete: 75.00, kg: 650.00, percentual: 3.00 },
             'Castelo dos Sonhos': { frete: 75.00, kg: 650.00, percentual: 3.00 },
@@ -700,20 +727,22 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             'Santarém': { frete: 130.00, kg: 1100.00, percentual: 4.50 }
         };
 
+        // ============================================
+        // JSONBIN - CARREGAR DADOS
+        // ============================================
         async function carregarDados() {
             try {
-                const response = await fetch(`${API_URL}/dados`);
+                const response = await fetch(API_URL, {
+                    headers: { 'X-Master-Key': CONFIG.MASTER_KEY }
+                });
+                if (!response.ok) throw new Error('Erro ao carregar dados');
                 const data = await response.json();
-                if (data.success) {
-                    tabelas = data.dados || [];
-                    renderizarTabelas();
-                    atualizarTotalizadores();
-                    elements.statusConexao.className = 'badge-status online';
-                    elements.statusTexto.textContent = 'Online';
-                    return tabelas;
-                } else {
-                    throw new Error(data.error || 'Erro ao carregar dados');
-                }
+                tabelas = data.record || [];
+                renderizarTabelas();
+                atualizarTotalizadores();
+                elements.statusConexao.className = 'badge-status online';
+                elements.statusTexto.textContent = 'Online';
+                return tabelas;
             } catch (error) {
                 console.error('Erro ao carregar:', error);
                 tabelas = getDadosExemplo();
@@ -726,26 +755,32 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             }
         }
 
+        // ============================================
+        // JSONBIN - SALVAR DADOS
+        // ============================================
         async function salvarDados() {
             try {
                 elements.statusConexao.className = 'badge-status checking';
                 elements.statusTexto.textContent = 'Salvando...';
                 if (!tabelas || tabelas.length === 0) { tabelas = []; }
-                const response = await fetch(`${API_URL}/dados`, {
+                const response = await fetch(API_URL, {
                     method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': CONFIG.MASTER_KEY
+                    },
                     body: JSON.stringify(tabelas)
                 });
-                const data = await response.json();
-                if (data.success) {
-                    console.log('Dados salvos:', data);
-                    elements.statusConexao.className = 'badge-status online';
-                    elements.statusTexto.textContent = 'Online';
-                    mostrarToast('Dados salvos com sucesso!', 'success');
-                    return true;
-                } else {
-                    throw new Error(data.error || 'Erro ao salvar');
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Erro ${response.status}: ${errorText}`);
                 }
+                const result = await response.json();
+                console.log('Dados salvos:', result);
+                elements.statusConexao.className = 'badge-status online';
+                elements.statusTexto.textContent = 'Online';
+                mostrarToast('Dados salvos com sucesso!', 'success');
+                return true;
             } catch (error) {
                 console.error('Erro ao salvar:', error);
                 elements.statusConexao.className = 'badge-status offline';
@@ -755,6 +790,9 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             }
         }
 
+        // ============================================
+        // DADOS DE EXEMPLO
+        // ============================================
         function getDadosExemplo() {
             const hoje = new Date().toISOString().split('T')[0];
             return [{
@@ -779,6 +817,9 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             }];
         }
 
+        // ============================================
+        // RENDERIZAR
+        // ============================================
         function renderizarTabelas(filtro = '') {
             let dados = filtro ? tabelas.filter(t => 
                 t.cliente.toLowerCase().includes(filtro.toLowerCase()) ||
@@ -818,6 +859,9 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             return d.toLocaleDateString('pt-BR');
         }
 
+        // ============================================
+        // CIDADES
+        // ============================================
         function renderizarCidadesForm() {
             elements.cidadeCount.textContent = `(${cidadesTemp.length} adicionadas)`;
             if (cidadesTemp.length === 0) {
@@ -876,6 +920,9 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             }
         });
 
+        // ============================================
+        // CRUD
+        // ============================================
         function abrirModalNovo() {
             editandoId = null;
             elements.modalTitle.textContent = 'Nova Tabela de Frete';
@@ -966,6 +1013,9 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             }
         }
 
+        // ============================================
+        // IMPRESSÃO
+        // ============================================
         let currentPrintId = null;
 
         function abrirImpressao(id) {
@@ -1077,6 +1127,9 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             });
         }
 
+        // ============================================
+        // CONFIGURAÇÕES
+        // ============================================
         function salvarConfiguracoes(event) {
             event.preventDefault();
             configImpressao = {
@@ -1143,6 +1196,9 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             mostrarToast('Configurações restauradas!', 'success');
         }
 
+        // ============================================
+        // TOAST
+        // ============================================
         function mostrarToast(mensagem, tipo = 'success') {
             const toast = document.createElement('div');
             toast.className = `toast toast-${tipo}`;
@@ -1155,6 +1211,9 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             }, 3000);
         }
 
+        // ============================================
+        // EVENTOS
+        // ============================================
         elements.btnBuscar.addEventListener('click', () => renderizarTabelas(elements.searchInput.value));
         elements.searchInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') renderizarTabelas(elements.searchInput.value); });
         elements.btnLimpar.addEventListener('click', () => { elements.searchInput.value = ''; renderizarTabelas(); });
@@ -1184,6 +1243,9 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         });
         elements.form.addEventListener('submit', salvarTabela);
 
+        // ============================================
+        // INICIALIZAÇÃO
+        // ============================================
         document.addEventListener('DOMContentLoaded', async () => {
             carregarConfiguracoes();
             await atualizarStatusInicial();
