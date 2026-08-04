@@ -379,12 +379,12 @@
         }
 
         /* ============================================
-           COMPONENTES - HEADER EMPRESARIAL
+           COMPONENTES - HEADER EMPRESARIAL COM TABELA FIXA
            ============================================ */
         .c-header {
             background: linear-gradient(135deg, var(--primary-900) 0%, var(--primary-700) 100%);
             color: var(--text-inverse);
-            padding: var(--space-4) 0;
+            padding: var(--space-3) 0;
             box-shadow: var(--shadow-md);
             position: sticky;
             top: 0;
@@ -396,6 +396,14 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            gap: var(--space-2);
+        }
+
+        .c-header__row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
             gap: var(--space-3);
         }
 
@@ -403,11 +411,12 @@
             display: flex;
             align-items: center;
             gap: var(--space-3);
+            flex-shrink: 0;
         }
 
         .c-header__logo {
-            width: 48px;
-            height: 48px;
+            width: 44px;
+            height: 44px;
             border-radius: var(--radius-lg);
             background: var(--white);
             display: flex;
@@ -425,30 +434,124 @@
             object-fit: contain;
         }
 
+        .c-header__title-group {
+            display: flex;
+            flex-direction: column;
+        }
+
         .c-header__title {
-            font-size: clamp(18px, 2.5vw, 24px);
+            font-size: clamp(16px, 2vw, 22px);
             font-weight: var(--font-weight-bold);
             line-height: var(--line-height-tight);
-            letter-spacing: -0.5px;
+            letter-spacing: -0.3px;
         }
 
         .c-header__subtitle {
             font-size: var(--font-size-xs);
             opacity: 0.8;
             font-weight: var(--font-weight-regular);
-            margin-top: var(--space-1);
+        }
+
+        /* ============================================
+           TABELA DE FRETES FIXA NO HEADER
+           ============================================ */
+        .c-header__fretes {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(8px);
+            border-radius: var(--radius-lg);
+            padding: var(--space-2) var(--space-4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            flex-shrink: 0;
+            min-width: 180px;
+        }
+
+        .c-header__fretes-title {
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: var(--space-1);
+            text-align: center;
+        }
+
+        .c-header__fretes-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: var(--space-1) var(--space-2);
+            font-size: var(--font-size-xs);
+        }
+
+        .c-header__fretes-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: var(--radius-sm);
+            padding: var(--space-1) var(--space-2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .c-header__fretes-item .label {
+            font-size: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .c-header__fretes-item .value {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-bold);
+            color: var(--text-inverse);
+            line-height: var(--line-height-tight);
+        }
+
+        .c-header__fretes-item .value small {
+            font-size: 8px;
+            font-weight: var(--font-weight-regular);
+            color: rgba(255, 255, 255, 0.6);
         }
 
         .c-header__badges {
             display: flex;
             gap: var(--space-2);
             flex-wrap: wrap;
+            align-items: center;
         }
 
-        @media (min-width: var(--breakpoint-sm)) {
-            .c-header__inner {
-                flex-direction: row;
-                justify-content: space-between;
+        .c-header__badges .c-badge {
+            font-size: 10px;
+            padding: var(--space-1) var(--space-2);
+        }
+
+        /* Responsividade do Header */
+        @media (max-width: var(--breakpoint-sm)) {
+            .c-header__row {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .c-header__fretes {
+                width: 100%;
+                min-width: unset;
+            }
+
+            .c-header__fretes-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .c-header__brand {
+                flex-shrink: 1;
+            }
+        }
+
+        @media (min-width: var(--breakpoint-sm)) and (max-width: var(--breakpoint-md)) {
+            .c-header__fretes {
+                min-width: 140px;
+            }
+            .c-header__fretes-grid {
+                grid-template-columns: 1fr 1fr;
             }
         }
 
@@ -511,32 +614,8 @@
             border-color: rgba(231, 76, 90, 0.3);
         }
 
-        .c-badge--success {
-            background: var(--success-light);
-            color: var(--success-dark);
-            border-color: transparent;
-        }
-
-        .c-badge--danger {
-            background: var(--danger-light);
-            color: var(--danger-dark);
-            border-color: transparent;
-        }
-
-        .c-badge--warning {
-            background: var(--warning-light);
-            color: var(--warning-dark);
-            border-color: transparent;
-        }
-
-        .c-badge--info {
-            background: var(--info-light);
-            color: var(--info-dark);
-            border-color: transparent;
-        }
-
         /* ============================================
-           COMPONENTES - PANEL
+           COMPONENTES - PANEL (MANTIDO)
            ============================================ */
         .c-panel {
             background: var(--bg-primary);
@@ -592,7 +671,7 @@
         .c-panel__footer strong { color: var(--text-primary); }
 
         /* ============================================
-           COMPONENTES - BUTTON EMPRESARIAL
+           COMPONENTES - BUTTON
            ============================================ */
         .c-btn {
             display: inline-flex;
@@ -708,20 +787,6 @@
             justify-content: center;
         }
 
-        .c-btn__spinner {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: var(--radius-full);
-            border-top-color: var(--text-inverse);
-            animation: c-btn__spinner--spin 0.6s linear infinite;
-        }
-
-        @keyframes c-btn__spinner--spin {
-            to { transform: rotate(360deg); }
-        }
-
         /* ============================================
            COMPONENTES - SEARCH
            ============================================ */
@@ -796,8 +861,6 @@
             transition: background var(--duration-base) ease;
         }
 
-        .c-table__head th:first-child { padding-left: var(--space-4); }
-
         .c-table__body tr {
             border-bottom: 1px solid var(--border-color);
             transition: background var(--duration-fast) ease;
@@ -817,7 +880,6 @@
             transition: color var(--duration-base) ease;
         }
 
-        .c-table__body td:first-child { padding-left: var(--space-4); }
         .c-table__body td:last-child {
             display: flex;
             gap: var(--space-1);
@@ -943,7 +1005,6 @@
             flex-wrap: wrap;
         }
 
-        /* Responsividade dos modais */
         @media (max-width: var(--breakpoint-sm)) {
             .c-modal { padding: 0; }
             .c-modal__content,
@@ -989,7 +1050,7 @@
         }
 
         /* ============================================
-           COMPONENTES - FORM EMPRESARIAL
+           COMPONENTES - FORM
            ============================================ */
         .c-form {
             display: flex;
@@ -1095,7 +1156,7 @@
         }
 
         /* ============================================
-           COMPONENTES - TOAST EMPRESARIAL
+           COMPONENTES - TOAST
            ============================================ */
         .c-toast {
             position: fixed;
@@ -1122,35 +1183,6 @@
         @keyframes c-toast--slideUp {
             from { transform: translateY(30px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
-        }
-
-        /* ============================================
-           COMPONENTES - LOADING
-           ============================================ */
-        .c-loading {
-            display: inline-block;
-            width: 24px;
-            height: 24px;
-            border: 3px solid var(--gray-200);
-            border-top-color: var(--primary-500);
-            border-radius: var(--radius-full);
-            animation: c-loading--spin 0.6s linear infinite;
-        }
-
-        .c-loading--sm {
-            width: 16px;
-            height: 16px;
-            border-width: 2px;
-        }
-
-        .c-loading--lg {
-            width: 40px;
-            height: 40px;
-            border-width: 4px;
-        }
-
-        @keyframes c-loading--spin {
-            to { transform: rotate(360deg); }
         }
 
         /* ============================================
@@ -1220,9 +1252,6 @@
             opacity: 0.5;
         }
 
-        /* ============================================
-           COMPONENTES - ADD CIDADES
-           ============================================ */
         .c-add-cidade {
             display: grid;
             grid-template-columns: 1fr;
@@ -1567,10 +1596,32 @@
             .c-add-cidade { grid-template-columns: 1fr; }
             .c-config-section__row { grid-template-columns: 1fr; }
             .c-preview__content { transform: scale(0.5); }
+
+            /* Header mobile */
+            .c-header__row {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .c-header__fretes {
+                width: 100%;
+                min-width: unset;
+            }
+            .c-header__fretes-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .c-header__brand {
+                flex-shrink: 1;
+            }
         }
 
         @media (min-width: var(--breakpoint-sm)) and (max-width: var(--breakpoint-md)) {
             .c-preview__content { transform: scale(0.55); }
+            .c-header__fretes {
+                min-width: 140px;
+            }
+            .c-header__fretes-grid {
+                grid-template-columns: 1fr 1fr;
+            }
         }
 
         @media (min-width: var(--breakpoint-md)) and (max-width: var(--breakpoint-lg)) {
@@ -1699,30 +1750,57 @@
 </head>
 <body>
     <!-- ============================================
-           HEADER EMPRESARIAL
+           HEADER EMPRESARIAL COM TABELA FIXA
            ============================================ -->
     <header class="c-header" role="banner">
         <div class="l-container">
             <div class="c-header__inner">
-                <div class="c-header__brand">
-                    <div class="c-header__logo">
-                        <a href="https://ibb.co/5gkwpWJj" target="_blank" aria-label="Logo Transports e Logística">
-                            <img src="https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png" alt="Logo Transports e Logística">
-                        </a>
+                <div class="c-header__row">
+                    <!-- Lado Esquerdo - Logo e Título -->
+                    <div class="c-header__brand">
+                        <div class="c-header__logo">
+                            <a href="https://ibb.co/5gkwpWJj" target="_blank" aria-label="Logo Transports e Logística">
+                                <img src="https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png" alt="Logo Transports e Logística">
+                            </a>
+                        </div>
+                        <div class="c-header__title-group">
+                            <h1 class="c-header__title">Transports e Logística</h1>
+                            <p class="c-header__subtitle">Sistema de Gerenciamento de Tabelas de Fretes</p>
+                        </div>
                     </div>
-                    <div>
-                        <h1 class="c-header__title">Transports e Logística</h1>
-                        <p class="c-header__subtitle">Sistema de Gerenciamento de Tabelas de Fretes</p>
+
+                    <!-- Lado Direito - Tabela Fixa de Fretes -->
+                    <div class="c-header__fretes" aria-label="Tabela de fretes fixa">
+                        <div class="c-header__fretes-title">📋 Tabela Fixa</div>
+                        <div class="c-header__fretes-grid">
+                            <div class="c-header__fretes-item">
+                                <span class="label">Frete</span>
+                                <span class="value">R$ 75 <small>a</small> 130</span>
+                            </div>
+                            <div class="c-header__fretes-item">
+                                <span class="label">Preço KG</span>
+                                <span class="value">R$ 650 <small>a</small> 1.100</span>
+                            </div>
+                            <div class="c-header__fretes-item">
+                                <span class="label">% NF</span>
+                                <span class="value">3% <small>a</small> 4,5%</span>
+                            </div>
+                            <div class="c-header__fretes-item" style="grid-column: span 1;">
+                                <span class="label">Cidades</span>
+                                <span class="value" style="font-size:10px;">12 Destinos</span>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="c-header__badges">
-                    <span id="statusConexao" class="c-badge c-badge--clickable c-badge--checking" onclick="verificarConexao()" role="button" tabindex="0" aria-label="Verificar conexão com o servidor">
-                        <span class="c-badge__dot c-badge__dot--checking" aria-hidden="true"></span>
-                        <span id="statusTexto">Verificando...</span>
-                    </span>
-                    <span class="c-badge" aria-label="Módulo de fretes">📦 Fretes</span>
-                    <span class="c-badge" aria-label="Tabelas de fretes">📋 Tabelas</span>
-                    <button id="toggleTheme" class="c-btn c-btn--sm c-btn--outline" aria-label="Alternar tema claro/escuro" style="border-color:rgba(255,255,255,0.3);color:white;">🌓</button>
+
+                    <!-- Badges -->
+                    <div class="c-header__badges">
+                        <span id="statusConexao" class="c-badge c-badge--clickable c-badge--checking" onclick="verificarConexao()" role="button" tabindex="0" aria-label="Verificar conexão com o servidor">
+                            <span class="c-badge__dot c-badge__dot--checking" aria-hidden="true"></span>
+                            <span id="statusTexto">Verificando...</span>
+                        </span>
+                        <span class="c-badge" aria-label="Módulo de fretes">📦 Fretes</span>
+                        <button id="toggleTheme" class="c-btn c-btn--sm c-btn--outline" aria-label="Alternar tema claro/escuro" style="border-color:rgba(255,255,255,0.3);color:white;font-size:11px;padding:2px 8px;">🌓</button>
+                    </div>
                 </div>
             </div>
         </div>
