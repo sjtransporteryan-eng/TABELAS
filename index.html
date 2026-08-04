@@ -226,7 +226,6 @@
             transition: background var(--duration-base) ease, color var(--duration-base) ease;
         }
 
-        /* Focus-visible para acessibilidade */
         *:focus-visible {
             outline: 2px solid var(--border-focus);
             outline-offset: 2px;
@@ -237,13 +236,11 @@
             outline: none;
         }
 
-        /* Seleção de texto */
         ::selection {
             background: var(--primary-300);
             color: var(--text-inverse);
         }
 
-        /* Scrollbar personalizada */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -266,198 +263,74 @@
         /* ============================================
            UTILITY CLASSES
            ============================================ */
-        .u-text-center {
-            text-align: center !important;
-        }
-        .u-text-left {
-            text-align: left !important;
-        }
-        .u-text-right {
-            text-align: right !important;
-        }
-        .u-text-uppercase {
-            text-transform: uppercase !important;
-        }
-        .u-text-bold {
-            font-weight: var(--font-weight-bold) !important;
-        }
-        .u-text-semibold {
-            font-weight: var(--font-weight-semibold) !important;
-        }
-        .u-text-medium {
-            font-weight: var(--font-weight-medium) !important;
-        }
-        .u-text-muted {
-            color: var(--text-tertiary) !important;
-        }
-        .u-text-success {
-            color: var(--success) !important;
-        }
-        .u-text-danger {
-            color: var(--danger) !important;
-        }
-        .u-text-warning {
-            color: var(--warning) !important;
-        }
-        .u-text-info {
-            color: var(--info) !important;
-        }
+        .u-text-center { text-align: center !important; }
+        .u-text-left { text-align: left !important; }
+        .u-text-right { text-align: right !important; }
+        .u-text-uppercase { text-transform: uppercase !important; }
+        .u-text-bold { font-weight: var(--font-weight-bold) !important; }
+        .u-text-semibold { font-weight: var(--font-weight-semibold) !important; }
+        .u-text-medium { font-weight: var(--font-weight-medium) !important; }
+        .u-text-muted { color: var(--text-tertiary) !important; }
+        .u-text-success { color: var(--success) !important; }
+        .u-text-danger { color: var(--danger) !important; }
+        .u-text-warning { color: var(--warning) !important; }
+        .u-text-info { color: var(--info) !important; }
 
-        .u-d-flex {
-            display: flex !important;
-        }
-        .u-d-grid {
-            display: grid !important;
-        }
-        .u-d-block {
-            display: block !important;
-        }
-        .u-d-none {
-            display: none !important;
-        }
+        .u-d-flex { display: flex !important; }
+        .u-d-grid { display: grid !important; }
+        .u-d-block { display: block !important; }
+        .u-d-none { display: none !important; }
 
-        .u-flex-1 {
-            flex: 1 !important;
-        }
-        .u-flex-center {
-            align-items: center !important;
-            justify-content: center !important;
-        }
-        .u-flex-between {
-            justify-content: space-between !important;
-            align-items: center !important;
-        }
-        .u-flex-column {
-            flex-direction: column !important;
-        }
-        .u-flex-wrap {
-            flex-wrap: wrap !important;
-        }
-        .u-gap-1 {
-            gap: var(--space-1) !important;
-        }
-        .u-gap-2 {
-            gap: var(--space-2) !important;
-        }
-        .u-gap-3 {
-            gap: var(--space-3) !important;
-        }
-        .u-gap-4 {
-            gap: var(--space-4) !important;
-        }
-        .u-gap-6 {
-            gap: var(--space-6) !important;
-        }
-        .u-gap-8 {
-            gap: var(--space-8) !important;
-        }
+        .u-flex-1 { flex: 1 !important; }
+        .u-flex-center { align-items: center !important; justify-content: center !important; }
+        .u-flex-between { justify-content: space-between !important; align-items: center !important; }
+        .u-flex-column { flex-direction: column !important; }
+        .u-flex-wrap { flex-wrap: wrap !important; }
+        .u-gap-1 { gap: var(--space-1) !important; }
+        .u-gap-2 { gap: var(--space-2) !important; }
+        .u-gap-3 { gap: var(--space-3) !important; }
+        .u-gap-4 { gap: var(--space-4) !important; }
+        .u-gap-6 { gap: var(--space-6) !important; }
+        .u-gap-8 { gap: var(--space-8) !important; }
 
-        .u-m-0 {
-            margin: 0 !important;
-        }
-        .u-mt-1 {
-            margin-top: var(--space-1) !important;
-        }
-        .u-mt-2 {
-            margin-top: var(--space-2) !important;
-        }
-        .u-mt-3 {
-            margin-top: var(--space-3) !important;
-        }
-        .u-mt-4 {
-            margin-top: var(--space-4) !important;
-        }
-        .u-mt-6 {
-            margin-top: var(--space-6) !important;
-        }
-        .u-mt-8 {
-            margin-top: var(--space-8) !important;
-        }
-        .u-mb-1 {
-            margin-bottom: var(--space-1) !important;
-        }
-        .u-mb-2 {
-            margin-bottom: var(--space-2) !important;
-        }
-        .u-mb-3 {
-            margin-bottom: var(--space-3) !important;
-        }
-        .u-mb-4 {
-            margin-bottom: var(--space-4) !important;
-        }
-        .u-mb-6 {
-            margin-bottom: var(--space-6) !important;
-        }
-        .u-mb-8 {
-            margin-bottom: var(--space-8) !important;
-        }
+        .u-m-0 { margin: 0 !important; }
+        .u-mt-1 { margin-top: var(--space-1) !important; }
+        .u-mt-2 { margin-top: var(--space-2) !important; }
+        .u-mt-3 { margin-top: var(--space-3) !important; }
+        .u-mt-4 { margin-top: var(--space-4) !important; }
+        .u-mt-6 { margin-top: var(--space-6) !important; }
+        .u-mt-8 { margin-top: var(--space-8) !important; }
+        .u-mb-1 { margin-bottom: var(--space-1) !important; }
+        .u-mb-2 { margin-bottom: var(--space-2) !important; }
+        .u-mb-3 { margin-bottom: var(--space-3) !important; }
+        .u-mb-4 { margin-bottom: var(--space-4) !important; }
+        .u-mb-6 { margin-bottom: var(--space-6) !important; }
+        .u-mb-8 { margin-bottom: var(--space-8) !important; }
 
-        .u-p-0 {
-            padding: 0 !important;
-        }
-        .u-p-1 {
-            padding: var(--space-1) !important;
-        }
-        .u-p-2 {
-            padding: var(--space-2) !important;
-        }
-        .u-p-3 {
-            padding: var(--space-3) !important;
-        }
-        .u-p-4 {
-            padding: var(--space-4) !important;
-        }
-        .u-p-6 {
-            padding: var(--space-6) !important;
-        }
-        .u-p-8 {
-            padding: var(--space-8) !important;
-        }
+        .u-p-0 { padding: 0 !important; }
+        .u-p-1 { padding: var(--space-1) !important; }
+        .u-p-2 { padding: var(--space-2) !important; }
+        .u-p-3 { padding: var(--space-3) !important; }
+        .u-p-4 { padding: var(--space-4) !important; }
+        .u-p-6 { padding: var(--space-6) !important; }
+        .u-p-8 { padding: var(--space-8) !important; }
 
-        .u-w-full {
-            width: 100% !important;
-        }
-        .u-w-auto {
-            width: auto !important;
-        }
-        .u-max-w-full {
-            max-width: 100% !important;
-        }
+        .u-w-full { width: 100% !important; }
+        .u-w-auto { width: auto !important; }
+        .u-max-w-full { max-width: 100% !important; }
 
-        .u-rounded {
-            border-radius: var(--radius-md) !important;
-        }
-        .u-rounded-lg {
-            border-radius: var(--radius-lg) !important;
-        }
-        .u-rounded-xl {
-            border-radius: var(--radius-xl) !important;
-        }
-        .u-rounded-full {
-            border-radius: var(--radius-full) !important;
-        }
+        .u-rounded { border-radius: var(--radius-md) !important; }
+        .u-rounded-lg { border-radius: var(--radius-lg) !important; }
+        .u-rounded-xl { border-radius: var(--radius-xl) !important; }
+        .u-rounded-full { border-radius: var(--radius-full) !important; }
 
-        .u-bg-white {
-            background: var(--white) !important;
-        }
-        .u-bg-gray-50 {
-            background: var(--gray-50) !important;
-        }
-        .u-bg-primary-50 {
-            background: var(--primary-50) !important;
-        }
-        .u-bg-success-light {
-            background: var(--success-light) !important;
-        }
-        .u-bg-danger-light {
-            background: var(--danger-light) !important;
-        }
-        .u-bg-warning-light {
-            background: var(--warning-light) !important;
-        }
-        .u-bg-info-light {
-            background: var(--info-light) !important;
-        }
+        .u-bg-white { background: var(--white) !important; }
+        .u-bg-gray-50 { background: var(--gray-50) !important; }
+        .u-bg-primary-50 { background: var(--primary-50) !important; }
+        .u-bg-success-light { background: var(--success-light) !important; }
+        .u-bg-danger-light { background: var(--danger-light) !important; }
+        .u-bg-warning-light { background: var(--warning-light) !important; }
+        .u-bg-info-light { background: var(--info-light) !important; }
 
         .u-sr-only {
             position: absolute !important;
@@ -470,9 +343,7 @@
             border: 0 !important;
         }
 
-        .u-hidden {
-            display: none !important;
-        }
+        .u-hidden { display: none !important; }
 
         /* ============================================
            LAYOUTS
@@ -502,15 +373,9 @@
         }
 
         @media (min-width: var(--breakpoint-sm)) {
-            .l-grid-2 {
-                grid-template-columns: 1fr 1fr;
-            }
-            .l-grid-3 {
-                grid-template-columns: 1fr 1fr 1fr;
-            }
-            .l-grid-4 {
-                grid-template-columns: 1fr 1fr 1fr 1fr;
-            }
+            .l-grid-2 { grid-template-columns: 1fr 1fr; }
+            .l-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+            .l-grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
         }
 
         /* ============================================
@@ -606,14 +471,8 @@
             white-space: nowrap;
         }
 
-        .c-badge--clickable {
-            cursor: pointer;
-        }
-
-        .c-badge--clickable:hover {
-            transform: scale(1.05);
-            background: rgba(255, 255, 255, 0.15);
-        }
+        .c-badge--clickable { cursor: pointer; }
+        .c-badge--clickable:hover { transform: scale(1.05); background: rgba(255, 255, 255, 0.15); }
 
         .c-badge__dot {
             width: 8px;
@@ -638,15 +497,8 @@
         }
 
         @keyframes c-badge__dot--pulse {
-            0%,
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 0.3;
-                transform: scale(0.7);
-            }
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(0.7); }
         }
 
         .c-badge--online {
@@ -737,9 +589,7 @@
             transition: background var(--duration-base) ease;
         }
 
-        .c-panel__footer strong {
-            color: var(--text-primary);
-        }
+        .c-panel__footer strong { color: var(--text-primary); }
 
         /* ============================================
            COMPONENTES - BUTTON EMPRESARIAL
@@ -766,22 +616,9 @@
             white-space: nowrap;
         }
 
-        .c-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .c-btn:active {
-            transform: translateY(0);
-            box-shadow: none;
-        }
-
-        .c-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none !important;
-            box-shadow: none !important;
-        }
+        .c-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+        .c-btn:active { transform: translateY(0); box-shadow: none; }
+        .c-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
 
         .c-btn--primary {
             background: var(--primary-500);
@@ -882,9 +719,7 @@
         }
 
         @keyframes c-btn__spinner--spin {
-            to {
-                transform: rotate(360deg);
-            }
+            to { transform: rotate(360deg); }
         }
 
         /* ============================================
@@ -918,9 +753,7 @@
             box-shadow: 0 0 0 3px rgba(32, 74, 142, 0.1);
         }
 
-        .c-search__input::placeholder {
-            color: var(--text-tertiary);
-        }
+        .c-search__input::placeholder { color: var(--text-tertiary); }
 
         /* ============================================
            COMPONENTES - TABLE EMPRESARIAL
@@ -963,23 +796,15 @@
             transition: background var(--duration-base) ease;
         }
 
-        .c-table__head th:first-child {
-            padding-left: var(--space-4);
-        }
+        .c-table__head th:first-child { padding-left: var(--space-4); }
 
         .c-table__body tr {
             border-bottom: 1px solid var(--border-color);
             transition: background var(--duration-fast) ease;
         }
 
-        .c-table__body tr:last-child {
-            border-bottom: none;
-        }
-
-        .c-table__body tr:hover {
-            background: var(--primary-50);
-        }
-
+        .c-table__body tr:last-child { border-bottom: none; }
+        .c-table__body tr:hover { background: var(--primary-50); }
         .c-table__body tr.selected {
             background: var(--primary-100);
             border-left: 3px solid var(--primary-500);
@@ -992,10 +817,7 @@
             transition: color var(--duration-base) ease;
         }
 
-        .c-table__body td:first-child {
-            padding-left: var(--space-4);
-        }
-
+        .c-table__body td:first-child { padding-left: var(--space-4); }
         .c-table__body td:last-child {
             display: flex;
             gap: var(--space-1);
@@ -1017,7 +839,7 @@
         }
 
         /* ============================================
-           COMPONENTES - MODAL EMPRESARIAL
+           COMPONENTES - MODAL OTIMIZADO
            ============================================ */
         .c-modal {
             display: none;
@@ -1027,7 +849,7 @@
             background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(4px);
             overflow-y: auto;
-            padding: var(--space-4);
+            padding: var(--space-3);
             animation: c-modal--fadeIn var(--duration-fast) ease;
         }
 
@@ -1038,12 +860,8 @@
         }
 
         @keyframes c-modal--fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .c-modal__content {
@@ -1053,7 +871,7 @@
             border-radius: var(--radius-xl);
             box-shadow: var(--shadow-xl);
             animation: c-modal--slideUp var(--duration-slow) var(--ease-bounce);
-            max-height: 90vh;
+            max-height: 95vh;
             display: flex;
             flex-direction: column;
             transition: background var(--duration-base) ease;
@@ -1064,22 +882,17 @@
         }
 
         .c-modal__content--xl {
-            max-width: 950px;
+            max-width: 94vw;
+            max-height: 94vh;
         }
 
         @keyframes c-modal--slideUp {
-            from {
-                transform: translateY(30px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         .c-modal__header {
-            padding: var(--space-4) var(--space-6);
+            padding: var(--space-3) var(--space-5);
             border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
@@ -1115,13 +928,13 @@
         }
 
         .c-modal__body {
-            padding: var(--space-6);
+            padding: var(--space-4) var(--space-5);
             overflow-y: auto;
             flex: 1;
         }
 
         .c-modal__footer {
-            padding: var(--space-4) var(--space-6);
+            padding: var(--space-3) var(--space-5);
             border-top: 1px solid var(--border-color);
             display: flex;
             justify-content: flex-end;
@@ -1130,12 +943,12 @@
             flex-wrap: wrap;
         }
 
+        /* Responsividade dos modais */
         @media (max-width: var(--breakpoint-sm)) {
-            .c-modal {
-                padding: 0;
-            }
-
-            .c-modal__content {
+            .c-modal { padding: 0; }
+            .c-modal__content,
+            .c-modal__content--lg,
+            .c-modal__content--xl {
                 max-width: 100%;
                 width: 100%;
                 height: 100vh;
@@ -1143,10 +956,36 @@
                 border-radius: 0;
                 margin: 0;
             }
+            .c-modal__body { padding: var(--space-3); flex: 1; overflow-y: auto; }
+            .c-modal__header { padding: var(--space-2) var(--space-3); }
+            .c-modal__footer { padding: var(--space-2) var(--space-3); }
+        }
 
-            .c-modal__body {
-                padding: var(--space-4);
+        @media (min-width: var(--breakpoint-sm)) and (max-width: var(--breakpoint-md)) {
+            .c-modal__content--xl {
+                max-width: 97vw;
+                max-height: 97vh;
             }
+            .c-modal__body { padding: var(--space-3) var(--space-4); }
+        }
+
+        @media (min-width: var(--breakpoint-lg)) and (max-width: var(--breakpoint-xl)) {
+            .c-modal__content--xl {
+                max-width: 92vw;
+                max-height: 92vh;
+            }
+        }
+
+        @media (min-width: var(--breakpoint-xl)) {
+            .c-modal__content--xl {
+                max-width: 90vw;
+                max-height: 90vh;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .c-modal__content { animation: none !important; }
+            .c-modal { animation: none !important; backdrop-filter: none !important; }
         }
 
         /* ============================================
@@ -1223,13 +1062,8 @@
             cursor: not-allowed;
         }
 
-        .c-form__input--error {
-            border-color: var(--danger) !important;
-        }
-
-        .c-form__input--success {
-            border-color: var(--success) !important;
-        }
+        .c-form__input--error { border-color: var(--danger) !important; }
+        .c-form__input--success { border-color: var(--success) !important; }
 
         .c-form__textarea {
             resize: vertical;
@@ -1280,31 +1114,14 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .c-toast--success {
-            background: var(--success);
-        }
-
-        .c-toast--error {
-            background: var(--danger);
-        }
-
-        .c-toast--info {
-            background: var(--info);
-        }
-
-        .c-toast--warning {
-            background: var(--warning);
-        }
+        .c-toast--success { background: var(--success); }
+        .c-toast--error { background: var(--danger); }
+        .c-toast--info { background: var(--info); }
+        .c-toast--warning { background: var(--warning); }
 
         @keyframes c-toast--slideUp {
-            from {
-                transform: translateY(30px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         /* ============================================
@@ -1333,9 +1150,7 @@
         }
 
         @keyframes c-loading--spin {
-            to {
-                transform: rotate(360deg);
-            }
+            to { transform: rotate(360deg); }
         }
 
         /* ============================================
@@ -1362,26 +1177,16 @@
             transition: background var(--duration-fast) ease;
         }
 
-        .c-cidades__item:last-child {
-            border-bottom: none;
-        }
-
-        .c-cidades__item:hover {
-            background: var(--bg-primary);
-        }
+        .c-cidades__item:last-child { border-bottom: none; }
+        .c-cidades__item:hover { background: var(--bg-primary); }
 
         .c-cidades__item-info {
             flex: 1;
             font-size: var(--font-size-sm);
         }
 
-        .c-cidades__item-info strong {
-            color: var(--text-primary);
-        }
-
-        .c-cidades__item-info span {
-            color: var(--text-tertiary);
-        }
+        .c-cidades__item-info strong { color: var(--text-primary); }
+        .c-cidades__item-info span { color: var(--text-tertiary); }
 
         .c-cidades__remove {
             background: var(--danger);
@@ -1588,9 +1393,7 @@
             color: #333333;
         }
 
-        .c-print__address strong {
-            color: var(--primary-600);
-        }
+        .c-print__address strong { color: var(--primary-600); }
 
         .c-print__cliente {
             display: grid;
@@ -1722,28 +1525,19 @@
                 flex-direction: column;
                 align-items: stretch;
             }
-
-            .c-panel__body {
-                padding: var(--space-3);
-            }
-
-            .c-panel__footer {
-                flex-direction: column;
-                text-align: center;
-            }
+            .c-panel__body { padding: var(--space-3); }
+            .c-panel__footer { flex-direction: column; text-align: center; }
 
             .c-table-wrap {
                 margin: 0 calc(-1 * var(--space-3));
                 padding: 0 var(--space-3);
             }
-
             .c-table {
                 font-size: var(--font-size-xs);
                 display: block;
                 overflow-x: auto;
                 white-space: nowrap;
             }
-
             .c-table__body td:last-child {
                 display: flex;
                 flex-wrap: wrap;
@@ -1754,79 +1548,46 @@
                 grid-template-columns: 1fr;
                 margin: 0 var(--space-2) var(--space-2);
             }
-
             .c-print__origem {
                 flex-direction: column;
                 gap: var(--space-1);
                 text-align: center;
                 margin: 0 var(--space-2) var(--space-2);
             }
-
-            .c-print__table-wrap {
-                margin: 0 var(--space-2) var(--space-2);
-            }
-
+            .c-print__table-wrap { margin: 0 var(--space-2) var(--space-2); }
             .c-print__footer {
                 flex-direction: column;
                 align-items: stretch;
                 margin: 0 var(--space-2) var(--space-2);
             }
-
             .c-print__footer-assinaturas {
                 flex-direction: column;
                 gap: var(--space-4);
             }
-
-            .c-add-cidade {
-                grid-template-columns: 1fr;
-            }
-
-            .c-config-section__row {
-                grid-template-columns: 1fr;
-            }
-
-            .c-modal__content--xl {
-                max-width: 100%;
-                margin: 0;
-                border-radius: 0;
-                max-height: 100vh;
-            }
-
-            .c-preview__content {
-                transform: scale(0.5);
-            }
+            .c-add-cidade { grid-template-columns: 1fr; }
+            .c-config-section__row { grid-template-columns: 1fr; }
+            .c-preview__content { transform: scale(0.5); }
         }
 
         @media (min-width: var(--breakpoint-sm)) and (max-width: var(--breakpoint-md)) {
-            .c-preview__content {
-                transform: scale(0.55);
-            }
+            .c-preview__content { transform: scale(0.55); }
         }
 
         @media (min-width: var(--breakpoint-md)) and (max-width: var(--breakpoint-lg)) {
-            .c-preview__content {
-                transform: scale(0.6);
-            }
+            .c-preview__content { transform: scale(0.6); }
         }
 
         @media (min-width: var(--breakpoint-lg)) {
-            .c-preview__content {
-                transform: scale(0.65);
-            }
+            .c-preview__content { transform: scale(0.65); }
         }
 
         /* ============================================
            IMPRESSÃO
            ============================================ */
         @media print {
-            body * {
-                visibility: hidden;
-            }
-
+            body * { visibility: hidden; }
             #modalImprimir,
-            #modalImprimir * {
-                visibility: visible;
-            }
+            #modalImprimir * { visibility: visible; }
 
             #modalImprimir {
                 position: absolute !important;
@@ -1861,20 +1622,12 @@
                 padding: 20px !important;
                 max-width: 100% !important;
             }
-
-            .c-print__header {
-                padding: 15px !important;
-            }
-
+            .c-print__header { padding: 15px !important; }
             .c-print__logo img {
                 max-height: 80px !important;
                 max-width: 200px !important;
             }
-
-            .c-print__table {
-                font-size: 10px !important;
-            }
-
+            .c-print__table { font-size: 10px !important; }
             .c-print__cliente,
             .c-print__origem,
             .c-print__footer,
@@ -1889,24 +1642,12 @@
             }
 
             @page {
-                @top-center {
-                    content: none !important;
-                }
-                @bottom-center {
-                    content: none !important;
-                }
-                @top-right {
-                    content: none !important;
-                }
-                @bottom-right {
-                    content: none !important;
-                }
-                @top-left {
-                    content: none !important;
-                }
-                @bottom-left {
-                    content: none !important;
-                }
+                @top-center { content: none !important; }
+                @bottom-center { content: none !important; }
+                @top-right { content: none !important; }
+                @bottom-right { content: none !important; }
+                @top-left { content: none !important; }
+                @bottom-left { content: none !important; }
             }
         }
 
@@ -1922,26 +1663,11 @@
                 transition-duration: 0.01ms !important;
                 scroll-behavior: auto !important;
             }
-
-            .c-badge__dot {
-                animation: none !important;
-            }
-
-            .c-modal__content {
-                animation: none !important;
-            }
-
-            .c-toast {
-                animation: none !important;
-            }
-
-            .c-btn {
-                transition: none !important;
-            }
-
-            .c-modal {
-                backdrop-filter: none !important;
-            }
+            .c-badge__dot { animation: none !important; }
+            .c-modal__content { animation: none !important; }
+            .c-toast { animation: none !important; }
+            .c-btn { transition: none !important; }
+            .c-modal { backdrop-filter: none !important; }
         }
 
         /* ============================================
@@ -2010,17 +1736,12 @@
             <header class="c-panel__header">
                 <h2 class="c-panel__title">📋 Tabelas de Fretes</h2>
                 <div class="c-panel__actions">
-                    <button id="btnConfigurar" class="c-btn c-btn--warning" aria-label="Configurar impressão">
-                        ⚙️ Configurar
-                    </button>
-                    <button id="btnNovo" class="c-btn c-btn--primary" aria-label="Nova tabela de frete">
-                        + Nova Tabela
-                    </button>
+                    <button id="btnConfigurar" class="c-btn c-btn--warning" aria-label="Configurar impressão">⚙️ Configurar</button>
+                    <button id="btnNovo" class="c-btn c-btn--primary" aria-label="Nova tabela de frete">+ Nova Tabela</button>
                 </div>
             </header>
 
             <div class="c-panel__body">
-                <!-- Busca -->
                 <div class="c-search" role="search">
                     <label for="searchInput" class="u-sr-only">Buscar tabelas</label>
                     <input type="text" id="searchInput" class="c-search__input" placeholder="Buscar por cliente, origem ou destino..." aria-label="Buscar tabelas de frete">
@@ -2028,7 +1749,6 @@
                     <button id="btnLimpar" class="c-btn c-btn--outline" aria-label="Limpar busca">Limpar</button>
                 </div>
 
-                <!-- Tabela Empresarial -->
                 <div class="c-table-wrap">
                     <table class="c-table" aria-label="Lista de tabelas de fretes">
                         <thead class="c-table__head">
@@ -2042,8 +1762,7 @@
                                 <th scope="col">Ações</th>
                             </tr>
                         </thead>
-                        <tbody id="corpoTabela" class="c-table__body">
-                        </tbody>
+                        <tbody id="corpoTabela" class="c-table__body"></tbody>
                     </table>
                 </div>
             </div>
@@ -2067,7 +1786,6 @@
             <div class="c-modal__body">
                 <form id="formConfig">
                     <div class="c-config-layout">
-                        <!-- Coluna Esquerda - Configurações -->
                         <div class="c-config-layout__sidebar">
                             <!-- Cabeçalho -->
                             <section class="c-config-section">
@@ -2302,7 +2020,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                             </div>
                         </div>
 
-                        <!-- Coluna Direita - Preview -->
                         <div class="c-config-layout__preview">
                             <section class="c-config-section" style="height:100%;">
                                 <h4 class="c-config-section__title">👁️ Pré-visualização</h4>
@@ -2311,9 +2028,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                                     <span class="c-preview__fonte" id="previewAlignInfo">Alinhamento: Centro</span>
                                 </div>
                                 <div class="c-preview" id="previewDocumento">
-                                    <div class="c-preview__content" id="previewPrintContent">
-                                        <!-- Conteúdo gerado dinamicamente -->
-                                    </div>
+                                    <div class="c-preview__content" id="previewPrintContent"></div>
                                 </div>
                             </section>
                         </div>
@@ -2438,9 +2153,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 <h3 id="modalImprimirTitle" class="c-modal__title">📄 Tabela de Fretes</h3>
                 <button type="button" class="c-modal__close close-print" aria-label="Fechar impressão">&times;</button>
             </header>
-            <div class="c-modal__body" id="conteudoImpressao">
-                <!-- Conteúdo gerado dinamicamente -->
-            </div>
+            <div class="c-modal__body" id="conteudoImpressao"></div>
             <footer class="c-modal__footer c-print__actions">
                 <button onclick="imprimirRecibo()" class="c-btn c-btn--primary" aria-label="Imprimir documento">🖨️ Imprimir</button>
                 <button onclick="gerarPDF()" class="c-btn c-btn--success" id="btnGerarPDF" aria-label="Gerar PDF">📄 Gerar PDF</button>
