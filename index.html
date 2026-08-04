@@ -6,758 +6,1949 @@
     <title>Sistema de Tabela de Fretes - Transports e Logística</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f6f9; color: #333; }
-        header { background: linear-gradient(135deg, #1a3a5c 0%, #2c5f8a 100%); color: white; padding: 20px 0; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .header-content { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
-        .header-left { display: flex; align-items: center; gap: 20px; }
-        .header-logo { width: 70px; height: 70px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; padding: 5px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
-        .header-logo img { width: 100%; height: 100%; object-fit: contain; border-radius: 50%; }
-        .header-title h1 { font-size: 28px; font-weight: 700; }
-        .header-title p { opacity: 0.9; margin-top: 5px; }
-        .header-badge { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-        .badge { background: rgba(255,255,255,0.2); color: white; padding: 6px 15px; border-radius: 20px; font-size: 13px; font-weight: 600; border: 1px solid rgba(255,255,255,0.1); }
-        .badge-status { display: inline-flex; align-items: center; gap: 6px; padding: 6px 15px; border-radius: 20px; font-size: 13px; font-weight: 600; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; transition: all 0.3s ease; }
-        .badge-status:hover { transform: scale(1.05); }
-        .badge-status .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
-        .badge-status.online .status-dot { background: #48bb78; box-shadow: 0 0 8px rgba(72,187,120,0.5); }
-        .badge-status.offline .status-dot { background: #fc8181; box-shadow: 0 0 8px rgba(252,129,129,0.5); }
-        .badge-status.checking .status-dot { background: #f6ad55; animation: pulse 0.8s ease-in-out infinite; }
-        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
-        .badge-status.online { background: rgba(72,187,120,0.25); border-color: rgba(72,187,120,0.4); }
-        .badge-status.offline { background: rgba(252,129,129,0.25); border-color: rgba(252,129,129,0.4); }
-        .badge-status.checking { background: rgba(246,173,85,0.25); border-color: rgba(246,173,85,0.4); }
-        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
-        .panel { background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); overflow: hidden; }
-        .panel-header { padding: 20px 25px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
-        .panel-header h2 { font-size: 20px; color: #1a3a5c; }
-        .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
-        .btn { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px; }
-        .btn-primary { background: #2c5f8a; color: white; }
-        .btn-primary:hover { background: #1a3a5c; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(44,95,138,0.3); }
-        .btn-success { background: #48bb78; color: white; }
-        .btn-success:hover { background: #38a169; transform: translateY(-2px); }
-        .btn-secondary { background: #e2e8f0; color: #2d3748; }
-        .btn-secondary:hover { background: #cbd5e0; }
-        .btn-danger { background: #fc8181; color: white; }
-        .btn-danger:hover { background: #e53e3e; }
-        .btn-outline { background: transparent; color: #2c5f8a; border: 2px solid #2c5f8a; }
-        .btn-outline:hover { background: #2c5f8a; color: white; }
-        .btn-sm { padding: 6px 12px; font-size: 12px; }
-        .btn-warning { background: #ed8936; color: white; }
-        .btn-warning:hover { background: #dd6b20; }
-        .search-box { padding: 20px 25px; display: flex; gap: 10px; flex-wrap: wrap; background: #fafbfc; border-bottom: 1px solid #e2e8f0; }
-        .search-box input { flex: 1; min-width: 200px; padding: 10px 15px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 14px; transition: all 0.3s; }
-        .search-box input:focus { outline: none; border-color: #2c5f8a; box-shadow: 0 0 0 3px rgba(44,95,138,0.1); }
-        .table-responsive { overflow-x: auto; padding: 0 25px 25px 25px; }
-        table { width: 100%; border-collapse: collapse; font-size: 14px; }
-        thead { background: #f7fafc; border-bottom: 2px solid #e2e8f0; }
-        thead th { padding: 15px 12px; text-align: left; font-weight: 600; color: #2d3748; white-space: nowrap; }
-        tbody tr { border-bottom: 1px solid #edf2f7; transition: background 0.2s; }
-        tbody tr:hover { background: #f7fafc; }
-        tbody td { padding: 12px; vertical-align: middle; }
-        tbody td:last-child { display: flex; gap: 8px; flex-wrap: wrap; }
-        .footer-stats { padding: 15px 25px; background: #f7fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-size: 14px; }
-        .footer-stats strong { color: #2c5f8a; }
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); overflow-y: auto; padding: 20px; }
-        .modal-content { background: white; max-width: 1200px; margin: 40px auto; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: slideIn 0.3s ease; }
-        @keyframes slideIn { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .modal-header { padding: 20px 25px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
-        .modal-header h3 { font-size: 20px; color: #1a3a5c; }
-        .close { font-size: 28px; font-weight: 700; color: #a0aec0; cursor: pointer; transition: color 0.3s; }
-        .close:hover { color: #e53e3e; }
-        form { padding: 25px; }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
-        .form-row-full { grid-column: 1 / -1; }
-        .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px; }
-        @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } .form-row-3 { grid-template-columns: 1fr; } }
-        .form-group { display: flex; flex-direction: column; gap: 5px; }
-        .form-group label { font-weight: 600; font-size: 13px; color: #2d3748; }
-        .form-group input, .form-group select, .form-group textarea { padding: 10px 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 14px; transition: all 0.3s; font-family: inherit; }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #2c5f8a; box-shadow: 0 0 0 3px rgba(44,95,138,0.1); }
-        .form-group textarea { resize: vertical; min-height: 60px; }
-        .form-group input[readonly] { background: #f7fafc; cursor: not-allowed; }
-        .cidades-list { border: 2px solid #e2e8f0; border-radius: 8px; padding: 10px; max-height: 250px; overflow-y: auto; background: #fafbfc; margin-bottom: 10px; }
-        .cidade-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid #edf2f7; gap: 10px; }
-        .cidade-item:last-child { border-bottom: none; }
-        .cidade-item .cidade-info { flex: 1; font-size: 13px; }
-        .cidade-item .cidade-info strong { color: #2d3748; }
-        .btn-remove-cidade { background: #fc8181; color: white; border: none; border-radius: 4px; padding: 4px 10px; cursor: pointer; font-size: 12px; font-weight: 600; }
-        .btn-remove-cidade:hover { background: #e53e3e; }
-        .add-cidade-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 10px; margin-top: 5px; }
-        @media (max-width: 768px) { .add-cidade-row { grid-template-columns: 1fr 1fr; } }
-        .add-cidade-row select, .add-cidade-row input { padding: 8px 12px; border: 2px solid #e2e8f0; border-radius: 6px; font-size: 13px; }
-        .add-cidade-row select:focus, .add-cidade-row input:focus { outline: none; border-color: #2c5f8a; }
-        .badge-success { background: #48bb78; }
-        .empty-state { text-align: center; padding: 20px; color: #a0aec0; }
-        .empty-state .icon { font-size: 36px; margin-bottom: 5px; }
-        .cidade-count { font-size: 12px; color: #718096; margin-left: 5px; }
+        /* ============================================
+           VARIÁVEIS - TEMA CORPORATIVO
+           ============================================ */
+        :root {
+            /* Cores Primárias - Transportes */
+            --transport-primary: #1a3a5c;
+            --transport-primary-light: #2c5f8a;
+            --transport-primary-dark: #0d1f33;
+            --transport-secondary: #ffd700;
+            --transport-secondary-light: #ffe44d;
+            --transport-secondary-dark: #ccb300;
 
-        /* IMPRESSÃO */
-        #printContent { padding: 0; font-family: 'Courier New', monospace; background: white; margin: 0 auto; }
-        #printContent .header-print { padding: 30px 20px 20px 20px; text-align: center; border-bottom: 4px solid #ffd700; margin-bottom: 20px; }
-        #printContent .header-print .logo-print { display: flex; justify-content: center; align-items: center; margin-bottom: 10px; }
-        #printContent .header-print .logo-print img { object-fit: contain; background: white; border-radius: 12px; padding: 8px 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        #printContent .header-print .endereco { line-height: 1.6; font-weight: 500; letter-spacing: 0.5px; }
-        #printContent .header-print .endereco strong { color: #ffd700; }
-        #printContent .info-cliente { display: grid; grid-template-columns: 1fr 1fr; gap: 5px 30px; padding: 15px 20px; border-radius: 8px; margin: 0 20px 20px 20px; border: 1px solid #dee2e6; }
-        #printContent .info-cliente .info-item { display: flex; gap: 5px; padding: 3px 0; }
-        #printContent .info-cliente .info-item strong { min-width: 80px; }
-        #printContent .info-origem { display: flex; justify-content: space-between; padding: 10px 20px; border-radius: 6px; margin: 0 20px 20px 20px; font-weight: 600; }
-        #printContent .tabela-fretes { width: calc(100% - 40px); margin: 0 20px 20px 20px; border-collapse: collapse; }
-        #printContent .tabela-fretes th { padding: 10px 12px; text-align: left; border: 1px solid #1a3a5c; }
-        #printContent .tabela-fretes td { padding: 8px 12px; border: 1px solid #dee2e6; }
-        #printContent .tabela-fretes tr:nth-child(even) { background: #f8f9fa; }
-        #printContent .rodape-print { margin: 0 20px 20px 20px; padding-top: 15px; border-top: 2px solid #333; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
-        #printContent .rodape-print .dados-adicionais { line-height: 1.8; color: #333; }
-        #printContent .rodape-print .dados-adicionais strong { color: #1a3a5c; }
-        #printContent .rodape-print .assinaturas { display: flex; gap: 40px; text-align: center; }
-        #printContent .rodape-print .assinaturas div { min-width: 150px; }
-        #printContent .rodape-print .assinaturas .linha { border-top: 1px solid #333; width: 100%; margin-bottom: 5px; }
-        #printContent .observacao-print { margin: 0 20px 20px 20px; padding: 10px 15px; border-radius: 6px; border: 1px solid #dee2e6; }
-        #printContent .observacao-print strong { color: #1a3a5c; }
-        #printContent .data-emissao { text-align: center; color: #a0aec0; padding: 0 20px 15px 20px; }
-        .print-actions { display: flex; gap: 10px; padding: 0 25px 25px 25px; flex-wrap: wrap; }
+            /* Cores de Superfície */
+            --surface-primary: #ffffff;
+            --surface-secondary: #f4f6f9;
+            --surface-tertiary: #f8fafc;
+            --surface-card: #ffffff;
+            --surface-hover: #f7fafc;
 
-        .toast { position: fixed; bottom: 30px; right: 30px; padding: 15px 25px; border-radius: 10px; color: white; font-weight: 600; z-index: 2000; animation: slideUp 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.2); max-width: 400px; }
-        .toast-success { background: #48bb78; }
-        .toast-error { background: #fc8181; }
-        .toast-info { background: #4299e1; }
-        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+            /* Cores de Texto */
+            --text-primary: #1a202c;
+            --text-secondary: #2d3748;
+            --text-tertiary: #718096;
+            --text-inverse: #ffffff;
+            --text-muted: #a0aec0;
 
-        @media print {
-            body * { visibility: hidden; }
-            #modalImprimir, #modalImprimir * { visibility: visible; }
-            #modalImprimir { position: absolute; left: 0; top: 0; background: white; padding: 0; width: 100%; min-height: 100vh; margin: 0 !important; }
-            .modal-content { box-shadow: none !important; margin: 0 !important; padding: 0 !important; max-width: 100% !important; border-radius: 0 !important; background: white !important; }
-            @page { margin: 0.5cm; size: A4; }
-            @page { @top-center { content: none !important; } @bottom-center { content: none !important; } @top-right { content: none !important; } @bottom-right { content: none !important; } @top-left { content: none !important; } @bottom-left { content: none !important; } @top-right-corner { content: none !important; } @bottom-right-corner { content: none !important; } @top-left-corner { content: none !important; } @bottom-left-corner { content: none !important; } }
-            html, body { margin: 0 !important; padding: 0 !important; background: white !important; }
-            .modal-header, .print-actions, .close-print, #btnFecharPrint, .close { display: none !important; }
-            #printContent { padding: 20px !important; max-width: 100% !important; margin: 0 auto !important; }
-            #printContent .header-print { padding: 20px 15px 15px 15px !important; }
-            #printContent .header-print .logo-print img { max-height: 80px !important; max-width: 200px !important; }
-            #printContent .tabela-fretes { font-size: 11px !important; width: 100% !important; margin: 10px 0 !important; }
-            #printContent .info-cliente, #printContent .info-origem, #printContent .rodape-print, #printContent .observacao-print { margin: 10px 0 !important; padding: 10px !important; }
-            #printContent { page-break-after: avoid; }
+            /* Cores de Status */
+            --status-success: #48bb78;
+            --status-success-bg: #f0fff4;
+            --status-danger: #fc8181;
+            --status-danger-bg: #fff5f5;
+            --status-warning: #ed8936;
+            --status-warning-bg: #fffbeb;
+            --status-info: #4299e1;
+            --status-info-bg: #ebf8ff;
+
+            /* Cores de Borda */
+            --border-light: #e2e8f0;
+            --border-medium: #cbd5e0;
+            --border-dark: #a0aec0;
+            --border-focus: #2c5f8a;
+
+            /* Espaçamento - Escala 4px/8px */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --space-3xl: 64px;
+
+            /* Tipografia */
+            --font-family-base: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --font-family-mono: 'Courier New', monospace;
+            --font-size-xs: 11px;
+            --font-size-sm: 13px;
+            --font-size-base: 14px;
+            --font-size-md: 16px;
+            --font-size-lg: 20px;
+            --font-size-xl: 28px;
+            --font-size-2xl: 36px;
+            --font-weight-normal: 400;
+            --font-weight-medium: 500;
+            --font-weight-semibold: 600;
+            --font-weight-bold: 700;
+            --line-height-tight: 1.2;
+            --line-height-normal: 1.5;
+            --line-height-loose: 1.8;
+
+            /* Sombras e Elevações */
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.12);
+            --shadow-xl: 0 8px 32px rgba(0, 0, 0, 0.16);
+            --shadow-2xl: 0 20px 60px rgba(0, 0, 0, 0.3);
+
+            /* Transições */
+            --transition-fast: 150ms ease;
+            --transition-base: 250ms ease;
+            --transition-slow: 350ms ease;
+            --transition-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+            /* Border Radius */
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --radius-full: 9999px;
+
+            /* Breakpoints */
+            --breakpoint-sm: 640px;
+            --breakpoint-md: 768px;
+            --breakpoint-lg: 1024px;
+            --breakpoint-xl: 1280px;
+            --breakpoint-2xl: 1536px;
+
+            /* Z-Index */
+            --z-dropdown: 100;
+            --z-sticky: 200;
+            --z-modal: 1000;
+            --z-toast: 2000;
+            --z-tooltip: 3000;
         }
 
-        .loading { display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: white; animation: spin 0.8s ease-in-out infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        /* ============================================
+           TEMA ESCURO (OPCIONAL)
+           ============================================ */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --surface-primary: #1a202c;
+                --surface-secondary: #2d3748;
+                --surface-tertiary: #1a202c;
+                --surface-card: #2d3748;
+                --surface-hover: #4a5568;
+                --text-primary: #f7fafc;
+                --text-secondary: #e2e8f0;
+                --text-tertiary: #a0aec0;
+                --text-inverse: #1a202c;
+                --text-muted: #718096;
+                --border-light: #4a5568;
+                --border-medium: #718096;
+                --border-dark: #a0aec0;
+                --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+                --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.3);
+                --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.4);
+            }
+        }
 
-        @media (max-width: 600px) { .header-content { flex-direction: column; text-align: center; } .header-left { flex-direction: column; } .header-title h1 { font-size: 20px; } .panel-header { flex-direction: column; align-items: stretch; } .search-box { flex-direction: column; } .search-box input { min-width: auto; } .add-cidade-row { grid-template-columns: 1fr; } #printContent .info-cliente { grid-template-columns: 1fr; margin: 0 10px 15px 10px; } #printContent .info-origem { flex-direction: column; gap: 5px; text-align: center; margin: 0 10px 15px 10px; } #printContent .tabela-fretes { width: calc(100% - 20px); margin: 0 10px 15px 10px; font-size: 10px; } #printContent .rodape-print { flex-direction: column; align-items: stretch; margin: 0 10px 15px 10px; } #printContent .rodape-print .assinaturas { flex-direction: column; gap: 20px; } }
-
-        .config-section { background: #f7fafc; border-radius: 8px; padding: 20px; margin-bottom: 20px; border: 1px solid #e2e8f0; }
-        .config-section h4 { color: #1a3a5c; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-        .config-section .form-group textarea { font-family: 'Courier New', monospace; font-size: 13px; min-height: 100px; }
-        .config-section .form-group input[type="color"] { padding: 4px; height: 45px; cursor: pointer; }
-        .config-section .form-group input[type="number"] { width: 100%; }
-        .config-actions { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
-
-        /* PREVIEW EM TEMPO REAL - DOCUMENTO COMPLETO */
-        .preview-documento {
-            background: white;
-            border: 2px dashed #cbd5e0;
-            border-radius: 8px;
+        /* ============================================
+           RESET E BASE
+           ============================================ */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
             padding: 0;
-            margin-top: 15px;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: var(--font-family-base);
+            font-size: var(--font-size-base);
+            line-height: var(--line-height-normal);
+            color: var(--text-primary);
+            background: var(--surface-secondary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Focus-visible para acessibilidade */
+        :focus-visible {
+            outline: 2px solid var(--border-focus);
+            outline-offset: 2px;
+        }
+
+        /* Remove outline para mouse users */
+        :focus:not(:focus-visible) {
+            outline: none;
+        }
+
+        /* ============================================
+           UTILITIES - CLASSES UTILITÁRIAS
+           ============================================ */
+        .u-text-center {
+            text-align: center !important;
+        }
+        .u-text-left {
+            text-align: left !important;
+        }
+        .u-text-right {
+            text-align: right !important;
+        }
+        .u-flex {
+            display: flex !important;
+        }
+        .u-flex-center {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        .u-flex-between {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+        }
+        .u-flex-wrap {
+            flex-wrap: wrap !important;
+        }
+        .u-gap-sm {
+            gap: var(--space-sm) !important;
+        }
+        .u-gap-md {
+            gap: var(--space-md) !important;
+        }
+        .u-gap-lg {
+            gap: var(--space-lg) !important;
+        }
+        .u-mt-sm {
+            margin-top: var(--space-sm) !important;
+        }
+        .u-mt-md {
+            margin-top: var(--space-md) !important;
+        }
+        .u-mt-lg {
+            margin-top: var(--space-lg) !important;
+        }
+        .u-mb-sm {
+            margin-bottom: var(--space-sm) !important;
+        }
+        .u-mb-md {
+            margin-bottom: var(--space-md) !important;
+        }
+        .u-mb-lg {
+            margin-bottom: var(--space-lg) !important;
+        }
+        .u-p-sm {
+            padding: var(--space-sm) !important;
+        }
+        .u-p-md {
+            padding: var(--space-md) !important;
+        }
+        .u-p-lg {
+            padding: var(--space-lg) !important;
+        }
+        .u-sr-only {
+            position: absolute !important;
+            width: 1px !important;
+            height: 1px !important;
+            padding: 0 !important;
+            margin: -1px !important;
+            overflow: hidden !important;
+            clip: rect(0, 0, 0, 0) !important;
+            border: 0 !important;
+        }
+        .u-hidden {
+            display: none !important;
+        }
+
+        /* ============================================
+           LAYOUTS
+           ============================================ */
+        .l-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+        }
+
+        .l-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-lg);
+        }
+
+        .l-grid-3 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-lg);
+        }
+
+        .l-flex-row {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+
+        @media (min-width: 768px) {
+            .l-grid-2 {
+                grid-template-columns: 1fr 1fr;
+            }
+            .l-grid-3 {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+            .l-flex-row {
+                flex-direction: row;
+                align-items: center;
+            }
+        }
+
+        /* ============================================
+           COMPONENTES - HEADER
+           ============================================ */
+        .c-header {
+            background: linear-gradient(135deg, var(--transport-primary) 0%, var(--transport-primary-light) 100%);
+            color: var(--text-inverse);
+            padding: var(--space-lg) 0;
+            box-shadow: var(--shadow-md);
+            position: sticky;
+            top: 0;
+            z-index: var(--z-sticky);
+        }
+
+        .c-header__inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .c-header__brand {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .c-header__logo {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-full);
+            background: var(--surface-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: var(--space-xs);
+            box-shadow: var(--shadow-sm);
+            flex-shrink: 0;
+        }
+
+        .c-header__logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: var(--radius-full);
+        }
+
+        .c-header__title {
+            font-size: clamp(20px, 3vw, 28px);
+            font-weight: var(--font-weight-bold);
+            line-height: var(--line-height-tight);
+        }
+
+        .c-header__subtitle {
+            font-size: var(--font-size-sm);
+            opacity: 0.85;
+            font-weight: var(--font-weight-normal);
+            margin-top: var(--space-xs);
+        }
+
+        .c-header__badges {
+            display: flex;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+        }
+
+        /* ============================================
+           COMPONENTES - BADGE
+           ============================================ */
+        .c-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            padding: var(--space-xs) var(--space-md);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-inverse);
+            cursor: default;
+        }
+
+        .c-badge--status {
+            cursor: pointer;
+            transition: all var(--transition-base);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .c-badge--status:hover {
+            transform: scale(1.05);
+        }
+
+        .c-badge__dot {
+            width: 8px;
+            height: 8px;
+            border-radius: var(--radius-full);
+            display: inline-block;
+            animation: c-badge__dot--pulse 1.5s ease-in-out infinite;
+        }
+
+        .c-badge__dot--online {
+            background: var(--status-success);
+            box-shadow: 0 0 8px rgba(72, 187, 120, 0.5);
+        }
+
+        .c-badge__dot--offline {
+            background: var(--status-danger);
+            box-shadow: 0 0 8px rgba(252, 129, 129, 0.5);
+        }
+
+        .c-badge__dot--checking {
+            background: var(--status-warning);
+            animation: c-badge__dot--pulse 0.6s ease-in-out infinite;
+        }
+
+        @keyframes c-badge__dot--pulse {
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.4;
+                transform: scale(0.8);
+            }
+        }
+
+        .c-badge--online {
+            background: rgba(72, 187, 120, 0.2);
+            border-color: rgba(72, 187, 120, 0.3);
+        }
+
+        .c-badge--offline {
+            background: rgba(252, 129, 129, 0.2);
+            border-color: rgba(252, 129, 129, 0.3);
+        }
+
+        /* ============================================
+           COMPONENTES - PANEL
+           ============================================ */
+        .c-panel {
+            background: var(--surface-card);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            margin-bottom: var(--space-xl);
+            border: 1px solid var(--border-light);
+        }
+
+        .c-panel__header {
+            padding: var(--space-lg) var(--space-xl);
+            background: var(--surface-tertiary);
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .c-panel__title {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-primary);
+        }
+
+        .c-panel__actions {
+            display: flex;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+        }
+
+        .c-panel__body {
+            padding: var(--space-lg) var(--space-xl);
+        }
+
+        .c-panel__footer {
+            padding: var(--space-md) var(--space-xl);
+            background: var(--surface-tertiary);
+            border-top: 1px solid var(--border-light);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: var(--space-md);
+            font-size: var(--font-size-sm);
+        }
+
+        /* ============================================
+           COMPONENTES - BUTTON
+           ============================================ */
+        .c-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-lg);
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            text-decoration: none;
+            min-height: 40px;
+            position: relative;
+            background: var(--surface-secondary);
+            color: var(--text-secondary);
+        }
+
+        .c-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .c-btn:active {
+            transform: translateY(0);
+        }
+
+        .c-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        .c-btn--primary {
+            background: var(--transport-primary-light);
+            color: var(--text-inverse);
+        }
+
+        .c-btn--primary:hover {
+            background: var(--transport-primary);
+            box-shadow: 0 4px 12px rgba(44, 95, 138, 0.3);
+        }
+
+        .c-btn--success {
+            background: var(--status-success);
+            color: var(--text-inverse);
+        }
+
+        .c-btn--success:hover {
+            background: #38a169;
+            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+        }
+
+        .c-btn--danger {
+            background: var(--status-danger);
+            color: var(--text-inverse);
+        }
+
+        .c-btn--danger:hover {
+            background: #e53e3e;
+            box-shadow: 0 4px 12px rgba(252, 129, 129, 0.3);
+        }
+
+        .c-btn--outline {
+            background: transparent;
+            color: var(--transport-primary-light);
+            border: 2px solid var(--transport-primary-light);
+        }
+
+        .c-btn--outline:hover {
+            background: var(--transport-primary-light);
+            color: var(--text-inverse);
+        }
+
+        .c-btn--warning {
+            background: var(--status-warning);
+            color: var(--text-inverse);
+        }
+
+        .c-btn--warning:hover {
+            background: #dd6b20;
+            box-shadow: 0 4px 12px rgba(237, 137, 54, 0.3);
+        }
+
+        .c-btn--sm {
+            padding: var(--space-xs) var(--space-md);
+            font-size: var(--font-size-xs);
+            min-height: 32px;
+        }
+
+        .c-btn--loading {
+            pointer-events: none;
+        }
+
+        .c-btn__spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: var(--radius-full);
+            border-top-color: var(--text-inverse);
+            animation: c-btn__spinner--spin 0.8s linear infinite;
+        }
+
+        @keyframes c-btn__spinner--spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ============================================
+           COMPONENTES - SEARCH
+           ============================================ */
+        .c-search {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-sm);
+            width: 100%;
+        }
+
+        .c-search__input {
+            flex: 1;
+            min-width: 200px;
+            padding: var(--space-sm) var(--space-md);
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            font-family: inherit;
+            transition: all var(--transition-base);
+            background: var(--surface-primary);
+            color: var(--text-primary);
+            min-height: 40px;
+        }
+
+        .c-search__input:focus {
+            outline: none;
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px rgba(44, 95, 138, 0.1);
+        }
+
+        .c-search__input::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* ============================================
+           COMPONENTES - TABLE
+           ============================================ */
+        .c-table-wrap {
+            overflow-x: auto;
+            margin: 0 calc(-1 * var(--space-xl));
+            padding: 0 var(--space-xl);
+        }
+
+        .c-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: var(--font-size-sm);
+        }
+
+        .c-table__head {
+            background: var(--surface-tertiary);
+            border-bottom: 2px solid var(--border-light);
+        }
+
+        .c-table__head th {
+            padding: var(--space-md) var(--space-md);
+            text-align: left;
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-secondary);
+            white-space: nowrap;
+            font-size: var(--font-size-xs);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .c-table__body tr {
+            border-bottom: 1px solid var(--border-light);
+            transition: background var(--transition-fast);
+        }
+
+        .c-table__body tr:hover {
+            background: var(--surface-hover);
+        }
+
+        .c-table__body td {
+            padding: var(--space-md);
+            vertical-align: middle;
+        }
+
+        .c-table__body td:last-child {
+            display: flex;
+            gap: var(--space-xs);
+            flex-wrap: wrap;
+        }
+
+        .c-table__empty {
+            text-align: center;
+            padding: var(--space-3xl);
+            color: var(--text-muted);
+        }
+
+        .c-table__empty-icon {
+            font-size: 48px;
+            display: block;
+            margin-bottom: var(--space-md);
+        }
+
+        /* ============================================
+           COMPONENTES - MODAL
+           ============================================ */
+        .c-modal {
+            display: none;
+            position: fixed;
+            z-index: var(--z-modal);
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            overflow-y: auto;
+            padding: var(--space-lg);
+        }
+
+        .c-modal--open {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .c-modal__content {
+            background: var(--surface-primary);
+            max-width: 950px;
+            width: 100%;
+            margin: auto;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-2xl);
+            animation: c-modal__content--slideIn 0.3s ease;
+        }
+
+        @keyframes c-modal__content--slideIn {
+            from {
+                transform: translateY(-30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .c-modal__header {
+            padding: var(--space-lg) var(--space-xl);
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .c-modal__title {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-primary);
+        }
+
+        .c-modal__close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: var(--space-xs);
+            line-height: 1;
+            transition: color var(--transition-base);
+            border-radius: var(--radius-sm);
+        }
+
+        .c-modal__close:hover {
+            color: var(--status-danger);
+        }
+
+        .c-modal__body {
+            padding: var(--space-xl);
+        }
+
+        .c-modal__footer {
+            padding: var(--space-md) var(--space-xl);
+            border-top: 1px solid var(--border-light);
+            display: flex;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+        }
+
+        /* ============================================
+           COMPONENTES - FORM
+           ============================================ */
+        .c-form {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+
+        .c-form__row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-md);
+        }
+
+        .c-form__group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+
+        .c-form__label {
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+        }
+
+        .c-form__label--required::after {
+            content: ' *';
+            color: var(--status-danger);
+        }
+
+        .c-form__input,
+        .c-form__select,
+        .c-form__textarea {
+            padding: var(--space-sm) var(--space-md);
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            font-family: inherit;
+            transition: all var(--transition-base);
+            background: var(--surface-primary);
+            color: var(--text-primary);
+            min-height: 40px;
+            width: 100%;
+        }
+
+        .c-form__input:focus,
+        .c-form__select:focus,
+        .c-form__textarea:focus {
+            outline: none;
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px rgba(44, 95, 138, 0.1);
+        }
+
+        .c-form__input:disabled,
+        .c-form__select:disabled,
+        .c-form__textarea:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .c-form__input[readonly] {
+            background: var(--surface-secondary);
+            cursor: not-allowed;
+        }
+
+        .c-form__textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .c-form__error {
+            color: var(--status-danger);
+            font-size: var(--font-size-xs);
+            margin-top: var(--space-xs);
+        }
+
+        @media (min-width: 640px) {
+            .c-form__row {
+                grid-template-columns: 1fr 1fr;
+            }
+            .c-form__row--full {
+                grid-column: 1 / -1;
+            }
+        }
+
+        /* ============================================
+           COMPONENTES - CIDADES LIST
+           ============================================ */
+        .c-cidades {
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius-md);
+            padding: var(--space-sm);
+            max-height: 250px;
+            overflow-y: auto;
+            background: var(--surface-secondary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .c-cidades__item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-sm) var(--space-md);
+            border-bottom: 1px solid var(--border-light);
+            gap: var(--space-sm);
+        }
+
+        .c-cidades__item:last-child {
+            border-bottom: none;
+        }
+
+        .c-cidades__item-info {
+            flex: 1;
+            font-size: var(--font-size-sm);
+        }
+
+        .c-cidades__item-info strong {
+            color: var(--text-secondary);
+        }
+
+        .c-cidades__item-info span {
+            color: var(--text-tertiary);
+        }
+
+        .c-cidades__remove {
+            background: var(--status-danger);
+            color: var(--text-inverse);
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: var(--space-xs) var(--space-sm);
+            cursor: pointer;
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            transition: all var(--transition-base);
+            flex-shrink: 0;
+        }
+
+        .c-cidades__remove:hover {
+            background: #e53e3e;
+        }
+
+        .c-cidades__empty {
+            text-align: center;
+            padding: var(--space-lg);
+            color: var(--text-muted);
+        }
+
+        .c-cidades__empty-icon {
+            font-size: 32px;
+            display: block;
+            margin-bottom: var(--space-sm);
+        }
+
+        /* ============================================
+           COMPONENTES - ADD CIDADES
+           ============================================ */
+        .c-add-cidade {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-sm);
+        }
+
+        @media (min-width: 640px) {
+            .c-add-cidade {
+                grid-template-columns: 2fr 1fr 1fr 1fr auto;
+            }
+        }
+
+        .c-add-cidade__select,
+        .c-add-cidade__input {
+            padding: var(--space-sm) var(--space-md);
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            font-size: var(--font-size-sm);
+            font-family: inherit;
+            background: var(--surface-primary);
+            color: var(--text-primary);
+            min-height: 36px;
+        }
+
+        .c-add-cidade__select:focus,
+        .c-add-cidade__input:focus {
+            outline: none;
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px rgba(44, 95, 138, 0.1);
+        }
+
+        /* ============================================
+           COMPONENTES - TOAST
+           ============================================ */
+        .c-toast {
+            position: fixed;
+            bottom: var(--space-xl);
+            right: var(--space-xl);
+            padding: var(--space-md) var(--space-xl);
+            border-radius: var(--radius-md);
+            color: var(--text-inverse);
+            font-weight: var(--font-weight-semibold);
+            z-index: var(--z-toast);
+            box-shadow: var(--shadow-lg);
+            max-width: 400px;
+            animation: c-toast--slideUp 0.3s ease;
+            transition: opacity 0.5s ease;
+        }
+
+        .c-toast--success {
+            background: var(--status-success);
+        }
+
+        .c-toast--error {
+            background: var(--status-danger);
+        }
+
+        .c-toast--info {
+            background: var(--status-info);
+        }
+
+        .c-toast--warning {
+            background: var(--status-warning);
+        }
+
+        @keyframes c-toast--slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* ============================================
+           COMPONENTES - LOADING
+           ============================================ */
+        .c-loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: var(--radius-full);
+            border-top-color: var(--text-inverse);
+            animation: c-loading--spin 0.8s linear infinite;
+        }
+
+        @keyframes c-loading--spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ============================================
+           COMPONENTES - PRINT
+           ============================================ */
+        .c-print {
+            padding: 0;
+            font-family: var(--font-family-mono);
+            background: var(--surface-primary);
+            margin: 0 auto;
+        }
+
+        .c-print__header {
+            padding: var(--space-xl) var(--space-lg) var(--space-lg);
+            text-align: center;
+            border-bottom: 4px solid var(--transport-secondary);
+            margin-bottom: var(--space-lg);
+        }
+
+        .c-print__logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: var(--space-sm);
+        }
+
+        .c-print__logo img {
+            object-fit: contain;
+            background: var(--surface-primary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-sm) var(--space-md);
+            box-shadow: var(--shadow-md);
+        }
+
+        .c-print__address {
+            font-size: var(--font-size-sm);
+            line-height: var(--line-height-loose);
+            font-weight: var(--font-weight-medium);
+            letter-spacing: 0.5px;
+        }
+
+        .c-print__address strong {
+            color: var(--transport-secondary-dark);
+        }
+
+        .c-print__cliente {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-xs) var(--space-xl);
+            padding: var(--space-md) var(--space-lg);
+            background: var(--surface-secondary);
+            border-radius: var(--radius-md);
+            margin: 0 var(--space-lg) var(--space-lg);
+            border: 1px solid var(--border-light);
+        }
+
+        .c-print__cliente-item {
+            display: flex;
+            gap: var(--space-xs);
+            font-size: var(--font-size-xs);
+            padding: var(--space-xs) 0;
+        }
+
+        .c-print__cliente-item strong {
+            min-width: 70px;
+            color: var(--text-secondary);
+        }
+
+        .c-print__origem {
+            display: flex;
+            justify-content: space-between;
+            padding: var(--space-sm) var(--space-lg);
+            background: var(--surface-tertiary);
+            border-radius: var(--radius-sm);
+            margin: 0 var(--space-lg) var(--space-lg);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-primary);
+            border: 1px solid var(--border-light);
+        }
+
+        .c-print__table-wrap {
+            margin: 0 var(--space-lg) var(--space-lg);
+        }
+
+        .c-print__table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: var(--font-size-xs);
+        }
+
+        .c-print__table th {
+            background: var(--transport-primary);
+            color: var(--text-inverse);
+            padding: var(--space-sm) var(--space-md);
+            text-align: left;
+            border: 1px solid var(--transport-primary);
+        }
+
+        .c-print__table td {
+            padding: var(--space-xs) var(--space-md);
+            border: 1px solid var(--border-light);
+        }
+
+        .c-print__table tr:nth-child(even) {
+            background: var(--surface-secondary);
+        }
+
+        .c-print__footer {
+            margin: 0 var(--space-lg) var(--space-lg);
+            padding-top: var(--space-md);
+            border-top: 2px solid var(--text-primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--space-sm);
+        }
+
+        .c-print__footer-contato {
+            line-height: var(--line-height-loose);
+        }
+
+        .c-print__footer-assinaturas {
+            display: flex;
+            gap: var(--space-xl);
+            text-align: center;
+            font-size: var(--font-size-xs);
+        }
+
+        .c-print__footer-assinaturas div {
+            min-width: 120px;
+        }
+
+        .c-print__footer-assinaturas .linha {
+            border-top: 1px solid var(--text-primary);
+            width: 100%;
+            margin-bottom: var(--space-xs);
+        }
+
+        .c-print__observacao {
+            margin: 0 var(--space-lg) var(--space-lg);
+            padding: var(--space-sm) var(--space-md);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-light);
+            font-size: var(--font-size-xs);
+        }
+
+        .c-print__data {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: var(--font-size-xs);
+            padding: 0 var(--space-lg) var(--space-md);
+        }
+
+        /* ============================================
+           COMPONENTES - CONFIG
+           ============================================ */
+        .c-config-section {
+            background: var(--surface-secondary);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-lg);
+            border: 1px solid var(--border-light);
+        }
+
+        .c-config-section__title {
+            color: var(--transport-primary);
+            margin-bottom: var(--space-md);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: var(--font-size-md);
+        }
+
+        .c-config-section__row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-md);
+        }
+
+        @media (min-width: 640px) {
+            .c-config-section__row {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .c-config-section__row--full {
+            grid-column: 1 / -1;
+        }
+
+        .c-config-section .c-form__input[type="color"] {
+            padding: var(--space-xs);
+            height: 45px;
+            cursor: pointer;
+        }
+
+        .c-config__actions {
+            display: flex;
+            gap: var(--space-sm);
+            margin-top: var(--space-md);
+            flex-wrap: wrap;
+        }
+
+        /* ============================================
+           COMPONENTES - PREVIEW
+           ============================================ */
+        .c-preview {
+            background: var(--surface-primary);
+            border: 2px dashed var(--border-medium);
+            border-radius: var(--radius-md);
+            padding: 0;
+            margin-top: var(--space-md);
             max-height: 600px;
             overflow-y: auto;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            box-shadow: var(--shadow-sm);
         }
 
-        .preview-documento #previewPrintContent {
+        .c-preview__label {
+            font-size: var(--font-size-xs);
+            color: var(--text-tertiary);
+            text-align: center;
+            padding: var(--space-sm);
+            background: var(--surface-tertiary);
+            border-bottom: 1px solid var(--border-light);
+            border-radius: var(--radius-md) var(--radius-md) 0 0;
+            display: flex;
+            justify-content: center;
+            gap: var(--space-md);
+            flex-wrap: wrap;
+        }
+
+        .c-preview__fonte {
+            font-size: var(--font-size-xs);
+            padding: var(--space-xs) var(--space-sm);
+            background: var(--surface-secondary);
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+        }
+
+        .c-preview__content {
             transform: scale(0.7);
             transform-origin: top center;
             max-width: 1000px;
             margin: 0 auto;
         }
 
-        .preview-documento .header-print {
-            padding: 20px 15px 15px 15px;
-            text-align: center;
-            border-bottom: 3px solid #ffd700;
-            margin-bottom: 15px;
+        /* ============================================
+           RESPONSIVIDADE
+           ============================================ */
+        @media (max-width: 639px) {
+            .c-header__inner {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .c-panel__header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .c-panel__body {
+                padding: var(--space-md);
+            }
+
+            .c-table-wrap {
+                margin: 0 calc(-1 * var(--space-md));
+                padding: 0 var(--space-md);
+            }
+
+            .c-modal__content {
+                max-width: 100%;
+                margin: 0;
+                border-radius: 0;
+                min-height: 100vh;
+            }
+
+            .c-print__cliente {
+                grid-template-columns: 1fr;
+                margin: 0 var(--space-sm) var(--space-sm);
+            }
+
+            .c-print__origem {
+                flex-direction: column;
+                gap: var(--space-xs);
+                text-align: center;
+                margin: 0 var(--space-sm) var(--space-sm);
+            }
+
+            .c-print__table-wrap {
+                margin: 0 var(--space-sm) var(--space-sm);
+            }
+
+            .c-print__footer {
+                flex-direction: column;
+                align-items: stretch;
+                margin: 0 var(--space-sm) var(--space-sm);
+            }
+
+            .c-print__footer-assinaturas {
+                flex-direction: column;
+                gap: var(--space-lg);
+            }
+
+            .c-add-cidade {
+                grid-template-columns: 1fr;
+            }
+
+            .c-config-section__row {
+                grid-template-columns: 1fr;
+            }
         }
 
-        .preview-documento .header-print .logo-print {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 8px;
+        @media (min-width: 640px) and (max-width: 1023px) {
+            .c-preview__content {
+                transform: scale(0.5);
+            }
         }
 
-        .preview-documento .header-print .logo-print img {
-            max-height: 60px;
-            max-width: 150px;
-            object-fit: contain;
-            background: white;
-            border-radius: 8px;
-            padding: 4px 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        @media (min-width: 1024px) {
+            .c-preview__content {
+                transform: scale(0.65);
+            }
         }
 
-        .preview-documento .header-print .endereco {
-            font-size: 11px;
-            line-height: 1.4;
-            font-weight: 500;
-            letter-spacing: 0.3px;
+        /* ============================================
+           IMPRESSÃO
+           ============================================ */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            #modalImprimir,
+            #modalImprimir * {
+                visibility: visible;
+            }
+
+            #modalImprimir {
+                position: absolute !important;
+                inset: 0 !important;
+                background: white !important;
+                padding: 0 !important;
+                width: 100% !important;
+                min-height: 100vh !important;
+                margin: 0 !important;
+                display: block !important;
+            }
+
+            .c-modal__content {
+                box-shadow: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                max-width: 100% !important;
+                border-radius: 0 !important;
+                background: white !important;
+            }
+
+            .c-modal__header,
+            .c-modal__footer,
+            .c-print__actions,
+            .c-modal__close,
+            .c-btn {
+                display: none !important;
+            }
+
+            .c-print {
+                padding: 20px !important;
+                max-width: 100% !important;
+            }
+
+            .c-print__header {
+                padding: 15px !important;
+            }
+
+            .c-print__logo img {
+                max-height: 80px !important;
+                max-width: 200px !important;
+            }
+
+            .c-print__table {
+                font-size: 10px !important;
+            }
+
+            .c-print__cliente,
+            .c-print__origem,
+            .c-print__footer,
+            .c-print__observacao {
+                margin: 10px 0 !important;
+                padding: 10px !important;
+            }
+
+            @page {
+                margin: 0.5cm;
+                size: A4;
+            }
+
+            @page {
+                @top-center {
+                    content: none !important;
+                }
+                @bottom-center {
+                    content: none !important;
+                }
+                @top-right {
+                    content: none !important;
+                }
+                @bottom-right {
+                    content: none !important;
+                }
+                @top-left {
+                    content: none !important;
+                }
+                @bottom-left {
+                    content: none !important;
+                }
+            }
         }
 
-        .preview-documento .header-print .endereco strong {
-            color: #ffd700;
-        }
+        /* ============================================
+           ANIMAÇÕES PARA PREFERS-REDUCED-MOTION
+           ============================================ */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
 
-        .preview-documento .info-cliente {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3px 20px;
-            padding: 10px 15px;
-            background: #f8f9fa;
-            border-radius: 6px;
-            margin: 0 15px 15px 15px;
-            border: 1px solid #dee2e6;
-            font-size: 10px;
-        }
+            .c-badge__dot {
+                animation: none !important;
+            }
 
-        .preview-documento .info-cliente .info-item {
-            display: flex;
-            gap: 3px;
-            padding: 2px 0;
-        }
+            .c-modal__content {
+                animation: none !important;
+            }
 
-        .preview-documento .info-cliente .info-item strong {
-            min-width: 60px;
-            font-size: 10px;
-        }
+            .c-toast {
+                animation: none !important;
+            }
 
-        .preview-documento .info-origem {
-            display: flex;
-            justify-content: space-between;
-            padding: 6px 15px;
-            background: #e9ecef;
-            border-radius: 4px;
-            margin: 0 15px 15px 15px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .preview-documento .tabela-fretes {
-            width: calc(100% - 30px);
-            margin: 0 15px 15px 15px;
-            border-collapse: collapse;
-            font-size: 10px;
-        }
-
-        .preview-documento .tabela-fretes th {
-            padding: 6px 8px;
-            text-align: left;
-            border: 1px solid #1a3a5c;
-            font-size: 10px;
-        }
-
-        .preview-documento .tabela-fretes td {
-            padding: 5px 8px;
-            border: 1px solid #dee2e6;
-            font-size: 10px;
-        }
-
-        .preview-documento .rodape-print {
-            margin: 0 15px 15px 15px;
-            padding-top: 10px;
-            border-top: 1.5px solid #333;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            font-size: 10px;
-        }
-
-        .preview-documento .rodape-print .assinaturas {
-            display: flex;
-            gap: 30px;
-            text-align: center;
-            font-size: 10px;
-        }
-
-        .preview-documento .rodape-print .assinaturas div {
-            min-width: 100px;
-        }
-
-        .preview-documento .rodape-print .assinaturas .linha {
-            border-top: 1px solid #333;
-            width: 100%;
-            margin-bottom: 3px;
-        }
-
-        .preview-documento .observacao-print {
-            margin: 0 15px 15px 15px;
-            padding: 6px 10px;
-            border-radius: 4px;
-            border: 1px solid #dee2e6;
-            font-size: 10px;
-        }
-
-        .preview-documento .data-emissao {
-            text-align: center;
-            color: #a0aec0;
-            font-size: 9px;
-            padding: 0 15px 10px 15px;
-        }
-
-        .preview-label {
-            font-size: 12px;
-            color: #718096;
-            text-align: center;
-            padding: 8px;
-            background: #f7fafc;
-            border-radius: 6px 6px 0 0;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .fonte-preview {
-            font-size: 12px;
-            padding: 4px 8px;
-            background: #edf2f7;
-            border-radius: 4px;
-            color: #4a5568;
+            .c-btn {
+                transition: none !important;
+            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <div class="header-left">
-                <div class="header-logo">
-                    <a href="https://ibb.co/5gkwpWJj" target="_blank">
-                        <img src="https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png" alt="Logo Transports e Logística">
-                    </a>
+    <!-- ============================================
+           HEADER
+           ============================================ -->
+    <header class="c-header">
+        <div class="l-container">
+            <div class="c-header__inner">
+                <div class="c-header__brand">
+                    <div class="c-header__logo">
+                        <a href="https://ibb.co/5gkwpWJj" target="_blank">
+                            <img src="https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png" alt="Logo Transports e Logística">
+                        </a>
+                    </div>
+                    <div>
+                        <h1 class="c-header__title">Transports e Logística</h1>
+                        <p class="c-header__subtitle">Sistema de Gerenciamento de Tabelas de Fretes</p>
+                    </div>
                 </div>
-                <div class="header-title">
-                    <h1>Transports e Logística</h1>
-                    <p>Sistema de Gerenciamento de Tabelas de Fretes</p>
+                <div class="c-header__badges">
+                    <span id="statusConexao" class="c-badge c-badge--status c-badge--checking" onclick="verificarConexao()" role="button" tabindex="0" aria-label="Verificar conexão com o servidor">
+                        <span class="c-badge__dot c-badge__dot--checking" aria-hidden="true"></span>
+                        <span id="statusTexto">Verificando...</span>
+                    </span>
+                    <span class="c-badge">📦 Fretes</span>
+                    <span class="c-badge">📋 Tabelas</span>
                 </div>
-            </div>
-            <div class="header-badge">
-                <div id="statusConexao" class="badge-status checking" onclick="verificarConexao()" title="Clique para verificar a conexão com o JSONBin">
-                    <span class="status-dot"></span>
-                    <span id="statusTexto">Verificando...</span>
-                </div>
-                <span class="badge">Fretes</span>
-                <span class="badge">Tabelas</span>
             </div>
         </div>
     </header>
 
-    <div class="container">
-        <div class="panel">
-            <div class="panel-header">
-                <h2>Tabelas de Fretes</h2>
-                <div class="btn-group">
-                    <button id="btnConfigurar" class="btn btn-warning">Configurar Impressão</button>
-                    <button id="btnNovo" class="btn btn-primary">+ Nova Tabela</button>
+    <!-- ============================================
+           CONTEÚDO PRINCIPAL
+           ============================================ -->
+    <main class="l-container">
+        <section class="c-panel" aria-label="Tabelas de Fretes">
+            <header class="c-panel__header">
+                <h2 class="c-panel__title">Tabelas de Fretes</h2>
+                <div class="c-panel__actions">
+                    <button id="btnConfigurar" class="c-btn c-btn--warning" aria-label="Configurar impressão">
+                        ⚙️ Configurar Impressão
+                    </button>
+                    <button id="btnNovo" class="c-btn c-btn--primary" aria-label="Nova tabela de frete">
+                        + Nova Tabela
+                    </button>
+                </div>
+            </header>
+
+            <div class="c-panel__body">
+                <!-- Busca -->
+                <div class="c-search" role="search">
+                    <label for="searchInput" class="u-sr-only">Buscar tabelas</label>
+                    <input type="text" id="searchInput" class="c-search__input" placeholder="Buscar por cliente, origem ou destino..." aria-label="Buscar tabelas de frete">
+                    <button id="btnBuscar" class="c-btn c-btn--secondary">Buscar</button>
+                    <button id="btnLimpar" class="c-btn c-btn--outline">Limpar</button>
+                </div>
+
+                <!-- Tabela -->
+                <div class="c-table-wrap">
+                    <table class="c-table" aria-label="Lista de tabelas de fretes">
+                        <thead class="c-table__head">
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Cliente</th>
+                                <th scope="col">Origem</th>
+                                <th scope="col">Destino</th>
+                                <th scope="col">Cidades</th>
+                                <th scope="col">Data</th>
+                                <th scope="col">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="corpoTabela" class="c-table__body">
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Buscar por cliente, origem ou destino..." />
-                <button id="btnBuscar" class="btn btn-secondary">Buscar</button>
-                <button id="btnLimpar" class="btn btn-outline">Limpar</button>
-            </div>
 
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Cliente</th>
-                            <th>Origem</th>
-                            <th>Destino</th>
-                            <th>Cidades</th>
-                            <th>Data</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="corpoTabela"></tbody>
-                </table>
-            </div>
-
-            <div class="footer-stats">
+            <footer class="c-panel__footer">
                 <span>Total de Tabelas: <strong id="totalTabelas">0</strong></span>
                 <span>Última atualização: <strong id="ultimaAtualizacao">-</strong></span>
-            </div>
-        </div>
-    </div>
+            </footer>
+        </section>
+    </main>
 
-    <!-- MODAL CONFIGURAÇÃO DE IMPRESSÃO - MELHORADO -->
-    <div id="modalConfig" class="modal">
-        <div class="modal-content" style="max-width:1200px;">
-            <div class="modal-header">
-                <h3>⚙️ Configuração do Layout de Impressão</h3>
-                <span class="close-config">&times;</span>
-            </div>
-            <form id="formConfig">
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; padding:0 25px;">
-                    <!-- COLUNA ESQUERDA - CONFIGURAÇÕES -->
-                    <div style="max-height:700px; overflow-y:auto; padding-right:10px;">
-                        <!-- CABEÇALHO -->
-                        <div class="config-section">
-                            <h4>📌 Cabeçalho</h4>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Cor de Fundo</label>
-                                    <input type="color" id="headerBgColor" value="#1a3a5c">
+    <!-- ============================================
+           MODAL - CONFIGURAÇÃO DE IMPRESSÃO
+           ============================================ -->
+    <div id="modalConfig" class="c-modal" role="dialog" aria-modal="true" aria-labelledby="modalConfigTitle">
+        <div class="c-modal__content">
+            <header class="c-modal__header">
+                <h3 id="modalConfigTitle" class="c-modal__title">⚙️ Configuração do Layout de Impressão</h3>
+                <button type="button" class="c-modal__close close-config" aria-label="Fechar configuração">&times;</button>
+            </header>
+            <div class="c-modal__body">
+                <form id="formConfig">
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--space-lg);">
+                        <!-- Coluna Esquerda - Configurações -->
+                        <div style="max-height:600px; overflow-y:auto; padding-right:var(--space-sm);">
+
+                            <!-- Cabeçalho -->
+                            <section class="c-config-section">
+                                <h4 class="c-config-section__title">📌 Cabeçalho</h4>
+                                <div class="c-config-section__row">
+                                    <div class="c-form__group">
+                                        <label class="c-form__label" for="headerBgColor">Cor de Fundo</label>
+                                        <input type="color" id="headerBgColor" class="c-form__input" value="#1a3a5c">
+                                    </div>
+                                    <div class="c-form__group">
+                                        <label class="c-form__label" for="headerTextColor">Cor do Texto</label>
+                                        <input type="color" id="headerTextColor" class="c-form__input" value="#ffffff">
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>Cor do Texto</label>
-                                    <input type="color" id="headerTextColor" value="#ffffff">
+                                <div class="c-config-section__row">
+                                    <div class="c-form__group">
+                                        <label class="c-form__label" for="headerBorderColor">Cor da Borda</label>
+                                        <input type="color" id="headerBorderColor" class="c-form__input" value="#ffd700">
+                                    </div>
+                                    <div class="c-form__group">
+                                        <label class="c-form__label" for="logoMaxHeight">Altura da Logo (px)</label>
+                                        <input type="number" id="logoMaxHeight" class="c-form__input" value="100" min="30" max="200">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Cor da Borda</label>
-                                    <input type="color" id="headerBorderColor" value="#ffd700">
+                                <div class="c-config-section__row">
+                                    <div class="c-form__group">
+                                        <label class="c-form__label" for="headerPadding">Espaçamento (px)</label>
+                                        <input type="number" id="headerPadding" class="c-form__input" value="30" min="10" max="60">
+                                    </div>
+                                    <div class="c-form__group">
+                                        <label class="c-form__label" for="headerFont">Fonte</label>
+                                        <select id="headerFont" class="c-form__select">
+                                            <option value="Arial, sans-serif">Arial</option>
+                                            <option value="'Times New Roman', serif">Times New Roman</option>
+                                            <option value="'Courier New', monospace" selected>Courier New</option>
+                                            <option value="Georgia, serif">Georgia</option>
+                                            <option value="Verdana, sans-serif">Verdana</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>Altura da Logo (px)</label>
-                                    <input type="number" id="logoMaxHeight" value="100" min="30" max="200">
+                                <div class="c-config-section__row">
+                                    <div class="c-form__group">
+                                        <label class="c-form__label" for="headerFontSize">Tamanho (px)</label>
+                                        <input type="number" id="headerFontSize" class="c-form__input" value="13" min="8" max="24">
+                                    </div>
+                                    <div class="c-form__group">
+                                        <label class="c-form__label" for="headerAlign">Alinhamento</label>
+                                        <select id="headerAlign" class="c-form__select">
+                                            <option value="center" selected>Centro</option>
+                                            <option value="left">Esquerda</option>
+                                            <option value="right">Direita</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Espaçamento Interno (px)</label>
-                                    <input type="number" id="headerPadding" value="30" min="10" max="60">
-                                </div>
-                                <div class="form-group">
-                                    <label>Fonte do Cabeçalho</label>
-                                    <select id="headerFont">
-                                        <option value="Arial, sans-serif">Arial</option>
-                                        <option value="'Times New Roman', serif">Times New Roman</option>
-                                        <option value="'Courier New', monospace" selected>Courier New</option>
-                                        <option value="Georgia, serif">Georgia</option>
-                                        <option value="Verdana, sans-serif">Verdana</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Tamanho da Fonte (px)</label>
-                                    <input type="number" id="headerFontSize" value="13" min="8" max="24">
-                                </div>
-                                <div class="form-group">
-                                    <label>Alinhamento</label>
-                                    <select id="headerAlign">
-                                        <option value="center">Centro</option>
-                                        <option value="left">Esquerda</option>
-                                        <option value="right">Direita</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group form-row-full">
-                                    <label>Endereço da Empresa</label>
-                                    <textarea id="enderecoEmpresa" rows="2">RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NÚMERO: 129
+                                <div class="c-config-section__row">
+                                    <div class="c-form__group c-config-section__row--full">
+                                        <label class="c-form__label" for="enderecoEmpresa">Endereço da Empresa</label>
+                                        <textarea id="enderecoEmpresa" class="c-form__textarea" rows="2">RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NÚMERO: 129
 CIDADE: SINOP-MT | CEP: 78556-788</textarea>
+                                    </div>
                                 </div>
+                            </section>
+
+                            <!-- Cliente -->
+                            <section class="c-config-section">
+                                <h4 class="c-config-section__title">📋 Informações do Cliente</h4>
+                                <div class="c-config-section__row">
+                                    <div class="c-form__group">
+                                        <label class="c-form__label" for="clienteBgColor">Cor de Fundo</label>
+                                        <input type="color" id="clienteBgColor" class="c-form__input" value="#f8f9fa">
+                                    </div>
+                                    <div class="c-form__group">
+                                        <label class="c-form__label" for="clienteTextColor">Cor do Texto</label>
+                                        <input type="color" id="clienteTextColor" class="c-form__input" value="#333333">
+                                    </div>
+                                </div>
+                                <div class="c-config-section__row">
+                                    <div class="c-form__group">
+                                        <label class="c-form__label" for="clienteFontSize">Tamanho (px)</label>
+                                        <input type="number" id="clienteFontSize" class="c-form__input" value="12" min="8" max="20">
+                                    </div>
+                                    <div class="c-form__group">
+                                        <label class="c-form__label" for="clienteFont">Fonte</label>
+                                        <select id="clienteFont" class="c-form__select">
+                                            <option value="Arial, sans-serif">Arial</option>
+                                            <option value="'Times New Roman', serif">Times New Roman</option>
+                                            <option value="'Courier New', monospace" selected>Courier New</option>
+                                            <option value="Georgia, serif">Georgia</option>
+                                            <option value="Verdana, sans-serif">Verdana</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="c-config-section__row">
+                                    <div class="c-form__group">
+                                        <label class="c-form__label" for="clientePadding">Espaçamento (px)</label>
+                                        <input type="number" id="clientePadding" class="c-form__input" value="15" min="5" max="30">
+                                    </div>
+                                    <div class="c-form__group">
+                                        <label class="c-form__label" for="clienteAlign">Alinhamento</label>
+                                        <select id="clienteAlign" class="c-form__select">
+                                            <option value="left" selected>Esquerda</option>
+                                            <option value="center">Centro</option>
+                                            <option value="right">Direita</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="c-config-section__row">
+                                    <div class="c-form__group c-config-section__row--full">
+                                        <label class="c-form__label" for="camposCliente">Campos (separados por vírgula)</label>
+                                        <input type="text" id="camposCliente" class="c-form__input" value="NOME,CNPJ/CPF,TELEFONE,NÚMERO,BAIRRO,RUA,CEP,CIDADE,IE,EMAIL">
+                                    </div>
+                                </div>
+                            </section>
+
+                            <!-- Tabela -->
+                            <section class="c-config-section">
+                                <h4 class="c-config-section__title">📊 Tabela de Fretes</h4>
+                                <div class="c-config-section__row">
+                                    <div class="c-form__group">
+                                        <label class="c-form__label" for="tabelaHeaderBg">Cor do Cabeçalho</label>
+                                        <input type="color" id="tabelaHeaderBg" class="c-form__input" value="#1a3a5c">
+                                    </div>
+                                    <div class="c-form__group">
+                                        <label class="c-form__label" for="tabelaHeaderText">Cor do Texto</label>
+                                        <input type="color" id="tabelaHeaderText" class="c-form__input" value="#ffffff">
+                                    </div>
+                                </div>
+                                <div class="c-config-section__row">
+                                    <div class="c-form__group">
+                                        <label class="c-form__label" for="tabelaHeaderFontSize">Tamanho (px)</label>
+                                        <input type="number" id="tabelaHeaderFontSize" class="c-form__input" value="12" min="8" max="20">
+                                    </div>
+                                    <div class="c-form__group">
+                                        <label class="c-form__label" for="tabelaDataFontSize">Tamanho Dados (px)</label>
+                                        <input type="number" id="tabelaDataFontSize" class="c-form__input" value="12" min="8" max="20">
+                                    </div>
+                                </div>
+                                <div class="c-config-section__row">
+                                    <div class="c-form__group">
+                                        <label class="c-form__label" for="tabelaFont">Fonte</label>
+                                        <select id="tabelaFont" class="c-form__select">
+                                            <option value="Arial, sans-serif">Arial</option>
+                                            <option value="'Times New Roman', serif">Times New Roman</option>
+                                            <option value="'Courier New', monospace" selected>Courier New</option>
+                                            <option value="Georgia, serif">Georgia</option>
+                                            <option value="Verdana, sans-serif">Verdana</option>
+                                        </select>
+                                    </div>
+                                    <div class="c-form__group">
+                                        <label class="c-form__label" for="tabelaAlign">Alinhamento</label>
+                                        <select id="tabelaAlign" class="c-form__select">
+                                            <option value="left" selected>Esquerda</option>
+                                            <option value="center">Centro</option>
+                                            <option value="right">Direita</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="c-config-section__row">
+                                    <div class="c-form__group">
+                                        <label class="c-form__label" for="tabelaLinhaPar">Cor Linha Par</label>
+                                        <input type="color" id="tabelaLinhaPar" class="c-form__input" value="#f8f9fa">
+                                    </div>
+                                    <div class="c-form__group">
+                                        <label class="c-form__label" for="tabelaLinhaImpar">Cor Linha Ímpar</label>
+                                        <input type="color" id="tabelaLinhaImpar" class="c-form__input" value="#ffffff">
+                                    </div>
+                                </div>
+                            </section>
+
+                            <!-- Rodapé -->
+                            <section class="c-config-section">
+                                <h4 class="c-config-section__title">📞 Rodapé</h4>
+                                <div class="c-config-section__row">
+                                    <div class="c-form__group">
+                                        <label class="c-form__label" for="textoContato">Texto do Contato</label>
+                                        <input type="text" id="textoContato" class="c-form__input" value="CONTATO / WHATSAPP: (93) 8418-4950">
+                                    </div>
+                                    <div class="c-form__group">
+                                        <label class="c-form__label" for="rodapeFontSize">Tamanho (px)</label>
+                                        <input type="number" id="rodapeFontSize" class="c-form__input" value="13" min="8" max="20">
+                                    </div>
+                                </div>
+                                <div class="c-config-section__row">
+                                    <div class="c-form__group">
+                                        <label class="c-form__label" for="rodapeFont">Fonte</label>
+                                        <select id="rodapeFont" class="c-form__select">
+                                            <option value="Arial, sans-serif">Arial</option>
+                                            <option value="'Times New Roman', serif">Times New Roman</option>
+                                            <option value="'Courier New', monospace" selected>Courier New</option>
+                                            <option value="Georgia, serif">Georgia</option>
+                                            <option value="Verdana, sans-serif">Verdana</option>
+                                        </select>
+                                    </div>
+                                    <div class="c-form__group">
+                                        <label class="c-form__label" for="rodapeAlign">Alinhamento</label>
+                                        <select id="rodapeAlign" class="c-form__select">
+                                            <option value="center" selected>Centro</option>
+                                            <option value="left">Esquerda</option>
+                                            <option value="right">Direita</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="c-config-section__row">
+                                    <div class="c-form__group">
+                                        <label class="c-form__label" for="assinatura1">Assinatura 1</label>
+                                        <input type="text" id="assinatura1" class="c-form__input" value="SINOP-MT">
+                                    </div>
+                                    <div class="c-form__group">
+                                        <label class="c-form__label" for="assinatura2">Assinatura 2</label>
+                                        <input type="text" id="assinatura2" class="c-form__input" value="ASSINATURA">
+                                    </div>
+                                </div>
+                                <div class="c-config-section__row">
+                                    <div class="c-form__group">
+                                        <label class="c-form__label" for="mostrarDataEmissao">Mostrar Data</label>
+                                        <select id="mostrarDataEmissao" class="c-form__select">
+                                            <option value="true">Sim</option>
+                                            <option value="false">Não</option>
+                                        </select>
+                                    </div>
+                                    <div class="c-form__group">
+                                        <label class="c-form__label" for="larguraMaxima">Largura Máxima (px)</label>
+                                        <input type="number" id="larguraMaxima" class="c-form__input" value="1000" min="600" max="1200">
+                                    </div>
+                                </div>
+                            </section>
+
+                            <div class="c-config__actions">
+                                <button type="submit" class="c-btn c-btn--primary">💾 Salvar Configurações</button>
+                                <button type="button" id="btnResetConfig" class="c-btn c-btn--secondary">🔄 Restaurar Padrão</button>
+                                <button type="button" id="btnFecharConfig" class="c-btn c-btn--outline">Fechar</button>
                             </div>
                         </div>
 
-                        <!-- CLIENTE -->
-                        <div class="config-section">
-                            <h4>📋 Informações do Cliente</h4>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Cor de Fundo</label>
-                                    <input type="color" id="clienteBgColor" value="#f8f9fa">
+                        <!-- Coluna Direita - Preview -->
+                        <div>
+                            <section class="c-config-section" style="height:100%;">
+                                <h4 class="c-config-section__title">👁️ Pré-visualização em Tempo Real</h4>
+                                <div class="c-preview__label">
+                                    <span class="c-preview__fonte" id="previewFonteInfo">Fonte: Courier New</span>
+                                    <span class="c-preview__fonte" id="previewAlignInfo">Alinhamento: Centro</span>
                                 </div>
-                                <div class="form-group">
-                                    <label>Cor do Texto</label>
-                                    <input type="color" id="clienteTextColor" value="#333333">
+                                <div class="c-preview" id="previewDocumento">
+                                    <div class="c-preview__content" id="previewPrintContent">
+                                        <!-- Conteúdo gerado dinamicamente -->
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Tamanho da Fonte (px)</label>
-                                    <input type="number" id="clienteFontSize" value="12" min="8" max="20">
-                                </div>
-                                <div class="form-group">
-                                    <label>Fonte do Cliente</label>
-                                    <select id="clienteFont">
-                                        <option value="Arial, sans-serif">Arial</option>
-                                        <option value="'Times New Roman', serif">Times New Roman</option>
-                                        <option value="'Courier New', monospace" selected>Courier New</option>
-                                        <option value="Georgia, serif">Georgia</option>
-                                        <option value="Verdana, sans-serif">Verdana</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Espaçamento (px)</label>
-                                    <input type="number" id="clientePadding" value="15" min="5" max="30">
-                                </div>
-                                <div class="form-group">
-                                    <label>Alinhamento</label>
-                                    <select id="clienteAlign">
-                                        <option value="left">Esquerda</option>
-                                        <option value="center">Centro</option>
-                                        <option value="right">Direita</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group form-row-full">
-                                    <label>Campos a exibir (separados por vírgula)</label>
-                                    <input type="text" id="camposCliente" value="NOME,CNPJ/CPF,TELEFONE,NÚMERO,BAIRRO,RUA,CEP,CIDADE,IE,EMAIL">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- TABELA -->
-                        <div class="config-section">
-                            <h4>📊 Tabela de Fretes</h4>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Cor do Cabeçalho</label>
-                                    <input type="color" id="tabelaHeaderBg" value="#1a3a5c">
-                                </div>
-                                <div class="form-group">
-                                    <label>Cor do Texto do Cabeçalho</label>
-                                    <input type="color" id="tabelaHeaderText" value="#ffffff">
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Tamanho Fonte Cabeçalho (px)</label>
-                                    <input type="number" id="tabelaHeaderFontSize" value="12" min="8" max="20">
-                                </div>
-                                <div class="form-group">
-                                    <label>Tamanho Fonte Dados (px)</label>
-                                    <input type="number" id="tabelaDataFontSize" value="12" min="8" max="20">
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Fonte da Tabela</label>
-                                    <select id="tabelaFont">
-                                        <option value="Arial, sans-serif">Arial</option>
-                                        <option value="'Times New Roman', serif">Times New Roman</option>
-                                        <option value="'Courier New', monospace" selected>Courier New</option>
-                                        <option value="Georgia, serif">Georgia</option>
-                                        <option value="Verdana, sans-serif">Verdana</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Alinhamento</label>
-                                    <select id="tabelaAlign">
-                                        <option value="left">Esquerda</option>
-                                        <option value="center">Centro</option>
-                                        <option value="right">Direita</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Cor da Linha Par</label>
-                                    <input type="color" id="tabelaLinhaPar" value="#f8f9fa">
-                                </div>
-                                <div class="form-group">
-                                    <label>Cor da Linha Ímpar</label>
-                                    <input type="color" id="tabelaLinhaImpar" value="#ffffff">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- RODAPÉ -->
-                        <div class="config-section">
-                            <h4>📞 Rodapé</h4>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Texto do Contato</label>
-                                    <input type="text" id="textoContato" value="CONTATO / WHATSAPP: (93) 8418-4950">
-                                </div>
-                                <div class="form-group">
-                                    <label>Tamanho da Fonte (px)</label>
-                                    <input type="number" id="rodapeFontSize" value="13" min="8" max="20">
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Fonte do Rodapé</label>
-                                    <select id="rodapeFont">
-                                        <option value="Arial, sans-serif">Arial</option>
-                                        <option value="'Times New Roman', serif">Times New Roman</option>
-                                        <option value="'Courier New', monospace" selected>Courier New</option>
-                                        <option value="Georgia, serif">Georgia</option>
-                                        <option value="Verdana, sans-serif">Verdana</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Alinhamento</label>
-                                    <select id="rodapeAlign">
-                                        <option value="center">Centro</option>
-                                        <option value="left">Esquerda</option>
-                                        <option value="right">Direita</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Texto da Assinatura 1</label>
-                                    <input type="text" id="assinatura1" value="SINOP-MT">
-                                </div>
-                                <div class="form-group">
-                                    <label>Texto da Assinatura 2</label>
-                                    <input type="text" id="assinatura2" value="ASSINATURA">
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Mostrar Data de Emissão</label>
-                                    <select id="mostrarDataEmissao">
-                                        <option value="true">Sim</option>
-                                        <option value="false">Não</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Largura Máxima (px)</label>
-                                    <input type="number" id="larguraMaxima" value="1000" min="600" max="1200">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="config-actions">
-                            <button type="submit" class="btn btn-primary">💾 Salvar Configurações</button>
-                            <button type="button" id="btnResetConfig" class="btn btn-secondary">🔄 Restaurar Padrão</button>
-                            <button type="button" id="btnFecharConfig" class="btn btn-outline">Fechar</button>
+                            </section>
                         </div>
                     </div>
-
-                    <!-- COLUNA DIREITA - PRÉ-VISUALIZAÇÃO EM TEMPO REAL -->
-                    <div>
-                        <div class="config-section" style="height:100%;">
-                            <h4>👁️ Pré-visualização em Tempo Real</h4>
-                            <div class="preview-label">
-                                <span class="fonte-preview" id="previewFonteInfo">Fonte: Courier New</span>
-                                <span style="margin-left:15px;" id="previewAlignInfo">Alinhamento: Centro</span>
-                            </div>
-                            <div class="preview-documento" id="previewDocumento">
-                                <div id="previewPrintContent">
-                                    <!-- Conteúdo gerado dinamicamente -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 
-    <!-- MODAL CADASTRO -->
-    <div id="modalTabela" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="modalTitle">Nova Tabela de Frete</h3>
-                <span class="close">&times;</span>
+    <!-- ============================================
+           MODAL - CADASTRO
+           ============================================ -->
+    <div id="modalTabela" class="c-modal" role="dialog" aria-modal="true" aria-labelledby="modalTabelaTitle">
+        <div class="c-modal__content">
+            <header class="c-modal__header">
+                <h3 id="modalTabelaTitle" class="c-modal__title">Nova Tabela de Frete</h3>
+                <button type="button" class="c-modal__close close" aria-label="Fechar">&times;</button>
+            </header>
+            <div class="c-modal__body">
+                <form id="formTabela" class="c-form">
+                    <input type="hidden" id="tabelaId">
+
+                    <div class="c-form__row">
+                        <div class="c-form__group">
+                            <label class="c-form__label c-form__label--required" for="cliente">Cliente</label>
+                            <input type="text" id="cliente" class="c-form__input" placeholder="Nome do cliente" required>
+                        </div>
+                        <div class="c-form__group">
+                            <label class="c-form__label" for="cnpj">CNPJ/CPF</label>
+                            <input type="text" id="cnpj" class="c-form__input" placeholder="7306297000167">
+                        </div>
+                    </div>
+
+                    <div class="c-form__row">
+                        <div class="c-form__group">
+                            <label class="c-form__label" for="telefone">Telefone</label>
+                            <input type="text" id="telefone" class="c-form__input" placeholder="(66) 3515-9853">
+                        </div>
+                        <div class="c-form__group">
+                            <label class="c-form__label" for="email">Email</label>
+                            <input type="email" id="email" class="c-form__input" placeholder="cliente@email.com">
+                        </div>
+                    </div>
+
+                    <div class="c-form__row">
+                        <div class="c-form__group">
+                            <label class="c-form__label" for="endereco">Endereço</label>
+                            <input type="text" id="endereco" class="c-form__input" placeholder="Rua, número, bairro">
+                        </div>
+                        <div class="c-form__group">
+                            <label class="c-form__label" for="ie">IE</label>
+                            <input type="text" id="ie" class="c-form__input" placeholder="Inscrição Estadual">
+                        </div>
+                    </div>
+
+                    <div class="c-form__row">
+                        <div class="c-form__group">
+                            <label class="c-form__label c-form__label--required" for="origem">Origem</label>
+                            <input type="text" id="origem" class="c-form__input" value="SINOP - MT" required>
+                        </div>
+                        <div class="c-form__group">
+                            <label class="c-form__label c-form__label--required" for="destino">Destino</label>
+                            <input type="text" id="destino" class="c-form__input" placeholder="DIVERSOS (PA)" required>
+                        </div>
+                    </div>
+
+                    <div class="c-form__row c-form__row--full">
+                        <div class="c-form__group">
+                            <label class="c-form__label c-form__label--required">Cidades Atendidas <span class="cidade-count" id="cidadeCount">(0 adicionadas)</span></label>
+                            <div class="c-cidades" id="cidadesList">
+                                <div class="c-cidades__empty">
+                                    <span class="c-cidades__empty-icon">📍</span>
+                                    <p>Nenhuma cidade adicionada</p>
+                                    <p style="font-size:12px;">Adicione as cidades abaixo</p>
+                                </div>
+                            </div>
+                            <div class="c-add-cidade">
+                                <select id="selectCidade" class="c-add-cidade__select">
+                                    <option value="">Selecione uma cidade</option>
+                                    <option value="Cachoeira da Serra">Cachoeira da Serra</option>
+                                    <option value="Castelo dos Sonhos">Castelo dos Sonhos</option>
+                                    <option value="Novo Progresso">Novo Progresso</option>
+                                    <option value="Moraes Almeida">Moraes Almeida</option>
+                                    <option value="Bela Vista do Caracol">Bela Vista do Caracol</option>
+                                    <option value="Trairão">Trairão</option>
+                                    <option value="Km 30 / Campo Verde">Km 30 / Campo Verde</option>
+                                    <option value="Mirituba">Mirituba</option>
+                                    <option value="Itaituba">Itaituba</option>
+                                    <option value="Rurópolis">Rurópolis</option>
+                                    <option value="Mojul dos Campos">Mojul dos Campos</option>
+                                    <option value="Santarém">Santarém</option>
+                                    <option value="OUTRA">➕ Outra cidade...</option>
+                                </select>
+                                <input type="text" id="cidadePersonalizada" class="c-add-cidade__input" placeholder="Nome da cidade" style="display:none;">
+                                <input type="number" id="freteCidade" class="c-add-cidade__input" placeholder="Frete R$" step="0.01">
+                                <input type="number" id="kgCidade" class="c-add-cidade__input" placeholder="Preço KG" step="0.01">
+                                <input type="number" id="percentualCidade" class="c-add-cidade__input" placeholder="% NF" step="0.01">
+                                <button type="button" id="btnAddCidade" class="c-btn c-btn--success c-btn--sm">+ Adicionar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="c-form__row">
+                        <div class="c-form__group c-form__row--full">
+                            <label class="c-form__label" for="observacao">Observação</label>
+                            <textarea id="observacao" class="c-form__textarea" placeholder="Informações adicionais..."></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="c-btn c-btn--primary" style="width:100%; padding:var(--space-md);">Salvar Tabela</button>
+                </form>
             </div>
-            <form id="formTabela">
-                <input type="hidden" id="tabelaId">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Cliente *</label>
-                        <input type="text" id="cliente" placeholder="Nome do cliente" required>
-                    </div>
-                    <div class="form-group">
-                        <label>CNPJ/CPF</label>
-                        <input type="text" id="cnpj" placeholder="7306297000167">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Telefone</label>
-                        <input type="text" id="telefone" placeholder="(66) 3515-9853">
-                    </div>
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" id="email" placeholder="cliente@email.com">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Endereço</label>
-                        <input type="text" id="endereco" placeholder="Rua, número, bairro">
-                    </div>
-                    <div class="form-group">
-                        <label>IE</label>
-                        <input type="text" id="ie" placeholder="Inscrição Estadual">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Origem *</label>
-                        <input type="text" id="origem" value="SINOP - MT" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Destino *</label>
-                        <input type="text" id="destino" placeholder="DIVERSOS (PA)" required>
-                    </div>
-                </div>
-                <div class="form-row form-row-full">
-                    <div class="form-group">
-                        <label>Cidades Atendidas * <span class="cidade-count" id="cidadeCount">(0 adicionadas)</span></label>
-                        <div class="cidades-list" id="cidadesList">
-                            <div class="empty-state" style="padding:15px;"><div class="icon">📍</div><p>Nenhuma cidade adicionada</p><p style="font-size:12px;">Adicione as cidades abaixo</p></div>
-                        </div>
-                        <div class="add-cidade-row">
-                            <select id="selectCidade">
-                                <option value="">Selecione uma cidade</option>
-                                <option value="Cachoeira da Serra">Cachoeira da Serra</option>
-                                <option value="Castelo dos Sonhos">Castelo dos Sonhos</option>
-                                <option value="Novo Progresso">Novo Progresso</option>
-                                <option value="Moraes Almeida">Moraes Almeida</option>
-                                <option value="Bela Vista do Caracol">Bela Vista do Caracol</option>
-                                <option value="Trairão">Trairão</option>
-                                <option value="Km 30 / Campo Verde">Km 30 / Campo Verde</option>
-                                <option value="Mirituba">Mirituba</option>
-                                <option value="Itaituba">Itaituba</option>
-                                <option value="Rurópolis">Rurópolis</option>
-                                <option value="Mojul dos Campos">Mojul dos Campos</option>
-                                <option value="Santarém">Santarém</option>
-                                <option value="OUTRA">➕ Outra cidade...</option>
-                            </select>
-                            <input type="text" id="cidadePersonalizada" placeholder="Nome da cidade" style="display:none;">
-                            <input type="number" id="freteCidade" placeholder="Frete R$" step="0.01">
-                            <input type="number" id="kgCidade" placeholder="Preço KG" step="0.01">
-                            <input type="number" id="percentualCidade" placeholder="% NF" step="0.01">
-                            <button type="button" id="btnAddCidade" class="btn btn-success btn-sm">+ Adicionar</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group form-row-full">
-                        <label>Observação</label>
-                        <textarea id="observacao" placeholder="Informações adicionais..."></textarea>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary" style="width:100%; margin-top:10px; padding:14px;">Salvar Tabela</button>
-            </form>
         </div>
     </div>
 
-    <!-- MODAL IMPRESSÃO -->
-    <div id="modalImprimir" class="modal">
-        <div class="modal-content" style="max-width:950px;">
-            <div class="modal-header">
-                <h3>Tabela de Fretes</h3>
-                <span class="close-print">&times;</span>
+    <!-- ============================================
+           MODAL - IMPRESSÃO
+           ============================================ -->
+    <div id="modalImprimir" class="c-modal" role="dialog" aria-modal="true" aria-labelledby="modalImprimirTitle">
+        <div class="c-modal__content" style="max-width:950px;">
+            <header class="c-modal__header">
+                <h3 id="modalImprimirTitle" class="c-modal__title">Tabela de Fretes</h3>
+                <button type="button" class="c-modal__close close-print" aria-label="Fechar impressão">&times;</button>
+            </header>
+            <div class="c-modal__body" id="conteudoImpressao">
+                <!-- Conteúdo gerado dinamicamente -->
             </div>
-            <div id="conteudoImpressao"></div>
-            <div class="print-actions">
-                <button onclick="imprimirRecibo()" class="btn btn-primary">🖨️ Imprimir</button>
-                <button onclick="gerarPDF()" class="btn btn-success" id="btnGerarPDF">📄 Gerar PDF</button>
-                <button id="btnFecharPrint" class="btn btn-secondary">Fechar</button>
-            </div>
+            <footer class="c-modal__footer c-print__actions">
+                <button onclick="imprimirRecibo()" class="c-btn c-btn--primary">🖨️ Imprimir</button>
+                <button onclick="gerarPDF()" class="c-btn c-btn--success" id="btnGerarPDF">📄 Gerar PDF</button>
+                <button id="btnFecharPrint" class="c-btn c-btn--outline">Fechar</button>
+            </footer>
         </div>
     </div>
 
@@ -772,7 +1963,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         const API_URL = `https://api.jsonbin.io/v3/b/${CONFIG.BIN_ID}`;
 
         // ============================================
-        // CONFIGURAÇÕES DE IMPRESSÃO - ATUALIZADO
+        // CONFIGURAÇÕES DE IMPRESSÃO
         // ============================================
         let configImpressao = {
             headerBgColor: '#1a3a5c',
@@ -831,7 +2022,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             btnBuscar: document.getElementById('btnBuscar'),
             btnLimpar: document.getElementById('btnLimpar'),
             modal: document.getElementById('modalTabela'),
-            modalTitle: document.getElementById('modalTitle'),
+            modalTitle: document.getElementById('modalTabelaTitle'),
             form: document.getElementById('formTabela'),
             tabelaId: document.getElementById('tabelaId'),
             cliente: document.getElementById('cliente'),
@@ -926,7 +2117,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         // PRÉ-VISUALIZAÇÃO EM TEMPO REAL
         // ============================================
         function atualizarPreview() {
-            // Usa um timeout para não travar a UI
             if (previewTimeout) clearTimeout(previewTimeout);
             previewTimeout = setTimeout(() => {
                 gerarPreviewHTML();
@@ -936,8 +2126,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         function gerarPreviewHTML() {
             const cfg = configImpressao;
             const logoPrint = 'https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png';
-            
-            // Dados de exemplo para preview
+
             const tabelaExemplo = {
                 id: 1,
                 cliente: 'DISTRIBUIDORA DE MOLAS MATO GROSSO LTDA',
@@ -959,82 +2148,83 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
 
             const campos = cfg.camposCliente.split(',').map(c => c.trim());
             const mapaCampos = {
-                'NOME': `<div class="info-item"><strong>NOME:</strong> ${tabelaExemplo.cliente}</div>`,
-                'CNPJ/CPF': `<div class="info-item"><strong>CNPJ/CPF:</strong> ${tabelaExemplo.cnpj}</div>`,
-                'TELEFONE': `<div class="info-item"><strong>TELEFONE:</strong> ${tabelaExemplo.telefone}</div>`,
-                'NÚMERO': `<div class="info-item"><strong>NÚMERO:</strong> ${tabelaExemplo.id}</div>`,
-                'BAIRRO': `<div class="info-item"><strong>BAIRRO:</strong> ${tabelaExemplo.endereco ? tabelaExemplo.endereco.split(',')[1]?.trim() || '-' : '-'}</div>`,
-                'RUA': `<div class="info-item"><strong>RUA:</strong> ${tabelaExemplo.endereco ? tabelaExemplo.endereco.split(',')[0] || '-' : '-'}</div>`,
-                'CEP': `<div class="info-item"><strong>CEP:</strong> 78557-171</div>`,
-                'CIDADE': `<div class="info-item"><strong>CIDADE:</strong> SINOP MT</div>`,
-                'IE': `<div class="info-item"><strong>IE:</strong> ${tabelaExemplo.ie}</div>`,
-                'EMAIL': `<div class="info-item"><strong>EMAIL:</strong> ${tabelaExemplo.email}</div>`
+                'NOME': `<div class="c-print__cliente-item"><strong>NOME:</strong> ${tabelaExemplo.cliente}</div>`,
+                'CNPJ/CPF': `<div class="c-print__cliente-item"><strong>CNPJ/CPF:</strong> ${tabelaExemplo.cnpj}</div>`,
+                'TELEFONE': `<div class="c-print__cliente-item"><strong>TELEFONE:</strong> ${tabelaExemplo.telefone}</div>`,
+                'NÚMERO': `<div class="c-print__cliente-item"><strong>NÚMERO:</strong> ${tabelaExemplo.id}</div>`,
+                'BAIRRO': `<div class="c-print__cliente-item"><strong>BAIRRO:</strong> ${tabelaExemplo.endereco ? tabelaExemplo.endereco.split(',')[1]?.trim() || '-' : '-'}</div>`,
+                'RUA': `<div class="c-print__cliente-item"><strong>RUA:</strong> ${tabelaExemplo.endereco ? tabelaExemplo.endereco.split(',')[0] || '-' : '-'}</div>`,
+                'CEP': `<div class="c-print__cliente-item"><strong>CEP:</strong> 78557-171</div>`,
+                'CIDADE': `<div class="c-print__cliente-item"><strong>CIDADE:</strong> SINOP MT</div>`,
+                'IE': `<div class="c-print__cliente-item"><strong>IE:</strong> ${tabelaExemplo.ie}</div>`,
+                'EMAIL': `<div class="c-print__cliente-item"><strong>EMAIL:</strong> ${tabelaExemplo.email}</div>`
             };
             const camposHTML = campos.filter(c => mapaCampos[c]).map(c => mapaCampos[c]).join('');
             const enderecoHTML = cfg.enderecoEmpresa.replace(/\n/g, '<br>');
-            
-            // Atualiza info de fonte e alinhamento
+
             const nomeFonte = cfg.headerFont.replace(/'/g, '').replace(/,.*$/, '').trim() || 'Courier New';
             elements.previewFonteInfo.textContent = `Fonte: ${nomeFonte}`;
             elements.previewAlignInfo.textContent = `Alinhamento: ${cfg.headerAlign.charAt(0).toUpperCase() + cfg.headerAlign.slice(1)}`;
 
             const html = `
                 <div style="max-width:${cfg.larguraMaxima}px; margin:0 auto; font-family:${cfg.headerFont};">
-                    <div class="header-print" style="background:${cfg.headerBgColor};color:${cfg.headerTextColor};border-bottom-color:${cfg.headerBorderColor};padding:${cfg.headerPadding}px 20px 15px 20px;font-size:${cfg.headerFontSize}px;text-align:${cfg.headerAlign};">
-                        <div class="logo-print">
+                    <div class="c-print__header" style="background:${cfg.headerBgColor};color:${cfg.headerTextColor};border-bottom-color:${cfg.headerBorderColor};padding:${cfg.headerPadding}px 20px 15px 20px;font-size:${cfg.headerFontSize}px;text-align:${cfg.headerAlign};">
+                        <div class="c-print__logo">
                             <img src="${logoPrint}" alt="Logo" style="max-height:${cfg.logoMaxHeight}px;width:auto;height:auto;">
                         </div>
-                        <div class="endereco" style="color:${cfg.headerTextColor};font-size:${cfg.headerFontSize}px;font-family:${cfg.headerFont};text-align:${cfg.headerAlign};">
+                        <div class="c-print__address" style="color:${cfg.headerTextColor};font-size:${cfg.headerFontSize}px;font-family:${cfg.headerFont};text-align:${cfg.headerAlign};">
                             ${enderecoHTML}
                         </div>
                     </div>
-                    
-                    <div class="info-cliente" style="background:${cfg.clienteBgColor};color:${cfg.clienteTextColor};padding:${cfg.clientePadding}px 20px;font-size:${cfg.clienteFontSize}px;font-family:${cfg.clienteFont};text-align:${cfg.clienteAlign};">
+
+                    <div class="c-print__cliente" style="background:${cfg.clienteBgColor};color:${cfg.clienteTextColor};padding:${cfg.clientePadding}px 20px;font-size:${cfg.clienteFontSize}px;font-family:${cfg.clienteFont};text-align:${cfg.clienteAlign};">
                         ${camposHTML}
                     </div>
-                    
-                    <div class="info-origem" style="font-size:${Math.max(12, cfg.clienteFontSize + 2)}px;background:#e9ecef;color:#1a3a5c;font-family:${cfg.tabelaFont};">
+
+                    <div class="c-print__origem" style="font-size:${Math.max(12, cfg.clienteFontSize + 2)}px;background:#e9ecef;color:#1a3a5c;font-family:${cfg.tabelaFont};">
                         <span>ORIGEM: ${tabelaExemplo.origem}</span>
                         <span>DESTINO: ${tabelaExemplo.destino}</span>
                     </div>
-                    
-                    <table class="tabela-fretes" style="font-size:${cfg.tabelaDataFontSize}px;font-family:${cfg.tabelaFont};text-align:${cfg.tabelaAlign};">
-                        <thead>
-                            <tr>
-                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};">Cidades Atendidas</th>
-                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};">UF</th>
-                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};">Frete</th>
-                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};">Preço por KG</th>
-                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};">% NF</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${tabelaExemplo.cidades.map((c, index) => `
-                                <tr style="background:${index % 2 === 0 ? cfg.tabelaLinhaPar : cfg.tabelaLinhaImpar};">
-                                    <td style="text-align:${cfg.tabelaAlign};">${c.nome}</td>
-                                    <td style="text-align:${cfg.tabelaAlign};">PA</td>
-                                    <td style="text-align:${cfg.tabelaAlign};">R$ ${c.frete.toFixed(2)}</td>
-                                    <td style="text-align:${cfg.tabelaAlign};">R$ ${c.kg.toFixed(2)}/kg</td>
-                                    <td style="text-align:${cfg.tabelaAlign};">${c.percentual.toFixed(2)}%</td>
+
+                    <div class="c-print__table-wrap">
+                        <table class="c-print__table" style="font-size:${cfg.tabelaDataFontSize}px;font-family:${cfg.tabelaFont};text-align:${cfg.tabelaAlign};">
+                            <thead>
+                                <tr>
+                                    <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};">Cidades Atendidas</th>
+                                    <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};">UF</th>
+                                    <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};">Frete</th>
+                                    <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};">Preço por KG</th>
+                                    <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};">% NF</th>
                                 </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                    
-                    <div class="rodape-print" style="font-size:${cfg.rodapeFontSize}px;font-family:${cfg.rodapeFont};text-align:${cfg.rodapeAlign};">
-                        <div class="dados-adicionais"><strong>${cfg.textoContato}</strong></div>
-                        <div class="assinaturas" style="font-size:${Math.max(10, cfg.rodapeFontSize - 1)}px;">
+                            </thead>
+                            <tbody>
+                                ${tabelaExemplo.cidades.map((c, index) => `
+                                    <tr style="background:${index % 2 === 0 ? cfg.tabelaLinhaPar : cfg.tabelaLinhaImpar};">
+                                        <td style="text-align:${cfg.tabelaAlign};">${c.nome}</td>
+                                        <td style="text-align:${cfg.tabelaAlign};">PA</td>
+                                        <td style="text-align:${cfg.tabelaAlign};">R$ ${c.frete.toFixed(2)}</td>
+                                        <td style="text-align:${cfg.tabelaAlign};">R$ ${c.kg.toFixed(2)}/kg</td>
+                                        <td style="text-align:${cfg.tabelaAlign};">${c.percentual.toFixed(2)}%</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="c-print__footer" style="font-size:${cfg.rodapeFontSize}px;font-family:${cfg.rodapeFont};text-align:${cfg.rodapeAlign};">
+                        <div class="c-print__footer-contato"><strong>${cfg.textoContato}</strong></div>
+                        <div class="c-print__footer-assinaturas" style="font-size:${Math.max(10, cfg.rodapeFontSize - 1)}px;">
                             <div><div class="linha"></div><small>${cfg.assinatura1}</small></div>
                             <div><div class="linha"></div><small>${cfg.assinatura2}</small></div>
                         </div>
                     </div>
-                    
-                    ${tabelaExemplo.observacao ? `<div class="observacao-print" style="font-size:${Math.max(10, cfg.rodapeFontSize - 1)}px;font-family:${cfg.rodapeFont};"><strong>Observação:</strong> ${tabelaExemplo.observacao}</div>` : ''}
-                    
-                    ${cfg.mostrarDataEmissao ? `<div class="data-emissao" style="font-family:${cfg.rodapeFont};">Documento emitido em ${new Date().toLocaleString('pt-BR')}</div>` : ''}
+
+                    ${tabelaExemplo.observacao ? `<div class="c-print__observacao" style="font-size:${Math.max(10, cfg.rodapeFontSize - 1)}px;font-family:${cfg.rodapeFont};"><strong>Observação:</strong> ${tabelaExemplo.observacao}</div>` : ''}
+
+                    ${cfg.mostrarDataEmissao ? `<div class="c-print__data" style="font-family:${cfg.rodapeFont};">Documento emitido em ${new Date().toLocaleString('pt-BR')}</div>` : ''}
                 </div>
             `;
-            
+
             elements.previewContent.innerHTML = html;
         }
 
@@ -1044,24 +2234,28 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         async function verificarConexao() {
             const statusEl = elements.statusConexao;
             const textoEl = elements.statusTexto;
-            statusEl.className = 'badge-status checking';
+            statusEl.className = 'c-badge c-badge--status c-badge--checking';
+            statusEl.querySelector('.c-badge__dot').className = 'c-badge__dot c-badge__dot--checking';
             textoEl.textContent = 'Verificando...';
             try {
                 const response = await fetch(API_URL, {
                     headers: { 'X-Master-Key': CONFIG.MASTER_KEY }
                 });
                 if (response.ok) {
-                    statusEl.className = 'badge-status online';
+                    statusEl.className = 'c-badge c-badge--status c-badge--online';
+                    statusEl.querySelector('.c-badge__dot').className = 'c-badge__dot c-badge__dot--online';
                     textoEl.textContent = 'Online';
                     mostrarToast('Conectado ao JSONBin!', 'success');
                     await carregarDados();
                 } else {
-                    statusEl.className = 'badge-status offline';
+                    statusEl.className = 'c-badge c-badge--status c-badge--offline';
+                    statusEl.querySelector('.c-badge__dot').className = 'c-badge__dot c-badge__dot--offline';
                     textoEl.textContent = 'Offline';
                     mostrarToast('Erro ao conectar ao JSONBin.', 'error');
                 }
             } catch (error) {
-                statusEl.className = 'badge-status offline';
+                statusEl.className = 'c-badge c-badge--status c-badge--offline';
+                statusEl.querySelector('.c-badge__dot').className = 'c-badge__dot c-badge__dot--offline';
                 textoEl.textContent = 'Offline';
                 mostrarToast('Erro de rede.', 'error');
             }
@@ -1073,14 +2267,17 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                     headers: { 'X-Master-Key': CONFIG.MASTER_KEY }
                 });
                 if (response.ok) {
-                    elements.statusConexao.className = 'badge-status online';
+                    elements.statusConexao.className = 'c-badge c-badge--status c-badge--online';
+                    elements.statusConexao.querySelector('.c-badge__dot').className = 'c-badge__dot c-badge__dot--online';
                     elements.statusTexto.textContent = 'Online';
                 } else {
-                    elements.statusConexao.className = 'badge-status offline';
+                    elements.statusConexao.className = 'c-badge c-badge--status c-badge--offline';
+                    elements.statusConexao.querySelector('.c-badge__dot').className = 'c-badge__dot c-badge__dot--offline';
                     elements.statusTexto.textContent = 'Offline';
                 }
             } catch (error) {
-                elements.statusConexao.className = 'badge-status offline';
+                elements.statusConexao.className = 'c-badge c-badge--status c-badge--offline';
+                elements.statusConexao.querySelector('.c-badge__dot').className = 'c-badge__dot c-badge__dot--offline';
                 elements.statusTexto.textContent = 'Offline';
             }
         }
@@ -1116,7 +2313,8 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 tabelas = data.record || [];
                 renderizarTabelas();
                 atualizarTotalizadores();
-                elements.statusConexao.className = 'badge-status online';
+                elements.statusConexao.className = 'c-badge c-badge--status c-badge--online';
+                elements.statusConexao.querySelector('.c-badge__dot').className = 'c-badge__dot c-badge__dot--online';
                 elements.statusTexto.textContent = 'Online';
                 return tabelas;
             } catch (error) {
@@ -1124,7 +2322,8 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 tabelas = getDadosExemplo();
                 renderizarTabelas();
                 atualizarTotalizadores();
-                elements.statusConexao.className = 'badge-status offline';
+                elements.statusConexao.className = 'c-badge c-badge--status c-badge--offline';
+                elements.statusConexao.querySelector('.c-badge__dot').className = 'c-badge__dot c-badge__dot--offline';
                 elements.statusTexto.textContent = 'Offline';
                 mostrarToast('Usando dados de exemplo (offline)', 'error');
                 return tabelas;
@@ -1133,7 +2332,8 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
 
         async function salvarDados() {
             try {
-                elements.statusConexao.className = 'badge-status checking';
+                elements.statusConexao.className = 'c-badge c-badge--status c-badge--checking';
+                elements.statusConexao.querySelector('.c-badge__dot').className = 'c-badge__dot c-badge__dot--checking';
                 elements.statusTexto.textContent = 'Salvando...';
                 if (!tabelas || tabelas.length === 0) { tabelas = []; }
                 const response = await fetch(API_URL, {
@@ -1150,13 +2350,15 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 }
                 const result = await response.json();
                 console.log('Dados salvos:', result);
-                elements.statusConexao.className = 'badge-status online';
+                elements.statusConexao.className = 'c-badge c-badge--status c-badge--online';
+                elements.statusConexao.querySelector('.c-badge__dot').className = 'c-badge__dot c-badge__dot--online';
                 elements.statusTexto.textContent = 'Online';
                 mostrarToast('Dados salvos com sucesso!', 'success');
                 return true;
             } catch (error) {
                 console.error('Erro ao salvar:', error);
-                elements.statusConexao.className = 'badge-status offline';
+                elements.statusConexao.className = 'c-badge c-badge--status c-badge--offline';
+                elements.statusConexao.querySelector('.c-badge__dot').className = 'c-badge__dot c-badge__dot--offline';
                 elements.statusTexto.textContent = 'Offline';
                 mostrarToast('Erro ao salvar: ' + error.message, 'error');
                 return false;
@@ -1191,13 +2393,20 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         // RENDERIZAR
         // ============================================
         function renderizarTabelas(filtro = '') {
-            let dados = filtro ? tabelas.filter(t => 
+            let dados = filtro ? tabelas.filter(t =>
                 t.cliente.toLowerCase().includes(filtro.toLowerCase()) ||
                 t.origem.toLowerCase().includes(filtro.toLowerCase()) ||
                 t.destino.toLowerCase().includes(filtro.toLowerCase())
             ) : tabelas;
             if (dados.length === 0) {
-                elements.corpoTabela.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:40px;color:#a0aec0;">Nenhuma tabela encontrada</td></tr>`;
+                elements.corpoTabela.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="c-table__empty">
+                            <span class="c-table__empty-icon">📭</span>
+                            Nenhuma tabela encontrada
+                        </td>
+                    </tr>
+                `;
                 return;
             }
             elements.corpoTabela.innerHTML = dados.map(tabela => `
@@ -1206,12 +2415,12 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                     <td>${tabela.cliente}</td>
                     <td>${tabela.origem}</td>
                     <td>${tabela.destino}</td>
-                    <td><span class="badge badge-success">${tabela.cidades.length} cidades</span></td>
+                    <td><span class="c-badge c-badge--success">${tabela.cidades.length} cidades</span></td>
                     <td>${formatarData(tabela.data)}</td>
                     <td>
-                        <button class="btn btn-sm btn-success" onclick="abrirImpressao(${tabela.id})">Imprimir</button>
-                        <button class="btn btn-sm btn-primary" onclick="editarTabela(${tabela.id})">Editar</button>
-                        <button class="btn btn-sm btn-danger" onclick="excluirTabela(${tabela.id})">Excluir</button>
+                        <button class="c-btn c-btn--success c-btn--sm" onclick="abrirImpressao(${tabela.id})" aria-label="Imprimir tabela">📄</button>
+                        <button class="c-btn c-btn--primary c-btn--sm" onclick="editarTabela(${tabela.id})" aria-label="Editar tabela">✏️</button>
+                        <button class="c-btn c-btn--danger c-btn--sm" onclick="excluirTabela(${tabela.id})" aria-label="Excluir tabela">🗑️</button>
                     </td>
                 </tr>
             `).join('');
@@ -1235,16 +2444,22 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         function renderizarCidadesForm() {
             elements.cidadeCount.textContent = `(${cidadesTemp.length} adicionadas)`;
             if (cidadesTemp.length === 0) {
-                elements.cidadesList.innerHTML = `<div class="empty-state" style="padding:15px;"><div class="icon">📍</div><p>Nenhuma cidade adicionada</p><p style="font-size:12px;">Adicione as cidades abaixo</p></div>`;
+                elements.cidadesList.innerHTML = `
+                    <div class="c-cidades__empty">
+                        <span class="c-cidades__empty-icon">📍</span>
+                        <p>Nenhuma cidade adicionada</p>
+                        <p style="font-size:12px;">Adicione as cidades abaixo</p>
+                    </div>
+                `;
                 return;
             }
             elements.cidadesList.innerHTML = cidadesTemp.map((c, index) => `
-                <div class="cidade-item">
-                    <div class="cidade-info">
+                <div class="c-cidades__item">
+                    <div class="c-cidades__item-info">
                         <strong>${c.nome}</strong>
-                        <span style="color:#718096;">| Frete: R$ ${c.frete.toFixed(2)} | KG: R$ ${c.kg.toFixed(2)} | %: ${c.percentual.toFixed(2)}%</span>
+                        <span>| Frete: R$ ${c.frete.toFixed(2)} | KG: R$ ${c.kg.toFixed(2)} | %: ${c.percentual.toFixed(2)}%</span>
                     </div>
-                    <button type="button" class="btn-remove-cidade" onclick="removerCidade(${index})">✕</button>
+                    <button type="button" class="c-cidades__remove" onclick="removerCidade(${index})" aria-label="Remover cidade ${c.nome}">✕</button>
                 </div>
             `).join('');
         }
@@ -1302,7 +2517,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             elements.destino.value = 'DIVERSOS (PA)';
             cidadesTemp = [];
             renderizarCidadesForm();
-            elements.modal.style.display = 'block';
+            elements.modal.classList.add('c-modal--open');
         }
 
         function editarTabela(id) {
@@ -1322,7 +2537,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             elements.observacao.value = tabela.observacao || '';
             cidadesTemp = JSON.parse(JSON.stringify(tabela.cidades));
             renderizarCidadesForm();
-            elements.modal.style.display = 'block';
+            elements.modal.classList.add('c-modal--open');
         }
 
         async function excluirTabela(id) {
@@ -1375,7 +2590,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             if (salvou) {
                 renderizarTabelas();
                 atualizarTotalizadores();
-                elements.modal.style.display = 'none';
+                elements.modal.classList.remove('c-modal--open');
                 mostrarToast(`Tabela ${editandoId ? 'atualizada' : 'criada'} com sucesso!`, 'success');
             } else {
                 await carregarDados();
@@ -1397,7 +2612,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             }
             tabelaImpressaoAtual = tabela;
             gerarHTMLImpressao(tabela);
-            elements.modalPrint.style.display = 'block';
+            elements.modalPrint.classList.add('c-modal--open');
         }
 
         function gerarHTMLImpressao(tabela) {
@@ -1405,63 +2620,66 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             const cfg = configImpressao;
             const campos = cfg.camposCliente.split(',').map(c => c.trim());
             const mapaCampos = {
-                'NOME': `<div class="info-item"><strong>NOME:</strong> ${tabela.cliente}</div>`,
-                'CNPJ/CPF': `<div class="info-item"><strong>CNPJ/CPF:</strong> ${tabela.cnpj || 'Não informado'}</div>`,
-                'TELEFONE': `<div class="info-item"><strong>TELEFONE:</strong> ${tabela.telefone || 'Não informado'}</div>`,
-                'NÚMERO': `<div class="info-item"><strong>NÚMERO:</strong> ${tabela.id}</div>`,
-                'BAIRRO': `<div class="info-item"><strong>BAIRRO:</strong> ${tabela.endereco ? tabela.endereco.split(',')[1]?.trim() || '-' : '-'}</div>`,
-                'RUA': `<div class="info-item"><strong>RUA:</strong> ${tabela.endereco ? tabela.endereco.split(',')[0] || '-' : '-'}</div>`,
-                'CEP': `<div class="info-item"><strong>CEP:</strong> 78557-171</div>`,
-                'CIDADE': `<div class="info-item"><strong>CIDADE:</strong> SINOP MT</div>`,
-                'IE': `<div class="info-item"><strong>IE:</strong> ${tabela.ie || 'Não informado'}</div>`,
-                'EMAIL': `<div class="info-item"><strong>EMAIL:</strong> ${tabela.email || 'Não informado'}</div>`
+                'NOME': `<div class="c-print__cliente-item"><strong>NOME:</strong> ${tabela.cliente}</div>`,
+                'CNPJ/CPF': `<div class="c-print__cliente-item"><strong>CNPJ/CPF:</strong> ${tabela.cnpj || 'Não informado'}</div>`,
+                'TELEFONE': `<div class="c-print__cliente-item"><strong>TELEFONE:</strong> ${tabela.telefone || 'Não informado'}</div>`,
+                'NÚMERO': `<div class="c-print__cliente-item"><strong>NÚMERO:</strong> ${tabela.id}</div>`,
+                'BAIRRO': `<div class="c-print__cliente-item"><strong>BAIRRO:</strong> ${tabela.endereco ? tabela.endereco.split(',')[1]?.trim() || '-' : '-'}</div>`,
+                'RUA': `<div class="c-print__cliente-item"><strong>RUA:</strong> ${tabela.endereco ? tabela.endereco.split(',')[0] || '-' : '-'}</div>`,
+                'CEP': `<div class="c-print__cliente-item"><strong>CEP:</strong> 78557-171</div>`,
+                'CIDADE': `<div class="c-print__cliente-item"><strong>CIDADE:</strong> SINOP MT</div>`,
+                'IE': `<div class="c-print__cliente-item"><strong>IE:</strong> ${tabela.ie || 'Não informado'}</div>`,
+                'EMAIL': `<div class="c-print__cliente-item"><strong>EMAIL:</strong> ${tabela.email || 'Não informado'}</div>`
             };
             const camposHTML = campos.filter(c => mapaCampos[c]).map(c => mapaCampos[c]).join('');
             const enderecoHTML = cfg.enderecoEmpresa.replace(/\n/g, '<br>');
-            const dataEmissao = cfg.mostrarDataEmissao ? `<div class="data-emissao">Documento emitido em ${new Date().toLocaleString('pt-BR')}</div>` : '';
+            const dataEmissao = cfg.mostrarDataEmissao ? `<div class="c-print__data">Documento emitido em ${new Date().toLocaleString('pt-BR')}</div>` : '';
+
             const html = `
-                <div id="printContent" style="max-width:${cfg.larguraMaxima}px;">
-                    <div class="header-print" style="background:${cfg.headerBgColor};color:${cfg.headerTextColor};border-bottom-color:${cfg.headerBorderColor};padding:${cfg.headerPadding}px 20px 20px 20px;font-size:${cfg.headerFontSize}px;font-family:${cfg.headerFont};text-align:${cfg.headerAlign};">
-                        <div class="logo-print">
+                <div class="c-print" style="max-width:${cfg.larguraMaxima}px;">
+                    <div class="c-print__header" style="background:${cfg.headerBgColor};color:${cfg.headerTextColor};border-bottom-color:${cfg.headerBorderColor};padding:${cfg.headerPadding}px 20px 20px 20px;font-size:${cfg.headerFontSize}px;font-family:${cfg.headerFont};text-align:${cfg.headerAlign};">
+                        <div class="c-print__logo">
                             <img src="${logoPrint}" alt="Logo" style="max-height:${cfg.logoMaxHeight}px;width:auto;height:auto;">
                         </div>
-                        <div class="endereco" style="color:${cfg.headerTextColor};font-size:${cfg.headerFontSize}px;font-family:${cfg.headerFont};text-align:${cfg.headerAlign};">${enderecoHTML}</div>
+                        <div class="c-print__address" style="color:${cfg.headerTextColor};font-size:${cfg.headerFontSize}px;font-family:${cfg.headerFont};text-align:${cfg.headerAlign};">${enderecoHTML}</div>
                     </div>
-                    <div class="info-cliente" style="background:${cfg.clienteBgColor};color:${cfg.clienteTextColor};padding:${cfg.clientePadding}px 20px;font-size:${cfg.clienteFontSize}px;font-family:${cfg.clienteFont};text-align:${cfg.clienteAlign};">${camposHTML}</div>
-                    <div class="info-origem" style="font-size:${Math.max(12, cfg.clienteFontSize + 2)}px;background:#e9ecef;color:#1a3a5c;font-family:${cfg.tabelaFont};">
+                    <div class="c-print__cliente" style="background:${cfg.clienteBgColor};color:${cfg.clienteTextColor};padding:${cfg.clientePadding}px 20px;font-size:${cfg.clienteFontSize}px;font-family:${cfg.clienteFont};text-align:${cfg.clienteAlign};">${camposHTML}</div>
+                    <div class="c-print__origem" style="font-size:${Math.max(12, cfg.clienteFontSize + 2)}px;background:#e9ecef;color:#1a3a5c;font-family:${cfg.tabelaFont};">
                         <span>ORIGEM: ${tabela.origem}</span>
                         <span>DESTINO: ${tabela.destino}</span>
                     </div>
-                    <table class="tabela-fretes" style="font-size:${cfg.tabelaDataFontSize}px;font-family:${cfg.tabelaFont};text-align:${cfg.tabelaAlign};">
-                        <thead>
-                            <tr>
-                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};">Cidades Atendidas</th>
-                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};">UF</th>
-                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};">Frete</th>
-                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};">Preço por KG / TON</th>
-                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};">% Sobre Valor NF</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${tabela.cidades.map((c, index) => `
-                                <tr style="background:${index % 2 === 0 ? cfg.tabelaLinhaPar : cfg.tabelaLinhaImpar};">
-                                    <td style="text-align:${cfg.tabelaAlign};">${c.nome}</td>
-                                    <td style="text-align:${cfg.tabelaAlign};">PA</td>
-                                    <td style="text-align:${cfg.tabelaAlign};">R$ ${c.frete.toFixed(2)}</td>
-                                    <td style="text-align:${cfg.tabelaAlign};">R$ ${c.kg.toFixed(2)}/kg</td>
-                                    <td style="text-align:${cfg.tabelaAlign};">${c.percentual.toFixed(2)}%</td>
+                    <div class="c-print__table-wrap">
+                        <table class="c-print__table" style="font-size:${cfg.tabelaDataFontSize}px;font-family:${cfg.tabelaFont};text-align:${cfg.tabelaAlign};">
+                            <thead>
+                                <tr>
+                                    <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};">Cidades Atendidas</th>
+                                    <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};">UF</th>
+                                    <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};">Frete</th>
+                                    <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};">Preço por KG / TON</th>
+                                    <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};">% Sobre Valor NF</th>
                                 </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                    <div class="rodape-print" style="font-size:${cfg.rodapeFontSize}px;font-family:${cfg.rodapeFont};text-align:${cfg.rodapeAlign};">
-                        <div class="dados-adicionais"><strong>${cfg.textoContato}</strong></div>
-                        <div class="assinaturas" style="font-size:${Math.max(10, cfg.rodapeFontSize - 1)}px;">
+                            </thead>
+                            <tbody>
+                                ${tabela.cidades.map((c, index) => `
+                                    <tr style="background:${index % 2 === 0 ? cfg.tabelaLinhaPar : cfg.tabelaLinhaImpar};">
+                                        <td style="text-align:${cfg.tabelaAlign};">${c.nome}</td>
+                                        <td style="text-align:${cfg.tabelaAlign};">PA</td>
+                                        <td style="text-align:${cfg.tabelaAlign};">R$ ${c.frete.toFixed(2)}</td>
+                                        <td style="text-align:${cfg.tabelaAlign};">R$ ${c.kg.toFixed(2)}/kg</td>
+                                        <td style="text-align:${cfg.tabelaAlign};">${c.percentual.toFixed(2)}%</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="c-print__footer" style="font-size:${cfg.rodapeFontSize}px;font-family:${cfg.rodapeFont};text-align:${cfg.rodapeAlign};">
+                        <div class="c-print__footer-contato"><strong>${cfg.textoContato}</strong></div>
+                        <div class="c-print__footer-assinaturas" style="font-size:${Math.max(10, cfg.rodapeFontSize - 1)}px;">
                             <div><div class="linha"></div><small>${cfg.assinatura1}</small></div>
                             <div><div class="linha"></div><small>${cfg.assinatura2}</small></div>
                         </div>
                     </div>
-                    ${tabela.observacao ? `<div class="observacao-print" style="font-size:${Math.max(10, cfg.rodapeFontSize - 1)}px;font-family:${cfg.rodapeFont};"><strong>Observação:</strong> ${tabela.observacao}</div>` : ''}
+                    ${tabela.observacao ? `<div class="c-print__observacao" style="font-size:${Math.max(10, cfg.rodapeFontSize - 1)}px;font-family:${cfg.rodapeFont};"><strong>Observação:</strong> ${tabela.observacao}</div>` : ''}
                     ${dataEmissao}
                 </div>
             `;
@@ -1475,9 +2693,9 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         function gerarPDF() {
             const btn = elements.btnGerarPDF;
             const textoOriginal = btn.innerHTML;
-            btn.innerHTML = '<span class="loading"></span> Gerando...';
+            btn.innerHTML = '<span class="c-loading"></span> Gerando...';
             btn.disabled = true;
-            const element = document.getElementById('printContent');
+            const element = document.querySelector('.c-print');
             const opt = {
                 margin: [0, 0, 0, 0],
                 filename: `tabela_frete_${tabelaImpressaoAtual?.id || 'sem_id'}.pdf`,
@@ -1502,8 +2720,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         // ============================================
         function salvarConfiguracoes(event) {
             event.preventDefault();
-            
-            // Lê todos os valores do formulário
+
             const headerFont = document.getElementById('headerFont').value;
             const clienteFont = document.getElementById('clienteFont').value;
             const tabelaFont = document.getElementById('tabelaFont').value;
@@ -1543,9 +2760,9 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 mostrarDataEmissao: document.getElementById('mostrarDataEmissao').value === 'true',
                 larguraMaxima: parseInt(document.getElementById('larguraMaxima').value) || 1000
             };
-            
+
             salvarConfiguracoesLocal();
-            elements.modalConfig.style.display = 'none';
+            elements.modalConfig.classList.remove('c-modal--open');
             mostrarToast('Configurações salvas com sucesso!', 'success');
         }
 
@@ -1595,8 +2812,9 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         // ============================================
         function mostrarToast(mensagem, tipo = 'success') {
             const toast = document.createElement('div');
-            toast.className = `toast toast-${tipo}`;
+            toast.className = `c-toast c-toast--${tipo}`;
             toast.textContent = mensagem;
+            toast.setAttribute('role', 'alert');
             document.body.appendChild(toast);
             setTimeout(() => {
                 toast.style.opacity = '0';
@@ -1612,19 +2830,21 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         elements.searchInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') renderizarTabelas(elements.searchInput.value); });
         elements.btnLimpar.addEventListener('click', () => { elements.searchInput.value = ''; renderizarTabelas(); });
         elements.btnNovo.addEventListener('click', abrirModalNovo);
-        elements.closeBtn.addEventListener('click', () => elements.modal.style.display = 'none');
-        elements.closePrint.addEventListener('click', () => elements.modalPrint.style.display = 'none');
-        elements.btnFecharPrint.addEventListener('click', () => elements.modalPrint.style.display = 'none');
-        elements.btnConfigurar.addEventListener('click', () => { preencherFormConfig(); elements.modalConfig.style.display = 'block'; });
-        elements.closeConfig.addEventListener('click', () => elements.modalConfig.style.display = 'none');
-        elements.btnFecharConfig.addEventListener('click', () => elements.modalConfig.style.display = 'none');
+        elements.closeBtn.addEventListener('click', () => elements.modal.classList.remove('c-modal--open'));
+        elements.closePrint.addEventListener('click', () => elements.modalPrint.classList.remove('c-modal--open'));
+        elements.btnFecharPrint.addEventListener('click', () => elements.modalPrint.classList.remove('c-modal--open'));
+
+        elements.btnConfigurar.addEventListener('click', () => {
+            preencherFormConfig();
+            elements.modalConfig.classList.add('c-modal--open');
+        });
+        elements.closeConfig.addEventListener('click', () => elements.modalConfig.classList.remove('c-modal--open'));
+        elements.btnFecharConfig.addEventListener('click', () => elements.modalConfig.classList.remove('c-modal--open'));
         elements.btnResetConfig.addEventListener('click', restaurarConfiguracoes);
         elements.formConfig.addEventListener('submit', salvarConfiguracoes);
-        
-        // Event listeners para atualizar preview em tempo real
+
         document.querySelectorAll('#formConfig input, #formConfig select, #formConfig textarea').forEach(el => {
             el.addEventListener('input', () => {
-                // Atualiza a configuração em tempo real
                 const headerFont = document.getElementById('headerFont').value;
                 const clienteFont = document.getElementById('clienteFont').value;
                 const tabelaFont = document.getElementById('tabelaFont').value;
@@ -1667,10 +2887,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 };
                 atualizarPreview();
             });
-            el.addEventListener('change', () => {
-                // Força atualização do preview
-                atualizarPreview();
-            });
+            el.addEventListener('change', () => { atualizarPreview(); });
         });
 
         elements.btnAddCidade.addEventListener('click', adicionarCidade);
@@ -1679,11 +2896,11 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         elements.freteCidade.addEventListener('keyup', (e) => { if (e.key === 'Enter') adicionarCidade(); });
         elements.kgCidade.addEventListener('keyup', (e) => { if (e.key === 'Enter') adicionarCidade(); });
         elements.percentualCidade.addEventListener('keyup', (e) => { if (e.key === 'Enter') adicionarCidade(); });
-        
+
         window.addEventListener('click', (e) => {
-            if (e.target === elements.modal) elements.modal.style.display = 'none';
-            if (e.target === elements.modalPrint) elements.modalPrint.style.display = 'none';
-            if (e.target === elements.modalConfig) elements.modalConfig.style.display = 'none';
+            if (e.target === elements.modal) elements.modal.classList.remove('c-modal--open');
+            if (e.target === elements.modalPrint) elements.modalPrint.classList.remove('c-modal--open');
+            if (e.target === elements.modalConfig) elements.modalConfig.classList.remove('c-modal--open');
         });
         elements.form.addEventListener('submit', salvarTabela);
 
