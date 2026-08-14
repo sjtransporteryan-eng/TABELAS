@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Tabela de Fretes - Legacy v1.0</title>
-    <!-- Mantemos o html2pdf para PDF, mesmo sendo moderno, pois é funcional -->
+    <title>Sistema de Tabela de Fretes - SJ Transportes</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         /* ============================================================
            LEGACY SYSTEM UI DESIGNER - CSS
            Baseado na skill "Legacy System UI Designer (v1.0)"
+           com identidade visual SJ Transportes e Logística
            ============================================================ */
 
         /* ---------- Reset básico ---------- */
@@ -46,7 +46,7 @@
             min-height: 80vh;
         }
 
-        /* ---------- Barra de título ---------- */
+        /* ---------- Barra de título com logo SJ ---------- */
         .window-title {
             background: linear-gradient(180deg, #6b9fd4 0%, #3a6ea5 100%);
             color: #fff;
@@ -65,11 +65,66 @@
         .window-title .title-text {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
-        .window-title .title-text .icon {
-            font-size: 16px;
+        /* Logo SJ na barra de título (monograma + texto) */
+        .window-title .title-text .sj-logo {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #fff;
+            padding: 2px 10px 2px 6px;
+            border: 1px solid;
+            border-color: #fff #808080 #808080 #fff;
+        }
+
+        .window-title .title-text .sj-logo .monograma {
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            font-weight: 900;
+            font-family: 'Segoe UI', 'Arial Black', sans-serif;
+            letter-spacing: -2px;
+            line-height: 1;
+        }
+
+        .window-title .title-text .sj-logo .monograma .s {
+            color: #06458F;
+        }
+        .window-title .title-text .sj-logo .monograma .j {
+            color: #000000;
+        }
+
+        .window-title .title-text .sj-logo .elemento-geo {
+            width: 12px;
+            height: 6px;
+            background: #06458F;
+            clip-path: polygon(0% 0%, 100% 0%, 80% 100%, 0% 100%);
+            margin-left: -2px;
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+
+        .window-title .title-text .sj-logo .texto-empresa {
+            font-size: 10px;
+            font-weight: 700;
+            color: #06458F;
+            font-family: 'Segoe UI', 'Arial Black', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            line-height: 1.2;
+            border-left: 1px solid #ccc;
+            padding-left: 6px;
+        }
+
+        .window-title .title-text .sj-logo .texto-empresa small {
+            display: block;
+            font-size: 7px;
+            font-weight: 400;
+            color: #555;
+            text-transform: none;
+            letter-spacing: 0.3px;
         }
 
         .window-title .controls {
@@ -160,6 +215,7 @@
             color: #000;
             padding: 0 6px;
             font-size: 12px;
+            background: #ece9d8;
         }
 
         /* ---------- Componentes: Inputs ---------- */
@@ -215,19 +271,30 @@
         }
 
         .btn-primary {
-            background: #3a6ea5;
+            background: #06458F; /* Azul SJ */
             color: #fff;
-            border-color: #6b9fd4 #1a3a5c #1a3a5c #6b9fd4;
+            border-color: #3a7ab5 #002a5c #002a5c #3a7ab5;
         }
 
         .btn-primary:active {
-            border-color: #1a3a5c #6b9fd4 #6b9fd4 #1a3a5c;
+            border-color: #002a5c #3a7ab5 #3a7ab5 #002a5c;
         }
 
         .btn-sm {
             padding: 2px 10px;
             font-size: 11px;
             min-height: 22px;
+        }
+
+        /* Botão danger (excluir) com cor SJ */
+        .btn-danger {
+            background: #c00;
+            color: #fff;
+            border-color: #f66 #800 #800 #f66;
+        }
+
+        .btn-danger:active {
+            border-color: #800 #f66 #f66 #800;
         }
 
         /* ---------- Componentes: Tabela ---------- */
@@ -245,12 +312,12 @@
         }
 
         .table th {
-            background: #3a6ea5;
+            background: #06458F; /* Azul SJ */
             color: #fff;
             padding: 4px 8px;
             text-align: left;
             font-weight: bold;
-            border: 1px solid #1a3a5c;
+            border: 1px solid #002a5c;
         }
 
         .table td {
@@ -362,10 +429,10 @@
             bottom: 30px;
             right: 30px;
             z-index: 500;
-            background: #3a6ea5;
+            background: #06458F;
             color: #fff;
             border: 2px solid;
-            border-color: #6b9fd4 #1a3a5c #1a3a5c #6b9fd4;
+            border-color: #3a7ab5 #002a5c #002a5c #3a7ab5;
             padding: 10px 14px;
             font-size: 22px;
             font-weight: bold;
@@ -375,11 +442,11 @@
         }
 
         .fab:hover {
-            background: #4a7eb5;
+            background: #0a5aaf;
         }
 
         .fab:active {
-            border-color: #1a3a5c #6b9fd4 #6b9fd4 #1a3a5c;
+            border-color: #002a5c #3a7ab5 #3a7ab5 #002a5c;
         }
 
         .fab .tooltip {
@@ -441,10 +508,10 @@
         }
 
         .table-fixed th {
-            background: #3a6ea5;
+            background: #06458F;
             color: #fff;
             padding: 4px 8px;
-            border: 1px solid #1a3a5c;
+            border: 1px solid #002a5c;
             text-align: left;
         }
 
@@ -463,33 +530,195 @@
             text-align: center;
         }
 
-        /* ---------- Impressão (mantido para legado) ---------- */
+        /* ---------- Impressão: apenas o recibo ---------- */
         @media print {
-            body.retro-system {
-                background: #fff;
-                padding: 0;
+            /* Oculta tudo que não é a impressão */
+            body.retro-system * {
+                visibility: hidden;
             }
-            .window {
+
+            /* Mostra apenas o conteúdo do modal de impressão */
+            #modalImprimir,
+            #modalImprimir * {
+                visibility: visible;
+            }
+
+            #modalImprimir {
+                position: fixed;
+                inset: 0;
+                background: #fff;
+                padding: 20px;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+            }
+
+            #modalImprimir .window {
                 box-shadow: none;
                 border: none;
+                background: #fff;
                 max-width: 100%;
+                min-height: auto;
             }
-            .window-title, .menu-bar, .status-bar, .fab, .modal-overlay .window .window-title,
-            .modal-overlay .window .status-bar, .btn, .close-modal, .no-print {
+
+            #modalImprimir .window-title,
+            #modalImprimir .menu-bar,
+            #modalImprimir .status-bar,
+            #modalImprimir .modal-footer,
+            #modalImprimir .btn,
+            #modalImprimir .close-print {
                 display: none !important;
             }
-            .window-body {
+
+            #modalImprimir .window-body {
                 padding: 10px;
+                overflow: visible;
+                background: #fff;
             }
-            .table, .table-fixed {
+
+            /* Estilos específicos para o conteúdo impresso */
+            #modalImprimir .window-body .sj-logo-print {
+                display: flex !important;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                margin-bottom: 12px;
+                border-bottom: 2px solid #06458F;
+                padding-bottom: 8px;
+            }
+
+            #modalImprimir .window-body .sj-logo-print .monograma {
+                font-size: 32px;
+                font-weight: 900;
+                font-family: 'Segoe UI', 'Arial Black', sans-serif;
+                letter-spacing: -3px;
+            }
+
+            #modalImprimir .window-body .sj-logo-print .monograma .s { color: #06458F; }
+            #modalImprimir .window-body .sj-logo-print .monograma .j { color: #000; }
+
+            #modalImprimir .window-body .sj-logo-print .texto-empresa {
+                font-size: 14px;
+                font-weight: 700;
+                color: #06458F;
+                font-family: 'Segoe UI', 'Arial Black', sans-serif;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                border-left: 1px solid #ccc;
+                padding-left: 10px;
+            }
+
+            #modalImprimir .window-body .sj-logo-print .texto-empresa small {
+                display: block;
+                font-size: 9px;
+                font-weight: 400;
+                color: #555;
+                text-transform: none;
+            }
+
+            #modalImprimir .window-body .endereco-print {
+                text-align: center;
+                font-size: 11px;
+                margin-bottom: 12px;
+                color: #333;
+            }
+
+            #modalImprimir .window-body .info-cliente-print {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 2px 20px;
+                font-size: 11px;
+                background: #f5f5f0;
+                padding: 8px 12px;
+                border: 1px solid #a0a0a0;
+                margin-bottom: 10px;
+            }
+
+            #modalImprimir .window-body .info-cliente-print .item {
+                display: flex;
+                gap: 4px;
+            }
+
+            #modalImprimir .window-body .info-cliente-print .item strong {
+                min-width: 70px;
+            }
+
+            #modalImprimir .window-body .origem-destino-print {
+                display: flex;
+                justify-content: space-between;
+                background: #e9ecef;
+                padding: 4px 12px;
+                font-weight: bold;
+                font-size: 12px;
+                margin-bottom: 10px;
+                border: 1px solid #a0a0a0;
+            }
+
+            #modalImprimir .window-body .table-print {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 11px;
+            }
+
+            #modalImprimir .window-body .table-print th {
+                background: #06458F;
+                color: #fff;
+                padding: 4px 8px;
+                border: 1px solid #002a5c;
+                text-align: left;
+            }
+
+            #modalImprimir .window-body .table-print td {
+                padding: 4px 8px;
+                border: 1px solid #a0a0a0;
+            }
+
+            #modalImprimir .window-body .table-print tr:nth-child(even) td {
+                background: #f5f5f0;
+            }
+
+            #modalImprimir .window-body .rodape-print {
+                margin-top: 12px;
+                border-top: 2px solid #333;
+                padding-top: 10px;
+                display: flex;
+                justify-content: space-between;
+                font-size: 11px;
+            }
+
+            #modalImprimir .window-body .rodape-print .assinaturas {
+                display: flex;
+                gap: 30px;
+                text-align: center;
+            }
+
+            #modalImprimir .window-body .rodape-print .assinaturas div {
+                min-width: 120px;
+            }
+
+            #modalImprimir .window-body .rodape-print .assinaturas .linha {
+                border-top: 1px solid #333;
+                width: 100%;
+                margin-bottom: 4px;
+            }
+
+            #modalImprimir .window-body .observacao-print {
+                font-size: 11px;
+                padding: 4px 10px;
+                border: 1px solid #ccc;
+                background: #f9f9f9;
+                margin-top: 6px;
+            }
+
+            #modalImprimir .window-body .data-emissao {
+                text-align: center;
+                color: #999;
                 font-size: 10px;
-            }
-            .group-box {
-                border-color: #000;
+                margin-top: 8px;
             }
         }
 
-        /* ---------- Responsividade mínima ---------- */
+        /* ---------- Responsividade ---------- */
         @media (max-width: 640px) {
             body.retro-system {
                 padding: 8px;
@@ -505,8 +734,14 @@
             .add-cidade-row input {
                 flex: 1 0 80px;
             }
-            .window-title .title-text {
-                font-size: 11px;
+            .window-title .title-text .sj-logo {
+                flex-wrap: wrap;
+                padding: 2px 6px;
+            }
+            .window-title .title-text .sj-logo .texto-empresa {
+                font-size: 8px;
+                border-left: none;
+                padding-left: 0;
             }
             .fab {
                 bottom: 16px;
@@ -526,12 +761,7 @@
             font-size: 11px;
         }
 
-        /* Tabela fixa no modal - cabeçalho com ícone */
-        .table-fixed th {
-            font-weight: bold;
-        }
-
-        /* Estilo para campo de busca */
+        /* Busca */
         .search-row {
             display: flex;
             flex-wrap: wrap;
@@ -545,7 +775,7 @@
             min-width: 180px;
         }
 
-        /* Configurações de impressão (janela interna) */
+        /* Configurações */
         .config-section {
             margin-bottom: 12px;
         }
@@ -567,7 +797,6 @@
             height: 28px;
         }
 
-        /* Ações de configuração */
         .config-actions {
             display: flex;
             gap: 8px;
@@ -575,7 +804,6 @@
             margin-top: 12px;
         }
 
-        /* Pré-visualização (legacy) */
         .preview-box {
             border: 1px solid #404040;
             background: #fff;
@@ -603,12 +831,19 @@
             padding: 4px;
         }
 
-        /* Classes para impressão de tabela fixa */
-        .print-only {
-            display: none;
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            padding: 8px 12px;
+            border-top: 1px solid #a0a0a0;
+            background: #ece9d8;
         }
 
-        /* Botão de fechar modal */
+        .modal-footer .btn {
+            min-height: 26px;
+        }
+
         .btn-close-modal {
             background: #ece9d8;
             border: 2px solid;
@@ -623,24 +858,9 @@
             border-color: #404040 #fff #fff #404040;
         }
 
-        /* Grupo de botões no modal */
-        .modal-footer {
-            display: flex;
-            justify-content: flex-end;
-            gap: 8px;
-            padding: 8px 12px;
-            border-top: 1px solid #a0a0a0;
-            background: #ece9d8;
-        }
-
-        .modal-footer .btn {
-            min-height: 26px;
-        }
-
-        /* Corrigir legenda do group-box para inputs */
-        .group-box legend {
-            background: #ece9d8;
-            padding: 0 6px;
+        /* Classes para impressão */
+        .print-only {
+            display: none;
         }
     </style>
 </head>
@@ -650,11 +870,20 @@
          JANELA PRINCIPAL
          ============================================================ -->
     <div class="window">
-        <!-- Título -->
+        <!-- Título com logo SJ -->
         <div class="window-title">
             <div class="title-text">
-                <span class="icon">🖥️</span>
-                <span>Sistema de Tabela de Fretes - v1.0</span>
+                <!-- Logo SJ Transportes e Logística -->
+                <div class="sj-logo">
+                    <div class="monograma">
+                        <span class="s">S</span><span class="j">J</span>
+                    </div>
+                    <div class="elemento-geo"></div>
+                    <div class="texto-empresa">
+                        Transportes e Logística
+                        <small>Sistema de Gerenciamento de Fretes</small>
+                    </div>
+                </div>
             </div>
             <div class="controls">
                 <span>_</span>
@@ -1378,13 +1607,17 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 <html><head><title>Tabela de Fretes</title>
                 <style>
                     body { font-family: 'Tahoma','Geneva',sans-serif; padding:20px; background:#fff; }
+                    .header { text-align:center; border-bottom:2px solid #06458F; padding-bottom:10px; margin-bottom:15px; }
+                    .header .sj-logo { display:flex; align-items:center; justify-content:center; gap:10px; }
+                    .header .sj-logo .monograma { font-size:32px; font-weight:900; font-family:'Segoe UI','Arial Black',sans-serif; letter-spacing:-3px; }
+                    .header .sj-logo .monograma .s { color:#06458F; }
+                    .header .sj-logo .monograma .j { color:#000; }
+                    .header .sj-logo .texto-empresa { font-size:14px; font-weight:700; color:#06458F; font-family:'Segoe UI','Arial Black',sans-serif; text-transform:uppercase; border-left:1px solid #ccc; padding-left:10px; }
+                    .header .sj-logo .texto-empresa small { display:block; font-size:9px; font-weight:400; color:#555; text-transform:none; }
                     table { width:100%; border-collapse:collapse; font-size:12px; }
-                    th { background:#3a6ea5; color:white; padding:6px; border:1px solid #1a3a5c; text-align:left; }
+                    th { background:#06458F; color:white; padding:6px; border:1px solid #002a5c; text-align:left; }
                     td { padding:5px; border:1px solid #a0a0a0; }
                     tr:nth-child(even) td { background:#f0f0e8; }
-                    .header { text-align:center; border-bottom:2px solid #3a6ea5; padding-bottom:10px; margin-bottom:15px; }
-                    .header h1 { margin:0; color:#1a3a5c; }
-                    .info { margin:8px 0; font-weight:bold; }
                     .footer { margin-top:20px; border-top:2px solid #333; padding-top:12px; display:flex; justify-content:space-between; }
                     .assinaturas { display:flex; gap:40px; text-align:center; }
                     .assinaturas div { min-width:120px; }
@@ -1393,10 +1626,18 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 </style>
                 </head><body>
                 <div class="header">
-                    <h1>🚛 Transports e Logística</h1>
-                    <p>RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NÚMERO: 129<br>CIDADE: SINOP-MT | CEP: 78556-788</p>
+                    <div class="sj-logo">
+                        <div class="monograma">
+                            <span class="s">S</span><span class="j">J</span>
+                        </div>
+                        <div class="texto-empresa">
+                            Transportes e Logística
+                            <small>Sistema de Gerenciamento de Fretes</small>
+                        </div>
+                    </div>
+                    <p style="margin-top:6px;font-size:12px;">RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NÚMERO: 129<br>CIDADE: SINOP-MT | CEP: 78556-788</p>
                 </div>
-                <div class="info">${origem}</div>
+                <div style="margin:8px 0;font-weight:bold;">${origem}</div>
                 ${conteudo}
                 <div style="margin-top:10px;text-align:center;">${contato}</div>
                 <div class="footer">
@@ -1669,7 +1910,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                         <div class="actions">
                             <button class="btn btn-sm" onclick="abrirImpressao(${tabela.id})">📄</button>
                             <button class="btn btn-sm btn-primary" onclick="editarTabela(${tabela.id})">✏️</button>
-                            <button class="btn btn-sm" style="background:#c00;color:#fff;border-color:#800 #400 #400 #800;" onclick="excluirTabela(${tabela.id})">🗑️</button>
+                            <button class="btn btn-sm btn-danger" onclick="excluirTabela(${tabela.id})">🗑️</button>
                         </div>
                     </td>
                 </tr>
@@ -1745,7 +1986,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         });
 
         elements.btnAddCidade.addEventListener('click', adicionarCidade);
-        // Tecla Enter nos campos de cidade
         ['selectCidade', 'cidadePersonalizada', 'freteCidade', 'kgCidade', 'percentualCidade'].forEach(id => {
             document.getElementById(id).addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
@@ -1847,7 +2087,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         }
 
         // ============================================================
-        // IMPRESSÃO
+        // IMPRESSÃO - APENAS O RECIBO
         // ============================================================
         function abrirImpressao(id) {
             const tabela = tabelas.find(t => t.id === id);
@@ -1858,72 +2098,93 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         }
 
         function gerarHTMLImpressao(tabela) {
-            const logo = 'https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png';
             const cfg = configImpressao;
-
             const campos = cfg.camposCliente.split(',').map(c => c.trim());
             const mapa = {
-                'NOME': `<div style="display:flex;gap:4px;font-size:${cfg.clienteFontSize}px;"><strong>NOME:</strong> ${tabela.cliente}</div>`,
-                'CNPJ/CPF': `<div style="display:flex;gap:4px;font-size:${cfg.clienteFontSize}px;"><strong>CNPJ/CPF:</strong> ${tabela.cnpj || 'Não informado'}</div>`,
-                'TELEFONE': `<div style="display:flex;gap:4px;font-size:${cfg.clienteFontSize}px;"><strong>TELEFONE:</strong> ${tabela.telefone || 'Não informado'}</div>`,
-                'NÚMERO': `<div style="display:flex;gap:4px;font-size:${cfg.clienteFontSize}px;"><strong>NÚMERO:</strong> ${tabela.id}</div>`,
-                'BAIRRO': `<div style="display:flex;gap:4px;font-size:${cfg.clienteFontSize}px;"><strong>BAIRRO:</strong> ${tabela.endereco ? tabela.endereco.split(',')[1]?.trim() || '-' : '-'}</div>`,
-                'RUA': `<div style="display:flex;gap:4px;font-size:${cfg.clienteFontSize}px;"><strong>RUA:</strong> ${tabela.endereco ? tabela.endereco.split(',')[0] || '-' : '-'}</div>`,
-                'CEP': `<div style="display:flex;gap:4px;font-size:${cfg.clienteFontSize}px;"><strong>CEP:</strong> 78557-171</div>`,
-                'CIDADE': `<div style="display:flex;gap:4px;font-size:${cfg.clienteFontSize}px;"><strong>CIDADE:</strong> SINOP MT</div>`,
-                'IE': `<div style="display:flex;gap:4px;font-size:${cfg.clienteFontSize}px;"><strong>IE:</strong> ${tabela.ie || 'Não informado'}</div>`,
-                'EMAIL': `<div style="display:flex;gap:4px;font-size:${cfg.clienteFontSize}px;"><strong>EMAIL:</strong> ${tabela.email || 'Não informado'}</div>`
+                'NOME': `<div class="item"><strong>NOME:</strong> ${tabela.cliente}</div>`,
+                'CNPJ/CPF': `<div class="item"><strong>CNPJ/CPF:</strong> ${tabela.cnpj || 'Não informado'}</div>`,
+                'TELEFONE': `<div class="item"><strong>TELEFONE:</strong> ${tabela.telefone || 'Não informado'}</div>`,
+                'NÚMERO': `<div class="item"><strong>NÚMERO:</strong> ${tabela.id}</div>`,
+                'BAIRRO': `<div class="item"><strong>BAIRRO:</strong> ${tabela.endereco ? tabela.endereco.split(',')[1]?.trim() || '-' : '-'}</div>`,
+                'RUA': `<div class="item"><strong>RUA:</strong> ${tabela.endereco ? tabela.endereco.split(',')[0] || '-' : '-'}</div>`,
+                'CEP': `<div class="item"><strong>CEP:</strong> 78557-171</div>`,
+                'CIDADE': `<div class="item"><strong>CIDADE:</strong> SINOP MT</div>`,
+                'IE': `<div class="item"><strong>IE:</strong> ${tabela.ie || 'Não informado'}</div>`,
+                'EMAIL': `<div class="item"><strong>EMAIL:</strong> ${tabela.email || 'Não informado'}</div>`
             };
             const camposHTML = campos.filter(c => mapa[c]).map(c => mapa[c]).join('');
-            const enderecoHTML = cfg.enderecoEmpresa.replace(/\n/g, '<br>');
-            const dataEmissao = cfg.mostrarDataEmissao ? `<div style="text-align:center;color:#999;font-size:10px;margin-top:6px;">Documento emitido em ${new Date().toLocaleString('pt-BR')}</div>` : '';
+
+            const cidadesHTML = tabela.cidades.map(c => `
+                <tr>
+                    <td>${c.nome}</td>
+                    <td>PA</td>
+                    <td>R$ ${c.frete.toFixed(2)}</td>
+                    <td>R$ ${c.kg.toFixed(2)}/kg</td>
+                    <td>${c.percentual.toFixed(2)}%</td>
+                </tr>
+            `).join('');
 
             const html = `
-                <div style="max-width:${cfg.larguraMaxima}px; margin:0 auto; font-family:${cfg.headerFont}; background:#fff; padding:8px;">
-                    <div style="background:${cfg.headerBgColor};color:${cfg.headerTextColor};border-bottom:3px solid ${cfg.headerBorderColor};padding:${cfg.headerPadding}px 15px;text-align:${cfg.headerAlign};font-size:${cfg.headerFontSize}px;">
-                        <div style="display:flex;justify-content:center;margin-bottom:4px;">
-                            <img src="${logo}" alt="Logo" style="max-height:${cfg.logoMaxHeight}px;width:auto;">
+                <div style="max-width:${cfg.larguraMaxima}px; margin:0 auto; font-family:'Tahoma','Geneva',sans-serif; background:#fff; padding:10px;">
+
+                    <!-- Logo SJ no topo do recibo -->
+                    <div class="sj-logo-print" style="display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:12px; border-bottom:2px solid #06458F; padding-bottom:8px;">
+                        <div class="monograma" style="font-size:32px; font-weight:900; font-family:'Segoe UI','Arial Black',sans-serif; letter-spacing:-3px;">
+                            <span class="s" style="color:#06458F;">S</span><span class="j" style="color:#000;">J</span>
                         </div>
-                        <div style="font-size:${cfg.headerFontSize}px;">${enderecoHTML}</div>
+                        <div class="texto-empresa" style="font-size:14px; font-weight:700; color:#06458F; font-family:'Segoe UI','Arial Black',sans-serif; text-transform:uppercase; border-left:1px solid #ccc; padding-left:10px;">
+                            Transportes e Logística
+                            <small style="display:block; font-size:9px; font-weight:400; color:#555; text-transform:none;">Sistema de Gerenciamento de Fretes</small>
+                        </div>
                     </div>
-                    <div style="background:${cfg.clienteBgColor};color:${cfg.clienteTextColor};padding:${cfg.clientePadding}px 15px;font-size:${cfg.clienteFontSize}px;font-family:${cfg.clienteFont};text-align:${cfg.clienteAlign};display:grid;grid-template-columns:1fr 1fr;gap:4px 20px;">
+
+                    <!-- Endereço -->
+                    <div class="endereco-print" style="text-align:center; font-size:11px; margin-bottom:10px; color:#333;">
+                        RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NÚMERO: 129<br>
+                        CIDADE: SINOP-MT | CEP: 78556-788
+                    </div>
+
+                    <!-- Informações do cliente -->
+                    <div class="info-cliente-print" style="display:grid; grid-template-columns:1fr 1fr; gap:2px 20px; font-size:11px; background:#f5f5f0; padding:6px 12px; border:1px solid #a0a0a0; margin-bottom:8px;">
                         ${camposHTML}
                     </div>
-                    <div style="background:#e9ecef;padding:6px 15px;font-weight:bold;font-size:${Math.max(12, cfg.clienteFontSize + 2)}px;color:#1a3a5c;font-family:${cfg.tabelaFont};display:flex;justify-content:space-between;">
-                        <span>ORIGEM: ${tabela.origem}</span>
-                        <span>DESTINO: ${tabela.destino}</span>
+
+                    <!-- Origem / Destino -->
+                    <div class="origem-destino-print" style="display:flex; justify-content:space-between; background:#e9ecef; padding:4px 12px; font-weight:bold; font-size:12px; margin-bottom:8px; border:1px solid #a0a0a0;">
+                        <span>📍 ORIGEM: ${tabela.origem}</span>
+                        <span>🎯 DESTINO: ${tabela.destino}</span>
                     </div>
-                    <table style="width:100%;border-collapse:collapse;font-size:${cfg.tabelaDataFontSize}px;font-family:${cfg.tabelaFont};text-align:${cfg.tabelaAlign};">
+
+                    <!-- Tabela de fretes -->
+                    <table class="table-print" style="width:100%; border-collapse:collapse; font-size:11px;">
                         <thead>
                             <tr>
-                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};padding:4px 8px;border:1px solid #1a3a5c;font-size:${cfg.tabelaHeaderFontSize}px;">Cidades</th>
-                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};padding:4px 8px;border:1px solid #1a3a5c;font-size:${cfg.tabelaHeaderFontSize}px;">UF</th>
-                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};padding:4px 8px;border:1px solid #1a3a5c;font-size:${cfg.tabelaHeaderFontSize}px;">Frete</th>
-                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};padding:4px 8px;border:1px solid #1a3a5c;font-size:${cfg.tabelaHeaderFontSize}px;">KG</th>
-                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};padding:4px 8px;border:1px solid #1a3a5c;font-size:${cfg.tabelaHeaderFontSize}px;">% NF</th>
+                                <th style="background:#06458F; color:#fff; padding:4px 8px; border:1px solid #002a5c; text-align:left;">Cidades Atendidas</th>
+                                <th style="background:#06458F; color:#fff; padding:4px 8px; border:1px solid #002a5c; text-align:left;">UF</th>
+                                <th style="background:#06458F; color:#fff; padding:4px 8px; border:1px solid #002a5c; text-align:left;">Frete</th>
+                                <th style="background:#06458F; color:#fff; padding:4px 8px; border:1px solid #002a5c; text-align:left;">Preço KG</th>
+                                <th style="background:#06458F; color:#fff; padding:4px 8px; border:1px solid #002a5c; text-align:left;">% NF</th>
                             </tr>
                         </thead>
                         <tbody>
-                            ${tabela.cidades.map((c, idx) => `
-                                <tr style="background:${idx % 2 === 0 ? cfg.tabelaLinhaPar : cfg.tabelaLinhaImpar};">
-                                    <td style="padding:4px 8px;border:1px solid #ccc;text-align:${cfg.tabelaAlign};">${c.nome}</td>
-                                    <td style="padding:4px 8px;border:1px solid #ccc;text-align:${cfg.tabelaAlign};">PA</td>
-                                    <td style="padding:4px 8px;border:1px solid #ccc;text-align:${cfg.tabelaAlign};">R$ ${c.frete.toFixed(2)}</td>
-                                    <td style="padding:4px 8px;border:1px solid #ccc;text-align:${cfg.tabelaAlign};">R$ ${c.kg.toFixed(2)}/kg</td>
-                                    <td style="padding:4px 8px;border:1px solid #ccc;text-align:${cfg.tabelaAlign};">${c.percentual.toFixed(2)}%</td>
-                                </tr>
-                            `).join('')}
+                            ${cidadesHTML}
                         </tbody>
                     </table>
-                    <div style="font-size:${cfg.rodapeFontSize}px;font-family:${cfg.rodapeFont};text-align:${cfg.rodapeAlign};margin-top:8px;border-top:2px solid #333;padding-top:8px;display:flex;justify-content:space-between;">
+
+                    <!-- Rodapé -->
+                    <div class="rodape-print" style="margin-top:12px; border-top:2px solid #333; padding-top:10px; display:flex; justify-content:space-between; font-size:11px;">
                         <div><strong>${cfg.textoContato}</strong></div>
-                        <div style="display:flex;gap:30px;font-size:${Math.max(10, cfg.rodapeFontSize - 1)}px;">
-                            <div><div style="border-top:1px solid #333;width:100%;margin-bottom:3px;"></div><small>${cfg.assinatura1}</small></div>
-                            <div><div style="border-top:1px solid #333;width:100%;margin-bottom:3px;"></div><small>${cfg.assinatura2}</small></div>
+                        <div class="assinaturas" style="display:flex; gap:30px; text-align:center;">
+                            <div><div class="linha" style="border-top:1px solid #333; width:100%; margin-bottom:4px;"></div><small>${cfg.assinatura1}</small></div>
+                            <div><div class="linha" style="border-top:1px solid #333; width:100%; margin-bottom:4px;"></div><small>${cfg.assinatura2}</small></div>
                         </div>
                     </div>
-                    ${tabela.observacao ? `<div style="font-size:${Math.max(10, cfg.rodapeFontSize - 1)}px;margin-top:6px;padding:4px 10px;border:1px solid #ccc;background:#f9f9f9;"><strong>Observação:</strong> ${tabela.observacao}</div>` : ''}
-                    ${dataEmissao}
+
+                    <!-- Observação -->
+                    ${tabela.observacao ? `<div class="observacao-print" style="font-size:11px; padding:4px 10px; border:1px solid #ccc; background:#f9f9f9; margin-top:6px;"><strong>Observação:</strong> ${tabela.observacao}</div>` : ''}
+
+                    <!-- Data de emissão -->
+                    ${cfg.mostrarDataEmissao ? `<div class="data-emissao" style="text-align:center; color:#999; font-size:10px; margin-top:8px;">Documento emitido em ${new Date().toLocaleString('pt-BR')}</div>` : ''}
                 </div>
             `;
             elements.conteudoImpressao.innerHTML = html;
@@ -2094,7 +2355,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         document.addEventListener('DOMContentLoaded', async function() {
             carregarConfiguracoes();
             await carregarDados();
-            // Atualizar preview quando mudar campos de configuração
             document.querySelectorAll('#formConfig input, #formConfig select, #formConfig textarea').forEach(el => {
                 el.addEventListener('input', atualizarPreview);
                 el.addEventListener('change', atualizarPreview);
