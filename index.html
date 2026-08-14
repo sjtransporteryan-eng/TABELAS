@@ -10,9 +10,6 @@
            TOKENS DE DESIGN - ERP/PDV EDITION
            ============================================ */
         :root {
-            /* ==========================================
-               PRIMÁRIAS - Tom Corporativo (Azul Marinho)
-               ========================================== */
             --primary-900: #0A1628;
             --primary-800: #0F2040;
             --primary-700: #142C59;
@@ -24,9 +21,6 @@
             --primary-100: #B5D6ED;
             --primary-50: #E2EEF8;
 
-            /* ==========================================
-               SECUNDÁRIAS - Complemento Harmônico
-               ========================================== */
             --secondary-900: #1A1A2E;
             --secondary-800: #262642;
             --secondary-700: #33335A;
@@ -38,28 +32,19 @@
             --secondary-100: #DEDEF0;
             --secondary-50: #F2F2FA;
 
-            /* ==========================================
-               STATUS - Feedback ao Usuário
-               ========================================== */
             --success: #0CAF75;
             --success-light: #E8F8F2;
             --success-dark: #087A51;
-
             --danger: #E74C5A;
             --danger-light: #FDECEE;
             --danger-dark: #A9323E;
-
             --warning: #F5A623;
             --warning-light: #FEF6E8;
             --warning-dark: #B8780C;
-
             --info: #4A90D9;
             --info-light: #EAF2FB;
             --info-dark: #2A5F9E;
 
-            /* ==========================================
-               NEUTROS - Textos, Bordas e Fundos
-               ========================================== */
             --gray-900: #1A1A1A;
             --gray-800: #333333;
             --gray-700: #4D4D4D;
@@ -72,9 +57,6 @@
             --gray-50: #F5F5F5;
             --white: #FFFFFF;
 
-            /* ==========================================
-               TEMA CLARO (Padrão)
-               ========================================== */
             --bg-primary: var(--white);
             --bg-secondary: var(--gray-50);
             --bg-tertiary: var(--gray-100);
@@ -85,18 +67,12 @@
             --border-color: var(--gray-200);
             --border-focus: var(--primary-500);
 
-            /* ==========================================
-               SOMBRAS E ELEVAÇÕES
-               ========================================== */
             --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
             --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
             --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
             --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
             --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.2);
 
-            /* ==========================================
-               ESPAÇAMENTO - Escala 4px/8px
-               ========================================== */
             --space-0: 0;
             --space-1: 4px;
             --space-2: 8px;
@@ -111,9 +87,6 @@
             --space-20: 80px;
             --space-24: 96px;
 
-            /* ==========================================
-               TIPOGRAFIA - Escala Major Third (1.25)
-               ========================================== */
             --font-family-base: 'Segoe UI', system-ui, -apple-system, sans-serif;
             --font-family-mono: 'Courier New', monospace;
             --font-size-xs: 11px;
@@ -135,18 +108,12 @@
             --line-height-normal: 1.5;
             --line-height-loose: 1.8;
 
-            /* ==========================================
-               BORDAS E RAIO
-               ========================================== */
             --radius-sm: 4px;
             --radius-md: 6px;
             --radius-lg: 8px;
             --radius-xl: 12px;
             --radius-full: 9999px;
 
-            /* ==========================================
-               TRANSIÇÕES
-               ========================================== */
             --duration-instant: 50ms;
             --duration-fast: 150ms;
             --duration-base: 250ms;
@@ -154,9 +121,6 @@
             --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
             --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
-            /* ==========================================
-               BREAKPOINTS
-               ========================================== */
             --breakpoint-xs: 0px;
             --breakpoint-sm: 640px;
             --breakpoint-md: 768px;
@@ -165,9 +129,6 @@
             --breakpoint-2xl: 1536px;
         }
 
-        /* ============================================
-           TEMA ESCURO
-           ============================================ */
         [data-theme="dark"] {
             --bg-primary: #1A1A2E;
             --bg-secondary: #16213E;
@@ -177,7 +138,6 @@
             --text-tertiary: #7A7A8A;
             --text-inverse: #1A1A2E;
             --border-color: #2A2A4A;
-
             --gray-50: #2A2A3A;
             --gray-100: #3A3A4A;
             --gray-200: #4A4A5A;
@@ -188,20 +148,15 @@
             --gray-700: #DADAE8;
             --gray-800: #EAEAF0;
             --gray-900: #F5F5FA;
-
             --primary-50: #1A2A4A;
             --primary-100: #1A3A6A;
             --primary-200: #2A5A8A;
-
             --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
             --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
             --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
             --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.6);
         }
 
-        /* ============================================
-           RESET E BASE
-           ============================================ */
         *,
         *::before,
         *::after {
@@ -263,74 +218,198 @@
         /* ============================================
            UTILITY CLASSES
            ============================================ */
-        .u-text-center { text-align: center !important; }
-        .u-text-left { text-align: left !important; }
-        .u-text-right { text-align: right !important; }
-        .u-text-uppercase { text-transform: uppercase !important; }
-        .u-text-bold { font-weight: var(--font-weight-bold) !important; }
-        .u-text-semibold { font-weight: var(--font-weight-semibold) !important; }
-        .u-text-medium { font-weight: var(--font-weight-medium) !important; }
-        .u-text-muted { color: var(--text-tertiary) !important; }
-        .u-text-success { color: var(--success) !important; }
-        .u-text-danger { color: var(--danger) !important; }
-        .u-text-warning { color: var(--warning) !important; }
-        .u-text-info { color: var(--info) !important; }
+        .u-text-center {
+            text-align: center !important;
+        }
+        .u-text-left {
+            text-align: left !important;
+        }
+        .u-text-right {
+            text-align: right !important;
+        }
+        .u-text-uppercase {
+            text-transform: uppercase !important;
+        }
+        .u-text-bold {
+            font-weight: var(--font-weight-bold) !important;
+        }
+        .u-text-semibold {
+            font-weight: var(--font-weight-semibold) !important;
+        }
+        .u-text-medium {
+            font-weight: var(--font-weight-medium) !important;
+        }
+        .u-text-muted {
+            color: var(--text-tertiary) !important;
+        }
+        .u-text-success {
+            color: var(--success) !important;
+        }
+        .u-text-danger {
+            color: var(--danger) !important;
+        }
+        .u-text-warning {
+            color: var(--warning) !important;
+        }
+        .u-text-info {
+            color: var(--info) !important;
+        }
 
-        .u-d-flex { display: flex !important; }
-        .u-d-grid { display: grid !important; }
-        .u-d-block { display: block !important; }
-        .u-d-none { display: none !important; }
+        .u-d-flex {
+            display: flex !important;
+        }
+        .u-d-grid {
+            display: grid !important;
+        }
+        .u-d-block {
+            display: block !important;
+        }
+        .u-d-none {
+            display: none !important;
+        }
 
-        .u-flex-1 { flex: 1 !important; }
-        .u-flex-center { align-items: center !important; justify-content: center !important; }
-        .u-flex-between { justify-content: space-between !important; align-items: center !important; }
-        .u-flex-column { flex-direction: column !important; }
-        .u-flex-wrap { flex-wrap: wrap !important; }
-        .u-gap-1 { gap: var(--space-1) !important; }
-        .u-gap-2 { gap: var(--space-2) !important; }
-        .u-gap-3 { gap: var(--space-3) !important; }
-        .u-gap-4 { gap: var(--space-4) !important; }
-        .u-gap-6 { gap: var(--space-6) !important; }
-        .u-gap-8 { gap: var(--space-8) !important; }
+        .u-flex-1 {
+            flex: 1 !important;
+        }
+        .u-flex-center {
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        .u-flex-between {
+            justify-content: space-between !important;
+            align-items: center !important;
+        }
+        .u-flex-column {
+            flex-direction: column !important;
+        }
+        .u-flex-wrap {
+            flex-wrap: wrap !important;
+        }
+        .u-gap-1 {
+            gap: var(--space-1) !important;
+        }
+        .u-gap-2 {
+            gap: var(--space-2) !important;
+        }
+        .u-gap-3 {
+            gap: var(--space-3) !important;
+        }
+        .u-gap-4 {
+            gap: var(--space-4) !important;
+        }
+        .u-gap-6 {
+            gap: var(--space-6) !important;
+        }
+        .u-gap-8 {
+            gap: var(--space-8) !important;
+        }
 
-        .u-m-0 { margin: 0 !important; }
-        .u-mt-1 { margin-top: var(--space-1) !important; }
-        .u-mt-2 { margin-top: var(--space-2) !important; }
-        .u-mt-3 { margin-top: var(--space-3) !important; }
-        .u-mt-4 { margin-top: var(--space-4) !important; }
-        .u-mt-6 { margin-top: var(--space-6) !important; }
-        .u-mt-8 { margin-top: var(--space-8) !important; }
-        .u-mb-1 { margin-bottom: var(--space-1) !important; }
-        .u-mb-2 { margin-bottom: var(--space-2) !important; }
-        .u-mb-3 { margin-bottom: var(--space-3) !important; }
-        .u-mb-4 { margin-bottom: var(--space-4) !important; }
-        .u-mb-6 { margin-bottom: var(--space-6) !important; }
-        .u-mb-8 { margin-bottom: var(--space-8) !important; }
+        .u-m-0 {
+            margin: 0 !important;
+        }
+        .u-mt-1 {
+            margin-top: var(--space-1) !important;
+        }
+        .u-mt-2 {
+            margin-top: var(--space-2) !important;
+        }
+        .u-mt-3 {
+            margin-top: var(--space-3) !important;
+        }
+        .u-mt-4 {
+            margin-top: var(--space-4) !important;
+        }
+        .u-mt-6 {
+            margin-top: var(--space-6) !important;
+        }
+        .u-mt-8 {
+            margin-top: var(--space-8) !important;
+        }
+        .u-mb-1 {
+            margin-bottom: var(--space-1) !important;
+        }
+        .u-mb-2 {
+            margin-bottom: var(--space-2) !important;
+        }
+        .u-mb-3 {
+            margin-bottom: var(--space-3) !important;
+        }
+        .u-mb-4 {
+            margin-bottom: var(--space-4) !important;
+        }
+        .u-mb-6 {
+            margin-bottom: var(--space-6) !important;
+        }
+        .u-mb-8 {
+            margin-bottom: var(--space-8) !important;
+        }
 
-        .u-p-0 { padding: 0 !important; }
-        .u-p-1 { padding: var(--space-1) !important; }
-        .u-p-2 { padding: var(--space-2) !important; }
-        .u-p-3 { padding: var(--space-3) !important; }
-        .u-p-4 { padding: var(--space-4) !important; }
-        .u-p-6 { padding: var(--space-6) !important; }
-        .u-p-8 { padding: var(--space-8) !important; }
+        .u-p-0 {
+            padding: 0 !important;
+        }
+        .u-p-1 {
+            padding: var(--space-1) !important;
+        }
+        .u-p-2 {
+            padding: var(--space-2) !important;
+        }
+        .u-p-3 {
+            padding: var(--space-3) !important;
+        }
+        .u-p-4 {
+            padding: var(--space-4) !important;
+        }
+        .u-p-6 {
+            padding: var(--space-6) !important;
+        }
+        .u-p-8 {
+            padding: var(--space-8) !important;
+        }
 
-        .u-w-full { width: 100% !important; }
-        .u-w-auto { width: auto !important; }
-        .u-max-w-full { max-width: 100% !important; }
+        .u-w-full {
+            width: 100% !important;
+        }
+        .u-w-auto {
+            width: auto !important;
+        }
+        .u-max-w-full {
+            max-width: 100% !important;
+        }
 
-        .u-rounded { border-radius: var(--radius-md) !important; }
-        .u-rounded-lg { border-radius: var(--radius-lg) !important; }
-        .u-rounded-xl { border-radius: var(--radius-xl) !important; }
-        .u-rounded-full { border-radius: var(--radius-full) !important; }
+        .u-rounded {
+            border-radius: var(--radius-md) !important;
+        }
+        .u-rounded-lg {
+            border-radius: var(--radius-lg) !important;
+        }
+        .u-rounded-xl {
+            border-radius: var(--radius-xl) !important;
+        }
+        .u-rounded-full {
+            border-radius: var(--radius-full) !important;
+        }
 
-        .u-bg-white { background: var(--white) !important; }
-        .u-bg-gray-50 { background: var(--gray-50) !important; }
-        .u-bg-primary-50 { background: var(--primary-50) !important; }
-        .u-bg-success-light { background: var(--success-light) !important; }
-        .u-bg-danger-light { background: var(--danger-light) !important; }
-        .u-bg-warning-light { background: var(--warning-light) !important; }
-        .u-bg-info-light { background: var(--info-light) !important; }
+        .u-bg-white {
+            background: var(--white) !important;
+        }
+        .u-bg-gray-50 {
+            background: var(--gray-50) !important;
+        }
+        .u-bg-primary-50 {
+            background: var(--primary-50) !important;
+        }
+        .u-bg-success-light {
+            background: var(--success-light) !important;
+        }
+        .u-bg-danger-light {
+            background: var(--danger-light) !important;
+        }
+        .u-bg-warning-light {
+            background: var(--warning-light) !important;
+        }
+        .u-bg-info-light {
+            background: var(--info-light) !important;
+        }
 
         .u-sr-only {
             position: absolute !important;
@@ -343,7 +422,9 @@
             border: 0 !important;
         }
 
-        .u-hidden { display: none !important; }
+        .u-hidden {
+            display: none !important;
+        }
 
         /* ============================================
            LAYOUTS
@@ -373,13 +454,19 @@
         }
 
         @media (min-width: var(--breakpoint-sm)) {
-            .l-grid-2 { grid-template-columns: 1fr 1fr; }
-            .l-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
-            .l-grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+            .l-grid-2 {
+                grid-template-columns: 1fr 1fr;
+            }
+            .l-grid-3 {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+            .l-grid-4 {
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+            }
         }
 
         /* ============================================
-           COMPONENTES - HEADER EMPRESARIAL COM TABELA FIXA
+           COMPONENTES - HEADER COM TABELA FIXA
            ============================================ */
         .c-header {
             background: linear-gradient(135deg, var(--primary-900) 0%, var(--primary-700) 100%);
@@ -452,9 +539,6 @@
             font-weight: var(--font-weight-regular);
         }
 
-        /* ============================================
-           TABELA DE FRETES FIXA NO HEADER
-           ============================================ */
         .c-header__fretes {
             background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(8px);
@@ -525,22 +609,18 @@
             padding: var(--space-1) var(--space-2);
         }
 
-        /* Responsividade do Header */
         @media (max-width: var(--breakpoint-sm)) {
             .c-header__row {
                 flex-wrap: wrap;
                 justify-content: center;
             }
-
             .c-header__fretes {
                 width: 100%;
                 min-width: unset;
             }
-
             .c-header__fretes-grid {
                 grid-template-columns: repeat(4, 1fr);
             }
-
             .c-header__brand {
                 flex-shrink: 1;
             }
@@ -574,8 +654,13 @@
             white-space: nowrap;
         }
 
-        .c-badge--clickable { cursor: pointer; }
-        .c-badge--clickable:hover { transform: scale(1.05); background: rgba(255, 255, 255, 0.15); }
+        .c-badge--clickable {
+            cursor: pointer;
+        }
+        .c-badge--clickable:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.15);
+        }
 
         .c-badge__dot {
             width: 8px;
@@ -600,8 +685,15 @@
         }
 
         @keyframes c-badge__dot--pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.3; transform: scale(0.7); }
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.3;
+                transform: scale(0.7);
+            }
         }
 
         .c-badge--online {
@@ -615,7 +707,7 @@
         }
 
         /* ============================================
-           COMPONENTES - PANEL (MANTIDO)
+           COMPONENTES - PANEL
            ============================================ */
         .c-panel {
             background: var(--bg-primary);
@@ -668,7 +760,9 @@
             transition: background var(--duration-base) ease;
         }
 
-        .c-panel__footer strong { color: var(--text-primary); }
+        .c-panel__footer strong {
+            color: var(--text-primary);
+        }
 
         /* ============================================
            COMPONENTES - BUTTON
@@ -695,9 +789,20 @@
             white-space: nowrap;
         }
 
-        .c-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
-        .c-btn:active { transform: translateY(0); box-shadow: none; }
-        .c-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+        .c-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
+        }
+        .c-btn:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+        .c-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
 
         .c-btn--primary {
             background: var(--primary-500);
@@ -788,6 +893,71 @@
         }
 
         /* ============================================
+           COMPONENTES - BOTÃO FLUTUANTE
+           ============================================ */
+        .c-fab {
+            position: fixed;
+            bottom: var(--space-6);
+            right: var(--space-6);
+            z-index: 500;
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-full);
+            background: var(--primary-500);
+            color: var(--text-inverse);
+            border: none;
+            box-shadow: var(--shadow-lg);
+            cursor: pointer;
+            transition: all var(--duration-base) var(--ease-in-out);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .c-fab:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-xl);
+            background: var(--primary-600);
+        }
+
+        .c-fab:active {
+            transform: scale(0.95);
+        }
+
+        .c-fab__tooltip {
+            position: absolute;
+            right: 66px;
+            background: var(--gray-800);
+            color: var(--text-inverse);
+            padding: var(--space-1) var(--space-3);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-xs);
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--duration-fast) ease;
+            font-weight: var(--font-weight-medium);
+        }
+
+        .c-fab:hover .c-fab__tooltip {
+            opacity: 1;
+        }
+
+        @media (max-width: var(--breakpoint-sm)) {
+            .c-fab {
+                bottom: var(--space-4);
+                right: var(--space-4);
+                width: 48px;
+                height: 48px;
+                font-size: 20px;
+            }
+            .c-fab__tooltip {
+                display: none;
+            }
+        }
+
+        /* ============================================
            COMPONENTES - SEARCH
            ============================================ */
         .c-search {
@@ -818,7 +988,9 @@
             box-shadow: 0 0 0 3px rgba(32, 74, 142, 0.1);
         }
 
-        .c-search__input::placeholder { color: var(--text-tertiary); }
+        .c-search__input::placeholder {
+            color: var(--text-tertiary);
+        }
 
         /* ============================================
            COMPONENTES - TABLE EMPRESARIAL
@@ -866,8 +1038,12 @@
             transition: background var(--duration-fast) ease;
         }
 
-        .c-table__body tr:last-child { border-bottom: none; }
-        .c-table__body tr:hover { background: var(--primary-50); }
+        .c-table__body tr:last-child {
+            border-bottom: none;
+        }
+        .c-table__body tr:hover {
+            background: var(--primary-50);
+        }
         .c-table__body tr.selected {
             background: var(--primary-100);
             border-left: 3px solid var(--primary-500);
@@ -922,8 +1098,12 @@
         }
 
         @keyframes c-modal--fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
 
         .c-modal__content {
@@ -949,8 +1129,14 @@
         }
 
         @keyframes c-modal--slideUp {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .c-modal__header {
@@ -1006,7 +1192,9 @@
         }
 
         @media (max-width: var(--breakpoint-sm)) {
-            .c-modal { padding: 0; }
+            .c-modal {
+                padding: 0;
+            }
             .c-modal__content,
             .c-modal__content--lg,
             .c-modal__content--xl {
@@ -1017,9 +1205,17 @@
                 border-radius: 0;
                 margin: 0;
             }
-            .c-modal__body { padding: var(--space-3); flex: 1; overflow-y: auto; }
-            .c-modal__header { padding: var(--space-2) var(--space-3); }
-            .c-modal__footer { padding: var(--space-2) var(--space-3); }
+            .c-modal__body {
+                padding: var(--space-3);
+                flex: 1;
+                overflow-y: auto;
+            }
+            .c-modal__header {
+                padding: var(--space-2) var(--space-3);
+            }
+            .c-modal__footer {
+                padding: var(--space-2) var(--space-3);
+            }
         }
 
         @media (min-width: var(--breakpoint-sm)) and (max-width: var(--breakpoint-md)) {
@@ -1027,7 +1223,9 @@
                 max-width: 97vw;
                 max-height: 97vh;
             }
-            .c-modal__body { padding: var(--space-3) var(--space-4); }
+            .c-modal__body {
+                padding: var(--space-3) var(--space-4);
+            }
         }
 
         @media (min-width: var(--breakpoint-lg)) and (max-width: var(--breakpoint-xl)) {
@@ -1045,8 +1243,13 @@
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .c-modal__content { animation: none !important; }
-            .c-modal { animation: none !important; backdrop-filter: none !important; }
+            .c-modal__content {
+                animation: none !important;
+            }
+            .c-modal {
+                animation: none !important;
+                backdrop-filter: none !important;
+            }
         }
 
         /* ============================================
@@ -1123,8 +1326,12 @@
             cursor: not-allowed;
         }
 
-        .c-form__input--error { border-color: var(--danger) !important; }
-        .c-form__input--success { border-color: var(--success) !important; }
+        .c-form__input--error {
+            border-color: var(--danger) !important;
+        }
+        .c-form__input--success {
+            border-color: var(--success) !important;
+        }
 
         .c-form__textarea {
             resize: vertical;
@@ -1175,14 +1382,28 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .c-toast--success { background: var(--success); }
-        .c-toast--error { background: var(--danger); }
-        .c-toast--info { background: var(--info); }
-        .c-toast--warning { background: var(--warning); }
+        .c-toast--success {
+            background: var(--success);
+        }
+        .c-toast--error {
+            background: var(--danger);
+        }
+        .c-toast--info {
+            background: var(--info);
+        }
+        .c-toast--warning {
+            background: var(--warning);
+        }
 
         @keyframes c-toast--slideUp {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         /* ============================================
@@ -1209,16 +1430,24 @@
             transition: background var(--duration-fast) ease;
         }
 
-        .c-cidades__item:last-child { border-bottom: none; }
-        .c-cidades__item:hover { background: var(--bg-primary); }
+        .c-cidades__item:last-child {
+            border-bottom: none;
+        }
+        .c-cidades__item:hover {
+            background: var(--bg-primary);
+        }
 
         .c-cidades__item-info {
             flex: 1;
             font-size: var(--font-size-sm);
         }
 
-        .c-cidades__item-info strong { color: var(--text-primary); }
-        .c-cidades__item-info span { color: var(--text-tertiary); }
+        .c-cidades__item-info strong {
+            color: var(--text-primary);
+        }
+        .c-cidades__item-info span {
+            color: var(--text-tertiary);
+        }
 
         .c-cidades__remove {
             background: var(--danger);
@@ -1382,6 +1611,54 @@
         }
 
         /* ============================================
+           COMPONENTES - TABELA FIXA (MODAL)
+           ============================================ */
+        .c-tabela-fixa {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: var(--font-size-sm);
+        }
+
+        .c-tabela-fixa thead {
+            background: var(--primary-600);
+            color: var(--text-inverse);
+        }
+
+        .c-tabela-fixa th {
+            padding: var(--space-2) var(--space-3);
+            text-align: left;
+            font-size: var(--font-size-xs);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            border: 1px solid var(--primary-600);
+        }
+
+        .c-tabela-fixa td {
+            padding: var(--space-2) var(--space-3);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .c-tabela-fixa tr:nth-child(even) {
+            background: var(--bg-secondary);
+        }
+
+        .c-tabela-fixa tr:hover {
+            background: var(--primary-50);
+        }
+
+        .c-tabela-fixa__total {
+            background: var(--bg-secondary);
+            font-weight: var(--font-weight-semibold);
+            border-top: 2px solid var(--border-color);
+        }
+
+        .c-tabela-fixa__total td {
+            padding: var(--space-2) var(--space-3);
+            border-top: 2px solid var(--border-color);
+        }
+
+        /* ============================================
            COMPONENTES - PRINT
            ============================================ */
         .c-print {
@@ -1422,7 +1699,9 @@
             color: #333333;
         }
 
-        .c-print__address strong { color: var(--primary-600); }
+        .c-print__address strong {
+            color: var(--primary-600);
+        }
 
         .c-print__cliente {
             display: grid;
@@ -1554,8 +1833,13 @@
                 flex-direction: column;
                 align-items: stretch;
             }
-            .c-panel__body { padding: var(--space-3); }
-            .c-panel__footer { flex-direction: column; text-align: center; }
+            .c-panel__body {
+                padding: var(--space-3);
+            }
+            .c-panel__footer {
+                flex-direction: column;
+                text-align: center;
+            }
 
             .c-table-wrap {
                 margin: 0 calc(-1 * var(--space-3));
@@ -1583,7 +1867,9 @@
                 text-align: center;
                 margin: 0 var(--space-2) var(--space-2);
             }
-            .c-print__table-wrap { margin: 0 var(--space-2) var(--space-2); }
+            .c-print__table-wrap {
+                margin: 0 var(--space-2) var(--space-2);
+            }
             .c-print__footer {
                 flex-direction: column;
                 align-items: stretch;
@@ -1593,11 +1879,15 @@
                 flex-direction: column;
                 gap: var(--space-4);
             }
-            .c-add-cidade { grid-template-columns: 1fr; }
-            .c-config-section__row { grid-template-columns: 1fr; }
-            .c-preview__content { transform: scale(0.5); }
-
-            /* Header mobile */
+            .c-add-cidade {
+                grid-template-columns: 1fr;
+            }
+            .c-config-section__row {
+                grid-template-columns: 1fr;
+            }
+            .c-preview__content {
+                transform: scale(0.5);
+            }
             .c-header__row {
                 flex-wrap: wrap;
                 justify-content: center;
@@ -1615,7 +1905,9 @@
         }
 
         @media (min-width: var(--breakpoint-sm)) and (max-width: var(--breakpoint-md)) {
-            .c-preview__content { transform: scale(0.55); }
+            .c-preview__content {
+                transform: scale(0.55);
+            }
             .c-header__fretes {
                 min-width: 140px;
             }
@@ -1625,20 +1917,28 @@
         }
 
         @media (min-width: var(--breakpoint-md)) and (max-width: var(--breakpoint-lg)) {
-            .c-preview__content { transform: scale(0.6); }
+            .c-preview__content {
+                transform: scale(0.6);
+            }
         }
 
         @media (min-width: var(--breakpoint-lg)) {
-            .c-preview__content { transform: scale(0.65); }
+            .c-preview__content {
+                transform: scale(0.65);
+            }
         }
 
         /* ============================================
            IMPRESSÃO
            ============================================ */
         @media print {
-            body * { visibility: hidden; }
+            body * {
+                visibility: hidden;
+            }
             #modalImprimir,
-            #modalImprimir * { visibility: visible; }
+            #modalImprimir * {
+                visibility: visible;
+            }
 
             #modalImprimir {
                 position: absolute !important;
@@ -1673,12 +1973,16 @@
                 padding: 20px !important;
                 max-width: 100% !important;
             }
-            .c-print__header { padding: 15px !important; }
+            .c-print__header {
+                padding: 15px !important;
+            }
             .c-print__logo img {
                 max-height: 80px !important;
                 max-width: 200px !important;
             }
-            .c-print__table { font-size: 10px !important; }
+            .c-print__table {
+                font-size: 10px !important;
+            }
             .c-print__cliente,
             .c-print__origem,
             .c-print__footer,
@@ -1693,12 +1997,24 @@
             }
 
             @page {
-                @top-center { content: none !important; }
-                @bottom-center { content: none !important; }
-                @top-right { content: none !important; }
-                @bottom-right { content: none !important; }
-                @top-left { content: none !important; }
-                @bottom-left { content: none !important; }
+                @top-center {
+                    content: none !important;
+                }
+                @bottom-center {
+                    content: none !important;
+                }
+                @top-right {
+                    content: none !important;
+                }
+                @bottom-right {
+                    content: none !important;
+                }
+                @top-left {
+                    content: none !important;
+                }
+                @bottom-left {
+                    content: none !important;
+                }
             }
         }
 
@@ -1714,11 +2030,21 @@
                 transition-duration: 0.01ms !important;
                 scroll-behavior: auto !important;
             }
-            .c-badge__dot { animation: none !important; }
-            .c-modal__content { animation: none !important; }
-            .c-toast { animation: none !important; }
-            .c-btn { transition: none !important; }
-            .c-modal { backdrop-filter: none !important; }
+            .c-badge__dot {
+                animation: none !important;
+            }
+            .c-modal__content {
+                animation: none !important;
+            }
+            .c-toast {
+                animation: none !important;
+            }
+            .c-btn {
+                transition: none !important;
+            }
+            .c-modal {
+                backdrop-filter: none !important;
+            }
         }
 
         /* ============================================
@@ -1750,13 +2076,12 @@
 </head>
 <body>
     <!-- ============================================
-           HEADER EMPRESARIAL COM TABELA FIXA
+           HEADER COM TABELA FIXA
            ============================================ -->
     <header class="c-header" role="banner">
         <div class="l-container">
             <div class="c-header__inner">
                 <div class="c-header__row">
-                    <!-- Lado Esquerdo - Logo e Título -->
                     <div class="c-header__brand">
                         <div class="c-header__logo">
                             <a href="https://ibb.co/5gkwpWJj" target="_blank" aria-label="Logo Transports e Logística">
@@ -1769,7 +2094,6 @@
                         </div>
                     </div>
 
-                    <!-- Lado Direito - Tabela Fixa de Fretes -->
                     <div class="c-header__fretes" aria-label="Tabela de fretes fixa">
                         <div class="c-header__fretes-title">📋 Tabela Fixa</div>
                         <div class="c-header__fretes-grid">
@@ -1792,7 +2116,6 @@
                         </div>
                     </div>
 
-                    <!-- Badges -->
                     <div class="c-header__badges">
                         <span id="statusConexao" class="c-badge c-badge--clickable c-badge--checking" onclick="verificarConexao()" role="button" tabindex="0" aria-label="Verificar conexão com o servidor">
                             <span class="c-badge__dot c-badge__dot--checking" aria-hidden="true"></span>
@@ -1805,6 +2128,72 @@
             </div>
         </div>
     </header>
+
+    <!-- ============================================
+           BOTÃO FLUTUANTE - TABELA COMPLETA
+           ============================================ -->
+    <button class="c-fab" id="btnTabelaFixa" aria-label="Abrir tabela completa de fretes" title="Tabela completa de fretes">
+        📋
+        <span class="c-fab__tooltip">Tabela de Fretes</span>
+    </button>
+
+    <!-- ============================================
+           MODAL - TABELA COMPLETA DE FRETES
+           ============================================ -->
+    <div id="modalTabelaFixa" class="c-modal" role="dialog" aria-modal="true" aria-labelledby="modalTabelaFixaTitle">
+        <div class="c-modal__content c-modal__content--lg">
+            <header class="c-modal__header">
+                <h3 id="modalTabelaFixaTitle" class="c-modal__title">📋 Tabela Completa de Fretes</h3>
+                <button type="button" class="c-modal__close close-tabela-fixa" aria-label="Fechar tabela">&times;</button>
+            </header>
+            <div class="c-modal__body">
+                <div style="margin-bottom:var(--space-4);font-size:var(--font-size-sm);color:var(--text-secondary);">
+                    <p><strong>Origem:</strong> SINOP - MT</p>
+                    <p><strong>Destino:</strong> DIVERSOS (PA)</p>
+                </div>
+                <div class="c-table-wrap" style="margin:0;padding:0;">
+                    <table class="c-tabela-fixa">
+                        <thead>
+                            <tr>
+                                <th>Cidades Atendidas</th>
+                                <th>UF</th>
+                                <th>Frete</th>
+                                <th>Preço por KG / TON</th>
+                                <th>% Sobre Valor NF</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Cachoeira da Serra</td><td>PA</td><td>R$ 75,00</td><td>R$ 650,00/kg</td><td>3,00%</td></tr>
+                            <tr><td>Castelo dos Sonhos</td><td>PA</td><td>R$ 75,00</td><td>R$ 650,00/kg</td><td>3,00%</td></tr>
+                            <tr><td>Novo Progresso</td><td>PA</td><td>R$ 80,00</td><td>R$ 700,00/kg</td><td>3,50%</td></tr>
+                            <tr><td>Moraes Almeida</td><td>PA</td><td>R$ 90,00</td><td>R$ 800,00/kg</td><td>4,00%</td></tr>
+                            <tr><td>Bela Vista do Caracol</td><td>PA</td><td>R$ 100,00</td><td>R$ 900,00/kg</td><td>4,00%</td></tr>
+                            <tr><td>Trairão</td><td>PA</td><td>R$ 100,00</td><td>R$ 900,00/kg</td><td>4,00%</td></tr>
+                            <tr><td>Km 30 / Campo Verde</td><td>PA</td><td>R$ 100,00</td><td>R$ 900,00/kg</td><td>4,00%</td></tr>
+                            <tr><td>Mirituba</td><td>PA</td><td>R$ 110,00</td><td>R$ 900,00/kg</td><td>4,00%</td></tr>
+                            <tr><td>Itaituba</td><td>PA</td><td>R$ 110,00</td><td>R$ 900,00/kg</td><td>4,00%</td></tr>
+                            <tr><td>Rurópolis</td><td>PA</td><td>R$ 120,00</td><td>R$ 1.000,00/kg</td><td>4,50%</td></tr>
+                            <tr><td>Mojul dos Campos</td><td>PA</td><td>R$ 130,00</td><td>R$ 1.100,00/kg</td><td>4,50%</td></tr>
+                            <tr><td>Santarém</td><td>PA</td><td>R$ 130,00</td><td>R$ 1.100,00/kg</td><td>4,50%</td></tr>
+                            <tr class="c-tabela-fixa__total">
+                                <td colspan="5" style="text-align:center;">
+                                    <strong>Total de 12 cidades atendidas</strong>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div style="margin-top:var(--space-4);font-size:var(--font-size-xs);color:var(--text-tertiary);text-align:center;">
+                    <p>📞 Contato / WhatsApp: (93) 8418-4950</p>
+                    <p style="margin-top:var(--space-1);">Gelheta: 130</p>
+                </div>
+            </div>
+            <footer class="c-modal__footer">
+                <button class="c-btn c-btn--outline close-tabela-fixa">Fechar</button>
+                <button onclick="imprimirTabelaFixa()" class="c-btn c-btn--primary">🖨️ Imprimir</button>
+            </footer>
+        </div>
+    </div>
 
     <!-- ============================================
            CONTEÚDO PRINCIPAL
@@ -2347,7 +2736,10 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             previewAlignInfo: document.getElementById('previewAlignInfo'),
             statusConexao: document.getElementById('statusConexao'),
             statusTexto: document.getElementById('statusTexto'),
-            toggleTheme: document.getElementById('toggleTheme')
+            toggleTheme: document.getElementById('toggleTheme'),
+            btnTabelaFixa: document.getElementById('btnTabelaFixa'),
+            modalTabelaFixa: document.getElementById('modalTabelaFixa'),
+            closeTabelaFixa: document.querySelectorAll('.close-tabela-fixa')
         };
 
         // ============================================
@@ -2377,6 +2769,81 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         }
 
         elements.toggleTheme.addEventListener('click', toggleTheme);
+
+        // ============================================
+        // MODAL - TABELA FIXA
+        // ============================================
+        function abrirTabelaFixa() {
+            elements.modalTabelaFixa.classList.add('c-modal--open');
+        }
+
+        function fecharTabelaFixa() {
+            elements.modalTabelaFixa.classList.remove('c-modal--open');
+        }
+
+        elements.btnTabelaFixa.addEventListener('click', abrirTabelaFixa);
+        elements.closeTabelaFixa.forEach(el => {
+            el.addEventListener('click', fecharTabelaFixa);
+        });
+        elements.modalTabelaFixa.addEventListener('click', (e) => {
+            if (e.target === elements.modalTabelaFixa) {
+                fecharTabelaFixa();
+            }
+        });
+
+        // ============================================
+        // IMPRIMIR TABELA FIXA
+        // ============================================
+        function imprimirTabelaFixa() {
+            const conteudo = document.querySelector('.c-tabela-fixa').outerHTML;
+            const origem = document.querySelector('.c-modal__body p:first-child')?.textContent || '';
+            const destino = document.querySelector('.c-modal__body p:last-child')?.textContent || '';
+            const contato = document.querySelector('.c-modal__body .c-tabela-fixa__total')?.parentElement?.nextElementSibling?.innerHTML || '';
+
+            const printWindow = window.open('', '_blank', 'width=800,height=600');
+            printWindow.document.write(`
+                <html><head><title>Tabela de Fretes</title>
+                <style>
+                    body { font-family: 'Courier New', monospace; padding: 30px; color: #1A1A1A; }
+                    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+                    th { background: #1a3a5c; color: white; padding: 10px; text-align: left; border: 1px solid #1a3a5c; }
+                    td { padding: 8px 10px; border: 1px solid #ccc; }
+                    tr:nth-child(even) { background: #f5f5f5; }
+                    .header { text-align: center; border-bottom: 3px solid #1a3a5c; padding-bottom: 15px; margin-bottom: 20px; }
+                    .header h1 { color: #1a3a5c; margin: 0; }
+                    .info { margin: 10px 0; font-weight: bold; }
+                    .footer { margin-top: 20px; border-top: 2px solid #333; padding-top: 15px; display: flex; justify-content: space-between; }
+                    .assinaturas { display: flex; gap: 40px; text-align: center; }
+                    .assinaturas div { min-width: 120px; }
+                    .linha { border-top: 1px solid #333; width: 100%; margin-bottom: 5px; }
+                    @media print { body { padding: 20px; } }
+                </style>
+                </head><body>
+                <div class="header">
+                    <h1>🚛 Transports e Logística</h1>
+                    <p>RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NÚMERO: 129<br>CIDADE: SINOP-MT | CEP: 78556-788</p>
+                </div>
+                <div class="info">${origem}</div>
+                <div class="info">${destino}</div>
+                ${conteudo}
+                <div style="margin-top:15px;text-align:center;">${contato}</div>
+                <div class="footer">
+                    <div></div>
+                    <div class="assinaturas">
+                        <div><div class="linha"></div><small>SINOP-MT</small></div>
+                        <div><div class="linha"></div><small>ASSINATURA</small></div>
+                    </div>
+                </div>
+                <div style="text-align:center;color:#999;font-size:11px;margin-top:15px;">
+                    Documento emitido em ${new Date().toLocaleString('pt-BR')}
+                </div>
+                <script>
+                    window.print();
+                <\/script>
+                </body></html>
+            `);
+            printWindow.document.close();
+        }
 
         // ============================================
         // CONFIGURAÇÕES LOCAL
@@ -3219,6 +3686,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             if (e.target === elements.modal) elements.modal.classList.remove('c-modal--open');
             if (e.target === elements.modalPrint) elements.modalPrint.classList.remove('c-modal--open');
             if (e.target === elements.modalConfig) elements.modalConfig.classList.remove('c-modal--open');
+            if (e.target === elements.modalTabelaFixa) elements.modalTabelaFixa.classList.remove('c-modal--open');
         });
         elements.form.addEventListener('submit', salvarTabela);
 
