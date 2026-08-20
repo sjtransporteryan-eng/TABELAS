@@ -12,7 +12,6 @@
            com identidade visual SJ Transportes e Logística
            ============================================================ */
 
-        /* ---------- Reset básico ---------- */
         * {
             margin: 0;
             padding: 0;
@@ -20,7 +19,7 @@
         }
 
         body.retro-system {
-            background: #008080; /* Teal clássico do Windows */
+            background: #008080;
             font-family: 'Tahoma', 'Geneva', 'MS Sans Serif', sans-serif;
             font-size: 12px;
             color: #000;
@@ -32,7 +31,6 @@
             align-items: flex-start;
         }
 
-        /* ---------- Janela principal ---------- */
         .window {
             background: #ece9d8;
             border: 2px solid;
@@ -46,7 +44,6 @@
             min-height: 80vh;
         }
 
-        /* ---------- Barra de título com logo SJ ---------- */
         .window-title {
             background: linear-gradient(180deg, #6b9fd4 0%, #3a6ea5 100%);
             color: #fff;
@@ -68,7 +65,6 @@
             gap: 10px;
         }
 
-        /* Logo SJ na barra de título (monograma + texto) */
         .window-title .title-text .sj-logo {
             display: flex;
             align-items: center;
@@ -89,12 +85,8 @@
             line-height: 1;
         }
 
-        .window-title .title-text .sj-logo .monograma .s {
-            color: #06458F;
-        }
-        .window-title .title-text .sj-logo .monograma .j {
-            color: #000000;
-        }
+        .window-title .title-text .sj-logo .monograma .s { color: #06458F; }
+        .window-title .title-text .sj-logo .monograma .j { color: #000000; }
 
         .window-title .title-text .sj-logo .elemento-geo {
             width: 12px;
@@ -116,15 +108,6 @@
             line-height: 1.2;
             border-left: 1px solid #ccc;
             padding-left: 6px;
-        }
-
-        .window-title .title-text .sj-logo .texto-empresa small {
-            display: block;
-            font-size: 7px;
-            font-weight: 400;
-            color: #555;
-            text-transform: none;
-            letter-spacing: 0.3px;
         }
 
         .window-title .controls {
@@ -151,7 +134,6 @@
             background: #c0c0c0;
         }
 
-        /* ---------- Menu bar ---------- */
         .menu-bar {
             background: #ece9d8;
             padding: 2px 8px;
@@ -172,14 +154,12 @@
             color: #fff;
         }
 
-        /* ---------- Corpo da janela ---------- */
         .window-body {
             padding: 12px;
             flex: 1;
             overflow-y: auto;
         }
 
-        /* ---------- Barra de status ---------- */
         .status-bar {
             background: #ece9d8;
             border-top: 1px solid #a0a0a0;
@@ -192,17 +172,9 @@
             align-items: center;
         }
 
-        .status-bar .status-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        .status-bar .status-left { display: flex; align-items: center; gap: 12px; }
+        .status-bar .status-right { text-align: right; }
 
-        .status-bar .status-right {
-            text-align: right;
-        }
-
-        /* ---------- Componentes: Group Box ---------- */
         .group-box {
             border: 1px solid;
             border-color: #404040 #fff #fff #404040;
@@ -218,7 +190,6 @@
             background: #ece9d8;
         }
 
-        /* ---------- Componentes: Inputs ---------- */
         .input {
             border: 2px solid;
             border-color: #404040 #fff #fff #404040;
@@ -232,23 +203,10 @@
             box-sizing: border-box;
         }
 
-        .input:focus {
-            border-color: #3a6ea5 #fff #fff #3a6ea5;
-        }
+        .input:focus { border-color: #3a6ea5 #fff #fff #3a6ea5; }
+        select.input { background: #fff; appearance: none; -webkit-appearance: none; padding-right: 18px; }
+        textarea.input { resize: vertical; min-height: 60px; }
 
-        select.input {
-            background: #fff;
-            appearance: none;
-            -webkit-appearance: none;
-            padding-right: 18px;
-        }
-
-        textarea.input {
-            resize: vertical;
-            min-height: 60px;
-        }
-
-        /* ---------- Componentes: Botões ---------- */
         .btn {
             background: #ece9d8;
             border: 2px solid;
@@ -266,42 +224,27 @@
             transition: none;
         }
 
-        .btn:active {
-            border-color: #404040 #fff #fff #404040;
-        }
+        .btn:active { border-color: #404040 #fff #fff #404040; }
 
         .btn-primary {
-            background: #06458F; /* Azul SJ */
+            background: #06458F;
             color: #fff;
             border-color: #3a7ab5 #002a5c #002a5c #3a7ab5;
         }
 
-        .btn-primary:active {
-            border-color: #002a5c #3a7ab5 #3a7ab5 #002a5c;
-        }
+        .btn-primary:active { border-color: #002a5c #3a7ab5 #3a7ab5 #002a5c; }
 
-        .btn-sm {
-            padding: 2px 10px;
-            font-size: 11px;
-            min-height: 22px;
-        }
+        .btn-sm { padding: 2px 10px; font-size: 11px; min-height: 22px; }
 
-        /* Botão danger (excluir) com cor SJ */
         .btn-danger {
             background: #c00;
             color: #fff;
             border-color: #f66 #800 #800 #f66;
         }
 
-        .btn-danger:active {
-            border-color: #800 #f66 #f66 #800;
-        }
+        .btn-danger:active { border-color: #800 #f66 #f66 #800; }
 
-        /* ---------- Componentes: Tabela ---------- */
-        .table-wrap {
-            overflow-x: auto;
-            margin: 8px 0;
-        }
+        .table-wrap { overflow-x: auto; margin: 8px 0; }
 
         .table {
             width: 100%;
@@ -312,7 +255,7 @@
         }
 
         .table th {
-            background: #06458F; /* Azul SJ */
+            background: #06458F;
             color: #fff;
             padding: 4px 8px;
             text-align: left;
@@ -325,21 +268,10 @@
             border: 1px solid #a0a0a0;
         }
 
-        .table tr:nth-child(even) td {
-            background: #f0f0e8;
-        }
+        .table tr:nth-child(even) td { background: #f0f0e8; }
+        .table tr:hover td { background: #d4e0f0; }
+        .table .actions { display: flex; gap: 4px; flex-wrap: wrap; }
 
-        .table tr:hover td {
-            background: #d4e0f0;
-        }
-
-        .table .actions {
-            display: flex;
-            gap: 4px;
-            flex-wrap: wrap;
-        }
-
-        /* ---------- Componentes: Formulário em linha ---------- */
         .form-row {
             display: flex;
             flex-wrap: wrap;
@@ -354,16 +286,9 @@
             gap: 2px;
         }
 
-        .form-row .field label {
-            font-weight: bold;
-            font-size: 11px;
-        }
+        .form-row .field label { font-weight: bold; font-size: 11px; }
+        .form-row .field label .required { color: #c00; }
 
-        .form-row .field label .required {
-            color: #c00;
-        }
-
-        /* ---------- Componentes: Cidades list ---------- */
         .cidades-list {
             border: 1px solid #a0a0a0;
             background: #fff;
@@ -381,13 +306,8 @@
             border-bottom: 1px solid #d0d0d0;
         }
 
-        .cidade-item:last-child {
-            border-bottom: none;
-        }
-
-        .cidade-item .info {
-            font-size: 12px;
-        }
+        .cidade-item:last-child { border-bottom: none; }
+        .cidade-item .info { font-size: 12px; }
 
         .cidade-item .btn-remove {
             background: #c00;
@@ -399,17 +319,10 @@
             font-weight: bold;
         }
 
-        .cidade-item .btn-remove:hover {
-            background: #a00;
-        }
+        .cidade-item .btn-remove:hover { background: #a00; }
 
-        .cidades-empty {
-            text-align: center;
-            color: #666;
-            padding: 12px;
-        }
+        .cidades-empty { text-align: center; color: #666; padding: 12px; }
 
-        /* ---------- Componentes: Add cidade row ---------- */
         .add-cidade-row {
             display: flex;
             flex-wrap: wrap;
@@ -423,7 +336,6 @@
             min-width: 80px;
         }
 
-        /* ---------- Componentes: Botão flutuante (legacy) ---------- */
         .fab {
             position: fixed;
             bottom: 30px;
@@ -441,13 +353,8 @@
             line-height: 1;
         }
 
-        .fab:hover {
-            background: #0a5aaf;
-        }
-
-        .fab:active {
-            border-color: #002a5c #3a7ab5 #3a7ab5 #002a5c;
-        }
+        .fab:hover { background: #0a5aaf; }
+        .fab:active { border-color: #002a5c #3a7ab5 #3a7ab5 #002a5c; }
 
         .fab .tooltip {
             display: none;
@@ -465,11 +372,8 @@
             box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
-        .fab:hover .tooltip {
-            display: block;
-        }
+        .fab:hover .tooltip { display: block; }
 
-        /* ---------- Componentes: Modal (janela sobreposta) ---------- */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -481,9 +385,7 @@
             padding: 20px;
         }
 
-        .modal-overlay.active {
-            display: flex;
-        }
+        .modal-overlay.active { display: flex; }
 
         .modal-overlay .window {
             max-width: 800px;
@@ -494,11 +396,8 @@
             box-shadow: 6px 6px 15px rgba(0,0,0,0.6);
         }
 
-        .modal-overlay .window .window-body {
-            overflow-y: auto;
-        }
+        .modal-overlay .window .window-body { overflow-y: auto; }
 
-        /* ---------- Componentes: Tabela fixa (modal) ---------- */
         .table-fixed {
             font-size: 12px;
             width: 100%;
@@ -520,28 +419,14 @@
             border: 1px solid #a0a0a0;
         }
 
-        .table-fixed tr:nth-child(even) td {
-            background: #f0f0e8;
-        }
+        .table-fixed tr:nth-child(even) td { background: #f0f0e8; }
+        .table-fixed .total-row td { background: #d0d0c0; font-weight: bold; text-align: center; }
 
-        .table-fixed .total-row td {
-            background: #d0d0c0;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        /* ---------- Impressão: apenas o recibo ---------- */
+        /* ===== IMPRESSÃO ===== */
         @media print {
-            /* Oculta tudo que não é a impressão */
-            body.retro-system * {
-                visibility: hidden;
-            }
-
-            /* Mostra apenas o conteúdo do modal de impressão */
+            body.retro-system * { visibility: hidden; }
             #modalImprimir,
-            #modalImprimir * {
-                visibility: visible;
-            }
+            #modalImprimir * { visibility: visible; }
 
             #modalImprimir {
                 position: fixed;
@@ -576,7 +461,7 @@
                 background: #fff;
             }
 
-            /* Estilos específicos para o conteúdo impresso */
+            /* Conteúdo impresso - usa as mesmas classes do preview */
             #modalImprimir .window-body .sj-logo-print {
                 display: flex !important;
                 align-items: center;
@@ -606,14 +491,6 @@
                 letter-spacing: 0.5px;
                 border-left: 1px solid #ccc;
                 padding-left: 10px;
-            }
-
-            #modalImprimir .window-body .sj-logo-print .texto-empresa small {
-                display: block;
-                font-size: 9px;
-                font-weight: 400;
-                color: #555;
-                text-transform: none;
             }
 
             #modalImprimir .window-body .endereco-print {
@@ -718,50 +595,25 @@
             }
         }
 
-        /* ---------- Responsividade ---------- */
+        /* ===== RESPONSIVIDADE ===== */
         @media (max-width: 640px) {
-            body.retro-system {
-                padding: 8px;
-            }
-            .window {
-                max-width: 100%;
-                min-height: auto;
-            }
-            .form-row .field {
-                flex: 1 0 100%;
-            }
+            body.retro-system { padding: 8px; }
+            .window { max-width: 100%; min-height: auto; }
+            .form-row .field { flex: 1 0 100%; }
             .add-cidade-row select,
-            .add-cidade-row input {
-                flex: 1 0 80px;
-            }
-            .window-title .title-text .sj-logo {
-                flex-wrap: wrap;
-                padding: 2px 6px;
-            }
-            .window-title .title-text .sj-logo .texto-empresa {
-                font-size: 8px;
-                border-left: none;
-                padding-left: 0;
-            }
-            .fab {
-                bottom: 16px;
-                right: 16px;
-                padding: 8px 12px;
-                font-size: 18px;
-            }
-            .modal-overlay {
-                padding: 8px;
-            }
+            .add-cidade-row input { flex: 1 0 80px; }
+            .window-title .title-text .sj-logo { flex-wrap: wrap; padding: 2px 6px; }
+            .window-title .title-text .sj-logo .texto-empresa { font-size: 8px; border-left: none; padding-left: 0; }
+            .fab { bottom: 16px; right: 16px; padding: 8px 12px; font-size: 18px; }
+            .modal-overlay { padding: 8px; }
         }
 
-        /* Ajuste para tabela de ações */
         .table .actions .btn {
             min-height: 20px;
             padding: 1px 8px;
             font-size: 11px;
         }
 
-        /* Busca */
         .search-row {
             display: flex;
             flex-wrap: wrap;
@@ -770,16 +622,9 @@
             align-items: center;
         }
 
-        .search-row .input {
-            flex: 1;
-            min-width: 180px;
-        }
+        .search-row .input { flex: 1; min-width: 180px; }
 
-        /* Configurações */
-        .config-section {
-            margin-bottom: 12px;
-        }
-
+        .config-section { margin-bottom: 12px; }
         .config-section .config-title {
             font-weight: bold;
             background: #d0d0c0;
@@ -788,14 +633,8 @@
             margin-bottom: 6px;
         }
 
-        .config-section .form-row .field {
-            flex: 1 0 140px;
-        }
-
-        .config-section .form-row .field input[type="color"] {
-            padding: 1px;
-            height: 28px;
-        }
+        .config-section .form-row .field { flex: 1 0 140px; }
+        .config-section .form-row .field input[type="color"] { padding: 1px; height: 28px; }
 
         .config-actions {
             display: flex;
@@ -824,7 +663,7 @@
         .preview-box .preview-content {
             font-family: 'Courier New', monospace;
             font-size: 11px;
-            transform: scale(0.7);
+            transform: scale(0.65);
             transform-origin: top left;
             width: 100%;
             background: #fff;
@@ -840,9 +679,7 @@
             background: #ece9d8;
         }
 
-        .modal-footer .btn {
-            min-height: 26px;
-        }
+        .modal-footer .btn { min-height: 26px; }
 
         .btn-close-modal {
             background: #ece9d8;
@@ -854,14 +691,9 @@
             cursor: pointer;
         }
 
-        .btn-close-modal:active {
-            border-color: #404040 #fff #fff #404040;
-        }
+        .btn-close-modal:active { border-color: #404040 #fff #fff #404040; }
 
-        /* Classes para impressão */
-        .print-only {
-            display: none;
-        }
+        .print-only { display: none; }
     </style>
 </head>
 <body class="retro-system">
@@ -870,10 +702,8 @@
          JANELA PRINCIPAL
          ============================================================ -->
     <div class="window">
-        <!-- Título com logo SJ -->
         <div class="window-title">
             <div class="title-text">
-                <!-- Logo SJ Transportes e Logística -->
                 <div class="sj-logo">
                     <div class="monograma">
                         <span class="s">S</span><span class="j">J</span>
@@ -881,7 +711,6 @@
                     <div class="elemento-geo"></div>
                     <div class="texto-empresa">
                         Transportes e Logística
-                        
                     </div>
                 </div>
             </div>
@@ -892,7 +721,6 @@
             </div>
         </div>
 
-        <!-- Menu Bar -->
         <div class="menu-bar">
             <span class="menu-item">Arquivo</span>
             <span class="menu-item">Editar</span>
@@ -900,22 +728,18 @@
             <span class="menu-item">Ajuda</span>
         </div>
 
-        <!-- Corpo -->
         <div class="window-body">
-            <!-- Painel de ações -->
             <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
                 <button class="btn btn-primary" id="btnNovo">📄 Nova Tabela</button>
                 <button class="btn" id="btnConfigurar">⚙️ Configurar Impressão</button>
             </div>
 
-            <!-- Busca -->
             <div class="search-row">
                 <input type="text" id="searchInput" class="input" placeholder="Buscar por cliente, origem ou destino..." style="flex:1;">
                 <button class="btn" id="btnBuscar">🔍 Buscar</button>
                 <button class="btn" id="btnLimpar">✖ Limpar</button>
             </div>
 
-            <!-- Tabela de dados -->
             <div class="table-wrap">
                 <table class="table" id="tabelaPrincipal">
                     <thead>
@@ -940,7 +764,6 @@
             </div>
         </div>
 
-        <!-- Status Bar -->
         <div class="status-bar">
             <div class="status-left">
                 <span>✅ Pronto</span>
@@ -1155,7 +978,6 @@
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
                         <!-- Coluna esquerda: configurações -->
                         <div style="max-height:500px; overflow-y:auto; padding-right:8px;">
-                            <!-- Cabeçalho -->
                             <div class="config-section">
                                 <div class="config-title">📌 Cabeçalho</div>
                                 <div class="form-row">
@@ -1217,7 +1039,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                                 </div>
                             </div>
 
-                            <!-- Cliente -->
                             <div class="config-section">
                                 <div class="config-title">📋 Informações do Cliente</div>
                                 <div class="form-row">
@@ -1268,7 +1089,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                                 </div>
                             </div>
 
-                            <!-- Tabela -->
                             <div class="config-section">
                                 <div class="config-title">📊 Tabela de Fretes</div>
                                 <div class="form-row">
@@ -1323,7 +1143,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                                 </div>
                             </div>
 
-                            <!-- Rodapé -->
                             <div class="config-section">
                                 <div class="config-title">📞 Rodapé</div>
                                 <div class="form-row">
@@ -1398,7 +1217,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                                 </div>
                                 <div class="preview-box">
                                     <div class="preview-content" id="previewContent">
-                                        <!-- Gerado dinamicamente -->
+                                        <!-- Conteúdo gerado dinamicamente -->
                                     </div>
                                 </div>
                             </div>
@@ -1495,7 +1314,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         let editandoId = null;
         let cidadesTemp = [];
         let tabelaImpressaoAtual = null;
-        let previewTimeout = null;
 
         // ============================================================
         // REFERÊNCIAS DOM
@@ -1549,26 +1367,18 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         };
 
         // ============================================================
-        // FUNÇÕES DE UTILIDADE (MODAIS)
+        // UTILIDADES DE MODAL
         // ============================================================
-        function openModal(modal) {
-            modal.classList.add('active');
-        }
+        function openModal(modal) { modal.classList.add('active'); }
 
-        function closeModal(modal) {
-            modal.classList.remove('active');
-        }
+        function closeModal(modal) { modal.classList.remove('active'); }
 
-        // Fechar modais clicando no overlay
         document.querySelectorAll('.modal-overlay').forEach(overlay => {
             overlay.addEventListener('click', function(e) {
-                if (e.target === this) {
-                    this.classList.remove('active');
-                }
+                if (e.target === this) this.classList.remove('active');
             });
         });
 
-        // Fechar modais com os botões de fechar
         elements.closeModal.forEach(btn => {
             btn.addEventListener('click', function() {
                 const modal = this.closest('.modal-overlay');
@@ -1591,7 +1401,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         });
 
         // ============================================================
-        // TABELA FIXA - ABRIR E IMPRIMIR
+        // TABELA FIXA
         // ============================================================
         elements.btnTabelaFixa.addEventListener('click', function() {
             openModal(elements.modalTabelaFixa);
@@ -1613,7 +1423,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                     .header .sj-logo .monograma .s { color:#06458F; }
                     .header .sj-logo .monograma .j { color:#000; }
                     .header .sj-logo .texto-empresa { font-size:14px; font-weight:700; color:#06458F; font-family:'Segoe UI','Arial Black',sans-serif; text-transform:uppercase; border-left:1px solid #ccc; padding-left:10px; }
-                    .header .sj-logo .texto-empresa small { display:block; font-size:9px; font-weight:400; color:#555; text-transform:none; }
                     table { width:100%; border-collapse:collapse; font-size:12px; }
                     th { background:#06458F; color:white; padding:6px; border:1px solid #002a5c; text-align:left; }
                     td { padding:5px; border:1px solid #a0a0a0; }
@@ -1632,7 +1441,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                         </div>
                         <div class="texto-empresa">
                             Transportes e Logística
-                            
                         </div>
                     </div>
                     <p style="margin-top:6px;font-size:12px;">RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NÚMERO: 129<br>CIDADE: SINOP-MT | CEP: 78556-788</p>
@@ -1659,7 +1467,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         });
 
         // ============================================================
-        // CARREGAR CONFIGURAÇÕES
+        // CONFIGURAÇÕES
         // ============================================================
         function carregarConfiguracoes() {
             const salvo = localStorage.getItem('configImpressao');
@@ -1712,18 +1520,12 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         }
 
         // ============================================================
-        // PRÉ-VISUALIZAÇÃO DE IMPRESSÃO
+        // PRÉ-VISUALIZAÇÃO (usa o mesmo HTML da impressão)
         // ============================================================
         function atualizarPreview() {
-            if (previewTimeout) clearTimeout(previewTimeout);
-            previewTimeout = setTimeout(gerarPreviewHTML, 300);
-        }
-
-        function gerarPreviewHTML() {
-            const cfg = configImpressao;
-            const logo = 'https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png';
-
+            // Usa os dados de exemplo para o preview
             const exemplo = {
+                id: 1,
                 cliente: 'DISTRIBUIDORA DE MOLAS MATO GROSSO LTDA',
                 cnpj: '7306297000167',
                 telefone: '(66) 3515-9853',
@@ -1740,81 +1542,197 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                     { nome: 'Santarém', frete: 130.00, kg: 1100.00, percentual: 4.50 }
                 ]
             };
+            // Gera o HTML de impressão com os dados de exemplo e com a flag 'preview'
+            const html = gerarHTMLImpressao(exemplo, true);
+            elements.previewContent.innerHTML = html;
+            // Atualiza as informações de fonte e alinhamento
+            const nomeFonte = configImpressao.headerFont.replace(/'/g, '').replace(/,.*$/, '').trim() || 'Courier New';
+            elements.previewFonteInfo.textContent = `Fonte: ${nomeFonte}`;
+            elements.previewAlignInfo.textContent = `Alinhamento: ${configImpressao.headerAlign.charAt(0).toUpperCase() + configImpressao.headerAlign.slice(1)}`;
+        }
 
+        // ============================================================
+        // GERAR HTML DA IMPRESSÃO (usado pela impressão e preview)
+        // ============================================================
+        function gerarHTMLImpressao(tabela, preview = false) {
+            const cfg = configImpressao;
             const campos = cfg.camposCliente.split(',').map(c => c.trim());
             const mapa = {
-                'NOME': `<div style="display:flex;gap:4px;font-size:${cfg.clienteFontSize}px;"><strong>NOME:</strong> ${exemplo.cliente}</div>`,
-                'CNPJ/CPF': `<div style="display:flex;gap:4px;font-size:${cfg.clienteFontSize}px;"><strong>CNPJ/CPF:</strong> ${exemplo.cnpj}</div>`,
-                'TELEFONE': `<div style="display:flex;gap:4px;font-size:${cfg.clienteFontSize}px;"><strong>TELEFONE:</strong> ${exemplo.telefone}</div>`,
-                'NÚMERO': `<div style="display:flex;gap:4px;font-size:${cfg.clienteFontSize}px;"><strong>NÚMERO:</strong> 1</div>`,
-                'BAIRRO': `<div style="display:flex;gap:4px;font-size:${cfg.clienteFontSize}px;"><strong>BAIRRO:</strong> DIST. INDL.</div>`,
-                'RUA': `<div style="display:flex;gap:4px;font-size:${cfg.clienteFontSize}px;"><strong>RUA:</strong> RUA VALDIR DOERNER</div>`,
-                'CEP': `<div style="display:flex;gap:4px;font-size:${cfg.clienteFontSize}px;"><strong>CEP:</strong> 78557-171</div>`,
-                'CIDADE': `<div style="display:flex;gap:4px;font-size:${cfg.clienteFontSize}px;"><strong>CIDADE:</strong> SINOP MT</div>`,
-                'IE': `<div style="display:flex;gap:4px;font-size:${cfg.clienteFontSize}px;"><strong>IE:</strong> ${exemplo.ie}</div>`,
-                'EMAIL': `<div style="display:flex;gap:4px;font-size:${cfg.clienteFontSize}px;"><strong>EMAIL:</strong> ${exemplo.email}</div>`
+                'NOME': `<div class="item"><strong>NOME:</strong> ${tabela.cliente}</div>`,
+                'CNPJ/CPF': `<div class="item"><strong>CNPJ/CPF:</strong> ${tabela.cnpj || 'Não informado'}</div>`,
+                'TELEFONE': `<div class="item"><strong>TELEFONE:</strong> ${tabela.telefone || 'Não informado'}</div>`,
+                'NÚMERO': `<div class="item"><strong>NÚMERO:</strong> ${tabela.id}</div>`,
+                'BAIRRO': `<div class="item"><strong>BAIRRO:</strong> ${tabela.endereco ? tabela.endereco.split(',')[1]?.trim() || '-' : '-'}</div>`,
+                'RUA': `<div class="item"><strong>RUA:</strong> ${tabela.endereco ? tabela.endereco.split(',')[0] || '-' : '-'}</div>`,
+                'CEP': `<div class="item"><strong>CEP:</strong> 78557-171</div>`,
+                'CIDADE': `<div class="item"><strong>CIDADE:</strong> SINOP MT</div>`,
+                'IE': `<div class="item"><strong>IE:</strong> ${tabela.ie || 'Não informado'}</div>`,
+                'EMAIL': `<div class="item"><strong>EMAIL:</strong> ${tabela.email || 'Não informado'}</div>`
             };
             const camposHTML = campos.filter(c => mapa[c]).map(c => mapa[c]).join('');
 
+            const cidadesHTML = tabela.cidades.map(c => `
+                <tr>
+                    <td>${c.nome}</td>
+                    <td>PA</td>
+                    <td>R$ ${c.frete.toFixed(2)}</td>
+                    <td>R$ ${c.kg.toFixed(2)}/kg</td>
+                    <td>${c.percentual.toFixed(2)}%</td>
+                </tr>
+            `).join('');
+
             const enderecoHTML = cfg.enderecoEmpresa.replace(/\n/g, '<br>');
 
-            const nomeFonte = cfg.headerFont.replace(/'/g, '').replace(/,.*$/, '').trim() || 'Courier New';
-            elements.previewFonteInfo.textContent = `Fonte: ${nomeFonte}`;
-            elements.previewAlignInfo.textContent = `Alinhamento: ${cfg.headerAlign.charAt(0).toUpperCase() + cfg.headerAlign.slice(1)}`;
+            // Estilos aplicados via atributos style para garantir que o preview e a impressão usem as mesmas cores/fontes
+            const styleHeader = `background:${cfg.headerBgColor};color:${cfg.headerTextColor};border-bottom:2px solid ${cfg.headerBorderColor};padding:${cfg.headerPadding}px 15px;text-align:${cfg.headerAlign};font-size:${cfg.headerFontSize}px;font-family:${cfg.headerFont};`;
+            const styleCliente = `background:${cfg.clienteBgColor};color:${cfg.clienteTextColor};padding:${cfg.clientePadding}px 15px;font-size:${cfg.clienteFontSize}px;font-family:${cfg.clienteFont};text-align:${cfg.clienteAlign};`;
+            const styleOrigem = `font-size:${Math.max(12, cfg.clienteFontSize + 2)}px;background:#e9ecef;color:#1a3a5c;font-family:${cfg.tabelaFont};`;
+            const styleTable = `font-size:${cfg.tabelaDataFontSize}px;font-family:${cfg.tabelaFont};text-align:${cfg.tabelaAlign};`;
+            const styleTh = `background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};padding:4px 8px;border:1px solid #002a5c;font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};`;
+            const styleTd = `padding:4px 8px;border:1px solid #a0a0a0;text-align:${cfg.tabelaAlign};`;
+            const styleRodape = `font-size:${cfg.rodapeFontSize}px;font-family:${cfg.rodapeFont};text-align:${cfg.rodapeAlign};`;
 
             const html = `
-                <div style="max-width:${cfg.larguraMaxima}px; margin:0 auto; font-family:${cfg.headerFont}; background:#fff; padding:4px;">
-                    <div style="background:${cfg.headerBgColor};color:${cfg.headerTextColor};border-bottom:3px solid ${cfg.headerBorderColor};padding:${cfg.headerPadding}px 15px;text-align:${cfg.headerAlign};font-size:${cfg.headerFontSize}px;">
-                        <div style="display:flex;justify-content:center;margin-bottom:4px;">
-                            <img src="${logo}" alt="Logo" style="max-height:${cfg.logoMaxHeight}px;width:auto;">
+                <div style="max-width:${cfg.larguraMaxima}px; margin:0 auto; font-family:'Tahoma','Geneva',sans-serif; background:#fff; padding:${preview ? '4px' : '10px'};">
+
+                    <!-- Logo SJ -->
+                    <div class="sj-logo-print" style="display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:12px; ${preview ? 'border-bottom:2px solid #06458F; padding-bottom:8px;' : 'border-bottom:2px solid #06458F; padding-bottom:8px;'}">
+                        <div class="monograma" style="font-size:${preview ? '24px' : '32px'}; font-weight:900; font-family:'Segoe UI','Arial Black',sans-serif; letter-spacing:-3px;">
+                            <span class="s" style="color:#06458F;">S</span><span class="j" style="color:#000;">J</span>
                         </div>
-                        <div style="font-size:${cfg.headerFontSize}px;">${enderecoHTML}</div>
+                        <div class="texto-empresa" style="font-size:${preview ? '12px' : '14px'}; font-weight:700; color:#06458F; font-family:'Segoe UI','Arial Black',sans-serif; text-transform:uppercase; border-left:1px solid #ccc; padding-left:10px;">
+                            Transportes e Logística
+                        </div>
                     </div>
-                    <div style="background:${cfg.clienteBgColor};color:${cfg.clienteTextColor};padding:${cfg.clientePadding}px 15px;font-size:${cfg.clienteFontSize}px;font-family:${cfg.clienteFont};text-align:${cfg.clienteAlign};display:grid;grid-template-columns:1fr 1fr;gap:4px 20px;">
+
+                    <!-- Endereço -->
+                    <div class="endereco-print" style="text-align:center; font-size:11px; margin-bottom:10px; color:#333;">
+                        ${enderecoHTML}
+                    </div>
+
+                    <!-- Informações do cliente -->
+                    <div class="info-cliente-print" style="display:grid; grid-template-columns:1fr 1fr; gap:2px 20px; font-size:11px; background:#f5f5f0; padding:6px 12px; border:1px solid #a0a0a0; margin-bottom:8px;">
                         ${camposHTML}
                     </div>
-                    <div style="background:#e9ecef;padding:6px 15px;font-weight:bold;font-size:${Math.max(12, cfg.clienteFontSize + 2)}px;color:#1a3a5c;font-family:${cfg.tabelaFont};display:flex;justify-content:space-between;">
-                        <span>ORIGEM: ${exemplo.origem}</span>
-                        <span>DESTINO: ${exemplo.destino}</span>
+
+                    <!-- Origem / Destino -->
+                    <div class="origem-destino-print" style="display:flex; justify-content:space-between; background:#e9ecef; padding:4px 12px; font-weight:bold; font-size:12px; margin-bottom:8px; border:1px solid #a0a0a0;">
+                        <span>📍 ORIGEM: ${tabela.origem}</span>
+                        <span>🎯 DESTINO: ${tabela.destino}</span>
                     </div>
-                    <table style="width:100%;border-collapse:collapse;font-size:${cfg.tabelaDataFontSize}px;font-family:${cfg.tabelaFont};text-align:${cfg.tabelaAlign};">
+
+                    <!-- Tabela -->
+                    <table class="table-print" style="width:100%; border-collapse:collapse; ${styleTable}">
                         <thead>
                             <tr>
-                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};padding:4px 8px;border:1px solid #1a3a5c;font-size:${cfg.tabelaHeaderFontSize}px;">Cidades</th>
-                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};padding:4px 8px;border:1px solid #1a3a5c;font-size:${cfg.tabelaHeaderFontSize}px;">UF</th>
-                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};padding:4px 8px;border:1px solid #1a3a5c;font-size:${cfg.tabelaHeaderFontSize}px;">Frete</th>
-                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};padding:4px 8px;border:1px solid #1a3a5c;font-size:${cfg.tabelaHeaderFontSize}px;">KG</th>
-                                <th style="background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};padding:4px 8px;border:1px solid #1a3a5c;font-size:${cfg.tabelaHeaderFontSize}px;">% NF</th>
+                                <th style="${styleTh}">Cidades</th>
+                                <th style="${styleTh}">UF</th>
+                                <th style="${styleTh}">Frete</th>
+                                <th style="${styleTh}">Preço KG</th>
+                                <th style="${styleTh}">% NF</th>
                             </tr>
                         </thead>
                         <tbody>
-                            ${exemplo.cidades.map((c, idx) => `
+                            ${tabela.cidades.map((c, idx) => `
                                 <tr style="background:${idx % 2 === 0 ? cfg.tabelaLinhaPar : cfg.tabelaLinhaImpar};">
-                                    <td style="padding:4px 8px;border:1px solid #ccc;text-align:${cfg.tabelaAlign};">${c.nome}</td>
-                                    <td style="padding:4px 8px;border:1px solid #ccc;text-align:${cfg.tabelaAlign};">PA</td>
-                                    <td style="padding:4px 8px;border:1px solid #ccc;text-align:${cfg.tabelaAlign};">R$ ${c.frete.toFixed(2)}</td>
-                                    <td style="padding:4px 8px;border:1px solid #ccc;text-align:${cfg.tabelaAlign};">R$ ${c.kg.toFixed(2)}/kg</td>
-                                    <td style="padding:4px 8px;border:1px solid #ccc;text-align:${cfg.tabelaAlign};">${c.percentual.toFixed(2)}%</td>
+                                    <td style="${styleTd}">${c.nome}</td>
+                                    <td style="${styleTd}">PA</td>
+                                    <td style="${styleTd}">R$ ${c.frete.toFixed(2)}</td>
+                                    <td style="${styleTd}">R$ ${c.kg.toFixed(2)}/kg</td>
+                                    <td style="${styleTd}">${c.percentual.toFixed(2)}%</td>
                                 </tr>
                             `).join('')}
                         </tbody>
                     </table>
-                    <div style="font-size:${cfg.rodapeFontSize}px;font-family:${cfg.rodapeFont};text-align:${cfg.rodapeAlign};margin-top:8px;border-top:2px solid #333;padding-top:8px;display:flex;justify-content:space-between;">
+
+                    <!-- Rodapé -->
+                    <div class="rodape-print" style="${styleRodape} margin-top:12px; border-top:2px solid #333; padding-top:10px; display:flex; justify-content:space-between;">
                         <div><strong>${cfg.textoContato}</strong></div>
-                        <div style="display:flex;gap:30px;font-size:${Math.max(10, cfg.rodapeFontSize - 1)}px;">
-                            <div><div style="border-top:1px solid #333;width:100%;margin-bottom:3px;"></div><small>${cfg.assinatura1}</small></div>
-                            <div><div style="border-top:1px solid #333;width:100%;margin-bottom:3px;"></div><small>${cfg.assinatura2}</small></div>
+                        <div class="assinaturas" style="display:flex; gap:30px; text-align:center;">
+                            <div><div class="linha" style="border-top:1px solid #333; width:100%; margin-bottom:4px;"></div><small>${cfg.assinatura1}</small></div>
+                            <div><div class="linha" style="border-top:1px solid #333; width:100%; margin-bottom:4px;"></div><small>${cfg.assinatura2}</small></div>
                         </div>
                     </div>
-                    ${exemplo.observacao ? `<div style="font-size:${Math.max(10, cfg.rodapeFontSize - 1)}px;margin-top:6px;padding:4px 10px;border:1px solid #ccc;background:#f9f9f9;"><strong>Observação:</strong> ${exemplo.observacao}</div>` : ''}
-                    ${cfg.mostrarDataEmissao ? `<div style="text-align:center;color:#999;font-size:10px;margin-top:6px;">Documento emitido em ${new Date().toLocaleString('pt-BR')}</div>` : ''}
+
+                    <!-- Observação -->
+                    ${tabela.observacao ? `<div class="observacao-print" style="font-size:11px; padding:4px 10px; border:1px solid #ccc; background:#f9f9f9; margin-top:6px;"><strong>Observação:</strong> ${tabela.observacao}</div>` : ''}
+
+                    <!-- Data -->
+                    ${cfg.mostrarDataEmissao ? `<div class="data-emissao" style="text-align:center; color:#999; font-size:10px; margin-top:8px;">Documento emitido em ${new Date().toLocaleString('pt-BR')}</div>` : ''}
                 </div>
             `;
-            elements.previewContent.innerHTML = html;
+            return html;
         }
 
         // ============================================================
-        // CONEXÃO COM JSONBIN
+        // IMPRESSÃO E PDF
+        // ============================================================
+        function abrirImpressao(id) {
+            const tabela = tabelas.find(t => t.id === id);
+            if (!tabela) { mostrarToast('Tabela não encontrada!', 'error'); return; }
+            tabelaImpressaoAtual = tabela;
+            const html = gerarHTMLImpressao(tabela, false);
+            elements.conteudoImpressao.innerHTML = html;
+            openModal(elements.modalPrint);
+        }
+
+        function imprimirRecibo() {
+            window.print();
+        }
+
+        function gerarPDF() {
+            const btn = elements.btnGerarPDF;
+            const original = btn.innerHTML;
+            btn.innerHTML = '⏳ Gerando...';
+            btn.disabled = true;
+
+            // Se o modal de impressão não estiver aberto, abrimos com a tabela atual (última impressa ou primeira)
+            if (!elements.modalPrint.classList.contains('active')) {
+                if (tabelaImpressaoAtual) {
+                    const html = gerarHTMLImpressao(tabelaImpressaoAtual, false);
+                    elements.conteudoImpressao.innerHTML = html;
+                    openModal(elements.modalPrint);
+                } else if (tabelas.length > 0) {
+                    const primeira = tabelas[0];
+                    tabelaImpressaoAtual = primeira;
+                    const html = gerarHTMLImpressao(primeira, false);
+                    elements.conteudoImpressao.innerHTML = html;
+                    openModal(elements.modalPrint);
+                } else {
+                    mostrarToast('Nenhuma tabela para gerar PDF.', 'error');
+                    btn.innerHTML = original;
+                    btn.disabled = false;
+                    return;
+                }
+            }
+
+            // Pequeno delay para garantir que o modal esteja aberto e o conteúdo renderizado
+            setTimeout(() => {
+                const element = document.querySelector('#modalImprimir .window-body');
+                const opt = {
+                    margin: [0, 0, 0, 0],
+                    filename: `tabela_frete_${tabelaImpressaoAtual?.id || 'sem_id'}.pdf`,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+                html2pdf().set(opt).from(element).save()
+                    .then(() => {
+                        btn.innerHTML = original;
+                        btn.disabled = false;
+                        mostrarToast('PDF gerado com sucesso!', 'success');
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                        btn.innerHTML = original;
+                        btn.disabled = false;
+                        mostrarToast('Erro ao gerar PDF: ' + err.message, 'error');
+                    });
+            }, 300);
+        }
+
+        // ============================================================
+        // CONEXÃO JSONBIN
         // ============================================================
         async function carregarDados() {
             try {
@@ -2087,138 +2005,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         }
 
         // ============================================================
-        // IMPRESSÃO - APENAS O RECIBO
-        // ============================================================
-        function abrirImpressao(id) {
-            const tabela = tabelas.find(t => t.id === id);
-            if (!tabela) { mostrarToast('Tabela não encontrada!', 'error'); return; }
-            tabelaImpressaoAtual = tabela;
-            gerarHTMLImpressao(tabela);
-            openModal(elements.modalPrint);
-        }
-
-        function gerarHTMLImpressao(tabela) {
-            const cfg = configImpressao;
-            const campos = cfg.camposCliente.split(',').map(c => c.trim());
-            const mapa = {
-                'NOME': `<div class="item"><strong>NOME:</strong> ${tabela.cliente}</div>`,
-                'CNPJ/CPF': `<div class="item"><strong>CNPJ/CPF:</strong> ${tabela.cnpj || 'Não informado'}</div>`,
-                'TELEFONE': `<div class="item"><strong>TELEFONE:</strong> ${tabela.telefone || 'Não informado'}</div>`,
-                'NÚMERO': `<div class="item"><strong>NÚMERO:</strong> ${tabela.id}</div>`,
-                'BAIRRO': `<div class="item"><strong>BAIRRO:</strong> ${tabela.endereco ? tabela.endereco.split(',')[1]?.trim() || '-' : '-'}</div>`,
-                'RUA': `<div class="item"><strong>RUA:</strong> ${tabela.endereco ? tabela.endereco.split(',')[0] || '-' : '-'}</div>`,
-                'CEP': `<div class="item"><strong>CEP:</strong> 78557-171</div>`,
-                'CIDADE': `<div class="item"><strong>CIDADE:</strong> SINOP MT</div>`,
-                'IE': `<div class="item"><strong>IE:</strong> ${tabela.ie || 'Não informado'}</div>`,
-                'EMAIL': `<div class="item"><strong>EMAIL:</strong> ${tabela.email || 'Não informado'}</div>`
-            };
-            const camposHTML = campos.filter(c => mapa[c]).map(c => mapa[c]).join('');
-
-            const cidadesHTML = tabela.cidades.map(c => `
-                <tr>
-                    <td>${c.nome}</td>
-                    <td>PA</td>
-                    <td>R$ ${c.frete.toFixed(2)}</td>
-                    <td>R$ ${c.kg.toFixed(2)}/kg</td>
-                    <td>${c.percentual.toFixed(2)}%</td>
-                </tr>
-            `).join('');
-
-            const html = `
-                <div style="max-width:${cfg.larguraMaxima}px; margin:0 auto; font-family:'Tahoma','Geneva',sans-serif; background:#fff; padding:10px;">
-
-                    <!-- Logo SJ no topo do recibo -->
-                    <div class="sj-logo-print" style="display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:12px; border-bottom:2px solid #06458F; padding-bottom:8px;">
-                        <div class="monograma" style="font-size:32px; font-weight:900; font-family:'Segoe UI','Arial Black',sans-serif; letter-spacing:-3px;">
-                            <span class="s" style="color:#06458F;">S</span><span class="j" style="color:#000;">J</span>
-                        </div>
-                        <div class="texto-empresa" style="font-size:14px; font-weight:700; color:#06458F; font-family:'Segoe UI','Arial Black',sans-serif; text-transform:uppercase; border-left:1px solid #ccc; padding-left:10px;">
-                            Transportes e Logística
-                        </div>
-                    </div>
-
-                    <!-- Endereço -->
-                    <div class="endereco-print" style="text-align:center; font-size:11px; margin-bottom:10px; color:#333;">
-                        RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NÚMERO: 129<br>
-                        CIDADE: SINOP-MT | CEP: 78556-788
-                    </div>
-
-                    <!-- Informações do cliente -->
-                    <div class="info-cliente-print" style="display:grid; grid-template-columns:1fr 1fr; gap:2px 20px; font-size:11px; background:#f5f5f0; padding:6px 12px; border:1px solid #a0a0a0; margin-bottom:8px;">
-                        ${camposHTML}
-                    </div>
-
-                    <!-- Origem / Destino -->
-                    <div class="origem-destino-print" style="display:flex; justify-content:space-between; background:#e9ecef; padding:4px 12px; font-weight:bold; font-size:12px; margin-bottom:8px; border:1px solid #a0a0a0;">
-                        <span>📍 ORIGEM: ${tabela.origem}</span>
-                        <span>🎯 DESTINO: ${tabela.destino}</span>
-                    </div>
-
-                    <!-- Tabela de fretes -->
-                    <table class="table-print" style="width:100%; border-collapse:collapse; font-size:11px;">
-                        <thead>
-                            <tr>
-                                <th style="background:#06458F; color:#fff; padding:4px 8px; border:1px solid #002a5c; text-align:left;">Cidades Atendidas</th>
-                                <th style="background:#06458F; color:#fff; padding:4px 8px; border:1px solid #002a5c; text-align:left;">UF</th>
-                                <th style="background:#06458F; color:#fff; padding:4px 8px; border:1px solid #002a5c; text-align:left;">Frete</th>
-                                <th style="background:#06458F; color:#fff; padding:4px 8px; border:1px solid #002a5c; text-align:left;">Preço KG</th>
-                                <th style="background:#06458F; color:#fff; padding:4px 8px; border:1px solid #002a5c; text-align:left;">% NF</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${cidadesHTML}
-                        </tbody>
-                    </table>
-
-                    <!-- Rodapé -->
-                    <div class="rodape-print" style="margin-top:12px; border-top:2px solid #333; padding-top:10px; display:flex; justify-content:space-between; font-size:11px;">
-                        <div><strong>${cfg.textoContato}</strong></div>
-                        <div class="assinaturas" style="display:flex; gap:30px; text-align:center;">
-                            <div><div class="linha" style="border-top:1px solid #333; width:100%; margin-bottom:4px;"></div><small>${cfg.assinatura1}</small></div>
-                            <div><div class="linha" style="border-top:1px solid #333; width:100%; margin-bottom:4px;"></div><small>${cfg.assinatura2}</small></div>
-                        </div>
-                    </div>
-
-                    <!-- Observação -->
-                    ${tabela.observacao ? `<div class="observacao-print" style="font-size:11px; padding:4px 10px; border:1px solid #ccc; background:#f9f9f9; margin-top:6px;"><strong>Observação:</strong> ${tabela.observacao}</div>` : ''}
-
-                    <!-- Data de emissão -->
-                    ${cfg.mostrarDataEmissao ? `<div class="data-emissao" style="text-align:center; color:#999; font-size:10px; margin-top:8px;">Documento emitido em ${new Date().toLocaleString('pt-BR')}</div>` : ''}
-                </div>
-            `;
-            elements.conteudoImpressao.innerHTML = html;
-        }
-
-        function imprimirRecibo() {
-            window.print();
-        }
-
-        function gerarPDF() {
-            const btn = elements.btnGerarPDF;
-            const original = btn.innerHTML;
-            btn.innerHTML = '⏳ Gerando...';
-            btn.disabled = true;
-            const element = document.querySelector('#modalImprimir .window-body');
-            const opt = {
-                margin: [0, 0, 0, 0],
-                filename: `tabela_frete_${tabelaImpressaoAtual?.id || 'sem_id'}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-            html2pdf().set(opt).from(element).save().then(() => {
-                btn.innerHTML = original;
-                btn.disabled = false;
-                mostrarToast('PDF gerado!', 'success');
-            }).catch((err) => {
-                console.error(err);
-                btn.innerHTML = original;
-                btn.disabled = false;
-                mostrarToast('Erro ao gerar PDF.', 'error');
-            });
-        }
-
-        // ============================================================
         // CONFIGURAÇÕES - SALVAR
         // ============================================================
         function salvarConfiguracoes(event) {
@@ -2354,10 +2140,13 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         document.addEventListener('DOMContentLoaded', async function() {
             carregarConfiguracoes();
             await carregarDados();
+            // Atualiza o preview quando os campos do formulário mudarem
             document.querySelectorAll('#formConfig input, #formConfig select, #formConfig textarea').forEach(el => {
                 el.addEventListener('input', atualizarPreview);
                 el.addEventListener('change', atualizarPreview);
             });
+            // Inicializa o preview
+            atualizarPreview();
         });
     </script>
 </body>
