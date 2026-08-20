@@ -8,10 +8,7 @@
     <style>
         /* ============================================================
            LEGACY SYSTEM UI DESIGNER - CSS
-           Baseado na skill "Legacy System UI Designer (v1.0)"
-           com identidade visual SJ Transportes e Logística
            ============================================================ */
-
         * {
             margin: 0;
             padding: 0;
@@ -84,7 +81,6 @@
             letter-spacing: -2px;
             line-height: 1;
         }
-
         .window-title .title-text .sj-logo .monograma .s { color: #06458F; }
         .window-title .title-text .sj-logo .monograma .j { color: #000000; }
 
@@ -244,6 +240,14 @@
 
         .btn-danger:active { border-color: #800 #f66 #f66 #800; }
 
+        .btn-secondary {
+            background: #e0e0d0;
+            color: #000;
+            border-color: #fff #808080 #808080 #fff;
+        }
+
+        .btn-secondary:active { border-color: #808080 #fff #fff #808080; }
+
         .table-wrap { overflow-x: auto; margin: 8px 0; }
 
         .table {
@@ -388,7 +392,7 @@
         .modal-overlay.active { display: flex; }
 
         .modal-overlay .window {
-            max-width: 800px;
+            max-width: 900px;
             max-height: 90vh;
             min-height: auto;
             width: 100%;
@@ -421,6 +425,53 @@
 
         .table-fixed tr:nth-child(even) td { background: #f0f0e8; }
         .table-fixed .total-row td { background: #d0d0c0; font-weight: bold; text-align: center; }
+
+        /* ===== CONFIGURAÇÃO DE CAMPOS ===== */
+        .campo-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 8px;
+            border-bottom: 1px solid #d0d0d0;
+            background: #fff;
+        }
+
+        .campo-item .campo-label {
+            flex: 1;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .campo-item .campo-input {
+            flex: 1;
+            padding: 2px 4px;
+            border: 1px solid #a0a0a0;
+            font-family: 'Tahoma', 'Geneva', sans-serif;
+            font-size: 11px;
+            background: #fff;
+        }
+
+        .campo-item .campo-checkbox {
+            width: 16px;
+            height: 16px;
+            accent-color: #06458F;
+        }
+
+        .campo-item .campo-drag {
+            cursor: move;
+            color: #999;
+            font-size: 14px;
+            user-select: none;
+        }
+
+        .campo-item.dragging {
+            opacity: 0.5;
+            background: #e0e0d0;
+        }
+
+        .campo-item.drag-over {
+            border-top: 2px solid #06458F;
+        }
 
         /* ===== IMPRESSÃO ===== */
         @media print {
@@ -461,7 +512,6 @@
                 background: #fff;
             }
 
-            /* Conteúdo impresso - usa as mesmas classes do preview */
             #modalImprimir .window-body .sj-logo-print {
                 display: flex !important;
                 align-items: center;
@@ -488,7 +538,6 @@
                 color: #06458F;
                 font-family: 'Segoe UI', 'Arial Black', sans-serif;
                 text-transform: uppercase;
-                letter-spacing: 0.5px;
                 border-left: 1px solid #ccc;
                 padding-left: 10px;
             }
@@ -606,6 +655,7 @@
             .window-title .title-text .sj-logo .texto-empresa { font-size: 8px; border-left: none; padding-left: 0; }
             .fab { bottom: 16px; right: 16px; padding: 8px 12px; font-size: 18px; }
             .modal-overlay { padding: 8px; }
+            .modal-overlay .window { max-width: 100%; max-height: 100vh; border-radius: 0; }
         }
 
         .table .actions .btn {
@@ -652,14 +702,6 @@
             overflow: auto;
         }
 
-        .preview-box .preview-label {
-            font-size: 11px;
-            color: #333;
-            background: #d0d0c0;
-            padding: 2px 8px;
-            margin-bottom: 6px;
-        }
-
         .preview-box .preview-content {
             font-family: 'Courier New', monospace;
             font-size: 11px;
@@ -681,19 +723,12 @@
 
         .modal-footer .btn { min-height: 26px; }
 
-        .btn-close-modal {
-            background: #ece9d8;
-            border: 2px solid;
-            border-color: #fff #404040 #404040 #fff;
-            padding: 2px 12px;
-            font-family: 'Tahoma', 'Geneva', sans-serif;
-            font-size: 12px;
-            cursor: pointer;
+        .campos-container {
+            max-height: 250px;
+            overflow-y: auto;
+            border: 1px solid #a0a0a0;
+            background: #f5f5f0;
         }
-
-        .btn-close-modal:active { border-color: #404040 #fff #fff #404040; }
-
-        .print-only { display: none; }
     </style>
 </head>
 <body class="retro-system">
@@ -958,7 +993,7 @@
     </div>
 
     <!-- ============================================================
-         MODAL - CONFIGURAÇÃO DE IMPRESSÃO
+         MODAL - CONFIGURAÇÃO DE IMPRESSÃO (COM EDIÇÃO DE CAMPOS)
          ============================================================ -->
     <div class="modal-overlay" id="modalConfig">
         <div class="window" style="max-width:900px;">
@@ -978,6 +1013,7 @@
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
                         <!-- Coluna esquerda: configurações -->
                         <div style="max-height:500px; overflow-y:auto; padding-right:8px;">
+                            <!-- Cabeçalho -->
                             <div class="config-section">
                                 <div class="config-title">📌 Cabeçalho</div>
                                 <div class="form-row">
@@ -1039,6 +1075,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                                 </div>
                             </div>
 
+                            <!-- Cliente -->
                             <div class="config-section">
                                 <div class="config-title">📋 Informações do Cliente</div>
                                 <div class="form-row">
@@ -1081,14 +1118,23 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-row">
-                                    <div class="field" style="flex:1 0 100%;">
-                                        <label>Campos (separados por vírgula)</label>
-                                        <input type="text" id="camposCliente" class="input" value="NOME,CNPJ/CPF,TELEFONE,NÚMERO,BAIRRO,RUA,CEP,CIDADE,IE,EMAIL">
-                                    </div>
+                            </div>
+
+                            <!-- EDIÇÃO DE CAMPOS -->
+                            <div class="config-section">
+                                <div class="config-title">📋 Edição de Campos (Impressão)</div>
+                                <div style="font-size:11px; color:#333; margin-bottom:6px;">
+                                    Arraste para reordenar. Marque para exibir.
+                                </div>
+                                <div class="campos-container" id="camposContainer">
+                                    <!-- Gerado dinamicamente pelo JavaScript -->
+                                </div>
+                                <div style="margin-top:6px;">
+                                    <button type="button" class="btn btn-sm btn-secondary" id="btnAdicionarCampo">+ Adicionar Campo</button>
                                 </div>
                             </div>
 
+                            <!-- Tabela -->
                             <div class="config-section">
                                 <div class="config-title">📊 Tabela de Fretes</div>
                                 <div class="form-row">
@@ -1143,6 +1189,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                                 </div>
                             </div>
 
+                            <!-- Rodapé -->
                             <div class="config-section">
                                 <div class="config-title">📞 Rodapé</div>
                                 <div class="form-row">
@@ -1229,7 +1276,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
     </div>
 
     <!-- ============================================================
-         MODAL - IMPRESSÃO (apenas para visualização do relatório)
+         MODAL - IMPRESSÃO
          ============================================================ -->
     <div class="modal-overlay" id="modalImprimir">
         <div class="window" style="max-width:950px;">
@@ -1270,8 +1317,21 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         const API_URL = `https://api.jsonbin.io/v3/b/${CONFIG.BIN_ID}`;
 
         // ============================================================
-        // CONFIGURAÇÕES DE IMPRESSÃO
+        // CONFIGURAÇÕES DE IMPRESSÃO (com campos)
         // ============================================================
+        const CAMPOS_PADRAO = [
+            { id: 'NOME', label: 'NOME', enabled: true },
+            { id: 'CNPJ', label: 'CNPJ/CPF', enabled: true },
+            { id: 'TELEFONE', label: 'TELEFONE', enabled: true },
+            { id: 'PEDIDO', label: 'Nº Pedido', enabled: true },
+            { id: 'BAIRRO', label: 'BAIRRO', enabled: true },
+            { id: 'RUA', label: 'RUA', enabled: true },
+            { id: 'CEP', label: 'CEP', enabled: true },
+            { id: 'CIDADE', label: 'CIDADE', enabled: true },
+            { id: 'IE', label: 'IE', enabled: true },
+            { id: 'EMAIL', label: 'EMAIL', enabled: true }
+        ];
+
         let configImpressao = {
             headerBgColor: '#1a3a5c',
             headerTextColor: '#ffffff',
@@ -1288,7 +1348,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             clienteFont: "'Courier New', monospace",
             clienteAlign: 'left',
             clientePadding: 15,
-            camposCliente: 'NOME,CNPJ/CPF,TELEFONE,NÚMERO,BAIRRO,RUA,CEP,CIDADE,IE,EMAIL',
             tabelaHeaderBg: '#1a3a5c',
             tabelaHeaderText: '#ffffff',
             tabelaHeaderFontSize: 12,
@@ -1304,7 +1363,8 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             assinatura1: 'SINOP-MT',
             assinatura2: 'ASSINATURA',
             mostrarDataEmissao: true,
-            larguraMaxima: 1000
+            larguraMaxima: 1000,
+            campos: JSON.parse(JSON.stringify(CAMPOS_PADRAO))
         };
 
         // ============================================================
@@ -1363,7 +1423,9 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             btnTabelaFixa: document.getElementById('btnTabelaFixa'),
             modalTabelaFixa: document.getElementById('modalTabelaFixa'),
             closeTabelaFixa: document.querySelectorAll('.close-modal-fixa'),
-            btnImprimirFixa: document.getElementById('btnImprimirFixa')
+            btnImprimirFixa: document.getElementById('btnImprimirFixa'),
+            camposContainer: document.getElementById('camposContainer'),
+            btnAdicionarCampo: document.getElementById('btnAdicionarCampo')
         };
 
         // ============================================================
@@ -1399,6 +1461,144 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 closeModal(elements.modalTabelaFixa);
             });
         });
+
+        // ============================================================
+        // GERENCIAMENTO DE CAMPOS (com drag & drop)
+        // ============================================================
+        let dragItem = null;
+
+        function renderizarCampos() {
+            const container = elements.camposContainer;
+            const campos = configImpressao.campos;
+
+            if (!campos || campos.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align:center; padding:20px; color:#666;">
+                        Nenhum campo configurado. Clique em "Adicionar Campo".
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = campos.map((campo, index) => `
+                <div class="campo-item" draggable="true" data-index="${index}">
+                    <span class="campo-drag">⠿</span>
+                    <input type="checkbox" class="campo-checkbox" ${campo.enabled ? 'checked' : ''} data-index="${index}">
+                    <span class="campo-label">${campo.label || campo.id}</span>
+                    <input type="text" class="campo-input" value="${campo.label || campo.id}" data-index="${index}" placeholder="Nome do campo">
+                    <button type="button" class="btn btn-sm btn-danger" style="padding:0 6px;min-height:18px;font-size:10px;" onclick="removerCampo(${index})">✕</button>
+                </div>
+            `).join('');
+
+            // Event listeners para drag & drop
+            const items = container.querySelectorAll('.campo-item');
+            items.forEach(item => {
+                item.addEventListener('dragstart', handleDragStart);
+                item.addEventListener('dragend', handleDragEnd);
+                item.addEventListener('dragover', handleDragOver);
+                item.addEventListener('dragenter', handleDragEnter);
+                item.addEventListener('dragleave', handleDragLeave);
+                item.addEventListener('drop', handleDrop);
+            });
+
+            // Event listeners para checkbox e input
+            container.querySelectorAll('.campo-checkbox').forEach(cb => {
+                cb.addEventListener('change', function() {
+                    const idx = parseInt(this.dataset.index);
+                    configImpressao.campos[idx].enabled = this.checked;
+                    atualizarPreview();
+                });
+            });
+
+            container.querySelectorAll('.campo-input').forEach(inp => {
+                inp.addEventListener('change', function() {
+                    const idx = parseInt(this.dataset.index);
+                    configImpressao.campos[idx].label = this.value.trim() || configImpressao.campos[idx].id;
+                    // Atualiza o label visual
+                    const labelSpan = this.parentElement.querySelector('.campo-label');
+                    if (labelSpan) labelSpan.textContent = configImpressao.campos[idx].label;
+                    atualizarPreview();
+                });
+            });
+        }
+
+        // Drag & Drop handlers
+        function handleDragStart(e) {
+            const item = e.target.closest('.campo-item');
+            if (!item) return;
+            dragItem = parseInt(item.dataset.index);
+            item.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', dragItem);
+        }
+
+        function handleDragEnd(e) {
+            const item = e.target.closest('.campo-item');
+            if (item) item.classList.remove('dragging');
+            document.querySelectorAll('.campo-item').forEach(el => el.classList.remove('drag-over'));
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+        }
+
+        function handleDragEnter(e) {
+            const item = e.target.closest('.campo-item');
+            if (item) item.classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            const item = e.target.closest('.campo-item');
+            if (item) item.classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            const target = e.target.closest('.campo-item');
+            if (!target) return;
+            const targetIndex = parseInt(target.dataset.index);
+            if (dragItem === null || dragItem === targetIndex) return;
+
+            // Reordenar array
+            const campos = configImpressao.campos;
+            const [removed] = campos.splice(dragItem, 1);
+            campos.splice(targetIndex, 0, removed);
+
+            // Atualizar índices
+            renderizarCampos();
+            atualizarPreview();
+            dragItem = null;
+        }
+
+        function removerCampo(index) {
+            if (!confirm(`Remover o campo "${configImpressao.campos[index].label}"?`)) return;
+            configImpressao.campos.splice(index, 1);
+            renderizarCampos();
+            atualizarPreview();
+            mostrarToast('Campo removido!', 'success');
+        }
+
+        function adicionarCampo() {
+            const novoId = 'CAMPO_' + (configImpressao.campos.length + 1);
+            configImpressao.campos.push({
+                id: novoId,
+                label: 'Novo Campo',
+                enabled: true
+            });
+            renderizarCampos();
+            // Foca no último input para renomear
+            const inputs = elements.camposContainer.querySelectorAll('.campo-input');
+            const lastInput = inputs[inputs.length - 1];
+            if (lastInput) {
+                lastInput.focus();
+                lastInput.select();
+            }
+            atualizarPreview();
+            mostrarToast('Campo adicionado!', 'success');
+        }
+
+        elements.btnAdicionarCampo.addEventListener('click', adicionarCampo);
 
         // ============================================================
         // TABELA FIXA
@@ -1474,6 +1674,10 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             if (salvo) {
                 try {
                     const parsed = JSON.parse(salvo);
+                    // Garante que os campos existam
+                    if (!parsed.campos || parsed.campos.length === 0) {
+                        parsed.campos = JSON.parse(JSON.stringify(CAMPOS_PADRAO));
+                    }
                     configImpressao = { ...configImpressao, ...parsed };
                 } catch (e) {}
             }
@@ -1499,7 +1703,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             document.getElementById('clienteFont').value = configImpressao.clienteFont;
             document.getElementById('clienteAlign').value = configImpressao.clienteAlign;
             document.getElementById('clientePadding').value = configImpressao.clientePadding;
-            document.getElementById('camposCliente').value = configImpressao.camposCliente;
             document.getElementById('tabelaHeaderBg').value = configImpressao.tabelaHeaderBg;
             document.getElementById('tabelaHeaderText').value = configImpressao.tabelaHeaderText;
             document.getElementById('tabelaHeaderFontSize').value = configImpressao.tabelaHeaderFontSize;
@@ -1516,14 +1719,50 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             document.getElementById('assinatura2').value = configImpressao.assinatura2;
             document.getElementById('mostrarDataEmissao').value = configImpressao.mostrarDataEmissao ? 'true' : 'false';
             document.getElementById('larguraMaxima').value = configImpressao.larguraMaxima;
+            renderizarCampos();
             atualizarPreview();
         }
 
         // ============================================================
-        // PRÉ-VISUALIZAÇÃO (usa o mesmo HTML da impressão)
+        // MAPEAMENTO DE CAMPOS PARA IMPRESSÃO
+        // ============================================================
+        function mapearCampos(tabela) {
+            const campos = configImpressao.campos;
+            const mapa = {};
+
+            // Mapeia os campos disponíveis
+            const dadosCliente = {
+                'NOME': tabela.cliente || '-',
+                'CNPJ': tabela.cnpj || '-',
+                'TELEFONE': tabela.telefone || '-',
+                'PEDIDO': tabela.id || '-',
+                'BAIRRO': tabela.endereco ? tabela.endereco.split(',')[1]?.trim() || '-' : '-',
+                'RUA': tabela.endereco ? tabela.endereco.split(',')[0] || '-' : '-',
+                'CEP': '78557-171',
+                'CIDADE': 'SINOP MT',
+                'IE': tabela.ie || '-',
+                'EMAIL': tabela.email || '-'
+            };
+
+            // Permite campos personalizados (ex: se o usuário adicionar "VENDEDOR")
+            campos.forEach(campo => {
+                const id = campo.id;
+                // Se for um campo padrão, usa o mapeamento; senão, usa o valor do objeto ou vazio
+                if (dadosCliente.hasOwnProperty(id)) {
+                    mapa[id] = dadosCliente[id];
+                } else {
+                    // Campo personalizado - tenta buscar do objeto ou deixa vazio
+                    mapa[id] = tabela[campo.id] || '-';
+                }
+            });
+
+            return mapa;
+        }
+
+        // ============================================================
+        // PRÉ-VISUALIZAÇÃO E IMPRESSÃO
         // ============================================================
         function atualizarPreview() {
-            // Usa os dados de exemplo para o preview
             const exemplo = {
                 id: 1,
                 cliente: 'DISTRIBUIDORA DE MOLAS MATO GROSSO LTDA',
@@ -1542,34 +1781,26 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                     { nome: 'Santarém', frete: 130.00, kg: 1100.00, percentual: 4.50 }
                 ]
             };
-            // Gera o HTML de impressão com os dados de exemplo e com a flag 'preview'
             const html = gerarHTMLImpressao(exemplo, true);
             elements.previewContent.innerHTML = html;
-            // Atualiza as informações de fonte e alinhamento
+            // Atualiza informações de fonte e alinhamento
             const nomeFonte = configImpressao.headerFont.replace(/'/g, '').replace(/,.*$/, '').trim() || 'Courier New';
             elements.previewFonteInfo.textContent = `Fonte: ${nomeFonte}`;
             elements.previewAlignInfo.textContent = `Alinhamento: ${configImpressao.headerAlign.charAt(0).toUpperCase() + configImpressao.headerAlign.slice(1)}`;
         }
 
-        // ============================================================
-        // GERAR HTML DA IMPRESSÃO (usado pela impressão e preview)
-        // ============================================================
         function gerarHTMLImpressao(tabela, preview = false) {
             const cfg = configImpressao;
-            const campos = cfg.camposCliente.split(',').map(c => c.trim());
-            const mapa = {
-                'NOME': `<div class="item"><strong>NOME:</strong> ${tabela.cliente}</div>`,
-                'CNPJ/CPF': `<div class="item"><strong>CNPJ/CPF:</strong> ${tabela.cnpj || 'Não informado'}</div>`,
-                'TELEFONE': `<div class="item"><strong>TELEFONE:</strong> ${tabela.telefone || 'Não informado'}</div>`,
-                'NÚMERO': `<div class="item"><strong>NÚMERO:</strong> ${tabela.id}</div>`,
-                'BAIRRO': `<div class="item"><strong>BAIRRO:</strong> ${tabela.endereco ? tabela.endereco.split(',')[1]?.trim() || '-' : '-'}</div>`,
-                'RUA': `<div class="item"><strong>RUA:</strong> ${tabela.endereco ? tabela.endereco.split(',')[0] || '-' : '-'}</div>`,
-                'CEP': `<div class="item"><strong>CEP:</strong> 78557-171</div>`,
-                'CIDADE': `<div class="item"><strong>CIDADE:</strong> SINOP MT</div>`,
-                'IE': `<div class="item"><strong>IE:</strong> ${tabela.ie || 'Não informado'}</div>`,
-                'EMAIL': `<div class="item"><strong>EMAIL:</strong> ${tabela.email || 'Não informado'}</div>`
-            };
-            const camposHTML = campos.filter(c => mapa[c]).map(c => mapa[c]).join('');
+            const camposMap = mapearCampos(tabela);
+
+            // Gera os itens de cliente baseado nos campos configurados
+            const camposHTML = cfg.campos
+                .filter(c => c.enabled)
+                .map(c => {
+                    const valor = camposMap[c.id] || '-';
+                    return `<div class="item"><strong>${c.label || c.id}:</strong> ${valor}</div>`;
+                })
+                .join('');
 
             const cidadesHTML = tabela.cidades.map(c => `
                 <tr>
@@ -1583,20 +1814,26 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
 
             const enderecoHTML = cfg.enderecoEmpresa.replace(/\n/g, '<br>');
 
-            // Estilos aplicados via atributos style para garantir que o preview e a impressão usem as mesmas cores/fontes
-            const styleHeader = `background:${cfg.headerBgColor};color:${cfg.headerTextColor};border-bottom:2px solid ${cfg.headerBorderColor};padding:${cfg.headerPadding}px 15px;text-align:${cfg.headerAlign};font-size:${cfg.headerFontSize}px;font-family:${cfg.headerFont};`;
-            const styleCliente = `background:${cfg.clienteBgColor};color:${cfg.clienteTextColor};padding:${cfg.clientePadding}px 15px;font-size:${cfg.clienteFontSize}px;font-family:${cfg.clienteFont};text-align:${cfg.clienteAlign};`;
-            const styleOrigem = `font-size:${Math.max(12, cfg.clienteFontSize + 2)}px;background:#e9ecef;color:#1a3a5c;font-family:${cfg.tabelaFont};`;
-            const styleTable = `font-size:${cfg.tabelaDataFontSize}px;font-family:${cfg.tabelaFont};text-align:${cfg.tabelaAlign};`;
-            const styleTh = `background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};padding:4px 8px;border:1px solid #002a5c;font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};`;
-            const styleTd = `padding:4px 8px;border:1px solid #a0a0a0;text-align:${cfg.tabelaAlign};`;
-            const styleRodape = `font-size:${cfg.rodapeFontSize}px;font-family:${cfg.rodapeFont};text-align:${cfg.rodapeAlign};`;
+            const styleHeader =
+                `background:${cfg.headerBgColor};color:${cfg.headerTextColor};border-bottom:2px solid ${cfg.headerBorderColor};padding:${cfg.headerPadding}px 15px;text-align:${cfg.headerAlign};font-size:${cfg.headerFontSize}px;font-family:${cfg.headerFont};`;
+            const styleCliente =
+                `background:${cfg.clienteBgColor};color:${cfg.clienteTextColor};padding:${cfg.clientePadding}px 15px;font-size:${cfg.clienteFontSize}px;font-family:${cfg.clienteFont};text-align:${cfg.clienteAlign};`;
+            const styleOrigem =
+                `font-size:${Math.max(12, cfg.clienteFontSize + 2)}px;background:#e9ecef;color:#1a3a5c;font-family:${cfg.tabelaFont};`;
+            const styleTable =
+                `font-size:${cfg.tabelaDataFontSize}px;font-family:${cfg.tabelaFont};text-align:${cfg.tabelaAlign};`;
+            const styleTh =
+                `background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};padding:4px 8px;border:1px solid #002a5c;font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};`;
+            const styleTd =
+                `padding:4px 8px;border:1px solid #a0a0a0;text-align:${cfg.tabelaAlign};`;
+            const styleRodape =
+                `font-size:${cfg.rodapeFontSize}px;font-family:${cfg.rodapeFont};text-align:${cfg.rodapeAlign};`;
 
             const html = `
                 <div style="max-width:${cfg.larguraMaxima}px; margin:0 auto; font-family:'Tahoma','Geneva',sans-serif; background:#fff; padding:${preview ? '4px' : '10px'};">
 
                     <!-- Logo SJ -->
-                    <div class="sj-logo-print" style="display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:12px; ${preview ? 'border-bottom:2px solid #06458F; padding-bottom:8px;' : 'border-bottom:2px solid #06458F; padding-bottom:8px;'}">
+                    <div class="sj-logo-print" style="display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:12px; border-bottom:2px solid #06458F; padding-bottom:8px;">
                         <div class="monograma" style="font-size:${preview ? '24px' : '32px'}; font-weight:900; font-family:'Segoe UI','Arial Black',sans-serif; letter-spacing:-3px;">
                             <span class="s" style="color:#06458F;">S</span><span class="j" style="color:#000;">J</span>
                         </div>
@@ -1610,7 +1847,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                         ${enderecoHTML}
                     </div>
 
-                    <!-- Informações do cliente -->
+                    <!-- Informações do cliente (campos configuráveis) -->
                     <div class="info-cliente-print" style="display:grid; grid-template-columns:1fr 1fr; gap:2px 20px; font-size:11px; background:#f5f5f0; padding:6px 12px; border:1px solid #a0a0a0; margin-bottom:8px;">
                         ${camposHTML}
                     </div>
@@ -1686,7 +1923,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             btn.innerHTML = '⏳ Gerando...';
             btn.disabled = true;
 
-            // Se o modal de impressão não estiver aberto, abrimos com a tabela atual (última impressa ou primeira)
             if (!elements.modalPrint.classList.contains('active')) {
                 if (tabelaImpressaoAtual) {
                     const html = gerarHTMLImpressao(tabelaImpressaoAtual, false);
@@ -1706,7 +1942,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 }
             }
 
-            // Pequeno delay para garantir que o modal esteja aberto e o conteúdo renderizado
             setTimeout(() => {
                 const element = document.querySelector('#modalImprimir .window-body');
                 const opt = {
@@ -2009,6 +2244,25 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         // ============================================================
         function salvarConfiguracoes(event) {
             event.preventDefault();
+
+            // Coleta os campos atuais (já estão em configImpressao.campos)
+            // Mas garante que os labels sejam atualizados a partir dos inputs
+            const inputs = elements.camposContainer.querySelectorAll('.campo-input');
+            inputs.forEach(inp => {
+                const idx = parseInt(inp.dataset.index);
+                if (configImpressao.campos[idx]) {
+                    configImpressao.campos[idx].label = inp.value.trim() || configImpressao.campos[idx].id;
+                }
+            });
+
+            const checkbox = elements.camposContainer.querySelectorAll('.campo-checkbox');
+            checkbox.forEach(cb => {
+                const idx = parseInt(cb.dataset.index);
+                if (configImpressao.campos[idx]) {
+                    configImpressao.campos[idx].enabled = cb.checked;
+                }
+            });
+
             configImpressao = {
                 headerBgColor: document.getElementById('headerBgColor').value,
                 headerTextColor: document.getElementById('headerTextColor').value,
@@ -2025,7 +2279,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 clienteFont: document.getElementById('clienteFont').value,
                 clienteAlign: document.getElementById('clienteAlign').value,
                 clientePadding: parseInt(document.getElementById('clientePadding').value) || 15,
-                camposCliente: document.getElementById('camposCliente').value,
                 tabelaHeaderBg: document.getElementById('tabelaHeaderBg').value,
                 tabelaHeaderText: document.getElementById('tabelaHeaderText').value,
                 tabelaHeaderFontSize: parseInt(document.getElementById('tabelaHeaderFontSize').value) || 12,
@@ -2041,15 +2294,17 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 assinatura1: document.getElementById('assinatura1').value,
                 assinatura2: document.getElementById('assinatura2').value,
                 mostrarDataEmissao: document.getElementById('mostrarDataEmissao').value === 'true',
-                larguraMaxima: parseInt(document.getElementById('larguraMaxima').value) || 1000
+                larguraMaxima: parseInt(document.getElementById('larguraMaxima').value) || 1000,
+                campos: configImpressao.campos
             };
+
             salvarConfiguracoesLocal();
             closeModal(elements.modalConfig);
             mostrarToast('Configurações salvas!', 'success');
         }
 
         function restaurarConfiguracoes() {
-            if (!confirm('Restaurar padrões?')) return;
+            if (!confirm('Restaurar padrões? Isso irá resetar todos os campos personalizados.')) return;
             configImpressao = {
                 headerBgColor: '#1a3a5c',
                 headerTextColor: '#ffffff',
@@ -2066,7 +2321,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 clienteFont: "'Courier New', monospace",
                 clienteAlign: 'left',
                 clientePadding: 15,
-                camposCliente: 'NOME,CNPJ/CPF,TELEFONE,NÚMERO,BAIRRO,RUA,CEP,CIDADE,IE,EMAIL',
                 tabelaHeaderBg: '#1a3a5c',
                 tabelaHeaderText: '#ffffff',
                 tabelaHeaderFontSize: 12,
@@ -2082,7 +2336,8 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 assinatura1: 'SINOP-MT',
                 assinatura2: 'ASSINATURA',
                 mostrarDataEmissao: true,
-                larguraMaxima: 1000
+                larguraMaxima: 1000,
+                campos: JSON.parse(JSON.stringify(CAMPOS_PADRAO))
             };
             salvarConfiguracoesLocal();
             preencherFormConfig();
@@ -2145,7 +2400,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 el.addEventListener('input', atualizarPreview);
                 el.addEventListener('change', atualizarPreview);
             });
-            // Inicializa o preview
+            // Inicializa o preview e os campos
             atualizarPreview();
         });
     </script>
