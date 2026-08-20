@@ -62,7 +62,6 @@
             gap: 10px;
         }
 
-        /* Logo SJ - Imagem completa */
         .window-title .title-text .sj-logo-img {
             height: 40px;
             width: auto;
@@ -401,7 +400,6 @@
         .table-fixed tr:nth-child(even) td { background: #f0f0e8; }
         .table-fixed .total-row td { background: #d0d0c0; font-weight: bold; text-align: center; }
 
-        /* ===== CONFIGURAÇÃO DE CAMPOS ===== */
         .campo-item {
             display: flex;
             align-items: center;
@@ -487,7 +485,6 @@
                 background: #fff;
             }
 
-            /* Logo imagem na impressão */
             #modalImprimir .window-body .sj-logo-print {
                 display: flex !important;
                 justify-content: center;
@@ -498,7 +495,6 @@
             }
 
             #modalImprimir .window-body .sj-logo-print img {
-                max-height: 80px;
                 width: auto;
                 object-fit: contain;
             }
@@ -583,7 +579,6 @@
             }
         }
 
-        /* ===== RESPONSIVIDADE ===== */
         @media (max-width: 640px) {
             body.retro-system { padding: 8px; }
             .window { max-width: 100%; min-height: auto; }
@@ -624,6 +619,7 @@
 
         .config-section .form-row .field { flex: 1 0 140px; }
         .config-section .form-row .field input[type="color"] { padding: 1px; height: 28px; }
+        .config-section .form-row .field input[type="number"] { width: 100%; }
 
         .config-actions {
             display: flex;
@@ -678,7 +674,6 @@
     <div class="window">
         <div class="window-title">
             <div class="title-text">
-                <!-- Logo SJ - Imagem completa -->
                 <div class="sj-logo-img">
                     <img src="https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png" alt="SJ Transportes e Logistica">
                 </div>
@@ -927,7 +922,7 @@
     </div>
 
     <!-- ============================================================
-         MODAL - CONFIGURAÇÃO DE IMPRESSÃO
+         MODAL - CONFIGURAÇÃO DE IMPRESSÃO (COM CONTROLE DE TAMANHO DA LOGO)
          ============================================================ -->
     <div class="modal-overlay" id="modalConfig">
         <div class="window" style="max-width:900px;">
@@ -966,8 +961,8 @@
                                         <input type="color" id="headerBorderColor" class="input" value="#ffd700">
                                     </div>
                                     <div class="field">
-                                        <label>Altura Logo (px)</label>
-                                        <input type="number" id="logoMaxHeight" class="input" value="100" min="30" max="200">
+                                        <label>Altura da Logo (px)</label>
+                                        <input type="number" id="logoMaxHeight" class="input" value="80" min="30" max="250">
                                     </div>
                                 </div>
                                 <div class="form-row">
@@ -1195,6 +1190,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                                 <div style="font-size:11px; color:#333; background:#d0d0c0; padding:2px 8px; margin-bottom:4px;">
                                     <span id="previewFonteInfo">Fonte: Courier New</span> &nbsp;|&nbsp;
                                     <span id="previewAlignInfo">Alinhamento: Centro</span>
+                                    <span style="margin-left:15px;" id="previewLogoTamanho">Logo: 80px</span>
                                 </div>
                                 <div class="preview-box">
                                     <div class="preview-content" id="previewContent">
@@ -1274,7 +1270,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             headerFont: "'Courier New', monospace",
             headerAlign: 'center',
             headerPadding: 30,
-            logoMaxHeight: 100,
+            logoMaxHeight: 80,
             enderecoEmpresa: 'RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NUMERO: 129\nCIDADE: SINOP-MT | CEP: 78556-788',
             clienteBgColor: '#f8f9fa',
             clienteTextColor: '#333333',
@@ -1354,6 +1350,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             previewContent: document.getElementById('previewContent'),
             previewFonteInfo: document.getElementById('previewFonteInfo'),
             previewAlignInfo: document.getElementById('previewAlignInfo'),
+            previewLogoTamanho: document.getElementById('previewLogoTamanho'),
             btnTabelaFixa: document.getElementById('btnTabelaFixa'),
             modalTabelaFixa: document.getElementById('modalTabelaFixa'),
             closeTabelaFixa: document.querySelectorAll('.close-modal-fixa'),
@@ -1670,7 +1667,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         }
 
         // ============================================================
-        // PRÉ-VISUALIZAÇÃO E IMPRESSÃO
+        // PRÉ-VISUALIZAÇÃO E IMPRESSÃO (com controle de tamanho da logo)
         // ============================================================
         function atualizarPreview() {
             const exemplo = {
@@ -1697,6 +1694,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             elements.previewFonteInfo.textContent = 'Fonte: ' + nomeFonte;
             elements.previewAlignInfo.textContent = 'Alinhamento: ' + configImpressao.headerAlign.charAt(0).toUpperCase() +
                 configImpressao.headerAlign.slice(1);
+            elements.previewLogoTamanho.textContent = 'Logo: ' + configImpressao.logoMaxHeight + 'px';
         }
 
         function gerarHTMLImpressao(tabela, preview = false) {
@@ -1743,12 +1741,15 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             // URL da logo imagem
             const logoUrl = 'https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png';
 
+            // Tamanho da logo baseado na configuração
+            const logoTamanho = cfg.logoMaxHeight || 80;
+
             const html = `
                 <div style="max-width:${cfg.larguraMaxima}px; margin:0 auto; font-family:'Tahoma','Geneva',sans-serif; background:#fff; padding:${preview ? '4px' : '10px'};">
 
-                    <!-- Logo SJ - Imagem completa -->
+                    <!-- Logo SJ - Imagem completa com tamanho configurável -->
                     <div class="sj-logo-print" style="display:flex; justify-content:center; align-items:center; margin-bottom:${preview ? '8px' : '14px'}; border-bottom:2px solid #06458F; padding-bottom:${preview ? '6px' : '10px'};">
-                        <img src="${logoUrl}" alt="SJ Transportes e Logistica" style="max-height:${preview ? '50px' : '80px'}; width:auto; object-fit:contain;">
+                        <img src="${logoUrl}" alt="SJ Transportes e Logistica" style="max-height:${preview ? Math.min(logoTamanho * 0.6, 60) : logoTamanho}px; width:auto; object-fit:contain;">
                     </div>
 
                     <!-- Endereco -->
@@ -2176,7 +2177,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 headerFont: document.getElementById('headerFont').value,
                 headerAlign: document.getElementById('headerAlign').value,
                 headerPadding: parseInt(document.getElementById('headerPadding').value) || 30,
-                logoMaxHeight: parseInt(document.getElementById('logoMaxHeight').value) || 100,
+                logoMaxHeight: parseInt(document.getElementById('logoMaxHeight').value) || 80,
                 enderecoEmpresa: document.getElementById('enderecoEmpresa').value,
                 clienteBgColor: document.getElementById('clienteBgColor').value,
                 clienteTextColor: document.getElementById('clienteTextColor').value,
@@ -2218,7 +2219,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 headerFont: "'Courier New', monospace",
                 headerAlign: 'center',
                 headerPadding: 30,
-                logoMaxHeight: 100,
+                logoMaxHeight: 80,
                 enderecoEmpresa: 'RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NUMERO: 129\nCIDADE: SINOP-MT | CEP: 78556-788',
                 clienteBgColor: '#f8f9fa',
                 clienteTextColor: '#333333',
@@ -2292,6 +2293,14 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         elements.form.addEventListener('submit', salvarTabela);
         elements.formConfig.addEventListener('submit', salvarConfiguracoes);
         elements.btnResetConfig.addEventListener('click', restaurarConfiguracoes);
+
+        // Atualizar preview quando o tamanho da logo mudar
+        document.getElementById('logoMaxHeight').addEventListener('input', function() {
+            const val = parseInt(this.value) || 80;
+            configImpressao.logoMaxHeight = val;
+            elements.previewLogoTamanho.textContent = 'Logo: ' + val + 'px';
+            atualizarPreview();
+        });
 
         // ============================================================
         // INICIALIZAÇÃO
