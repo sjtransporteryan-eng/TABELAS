@@ -62,48 +62,23 @@
             gap: 10px;
         }
 
-        .window-title .title-text .sj-logo {
-            display: flex;
-            align-items: center;
-            gap: 6px;
+        /* Logo SJ - Imagem completa */
+        .window-title .title-text .sj-logo-img {
+            height: 40px;
+            width: auto;
             background: #fff;
-            padding: 2px 10px 2px 6px;
+            padding: 4px 12px 4px 8px;
             border: 1px solid;
             border-color: #fff #808080 #808080 #fff;
-        }
-
-        .window-title .title-text .sj-logo .monograma {
             display: flex;
             align-items: center;
-            font-size: 18px;
-            font-weight: 900;
-            font-family: 'Segoe UI', 'Arial Black', sans-serif;
-            letter-spacing: -2px;
-            line-height: 1;
-        }
-        .window-title .title-text .sj-logo .monograma .s { color: #06458F; }
-        .window-title .title-text .sj-logo .monograma .j { color: #000000; }
-
-        .window-title .title-text .sj-logo .elemento-geo {
-            width: 12px;
-            height: 6px;
-            background: #06458F;
-            clip-path: polygon(0% 0%, 100% 0%, 80% 100%, 0% 100%);
-            margin-left: -2px;
-            margin-top: 6px;
-            flex-shrink: 0;
         }
 
-        .window-title .title-text .sj-logo .texto-empresa {
-            font-size: 10px;
-            font-weight: 700;
-            color: #06458F;
-            font-family: 'Segoe UI', 'Arial Black', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            line-height: 1.2;
-            border-left: 1px solid #ccc;
-            padding-left: 6px;
+        .window-title .title-text .sj-logo-img img {
+            height: 100%;
+            width: auto;
+            max-height: 36px;
+            object-fit: contain;
         }
 
         .window-title .controls {
@@ -512,35 +487,20 @@
                 background: #fff;
             }
 
+            /* Logo imagem na impressão */
             #modalImprimir .window-body .sj-logo-print {
                 display: flex !important;
-                align-items: center;
                 justify-content: center;
-                gap: 12px;
+                align-items: center;
                 margin-bottom: 14px;
                 border-bottom: 2px solid #06458F;
                 padding-bottom: 10px;
             }
 
-            #modalImprimir .window-body .sj-logo-print .monograma {
-                font-size: 44px;
-                font-weight: 900;
-                font-family: 'Segoe UI', 'Arial Black', sans-serif;
-                letter-spacing: -4px;
-            }
-
-            #modalImprimir .window-body .sj-logo-print .monograma .s { color: #06458F; }
-            #modalImprimir .window-body .sj-logo-print .monograma .j { color: #000; }
-
-            #modalImprimir .window-body .sj-logo-print .texto-empresa {
-                font-size: 18px;
-                font-weight: 700;
-                color: #06458F;
-                font-family: 'Segoe UI', 'Arial Black', sans-serif;
-                text-transform: uppercase;
-                border-left: 2px solid #ccc;
-                padding-left: 12px;
-                letter-spacing: 0.5px;
+            #modalImprimir .window-body .sj-logo-print img {
+                max-height: 80px;
+                width: auto;
+                object-fit: contain;
             }
 
             #modalImprimir .window-body .endereco-print {
@@ -630,8 +590,8 @@
             .form-row .field { flex: 1 0 100%; }
             .add-cidade-row select,
             .add-cidade-row input { flex: 1 0 80px; }
-            .window-title .title-text .sj-logo { flex-wrap: wrap; padding: 2px 6px; }
-            .window-title .title-text .sj-logo .texto-empresa { font-size: 8px; border-left: none; padding-left: 0; }
+            .window-title .title-text .sj-logo-img { height: 30px; padding: 2px 8px; }
+            .window-title .title-text .sj-logo-img img { max-height: 26px; }
             .fab { bottom: 16px; right: 16px; padding: 8px 12px; font-size: 16px; }
             .modal-overlay { padding: 8px; }
             .modal-overlay .window { max-width: 100%; max-height: 100vh; border-radius: 0; }
@@ -718,14 +678,9 @@
     <div class="window">
         <div class="window-title">
             <div class="title-text">
-                <div class="sj-logo">
-                    <div class="monograma">
-                        <span class="s">S</span><span class="j">J</span>
-                    </div>
-                    <div class="elemento-geo"></div>
-                    <div class="texto-empresa">
-                        Transportes e Logística
-                    </div>
+                <!-- Logo SJ - Imagem completa -->
+                <div class="sj-logo-img">
+                    <img src="https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png" alt="SJ Transportes e Logistica">
                 </div>
             </div>
             <div class="controls">
@@ -1785,21 +1740,15 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
 
             const dataAtual = new Date().toLocaleString('pt-BR');
 
-            // Estilos para a logo na impressão (tamanho aumentado)
-            const logoSize = preview ? '28px' : '44px';
-            const textSize = preview ? '14px' : '18px';
+            // URL da logo imagem
+            const logoUrl = 'https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png';
 
             const html = `
                 <div style="max-width:${cfg.larguraMaxima}px; margin:0 auto; font-family:'Tahoma','Geneva',sans-serif; background:#fff; padding:${preview ? '4px' : '10px'};">
 
-                    <!-- Logo SJ - TAMANHO AUMENTADO -->
-                    <div class="sj-logo-print" style="display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:${preview ? '8px' : '14px'}; border-bottom:2px solid #06458F; padding-bottom:${preview ? '6px' : '10px'};">
-                        <div class="monograma" style="font-size:${logoSize}; font-weight:900; font-family:'Segoe UI','Arial Black',sans-serif; letter-spacing:-4px;">
-                            <span class="s" style="color:#06458F;">S</span><span class="j" style="color:#000;">J</span>
-                        </div>
-                        <div class="texto-empresa" style="font-size:${textSize}; font-weight:700; color:#06458F; font-family:'Segoe UI','Arial Black',sans-serif; text-transform:uppercase; border-left:2px solid #ccc; padding-left:12px; letter-spacing:0.5px;">
-                            Transportes e Logistica
-                        </div>
+                    <!-- Logo SJ - Imagem completa -->
+                    <div class="sj-logo-print" style="display:flex; justify-content:center; align-items:center; margin-bottom:${preview ? '8px' : '14px'}; border-bottom:2px solid #06458F; padding-bottom:${preview ? '6px' : '10px'};">
+                        <img src="${logoUrl}" alt="SJ Transportes e Logistica" style="max-height:${preview ? '50px' : '80px'}; width:auto; object-fit:contain;">
                     </div>
 
                     <!-- Endereco -->
