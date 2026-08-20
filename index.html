@@ -516,36 +516,37 @@
                 display: flex !important;
                 align-items: center;
                 justify-content: center;
-                gap: 10px;
-                margin-bottom: 12px;
+                gap: 12px;
+                margin-bottom: 14px;
                 border-bottom: 2px solid #06458F;
-                padding-bottom: 8px;
+                padding-bottom: 10px;
             }
 
             #modalImprimir .window-body .sj-logo-print .monograma {
-                font-size: 32px;
+                font-size: 44px;
                 font-weight: 900;
                 font-family: 'Segoe UI', 'Arial Black', sans-serif;
-                letter-spacing: -3px;
+                letter-spacing: -4px;
             }
 
             #modalImprimir .window-body .sj-logo-print .monograma .s { color: #06458F; }
             #modalImprimir .window-body .sj-logo-print .monograma .j { color: #000; }
 
             #modalImprimir .window-body .sj-logo-print .texto-empresa {
-                font-size: 14px;
+                font-size: 18px;
                 font-weight: 700;
                 color: #06458F;
                 font-family: 'Segoe UI', 'Arial Black', sans-serif;
                 text-transform: uppercase;
-                border-left: 1px solid #ccc;
-                padding-left: 10px;
+                border-left: 2px solid #ccc;
+                padding-left: 12px;
+                letter-spacing: 0.5px;
             }
 
             #modalImprimir .window-body .endereco-print {
                 text-align: center;
-                font-size: 11px;
-                margin-bottom: 12px;
+                font-size: 12px;
+                margin-bottom: 14px;
                 color: #333;
             }
 
@@ -614,9 +615,11 @@
 
             #modalImprimir .window-body .data-assinatura-print {
                 text-align: center;
-                font-size: 10px;
+                font-size: 11px;
                 color: #333;
-                margin-top: 8px;
+                margin-top: 10px;
+                border-top: 1px solid #ddd;
+                padding-top: 8px;
             }
         }
 
@@ -1782,31 +1785,35 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
 
             const dataAtual = new Date().toLocaleString('pt-BR');
 
+            // Estilos para a logo na impressão (tamanho aumentado)
+            const logoSize = preview ? '28px' : '44px';
+            const textSize = preview ? '14px' : '18px';
+
             const html = `
                 <div style="max-width:${cfg.larguraMaxima}px; margin:0 auto; font-family:'Tahoma','Geneva',sans-serif; background:#fff; padding:${preview ? '4px' : '10px'};">
 
-                    <!-- Logo SJ -->
-                    <div class="sj-logo-print" style="display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:12px; border-bottom:2px solid #06458F; padding-bottom:8px;">
-                        <div class="monograma" style="font-size:${preview ? '24px' : '32px'}; font-weight:900; font-family:'Segoe UI','Arial Black',sans-serif; letter-spacing:-3px;">
+                    <!-- Logo SJ - TAMANHO AUMENTADO -->
+                    <div class="sj-logo-print" style="display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:${preview ? '8px' : '14px'}; border-bottom:2px solid #06458F; padding-bottom:${preview ? '6px' : '10px'};">
+                        <div class="monograma" style="font-size:${logoSize}; font-weight:900; font-family:'Segoe UI','Arial Black',sans-serif; letter-spacing:-4px;">
                             <span class="s" style="color:#06458F;">S</span><span class="j" style="color:#000;">J</span>
                         </div>
-                        <div class="texto-empresa" style="font-size:${preview ? '12px' : '14px'}; font-weight:700; color:#06458F; font-family:'Segoe UI','Arial Black',sans-serif; text-transform:uppercase; border-left:1px solid #ccc; padding-left:10px;">
+                        <div class="texto-empresa" style="font-size:${textSize}; font-weight:700; color:#06458F; font-family:'Segoe UI','Arial Black',sans-serif; text-transform:uppercase; border-left:2px solid #ccc; padding-left:12px; letter-spacing:0.5px;">
                             Transportes e Logistica
                         </div>
                     </div>
 
                     <!-- Endereco -->
-                    <div class="endereco-print" style="text-align:center; font-size:11px; margin-bottom:10px; color:#333;">
+                    <div class="endereco-print" style="text-align:center; font-size:${preview ? '10px' : '12px'}; margin-bottom:${preview ? '6px' : '14px'}; color:#333;">
                         ${enderecoHTML}
                     </div>
 
                     <!-- Informacoes do cliente -->
-                    <div class="info-cliente-print" style="display:grid; grid-template-columns:1fr 1fr; gap:2px 20px; font-size:11px; background:#f5f5f0; padding:6px 12px; border:1px solid #a0a0a0; margin-bottom:8px;">
+                    <div class="info-cliente-print" style="display:grid; grid-template-columns:1fr 1fr; gap:2px 20px; font-size:11px; background:#f5f5f0; padding:6px 12px; border:1px solid #a0a0a0; margin-bottom:10px;">
                         ${camposHTML}
                     </div>
 
                     <!-- Origem / Destino -->
-                    <div class="origem-destino-print" style="display:flex; justify-content:space-between; background:#e9ecef; padding:4px 12px; font-weight:bold; font-size:12px; margin-bottom:8px; border:1px solid #a0a0a0;">
+                    <div class="origem-destino-print" style="display:flex; justify-content:space-between; background:#e9ecef; padding:4px 12px; font-weight:bold; font-size:12px; margin-bottom:10px; border:1px solid #a0a0a0;">
                         <span>ORIGEM: ${tabela.origem}</span>
                         <span>DESTINO: ${tabela.destino}</span>
                     </div>
@@ -1840,7 +1847,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
 
                     <!-- Data e Assinatura lado a lado -->
                     <div class="data-assinatura-print" style="text-align:center; font-size:11px; color:#333; margin-top:10px; border-top:1px solid #ddd; padding-top:8px;">
-                        ${cfg.mostrarDataEmissao ? `Emitido em ${dataAtual}` : ''}
+                        ${cfg.mostrarDataEmissao ? 'Emitido em ' + dataAtual : ''}
                         ${cfg.mostrarDataEmissao && (cfg.assinatura1 || cfg.assinatura2) ? ' - ' : ''}
                         ${cfg.assinatura2} ${cfg.assinatura1 ? '- ' + cfg.assinatura1 : ''}
                     </div>
