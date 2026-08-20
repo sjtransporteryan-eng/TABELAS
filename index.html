@@ -562,20 +562,50 @@
 
             #modalImprimir .window-body .rodape-print {
                 margin-top: 12px;
-                border-top: 2px solid #333;
                 padding-top: 10px;
                 display: flex;
-                justify-content: flex-end;
+                justify-content: flex-start;
+                font-size: 11px;
+                border-top: 2px solid #333;
+            }
+
+            #modalImprimir .window-body .rodape-print .campos-impressao {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                width: 100%;
+            }
+
+            #modalImprimir .window-body .rodape-print .linha-campo {
+                display: flex;
+                align-items: center;
+                gap: 8px;
                 font-size: 11px;
             }
 
-            #modalImprimir .window-body .data-assinatura-print {
-                text-align: center;
-                font-size: 11px;
+            #modalImprimir .window-body .rodape-print .linha-campo .linha {
+                border-bottom: 1px solid #333;
+                flex: 1;
+                min-width: 80px;
+            }
+
+            #modalImprimir .window-body .rodape-print .linha-campo .linha-menor {
+                border-bottom: 1px solid #333;
+                width: 100px;
+                flex-shrink: 0;
+            }
+
+            #modalImprimir .window-body .rodape-print .linha-campo .label {
+                font-weight: bold;
                 color: #333;
-                margin-top: 10px;
-                border-top: 1px solid #ddd;
-                padding-top: 8px;
+                white-space: nowrap;
+            }
+
+            #modalImprimir .window-body .rodape-print .linha-campo .label-hora {
+                font-weight: bold;
+                color: #333;
+                white-space: nowrap;
+                margin-left: 20px;
             }
         }
 
@@ -940,7 +970,7 @@
     </div>
 
     <!-- ============================================================
-         MODAL - CONFIGURAÇÃO DE IMPRESSÃO (COM UPLOAD DE LOGO)
+         MODAL - CONFIGURAÇÃO DE IMPRESSÃO
          ============================================================ -->
     <div class="modal-overlay" id="modalConfig">
         <div class="window" style="max-width:900px;">
@@ -1033,13 +1063,13 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                                 </div>
                                 <div class="form-row">
                                     <div class="field" style="flex:1 0 100%;">
-                                        <label>Ou faça upload de uma imagem</label>
+                                        <label>Ou faca upload de uma imagem</label>
                                         <input type="file" id="logoUpload" class="input" accept="image/*" style="padding:6px;">
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="field" style="flex:1 0 100%;">
-                                        <label>Pré-visualização da Logo</label>
+                                        <label>Pre-visualizacao da Logo</label>
                                         <div class="logo-preview-mini" id="logoPreviewMini">
                                             <img src="https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png" alt="Logo" id="logoPreviewImg">
                                         </div>
@@ -1404,7 +1434,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             btnImprimirFixa: document.getElementById('btnImprimirFixa'),
             camposContainer: document.getElementById('camposContainer'),
             btnAdicionarCampo: document.getElementById('btnAdicionarCampo'),
-            // Logo
             logoUrl: document.getElementById('logoUrl'),
             logoUpload: document.getElementById('logoUpload'),
             logoPreviewImg: document.getElementById('logoPreviewImg'),
@@ -1416,13 +1445,9 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         // ============================================================
         function atualizarLogo(url) {
             if (!url) return;
-            // Atualiza no cabeçalho
             elements.headerLogoImg.src = url;
-            // Atualiza no preview
             elements.logoPreviewImg.src = url;
-            // Atualiza na configuração
             configImpressao.logoUrl = url;
-            // Atualiza o preview da impressão
             atualizarPreview();
         }
 
@@ -1432,7 +1457,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         elements.logoUpload.addEventListener('change', function(e) {
             const file = this.files[0];
             if (!file) return;
-
             const reader = new FileReader();
             reader.onload = function(event) {
                 const base64 = event.target.result;
@@ -1690,7 +1714,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                     configImpressao = { ...configImpressao, ...parsed };
                 } catch (e) {}
             }
-            // Aplica a logo carregada
             if (configImpressao.logoUrl) {
                 atualizarLogo(configImpressao.logoUrl);
             }
@@ -1767,7 +1790,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         }
 
         // ============================================================
-        // PRÉ-VISUALIZAÇÃO E IMPRESSÃO (com controle de tamanho da logo)
+        // PRÉ-VISUALIZAÇÃO E IMPRESSÃO (com novo rodapé)
         // ============================================================
         function atualizarPreview() {
             const exemplo = {
@@ -1833,21 +1856,17 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 `background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};padding:4px 8px;border:1px solid #002a5c;font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};`;
             const styleTd =
                 `padding:4px 8px;border:1px solid #a0a0a0;text-align:${cfg.tabelaAlign};`;
-            const styleRodape =
-                `font-size:${cfg.rodapeFontSize}px;font-family:${cfg.rodapeFont};text-align:${cfg.rodapeAlign};`;
 
-            const dataAtual = new Date().toLocaleString('pt-BR');
-
-            // URL da logo (configurável)
             const logoUrl = cfg.logoUrl || 'https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png';
-
-            // Tamanho da logo baseado na configuração
             const logoTamanho = cfg.logoMaxHeight || 80;
+
+            // Data para o rodapé (apenas para referência)
+            const dataAtual = new Date().toLocaleDateString('pt-BR');
 
             const html = `
                 <div style="max-width:${cfg.larguraMaxima}px; margin:0 auto; font-family:'Tahoma','Geneva',sans-serif; background:#fff; padding:${preview ? '4px' : '10px'};">
 
-                    <!-- Logo SJ - Imagem completa com tamanho configurável -->
+                    <!-- Logo -->
                     <div class="sj-logo-print" style="display:flex; justify-content:center; align-items:center; margin-bottom:${preview ? '8px' : '14px'}; border-bottom:2px solid #06458F; padding-bottom:${preview ? '6px' : '10px'};">
                         <img src="${logoUrl}" alt="SJ Transportes e Logistica" style="max-height:${preview ? Math.min(logoTamanho * 0.6, 60) : logoTamanho}px; width:auto; object-fit:contain;">
                     </div>
@@ -1895,11 +1914,27 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                     <!-- Observacao -->
                     ${tabela.observacao ? `<div class="observacao-print" style="font-size:11px; padding:4px 10px; border:1px solid #ccc; background:#f9f9f9; margin-top:6px;"><strong>Observacao:</strong> ${tabela.observacao}</div>` : ''}
 
-                    <!-- Data e Assinatura lado a lado -->
-                    <div class="data-assinatura-print" style="text-align:center; font-size:11px; color:#333; margin-top:10px; border-top:1px solid #ddd; padding-top:8px;">
-                        ${cfg.mostrarDataEmissao ? 'Emitido em ' + dataAtual : ''}
-                        ${cfg.mostrarDataEmissao && (cfg.assinatura1 || cfg.assinatura2) ? ' - ' : ''}
-                        ${cfg.assinatura2} ${cfg.assinatura1 ? '- ' + cfg.assinatura1 : ''}
+                    <!-- Rodape com campos para preencher com caneta -->
+                    <div class="rodape-print" style="margin-top:12px; padding-top:12px; border-top:2px solid #333; display:flex; justify-content:flex-start; font-size:11px;">
+                        <div class="campos-impressao" style="display:flex; flex-direction:column; gap:8px; width:100%;">
+                            <!-- Linha: SINOP-MT + linhas para data -->
+                            <div class="linha-campo" style="display:flex; align-items:center; gap:6px; font-size:11px;">
+                                <span class="label" style="font-weight:bold; color:#333; white-space:nowrap;">SINOP-MT</span>
+                                <span style="color:#333;">/</span>
+                                <span class="linha-menor" style="border-bottom:1px solid #333; width:70px; flex-shrink:0; display:inline-block;">&nbsp;</span>
+                                <span style="color:#333;">/</span>
+                                <span class="linha-menor" style="border-bottom:1px solid #333; width:70px; flex-shrink:0; display:inline-block;">&nbsp;</span>
+                                <span class="label-hora" style="font-weight:bold; color:#333; white-space:nowrap; margin-left:15px;">HORA:</span>
+                                <span class="linha-menor" style="border-bottom:1px solid #333; width:80px; flex-shrink:0; display:inline-block;">&nbsp;</span>
+                                <span style="margin-left:10px; font-size:10px; color:#999;">(preencher com caneta)</span>
+                            </div>
+                            <!-- Linha: Contato (opcional) -->
+                            <div class="linha-campo" style="display:flex; align-items:center; gap:6px; font-size:11px;">
+                                <span class="label" style="font-weight:bold; color:#333; white-space:nowrap;">CONTATO:</span>
+                                <span class="linha" style="border-bottom:1px solid #333; flex:1; display:inline-block;">&nbsp;</span>
+                                <span style="font-size:10px; color:#999; margin-left:5px;">(preencher com caneta)</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             `;
@@ -2305,7 +2340,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 campos: configImpressao.campos
             };
 
-            // Atualiza a logo no cabeçalho
             if (configImpressao.logoUrl) {
                 atualizarLogo(configImpressao.logoUrl);
             }
@@ -2352,7 +2386,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 larguraMaxima: 1000,
                 campos: JSON.parse(JSON.stringify(CAMPOS_PADRAO))
             };
-            // Atualiza a logo restaurada
             atualizarLogo(configImpressao.logoUrl);
             salvarConfiguracoesLocal();
             preencherFormConfig();
@@ -2403,7 +2436,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         elements.formConfig.addEventListener('submit', salvarConfiguracoes);
         elements.btnResetConfig.addEventListener('click', restaurarConfiguracoes);
 
-        // Atualizar preview quando o tamanho da logo mudar
         document.getElementById('logoMaxHeight').addEventListener('input', function() {
             const val = parseInt(this.value) || 80;
             configImpressao.logoMaxHeight = val;
