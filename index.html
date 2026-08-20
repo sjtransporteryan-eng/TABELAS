@@ -350,7 +350,7 @@
             border: 2px solid;
             border-color: #3a7ab5 #002a5c #002a5c #3a7ab5;
             padding: 10px 14px;
-            font-size: 22px;
+            font-size: 18px;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 4px 4px 8px rgba(0,0,0,0.5);
@@ -608,38 +608,14 @@
                 border-top: 2px solid #333;
                 padding-top: 10px;
                 display: flex;
-                justify-content: space-between;
+                justify-content: flex-end;
                 font-size: 11px;
             }
 
-            #modalImprimir .window-body .rodape-print .assinaturas {
-                display: flex;
-                gap: 30px;
+            #modalImprimir .window-body .data-assinatura-print {
                 text-align: center;
-            }
-
-            #modalImprimir .window-body .rodape-print .assinaturas div {
-                min-width: 120px;
-            }
-
-            #modalImprimir .window-body .rodape-print .assinaturas .linha {
-                border-top: 1px solid #333;
-                width: 100%;
-                margin-bottom: 4px;
-            }
-
-            #modalImprimir .window-body .observacao-print {
-                font-size: 11px;
-                padding: 4px 10px;
-                border: 1px solid #ccc;
-                background: #f9f9f9;
-                margin-top: 6px;
-            }
-
-            #modalImprimir .window-body .data-emissao {
-                text-align: center;
-                color: #999;
                 font-size: 10px;
+                color: #333;
                 margin-top: 8px;
             }
         }
@@ -653,7 +629,7 @@
             .add-cidade-row input { flex: 1 0 80px; }
             .window-title .title-text .sj-logo { flex-wrap: wrap; padding: 2px 6px; }
             .window-title .title-text .sj-logo .texto-empresa { font-size: 8px; border-left: none; padding-left: 0; }
-            .fab { bottom: 16px; right: 16px; padding: 8px 12px; font-size: 18px; }
+            .fab { bottom: 16px; right: 16px; padding: 8px 12px; font-size: 16px; }
             .modal-overlay { padding: 8px; }
             .modal-overlay .window { max-width: 100%; max-height: 100vh; border-radius: 0; }
         }
@@ -752,7 +728,7 @@
             <div class="controls">
                 <span>_</span>
                 <span>□</span>
-                <span>✕</span>
+                <span>X</span>
             </div>
         </div>
 
@@ -765,14 +741,14 @@
 
         <div class="window-body">
             <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
-                <button class="btn btn-primary" id="btnNovo">📄 Nova Tabela</button>
-                <button class="btn" id="btnConfigurar">⚙️ Configurar Impressão</button>
+                <button class="btn btn-primary" id="btnNovo">Nova Tabela</button>
+                <button class="btn" id="btnConfigurar">Configurar Impressao</button>
             </div>
 
             <div class="search-row">
                 <input type="text" id="searchInput" class="input" placeholder="Buscar por cliente, origem ou destino..." style="flex:1;">
-                <button class="btn" id="btnBuscar">🔍 Buscar</button>
-                <button class="btn" id="btnLimpar">✖ Limpar</button>
+                <button class="btn" id="btnBuscar">Buscar</button>
+                <button class="btn" id="btnLimpar">Limpar</button>
             </div>
 
             <div class="table-wrap">
@@ -785,7 +761,7 @@
                             <th>Destino</th>
                             <th>Cidades</th>
                             <th>Data</th>
-                            <th>Ações</th>
+                            <th>Acoes</th>
                         </tr>
                     </thead>
                     <tbody id="corpoTabela">
@@ -801,21 +777,21 @@
 
         <div class="status-bar">
             <div class="status-left">
-                <span>✅ Pronto</span>
+                <span>Pronto</span>
                 <span>|</span>
                 <span>Registros: <strong id="totalTabelas">0</strong></span>
             </div>
             <div class="status-right">
-                <span>Última atualização: <strong id="ultimaAtualizacao">-</strong></span>
+                <span>Ultima atualizacao: <strong id="ultimaAtualizacao">-</strong></span>
             </div>
         </div>
     </div>
 
     <!-- ============================================================
-         BOTÃO FLUTUANTE - TABELA COMPLETA
+         BOTAO FLUTUANTE - TABELA COMPLETA
          ============================================================ -->
     <button class="fab" id="btnTabelaFixa" title="Tabela de fretes">
-        📋
+        Tabela
         <span class="tooltip">Tabela de Fretes</span>
     </button>
 
@@ -826,13 +802,13 @@
         <div class="window">
             <div class="window-title">
                 <div class="title-text">
-                    <span class="icon">📋</span>
+                    <span class="icon">T</span>
                     <span>Tabela Completa de Fretes</span>
                 </div>
                 <div class="controls">
                     <span>_</span>
                     <span>□</span>
-                    <span class="close-modal-fixa" style="cursor:pointer;">✕</span>
+                    <span class="close-modal-fixa" style="cursor:pointer;">X</span>
                 </div>
             </div>
             <div class="window-body">
@@ -846,7 +822,7 @@
                                 <th>Cidades Atendidas</th>
                                 <th>UF</th>
                                 <th>Frete</th>
-                                <th>Preço por KG / TON</th>
+                                <th>Preco por KG / TON</th>
                                 <th>% Sobre Valor NF</th>
                             </tr>
                         </thead>
@@ -856,13 +832,13 @@
                             <tr><td>Novo Progresso</td><td>PA</td><td>R$ 80,00</td><td>R$ 700,00/kg</td><td>3,50%</td></tr>
                             <tr><td>Moraes Almeida</td><td>PA</td><td>R$ 90,00</td><td>R$ 800,00/kg</td><td>4,00%</td></tr>
                             <tr><td>Bela Vista do Caracol</td><td>PA</td><td>R$ 100,00</td><td>R$ 900,00/kg</td><td>4,00%</td></tr>
-                            <tr><td>Trairão</td><td>PA</td><td>R$ 100,00</td><td>R$ 900,00/kg</td><td>4,00%</td></tr>
+                            <tr><td>Trairao</td><td>PA</td><td>R$ 100,00</td><td>R$ 900,00/kg</td><td>4,00%</td></tr>
                             <tr><td>Km 30 / Campo Verde</td><td>PA</td><td>R$ 100,00</td><td>R$ 900,00/kg</td><td>4,00%</td></tr>
                             <tr><td>Mirituba</td><td>PA</td><td>R$ 110,00</td><td>R$ 900,00/kg</td><td>4,00%</td></tr>
                             <tr><td>Itaituba</td><td>PA</td><td>R$ 110,00</td><td>R$ 900,00/kg</td><td>4,00%</td></tr>
-                            <tr><td>Rurópolis</td><td>PA</td><td>R$ 120,00</td><td>R$ 1.000,00/kg</td><td>4,50%</td></tr>
+                            <tr><td>Ruropolis</td><td>PA</td><td>R$ 120,00</td><td>R$ 1.000,00/kg</td><td>4,50%</td></tr>
                             <tr><td>Mojul dos Campos</td><td>PA</td><td>R$ 130,00</td><td>R$ 1.100,00/kg</td><td>4,50%</td></tr>
-                            <tr><td>Santarém</td><td>PA</td><td>R$ 130,00</td><td>R$ 1.100,00/kg</td><td>4,50%</td></tr>
+                            <tr><td>Santarem</td><td>PA</td><td>R$ 130,00</td><td>R$ 1.100,00/kg</td><td>4,50%</td></tr>
                             <tr class="total-row">
                                 <td colspan="5"><strong>Total de 12 cidades atendidas</strong></td>
                             </tr>
@@ -870,12 +846,12 @@
                     </table>
                 </div>
                 <div style="margin-top:8px; text-align:center; font-size:11px; color:#333;">
-                    📞 Contato / WhatsApp: (93) 8418-4950 &nbsp;|&nbsp; Gelheta: 130
+                    Contato / WhatsApp: (93) 8418-4950 &nbsp;|&nbsp; Gelheta: 130
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn close-modal-fixa">Fechar</button>
-                <button class="btn btn-primary" id="btnImprimirFixa">🖨️ Imprimir</button>
+                <button class="btn btn-primary" id="btnImprimirFixa">Imprimir</button>
             </div>
         </div>
     </div>
@@ -887,13 +863,13 @@
         <div class="window" style="max-width:760px;">
             <div class="window-title">
                 <div class="title-text">
-                    <span class="icon">📝</span>
+                    <span class="icon">P</span>
                     <span id="modalTitle">Nova Tabela de Frete</span>
                 </div>
                 <div class="controls">
                     <span>_</span>
                     <span>□</span>
-                    <span class="close-modal" style="cursor:pointer;">✕</span>
+                    <span class="close-modal" style="cursor:pointer;">X</span>
                 </div>
             </div>
             <div class="window-body">
@@ -924,12 +900,12 @@
                         </div>
                         <div class="form-row">
                             <div class="field">
-                                <label>Endereço</label>
-                                <input type="text" id="endereco" class="input" placeholder="Rua, número, bairro">
+                                <label>Endereco</label>
+                                <input type="text" id="endereco" class="input" placeholder="Rua, numero, bairro">
                             </div>
                             <div class="field">
                                 <label>IE</label>
-                                <input type="text" id="ie" class="input" placeholder="Inscrição Estadual">
+                                <input type="text" id="ie" class="input" placeholder="Inscricao Estadual">
                             </div>
                         </div>
                     </fieldset>
@@ -951,7 +927,7 @@
                     <fieldset class="group-box">
                         <legend>Cidades Atendidas <span class="cidade-count" id="cidadeCount">(0 adicionadas)</span></legend>
                         <div class="cidades-list" id="cidadesList">
-                            <div class="cidades-empty">📍 Nenhuma cidade adicionada</div>
+                            <div class="cidades-empty">Nenhuma cidade adicionada</div>
                         </div>
                         <div class="add-cidade-row">
                             <select id="selectCidade" class="input" style="flex:2;">
@@ -961,31 +937,31 @@
                                 <option value="Novo Progresso">Novo Progresso</option>
                                 <option value="Moraes Almeida">Moraes Almeida</option>
                                 <option value="Bela Vista do Caracol">Bela Vista do Caracol</option>
-                                <option value="Trairão">Trairão</option>
+                                <option value="Trairao">Trairao</option>
                                 <option value="Km 30 / Campo Verde">Km 30 / Campo Verde</option>
                                 <option value="Mirituba">Mirituba</option>
                                 <option value="Itaituba">Itaituba</option>
-                                <option value="Rurópolis">Rurópolis</option>
+                                <option value="Ruropolis">Ruropolis</option>
                                 <option value="Mojul dos Campos">Mojul dos Campos</option>
-                                <option value="Santarém">Santarém</option>
-                                <option value="OUTRA">➕ Outra cidade...</option>
+                                <option value="Santarem">Santarem</option>
+                                <option value="OUTRA">Outra cidade...</option>
                             </select>
                             <input type="text" id="cidadePersonalizada" class="input" placeholder="Nome da cidade" style="display:none; flex:1.5;">
                             <input type="number" id="freteCidade" class="input" placeholder="Frete R$" step="0.01" style="flex:1;">
-                            <input type="number" id="kgCidade" class="input" placeholder="Preço KG" step="0.01" style="flex:1;">
+                            <input type="number" id="kgCidade" class="input" placeholder="Preco KG" step="0.01" style="flex:1;">
                             <input type="number" id="percentualCidade" class="input" placeholder="% NF" step="0.01" style="flex:1;">
-                            <button type="button" class="btn btn-primary btn-sm" id="btnAddCidade">+ Adicionar</button>
+                            <button type="button" class="btn btn-primary btn-sm" id="btnAddCidade">Adicionar</button>
                         </div>
                     </fieldset>
 
                     <fieldset class="group-box">
-                        <legend>Observação</legend>
-                        <textarea id="observacao" class="input" rows="2" placeholder="Informações adicionais..."></textarea>
+                        <legend>Observacao</legend>
+                        <textarea id="observacao" class="input" rows="2" placeholder="Informacoes adicionais..."></textarea>
                     </fieldset>
 
                     <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:8px;">
                         <button type="button" class="btn close-modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">💾 Salvar</button>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
                     </div>
                 </form>
             </div>
@@ -993,19 +969,19 @@
     </div>
 
     <!-- ============================================================
-         MODAL - CONFIGURAÇÃO DE IMPRESSÃO (COM EDIÇÃO DE CAMPOS)
+         MODAL - CONFIGURAÇÃO DE IMPRESSÃO
          ============================================================ -->
     <div class="modal-overlay" id="modalConfig">
         <div class="window" style="max-width:900px;">
             <div class="window-title">
                 <div class="title-text">
-                    <span class="icon">⚙️</span>
-                    <span>Configuração de Impressão</span>
+                    <span class="icon">C</span>
+                    <span>Configuracao de Impressao</span>
                 </div>
                 <div class="controls">
                     <span>_</span>
                     <span>□</span>
-                    <span class="close-config" style="cursor:pointer;">✕</span>
+                    <span class="close-config" style="cursor:pointer;">X</span>
                 </div>
             </div>
             <div class="window-body">
@@ -1015,7 +991,7 @@
                         <div style="max-height:500px; overflow-y:auto; padding-right:8px;">
                             <!-- Cabeçalho -->
                             <div class="config-section">
-                                <div class="config-title">📌 Cabeçalho</div>
+                                <div class="config-title">Cabecalho</div>
                                 <div class="form-row">
                                     <div class="field">
                                         <label>Cor de Fundo</label>
@@ -1038,7 +1014,7 @@
                                 </div>
                                 <div class="form-row">
                                     <div class="field">
-                                        <label>Espaçamento (px)</label>
+                                        <label>Espacamento (px)</label>
                                         <input type="number" id="headerPadding" class="input" value="30" min="10" max="60">
                                     </div>
                                     <div class="field">
@@ -1068,8 +1044,8 @@
                                 </div>
                                 <div class="form-row">
                                     <div class="field" style="flex:1 0 100%;">
-                                        <label>Endereço da Empresa</label>
-                                        <textarea id="enderecoEmpresa" class="input" rows="2">RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NÚMERO: 129
+                                        <label>Endereco da Empresa</label>
+                                        <textarea id="enderecoEmpresa" class="input" rows="2">RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NUMERO: 129
 CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                                     </div>
                                 </div>
@@ -1077,7 +1053,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
 
                             <!-- Cliente -->
                             <div class="config-section">
-                                <div class="config-title">📋 Informações do Cliente</div>
+                                <div class="config-title">Informacoes do Cliente</div>
                                 <div class="form-row">
                                     <div class="field">
                                         <label>Cor de Fundo</label>
@@ -1106,7 +1082,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                                 </div>
                                 <div class="form-row">
                                     <div class="field">
-                                        <label>Espaçamento (px)</label>
+                                        <label>Espacamento (px)</label>
                                         <input type="number" id="clientePadding" class="input" value="15" min="5" max="30">
                                     </div>
                                     <div class="field">
@@ -1122,7 +1098,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
 
                             <!-- EDIÇÃO DE CAMPOS -->
                             <div class="config-section">
-                                <div class="config-title">📋 Edição de Campos (Impressão)</div>
+                                <div class="config-title">Edicao de Campos (Impressao)</div>
                                 <div style="font-size:11px; color:#333; margin-bottom:6px;">
                                     Arraste para reordenar. Marque para exibir.
                                 </div>
@@ -1130,16 +1106,16 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                                     <!-- Gerado dinamicamente pelo JavaScript -->
                                 </div>
                                 <div style="margin-top:6px;">
-                                    <button type="button" class="btn btn-sm btn-secondary" id="btnAdicionarCampo">+ Adicionar Campo</button>
+                                    <button type="button" class="btn btn-sm btn-secondary" id="btnAdicionarCampo">Adicionar Campo</button>
                                 </div>
                             </div>
 
                             <!-- Tabela -->
                             <div class="config-section">
-                                <div class="config-title">📊 Tabela de Fretes</div>
+                                <div class="config-title">Tabela de Fretes</div>
                                 <div class="form-row">
                                     <div class="field">
-                                        <label>Cor do Cabeçalho</label>
+                                        <label>Cor do Cabecalho</label>
                                         <input type="color" id="tabelaHeaderBg" class="input" value="#1a3a5c">
                                     </div>
                                     <div class="field">
@@ -1183,7 +1159,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                                         <input type="color" id="tabelaLinhaPar" class="input" value="#f8f9fa">
                                     </div>
                                     <div class="field">
-                                        <label>Cor Linha Ímpar</label>
+                                        <label>Cor Linha Impar</label>
                                         <input type="color" id="tabelaLinhaImpar" class="input" value="#ffffff">
                                     </div>
                                 </div>
@@ -1191,7 +1167,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
 
                             <!-- Rodapé -->
                             <div class="config-section">
-                                <div class="config-title">📞 Rodapé</div>
+                                <div class="config-title">Rodape</div>
                                 <div class="form-row">
                                     <div class="field">
                                         <label>Texto do Contato</label>
@@ -1237,19 +1213,19 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                                         <label>Mostrar Data</label>
                                         <select id="mostrarDataEmissao" class="input">
                                             <option value="true">Sim</option>
-                                            <option value="false">Não</option>
+                                            <option value="false">Nao</option>
                                         </select>
                                     </div>
                                     <div class="field">
-                                        <label>Largura Máxima (px)</label>
+                                        <label>Largura Maxima (px)</label>
                                         <input type="number" id="larguraMaxima" class="input" value="1000" min="600" max="1200">
                                     </div>
                                 </div>
                             </div>
 
                             <div class="config-actions">
-                                <button type="submit" class="btn btn-primary">💾 Salvar</button>
-                                <button type="button" class="btn" id="btnResetConfig">🔄 Restaurar</button>
+                                <button type="submit" class="btn btn-primary">Salvar</button>
+                                <button type="button" class="btn" id="btnResetConfig">Restaurar</button>
                                 <button type="button" class="btn close-config">Fechar</button>
                             </div>
                         </div>
@@ -1257,14 +1233,14 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                         <!-- Coluna direita: pré-visualização -->
                         <div>
                             <div class="config-section" style="height:100%;">
-                                <div class="config-title">👁️ Pré-visualização</div>
+                                <div class="config-title">Pre-visualizacao</div>
                                 <div style="font-size:11px; color:#333; background:#d0d0c0; padding:2px 8px; margin-bottom:4px;">
                                     <span id="previewFonteInfo">Fonte: Courier New</span> &nbsp;|&nbsp;
                                     <span id="previewAlignInfo">Alinhamento: Centro</span>
                                 </div>
                                 <div class="preview-box">
                                     <div class="preview-content" id="previewContent">
-                                        <!-- Conteúdo gerado dinamicamente -->
+                                        <!-- Conteudo gerado dinamicamente -->
                                     </div>
                                 </div>
                             </div>
@@ -1282,22 +1258,22 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         <div class="window" style="max-width:950px;">
             <div class="window-title">
                 <div class="title-text">
-                    <span class="icon">🖨️</span>
-                    <span>Impressão - Tabela de Fretes</span>
+                    <span class="icon">P</span>
+                    <span>Impressao - Tabela de Fretes</span>
                 </div>
                 <div class="controls">
                     <span>_</span>
                     <span>□</span>
-                    <span class="close-print" style="cursor:pointer;">✕</span>
+                    <span class="close-print" style="cursor:pointer;">X</span>
                 </div>
             </div>
             <div class="window-body" id="conteudoImpressao">
-                <!-- Conteúdo gerado dinamicamente -->
+                <!-- Conteudo gerado dinamicamente -->
             </div>
             <div class="modal-footer">
                 <button class="btn close-print">Fechar</button>
-                <button class="btn btn-primary" onclick="imprimirRecibo()">🖨️ Imprimir</button>
-                <button class="btn btn-primary" id="btnGerarPDF">📄 Gerar PDF</button>
+                <button class="btn btn-primary" onclick="imprimirRecibo()">Imprimir</button>
+                <button class="btn btn-primary" id="btnGerarPDF">Gerar PDF</button>
             </div>
         </div>
     </div>
@@ -1317,13 +1293,13 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         const API_URL = `https://api.jsonbin.io/v3/b/${CONFIG.BIN_ID}`;
 
         // ============================================================
-        // CONFIGURAÇÕES DE IMPRESSÃO (com campos)
+        // CONFIGURAÇÕES DE IMPRESSÃO
         // ============================================================
         const CAMPOS_PADRAO = [
             { id: 'NOME', label: 'NOME', enabled: true },
             { id: 'CNPJ', label: 'CNPJ/CPF', enabled: true },
             { id: 'TELEFONE', label: 'TELEFONE', enabled: true },
-            { id: 'PEDIDO', label: 'Nº Pedido', enabled: true },
+            { id: 'PEDIDO', label: 'N. Pedido', enabled: true },
             { id: 'BAIRRO', label: 'BAIRRO', enabled: true },
             { id: 'RUA', label: 'RUA', enabled: true },
             { id: 'CEP', label: 'CEP', enabled: true },
@@ -1341,7 +1317,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             headerAlign: 'center',
             headerPadding: 30,
             logoMaxHeight: 100,
-            enderecoEmpresa: 'RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NÚMERO: 129\nCIDADE: SINOP-MT | CEP: 78556-788',
+            enderecoEmpresa: 'RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NUMERO: 129\nCIDADE: SINOP-MT | CEP: 78556-788',
             clienteBgColor: '#f8f9fa',
             clienteTextColor: '#333333',
             clienteFontSize: 12,
@@ -1463,7 +1439,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         });
 
         // ============================================================
-        // GERENCIAMENTO DE CAMPOS (com drag & drop)
+        // GERENCIAMENTO DE CAMPOS
         // ============================================================
         let dragItem = null;
 
@@ -1472,7 +1448,8 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             const campos = configImpressao.campos;
 
             if (!campos || campos.length === 0) {
-                container.innerHTML = `
+                container.innerHTML =
+                    `
                     <div style="text-align:center; padding:20px; color:#666;">
                         Nenhum campo configurado. Clique em "Adicionar Campo".
                     </div>
@@ -1482,15 +1459,14 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
 
             container.innerHTML = campos.map((campo, index) => `
                 <div class="campo-item" draggable="true" data-index="${index}">
-                    <span class="campo-drag">⠿</span>
+                    <span class="campo-drag">::</span>
                     <input type="checkbox" class="campo-checkbox" ${campo.enabled ? 'checked' : ''} data-index="${index}">
                     <span class="campo-label">${campo.label || campo.id}</span>
                     <input type="text" class="campo-input" value="${campo.label || campo.id}" data-index="${index}" placeholder="Nome do campo">
-                    <button type="button" class="btn btn-sm btn-danger" style="padding:0 6px;min-height:18px;font-size:10px;" onclick="removerCampo(${index})">✕</button>
+                    <button type="button" class="btn btn-sm btn-danger" style="padding:0 6px;min-height:18px;font-size:10px;" onclick="removerCampo(${index})">X</button>
                 </div>
             `).join('');
 
-            // Event listeners para drag & drop
             const items = container.querySelectorAll('.campo-item');
             items.forEach(item => {
                 item.addEventListener('dragstart', handleDragStart);
@@ -1501,7 +1477,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 item.addEventListener('drop', handleDrop);
             });
 
-            // Event listeners para checkbox e input
             container.querySelectorAll('.campo-checkbox').forEach(cb => {
                 cb.addEventListener('change', function() {
                     const idx = parseInt(this.dataset.index);
@@ -1514,7 +1489,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 inp.addEventListener('change', function() {
                     const idx = parseInt(this.dataset.index);
                     configImpressao.campos[idx].label = this.value.trim() || configImpressao.campos[idx].id;
-                    // Atualiza o label visual
                     const labelSpan = this.parentElement.querySelector('.campo-label');
                     if (labelSpan) labelSpan.textContent = configImpressao.campos[idx].label;
                     atualizarPreview();
@@ -1522,7 +1496,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             });
         }
 
-        // Drag & Drop handlers
         function handleDragStart(e) {
             const item = e.target.closest('.campo-item');
             if (!item) return;
@@ -1538,20 +1511,12 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             document.querySelectorAll('.campo-item').forEach(el => el.classList.remove('drag-over'));
         }
 
-        function handleDragOver(e) {
-            e.preventDefault();
-            e.dataTransfer.dropEffect = 'move';
-        }
+        function handleDragOver(e) { e.preventDefault();
+            e.dataTransfer.dropEffect = 'move'; }
 
-        function handleDragEnter(e) {
-            const item = e.target.closest('.campo-item');
-            if (item) item.classList.add('drag-over');
-        }
+        function handleDragEnter(e) { const item = e.target.closest('.campo-item'); if (item) item.classList.add('drag-over'); }
 
-        function handleDragLeave(e) {
-            const item = e.target.closest('.campo-item');
-            if (item) item.classList.remove('drag-over');
-        }
+        function handleDragLeave(e) { const item = e.target.closest('.campo-item'); if (item) item.classList.remove('drag-over'); }
 
         function handleDrop(e) {
             e.preventDefault();
@@ -1560,12 +1525,10 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             const targetIndex = parseInt(target.dataset.index);
             if (dragItem === null || dragItem === targetIndex) return;
 
-            // Reordenar array
             const campos = configImpressao.campos;
             const [removed] = campos.splice(dragItem, 1);
             campos.splice(targetIndex, 0, removed);
 
-            // Atualizar índices
             renderizarCampos();
             atualizarPreview();
             dragItem = null;
@@ -1587,13 +1550,10 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 enabled: true
             });
             renderizarCampos();
-            // Foca no último input para renomear
             const inputs = elements.camposContainer.querySelectorAll('.campo-input');
             const lastInput = inputs[inputs.length - 1];
-            if (lastInput) {
-                lastInput.focus();
-                lastInput.select();
-            }
+            if (lastInput) { lastInput.focus();
+                lastInput.select(); }
             atualizarPreview();
             mostrarToast('Campo adicionado!', 'success');
         }
@@ -1640,10 +1600,10 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                             <span class="s">S</span><span class="j">J</span>
                         </div>
                         <div class="texto-empresa">
-                            Transportes e Logística
+                            Transportes e Logistica
                         </div>
                     </div>
-                    <p style="margin-top:6px;font-size:12px;">RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NÚMERO: 129<br>CIDADE: SINOP-MT | CEP: 78556-788</p>
+                    <p style="margin-top:6px;font-size:12px;">RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NUMERO: 129<br>CIDADE: SINOP-MT | CEP: 78556-788</p>
                 </div>
                 <div style="margin:8px 0;font-weight:bold;">${origem}</div>
                 ${conteudo}
@@ -1674,7 +1634,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             if (salvo) {
                 try {
                     const parsed = JSON.parse(salvo);
-                    // Garante que os campos existam
                     if (!parsed.campos || parsed.campos.length === 0) {
                         parsed.campos = JSON.parse(JSON.stringify(CAMPOS_PADRAO));
                     }
@@ -1724,13 +1683,10 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         }
 
         // ============================================================
-        // MAPEAMENTO DE CAMPOS PARA IMPRESSÃO
+        // MAPEAMENTO DE CAMPOS
         // ============================================================
         function mapearCampos(tabela) {
             const campos = configImpressao.campos;
-            const mapa = {};
-
-            // Mapeia os campos disponíveis
             const dadosCliente = {
                 'NOME': tabela.cliente || '-',
                 'CNPJ': tabela.cnpj || '-',
@@ -1743,19 +1699,15 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 'IE': tabela.ie || '-',
                 'EMAIL': tabela.email || '-'
             };
-
-            // Permite campos personalizados (ex: se o usuário adicionar "VENDEDOR")
+            const mapa = {};
             campos.forEach(campo => {
                 const id = campo.id;
-                // Se for um campo padrão, usa o mapeamento; senão, usa o valor do objeto ou vazio
                 if (dadosCliente.hasOwnProperty(id)) {
                     mapa[id] = dadosCliente[id];
                 } else {
-                    // Campo personalizado - tenta buscar do objeto ou deixa vazio
                     mapa[id] = tabela[campo.id] || '-';
                 }
             });
-
             return mapa;
         }
 
@@ -1773,27 +1725,26 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 ie: '132989689',
                 origem: 'SINOP - MT',
                 destino: 'DIVERSOS (PA)',
-                observacao: 'Tabela de fretes para o Pará',
+                observacao: 'Tabela de fretes para o Para',
                 cidades: [
                     { nome: 'Cachoeira da Serra', frete: 75.00, kg: 650.00, percentual: 3.00 },
                     { nome: 'Castelo dos Sonhos', frete: 75.00, kg: 650.00, percentual: 3.00 },
                     { nome: 'Novo Progresso', frete: 80.00, kg: 700.00, percentual: 3.50 },
-                    { nome: 'Santarém', frete: 130.00, kg: 1100.00, percentual: 4.50 }
+                    { nome: 'Santarem', frete: 130.00, kg: 1100.00, percentual: 4.50 }
                 ]
             };
             const html = gerarHTMLImpressao(exemplo, true);
             elements.previewContent.innerHTML = html;
-            // Atualiza informações de fonte e alinhamento
             const nomeFonte = configImpressao.headerFont.replace(/'/g, '').replace(/,.*$/, '').trim() || 'Courier New';
-            elements.previewFonteInfo.textContent = `Fonte: ${nomeFonte}`;
-            elements.previewAlignInfo.textContent = `Alinhamento: ${configImpressao.headerAlign.charAt(0).toUpperCase() + configImpressao.headerAlign.slice(1)}`;
+            elements.previewFonteInfo.textContent = 'Fonte: ' + nomeFonte;
+            elements.previewAlignInfo.textContent = 'Alinhamento: ' + configImpressao.headerAlign.charAt(0).toUpperCase() +
+                configImpressao.headerAlign.slice(1);
         }
 
         function gerarHTMLImpressao(tabela, preview = false) {
             const cfg = configImpressao;
             const camposMap = mapearCampos(tabela);
 
-            // Gera os itens de cliente baseado nos campos configurados
             const camposHTML = cfg.campos
                 .filter(c => c.enabled)
                 .map(c => {
@@ -1829,6 +1780,8 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             const styleRodape =
                 `font-size:${cfg.rodapeFontSize}px;font-family:${cfg.rodapeFont};text-align:${cfg.rodapeAlign};`;
 
+            const dataAtual = new Date().toLocaleString('pt-BR');
+
             const html = `
                 <div style="max-width:${cfg.larguraMaxima}px; margin:0 auto; font-family:'Tahoma','Geneva',sans-serif; background:#fff; padding:${preview ? '4px' : '10px'};">
 
@@ -1838,16 +1791,16 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                             <span class="s" style="color:#06458F;">S</span><span class="j" style="color:#000;">J</span>
                         </div>
                         <div class="texto-empresa" style="font-size:${preview ? '12px' : '14px'}; font-weight:700; color:#06458F; font-family:'Segoe UI','Arial Black',sans-serif; text-transform:uppercase; border-left:1px solid #ccc; padding-left:10px;">
-                            Transportes e Logística
+                            Transportes e Logistica
                         </div>
                     </div>
 
-                    <!-- Endereço -->
+                    <!-- Endereco -->
                     <div class="endereco-print" style="text-align:center; font-size:11px; margin-bottom:10px; color:#333;">
                         ${enderecoHTML}
                     </div>
 
-                    <!-- Informações do cliente (campos configuráveis) -->
+                    <!-- Informacoes do cliente -->
                     <div class="info-cliente-print" style="display:grid; grid-template-columns:1fr 1fr; gap:2px 20px; font-size:11px; background:#f5f5f0; padding:6px 12px; border:1px solid #a0a0a0; margin-bottom:8px;">
                         ${camposHTML}
                     </div>
@@ -1865,7 +1818,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                                 <th style="${styleTh}">Cidades</th>
                                 <th style="${styleTh}">UF</th>
                                 <th style="${styleTh}">Frete</th>
-                                <th style="${styleTh}">Preço KG</th>
+                                <th style="${styleTh}">Preco KG</th>
                                 <th style="${styleTh}">% NF</th>
                             </tr>
                         </thead>
@@ -1882,20 +1835,15 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                         </tbody>
                     </table>
 
-                    <!-- Rodapé -->
-                    <div class="rodape-print" style="${styleRodape} margin-top:12px; border-top:2px solid #333; padding-top:10px; display:flex; justify-content:space-between;">
-                        <div><strong>${cfg.textoContato}</strong></div>
-                        <div class="assinaturas" style="display:flex; gap:30px; text-align:center;">
-                            <div><div class="linha" style="border-top:1px solid #333; width:100%; margin-bottom:4px;"></div><small>${cfg.assinatura1}</small></div>
-                            <div><div class="linha" style="border-top:1px solid #333; width:100%; margin-bottom:4px;"></div><small>${cfg.assinatura2}</small></div>
-                        </div>
+                    <!-- Observacao -->
+                    ${tabela.observacao ? `<div class="observacao-print" style="font-size:11px; padding:4px 10px; border:1px solid #ccc; background:#f9f9f9; margin-top:6px;"><strong>Observacao:</strong> ${tabela.observacao}</div>` : ''}
+
+                    <!-- Data e Assinatura lado a lado -->
+                    <div class="data-assinatura-print" style="text-align:center; font-size:11px; color:#333; margin-top:10px; border-top:1px solid #ddd; padding-top:8px;">
+                        ${cfg.mostrarDataEmissao ? `Emitido em ${dataAtual}` : ''}
+                        ${cfg.mostrarDataEmissao && (cfg.assinatura1 || cfg.assinatura2) ? ' - ' : ''}
+                        ${cfg.assinatura2} ${cfg.assinatura1 ? '- ' + cfg.assinatura1 : ''}
                     </div>
-
-                    <!-- Observação -->
-                    ${tabela.observacao ? `<div class="observacao-print" style="font-size:11px; padding:4px 10px; border:1px solid #ccc; background:#f9f9f9; margin-top:6px;"><strong>Observação:</strong> ${tabela.observacao}</div>` : ''}
-
-                    <!-- Data -->
-                    ${cfg.mostrarDataEmissao ? `<div class="data-emissao" style="text-align:center; color:#999; font-size:10px; margin-top:8px;">Documento emitido em ${new Date().toLocaleString('pt-BR')}</div>` : ''}
                 </div>
             `;
             return html;
@@ -1906,7 +1854,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         // ============================================================
         function abrirImpressao(id) {
             const tabela = tabelas.find(t => t.id === id);
-            if (!tabela) { mostrarToast('Tabela não encontrada!', 'error'); return; }
+            if (!tabela) { mostrarToast('Tabela nao encontrada!', 'error'); return; }
             tabelaImpressaoAtual = tabela;
             const html = gerarHTMLImpressao(tabela, false);
             elements.conteudoImpressao.innerHTML = html;
@@ -1920,7 +1868,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         function gerarPDF() {
             const btn = elements.btnGerarPDF;
             const original = btn.innerHTML;
-            btn.innerHTML = '⏳ Gerando...';
+            btn.innerHTML = 'Gerando...';
             btn.disabled = true;
 
             if (!elements.modalPrint.classList.contains('active')) {
@@ -2026,14 +1974,14 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 ie: '132989689',
                 origem: 'SINOP - MT',
                 destino: 'DIVERSOS (PA)',
-                observacao: 'Tabela de fretes para o Pará',
+                observacao: 'Tabela de fretes para o Para',
                 data: hoje,
                 cidades: [
                     { nome: 'Cachoeira da Serra', frete: 75.00, kg: 650.00, percentual: 3.00 },
                     { nome: 'Castelo dos Sonhos', frete: 75.00, kg: 650.00, percentual: 3.00 },
                     { nome: 'Novo Progresso', frete: 80.00, kg: 700.00, percentual: 3.50 },
                     { nome: 'Moraes Almeida', frete: 90.00, kg: 800.00, percentual: 4.00 },
-                    { nome: 'Santarém', frete: 130.00, kg: 1100.00, percentual: 4.50 }
+                    { nome: 'Santarem', frete: 130.00, kg: 1100.00, percentual: 4.50 }
                 ]
             }];
         }
@@ -2048,7 +1996,8 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 t.destino.toLowerCase().includes(filtro.toLowerCase())
             ) : tabelas;
             if (dados.length === 0) {
-                elements.corpoTabela.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:20px;color:#666;">Nenhuma tabela encontrada</td></tr>`;
+                elements.corpoTabela.innerHTML =
+                    `<tr><td colspan="7" style="text-align:center;padding:20px;color:#666;">Nenhuma tabela encontrada</td></tr>`;
                 return;
             }
             elements.corpoTabela.innerHTML = dados.map(tabela => `
@@ -2061,9 +2010,9 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                     <td>${formatarData(tabela.data)}</td>
                     <td>
                         <div class="actions">
-                            <button class="btn btn-sm" onclick="abrirImpressao(${tabela.id})">📄</button>
-                            <button class="btn btn-sm btn-primary" onclick="editarTabela(${tabela.id})">✏️</button>
-                            <button class="btn btn-sm btn-danger" onclick="excluirTabela(${tabela.id})">🗑️</button>
+                            <button class="btn btn-sm" onclick="abrirImpressao(${tabela.id})">P</button>
+                            <button class="btn btn-sm btn-primary" onclick="editarTabela(${tabela.id})">E</button>
+                            <button class="btn btn-sm btn-danger" onclick="excluirTabela(${tabela.id})">X</button>
                         </div>
                     </td>
                 </tr>
@@ -2088,13 +2037,14 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         function renderizarCidadesForm() {
             elements.cidadeCount.textContent = `(${cidadesTemp.length} adicionadas)`;
             if (cidadesTemp.length === 0) {
-                elements.cidadesList.innerHTML = `<div class="cidades-empty">📍 Nenhuma cidade adicionada</div>`;
+                elements.cidadesList.innerHTML =
+                `<div class="cidades-empty">Nenhuma cidade adicionada</div>`;
                 return;
             }
             elements.cidadesList.innerHTML = cidadesTemp.map((c, idx) => `
                 <div class="cidade-item">
                     <span class="info"><strong>${c.nome}</strong> | Frete: R$ ${c.frete.toFixed(2)} | KG: R$ ${c.kg.toFixed(2)} | %: ${c.percentual.toFixed(2)}%</span>
-                    <button class="btn-remove" onclick="removerCidade(${idx})">✕</button>
+                    <button class="btn-remove" onclick="removerCidade(${idx})">X</button>
                 </div>
             `).join('');
         }
@@ -2111,7 +2061,8 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             if (!nome) { mostrarToast('Selecione ou digite uma cidade!', 'error'); return; }
             if (isNaN(frete) || isNaN(kg) || isNaN(percentual)) { mostrarToast('Preencha todos os valores!', 'error'); return; }
             if (frete <= 0 || kg <= 0 || percentual <= 0) { mostrarToast('Valores devem ser > zero!', 'error'); return; }
-            if (cidadesTemp.some(c => c.nome.toLowerCase() === nome.toLowerCase())) { mostrarToast('Cidade já adicionada!', 'error'); return; }
+            if (cidadesTemp.some(c => c.nome.toLowerCase() === nome.toLowerCase())) { mostrarToast('Cidade ja adicionada!',
+                    'error'); return; }
             cidadesTemp.push({ nome, frete, kg, percentual });
             renderizarCidadesForm();
             elements.selectCidade.value = '';
@@ -2120,7 +2071,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             elements.freteCidade.value = '';
             elements.kgCidade.value = '';
             elements.percentualCidade.value = '';
-            mostrarToast(`Cidade "${nome}" adicionada!`, 'success');
+            mostrarToast('Cidade "' + nome + '" adicionada!', 'success');
         }
 
         function removerCidade(index) {
@@ -2190,7 +2141,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             if (salvou) {
                 renderizarTabelas();
                 atualizarTotalizadores();
-                mostrarToast('Tabela excluída!', 'success');
+                mostrarToast('Tabela excluida!', 'success');
             } else {
                 await carregarDados();
                 mostrarToast('Erro ao excluir.', 'error');
@@ -2217,7 +2168,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 cidades: JSON.parse(JSON.stringify(cidadesTemp))
             };
             if (!dados.cliente || !dados.origem || !dados.destino) {
-                mostrarToast('Preencha os campos obrigatórios!', 'error');
+                mostrarToast('Preencha os campos obrigatorios!', 'error');
                 return;
             }
             if (editandoId) {
@@ -2232,7 +2183,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 renderizarTabelas();
                 atualizarTotalizadores();
                 closeModal(elements.modal);
-                mostrarToast(`Tabela ${editandoId ? 'atualizada' : 'criada'}!`, 'success');
+                mostrarToast('Tabela ' + (editandoId ? 'atualizada' : 'criada') + '!', 'success');
             } else {
                 await carregarDados();
                 mostrarToast('Erro ao salvar.', 'error');
@@ -2245,8 +2196,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         function salvarConfiguracoes(event) {
             event.preventDefault();
 
-            // Coleta os campos atuais (já estão em configImpressao.campos)
-            // Mas garante que os labels sejam atualizados a partir dos inputs
             const inputs = elements.camposContainer.querySelectorAll('.campo-input');
             inputs.forEach(inp => {
                 const idx = parseInt(inp.dataset.index);
@@ -2300,11 +2249,11 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
 
             salvarConfiguracoesLocal();
             closeModal(elements.modalConfig);
-            mostrarToast('Configurações salvas!', 'success');
+            mostrarToast('Configuracoes salvas!', 'success');
         }
 
         function restaurarConfiguracoes() {
-            if (!confirm('Restaurar padrões? Isso irá resetar todos os campos personalizados.')) return;
+            if (!confirm('Restaurar padroes?')) return;
             configImpressao = {
                 headerBgColor: '#1a3a5c',
                 headerTextColor: '#ffffff',
@@ -2314,7 +2263,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 headerAlign: 'center',
                 headerPadding: 30,
                 logoMaxHeight: 100,
-                enderecoEmpresa: 'RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NÚMERO: 129\nCIDADE: SINOP-MT | CEP: 78556-788',
+                enderecoEmpresa: 'RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NUMERO: 129\nCIDADE: SINOP-MT | CEP: 78556-788',
                 clienteBgColor: '#f8f9fa',
                 clienteTextColor: '#333333',
                 clienteFontSize: 12,
@@ -2341,11 +2290,11 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             };
             salvarConfiguracoesLocal();
             preencherFormConfig();
-            mostrarToast('Configurações restauradas!', 'success');
+            mostrarToast('Configuracoes restauradas!', 'success');
         }
 
         // ============================================================
-        // TOAST (legacy style)
+        // TOAST
         // ============================================================
         function mostrarToast(mensagem, tipo = 'success') {
             const toast = document.createElement('div');
@@ -2357,8 +2306,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 color: ${tipo === 'success' ? '#000' : '#c00'};
                 font-weight: bold;
             `;
-            toast.textContent = tipo === 'success' ? '✅ ' : '❌ ';
-            toast.textContent += mensagem;
+            toast.textContent = (tipo === 'success' ? '' : '') + mensagem;
             document.body.appendChild(toast);
             setTimeout(() => {
                 toast.style.opacity = '0';
@@ -2395,12 +2343,10 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         document.addEventListener('DOMContentLoaded', async function() {
             carregarConfiguracoes();
             await carregarDados();
-            // Atualiza o preview quando os campos do formulário mudarem
             document.querySelectorAll('#formConfig input, #formConfig select, #formConfig textarea').forEach(el => {
                 el.addEventListener('input', atualizarPreview);
                 el.addEventListener('change', atualizarPreview);
             });
-            // Inicializa o preview e os campos
             atualizarPreview();
         });
     </script>
