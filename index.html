@@ -620,6 +620,7 @@
         .config-section .form-row .field { flex: 1 0 140px; }
         .config-section .form-row .field input[type="color"] { padding: 1px; height: 28px; }
         .config-section .form-row .field input[type="number"] { width: 100%; }
+        .config-section .form-row .field input[type="file"] { padding: 4px; }
 
         .config-actions {
             display: flex;
@@ -664,6 +665,23 @@
             border: 1px solid #a0a0a0;
             background: #f5f5f0;
         }
+
+        .logo-preview-mini {
+            max-height: 60px;
+            max-width: 150px;
+            border: 1px solid #a0a0a0;
+            padding: 4px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-preview-mini img {
+            max-height: 50px;
+            max-width: 130px;
+            object-fit: contain;
+        }
     </style>
 </head>
 <body class="retro-system">
@@ -674,8 +692,8 @@
     <div class="window">
         <div class="window-title">
             <div class="title-text">
-                <div class="sj-logo-img">
-                    <img src="https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png" alt="SJ Transportes e Logistica">
+                <div class="sj-logo-img" id="headerLogo">
+                    <img src="https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png" alt="SJ Transportes e Logistica" id="headerLogoImg">
                 </div>
             </div>
             <div class="controls">
@@ -922,7 +940,7 @@
     </div>
 
     <!-- ============================================================
-         MODAL - CONFIGURAÇÃO DE IMPRESSÃO (COM CONTROLE DE TAMANHO DA LOGO)
+         MODAL - CONFIGURAÇÃO DE IMPRESSÃO (COM UPLOAD DE LOGO)
          ============================================================ -->
     <div class="modal-overlay" id="modalConfig">
         <div class="window" style="max-width:900px;">
@@ -1001,6 +1019,34 @@
                                         <textarea id="enderecoEmpresa" class="input" rows="2">RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NUMERO: 129
 CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                                     </div>
+                                </div>
+                            </div>
+
+                            <!-- LOGO - URL E UPLOAD -->
+                            <div class="config-section">
+                                <div class="config-title">Logo Personalizada</div>
+                                <div class="form-row">
+                                    <div class="field" style="flex:1 0 100%;">
+                                        <label>URL da Logo</label>
+                                        <input type="text" id="logoUrl" class="input" placeholder="https://seusite.com/logo.png" value="https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="field" style="flex:1 0 100%;">
+                                        <label>Ou faça upload de uma imagem</label>
+                                        <input type="file" id="logoUpload" class="input" accept="image/*" style="padding:6px;">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="field" style="flex:1 0 100%;">
+                                        <label>Pré-visualização da Logo</label>
+                                        <div class="logo-preview-mini" id="logoPreviewMini">
+                                            <img src="https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png" alt="Logo" id="logoPreviewImg">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="font-size:11px; color:#666; margin-top:4px;">
+                                    A logo aparecera no cabecalho da impressao e no topo do sistema.
                                 </div>
                             </div>
 
@@ -1271,6 +1317,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             headerAlign: 'center',
             headerPadding: 30,
             logoMaxHeight: 80,
+            logoUrl: 'https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png',
             enderecoEmpresa: 'RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NUMERO: 129\nCIDADE: SINOP-MT | CEP: 78556-788',
             clienteBgColor: '#f8f9fa',
             clienteTextColor: '#333333',
@@ -1356,8 +1403,56 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             closeTabelaFixa: document.querySelectorAll('.close-modal-fixa'),
             btnImprimirFixa: document.getElementById('btnImprimirFixa'),
             camposContainer: document.getElementById('camposContainer'),
-            btnAdicionarCampo: document.getElementById('btnAdicionarCampo')
+            btnAdicionarCampo: document.getElementById('btnAdicionarCampo'),
+            // Logo
+            logoUrl: document.getElementById('logoUrl'),
+            logoUpload: document.getElementById('logoUpload'),
+            logoPreviewImg: document.getElementById('logoPreviewImg'),
+            headerLogoImg: document.getElementById('headerLogoImg')
         };
+
+        // ============================================================
+        // FUNÇÃO PARA ATUALIZAR A LOGO EM TODO O SISTEMA
+        // ============================================================
+        function atualizarLogo(url) {
+            if (!url) return;
+            // Atualiza no cabeçalho
+            elements.headerLogoImg.src = url;
+            // Atualiza no preview
+            elements.logoPreviewImg.src = url;
+            // Atualiza na configuração
+            configImpressao.logoUrl = url;
+            // Atualiza o preview da impressão
+            atualizarPreview();
+        }
+
+        // ============================================================
+        // UPLOAD DE LOGO
+        // ============================================================
+        elements.logoUpload.addEventListener('change', function(e) {
+            const file = this.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const base64 = event.target.result;
+                elements.logoUrl.value = base64;
+                atualizarLogo(base64);
+                mostrarToast('Logo atualizada por upload!', 'success');
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // ============================================================
+        // URL DA LOGO
+        // ============================================================
+        elements.logoUrl.addEventListener('change', function() {
+            const url = this.value.trim();
+            if (url) {
+                atualizarLogo(url);
+                mostrarToast('Logo atualizada por URL!', 'success');
+            }
+        });
 
         // ============================================================
         // UTILIDADES DE MODAL
@@ -1595,6 +1690,10 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                     configImpressao = { ...configImpressao, ...parsed };
                 } catch (e) {}
             }
+            // Aplica a logo carregada
+            if (configImpressao.logoUrl) {
+                atualizarLogo(configImpressao.logoUrl);
+            }
         }
 
         function salvarConfiguracoesLocal() {
@@ -1610,6 +1709,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             document.getElementById('headerAlign').value = configImpressao.headerAlign;
             document.getElementById('headerPadding').value = configImpressao.headerPadding;
             document.getElementById('logoMaxHeight').value = configImpressao.logoMaxHeight;
+            document.getElementById('logoUrl').value = configImpressao.logoUrl || '';
             document.getElementById('enderecoEmpresa').value = configImpressao.enderecoEmpresa;
             document.getElementById('clienteBgColor').value = configImpressao.clienteBgColor;
             document.getElementById('clienteTextColor').value = configImpressao.clienteTextColor;
@@ -1738,8 +1838,8 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
 
             const dataAtual = new Date().toLocaleString('pt-BR');
 
-            // URL da logo imagem
-            const logoUrl = 'https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png';
+            // URL da logo (configurável)
+            const logoUrl = cfg.logoUrl || 'https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png';
 
             // Tamanho da logo baseado na configuração
             const logoTamanho = cfg.logoMaxHeight || 80;
@@ -2178,6 +2278,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 headerAlign: document.getElementById('headerAlign').value,
                 headerPadding: parseInt(document.getElementById('headerPadding').value) || 30,
                 logoMaxHeight: parseInt(document.getElementById('logoMaxHeight').value) || 80,
+                logoUrl: document.getElementById('logoUrl').value.trim() || configImpressao.logoUrl,
                 enderecoEmpresa: document.getElementById('enderecoEmpresa').value,
                 clienteBgColor: document.getElementById('clienteBgColor').value,
                 clienteTextColor: document.getElementById('clienteTextColor').value,
@@ -2204,6 +2305,11 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 campos: configImpressao.campos
             };
 
+            // Atualiza a logo no cabeçalho
+            if (configImpressao.logoUrl) {
+                atualizarLogo(configImpressao.logoUrl);
+            }
+
             salvarConfiguracoesLocal();
             closeModal(elements.modalConfig);
             mostrarToast('Configuracoes salvas!', 'success');
@@ -2220,6 +2326,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 headerAlign: 'center',
                 headerPadding: 30,
                 logoMaxHeight: 80,
+                logoUrl: 'https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png',
                 enderecoEmpresa: 'RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NUMERO: 129\nCIDADE: SINOP-MT | CEP: 78556-788',
                 clienteBgColor: '#f8f9fa',
                 clienteTextColor: '#333333',
@@ -2245,6 +2352,8 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 larguraMaxima: 1000,
                 campos: JSON.parse(JSON.stringify(CAMPOS_PADRAO))
             };
+            // Atualiza a logo restaurada
+            atualizarLogo(configImpressao.logoUrl);
             salvarConfiguracoesLocal();
             preencherFormConfig();
             mostrarToast('Configuracoes restauradas!', 'success');
