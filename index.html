@@ -174,6 +174,7 @@
         }
 
         .input:focus { border-color: #3a6ea5 #fff #fff #3a6ea5; }
+        .input:disabled { background: #e8e8e0; color: #666; }
         select.input { background: #fff; appearance: none; -webkit-appearance: none; padding-right: 18px; }
         textarea.input { resize: vertical; min-height: 60px; }
 
@@ -742,6 +743,19 @@
             max-width: 130px;
             object-fit: contain;
         }
+
+        /* Loading animation for CNPJ search */
+        .cnpj-loading {
+            position: relative;
+        }
+        .cnpj-loading::after {
+            content: '⏳';
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+        }
     </style>
 </head>
 <body class="retro-system">
@@ -917,6 +931,7 @@
                             <div class="field">
                                 <label>CNPJ/CPF</label>
                                 <input type="text" id="cnpj" class="input" placeholder="7306297000167">
+                                <small style="color:#666; font-size:10px;">Digite o CNPJ e saia do campo para buscar dados automaticamente</small>
                             </div>
                         </div>
                         <div class="form-row">
@@ -2451,7 +2466,10 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         }
 
         // ============================================================
-        // INTEGRAÇÃO COM CNPJ.PW
+        // INTEGRAÇÃO COM CNPJ.PW - CORRIGIDA
+        // Baseada na documentação oficial: https://api.cnpj.pw/docs
+        // Endpoint: GET /cnpj/{cnpj}
+        // Rate limit: 10 req/IP/segundo
         // ============================================================
         const campoCnpj = document.getElementById('cnpj');
 
@@ -2462,58 +2480,122 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             }
         });
 
+        // Também permite buscar com Enter
+        campoCnpj.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const cnpj = this.value.replace(/\D/g, '');
+                if (cnpj.length === 14) {
+                    buscarCnpj(cnpj);
+                } else {
+                    mostrarToast('Digite um CNPJ válido com 14 dígitos', 'error');
+                }
+            }
+        });
+
         async function buscarCnpj(cnpj) {
             const campo = document.getElementById('cnpj');
             const original = campo.value;
 
-            try {
-                campo.value = 'Buscando...';
-                campo.disabled = true;
+            // Validação básica
+            if (cnpj.length !== 14 || !/^\d{14}$/.test(cnpj)) {
+                mostrarToast('CNPJ inválido. Digite 14 números.', 'error');
+                return;
+            }
 
-                const response = await fetch(`https://cnpj.pw/api/cnpj/${cnpj}`);
-                if (!response.ok) throw new Error('CNPJ não encontrado');
+            try {
+                campo.value = '⏳ Buscando...';
+                campo.disabled = true;
+                campo.style.color = '#666';
+
+                // Endpoint correto conforme documentação oficial
+                // https://api.cnpj.pw/cnpj/{cnpj}
+                const response = await fetch(`https://api.cnpj.pw/cnpj/${cnpj}`);
+
+                // Se o rate limit for excedido, a API retorna 503
+                if (response.status === 503) {
+                    throw new Error('Limite de requisições excedido. Aguarde um momento e tente novamente.');
+                }
+
+                if (!response.ok) {
+                    throw new Error(`CNPJ não encontrado (status ${response.status})`);
+                }
 
                 const data = await response.json();
 
-                // Cliente (razão social)
-                if (data.razao_social) {
-                    document.getElementById('cliente').value = data.razao_social;
+                // Verifica se o CNPJ está ativo (situacao_cadastral = 1 ou 2)
+                // 1 = Ativa, 2 = Ativa (com problemas), 3 = Suspensa, 4 = Inapta, 8 = Baixada
+                const situacao = data.situacao_cadastral;
+                if (situacao && (situacao === 3 || situacao === 4 || situacao === 8)) {
+                    mostrarToast('⚠️ Empresa com situação cadastral: ' + (data.situacao_cadastral_descricao || 'inválida'),
+                        'error');
+                    // Mesmo assim, preenche os dados
+                }
+
+                // --- Mapeamento dos campos conforme schema da API ---
+                // Nome Empresarial (Razão Social)
+                if (data.nome_empresarial) {
+                    document.getElementById('cliente').value = data.nome_empresarial;
                 } else if (data.nome_fantasia) {
                     document.getElementById('cliente').value = data.nome_fantasia;
                 }
 
-                // Endereço
-                if (data.logradouro && data.numero && data.bairro && data.municipio && data.uf) {
-                    const endereco = `${data.logradouro}, ${data.numero} - ${data.bairro}, ${data.municipio} - ${data.uf}`;
-                    document.getElementById('endereco').value = endereco;
-                } else if (data.endereco) {
-                    document.getElementById('endereco').value = data.endereco;
+                // Endereço: monta com logradouro, numero, bairro, municipio_desc, uf
+                const logradouro = data.logradouro || '';
+                const numero = data.numero || 's/n';
+                const bairro = data.bairro || '';
+                const municipio = data.municipio_desc || '';
+                const uf = data.uf || '';
+
+                let enderecoCompleto = '';
+                if (logradouro || numero || bairro || municipio || uf) {
+                    enderecoCompleto = `${logradouro}, ${numero}`;
+                    if (bairro) enderecoCompleto += ` - ${bairro}`;
+                    if (municipio) enderecoCompleto += `, ${municipio}`;
+                    if (uf) enderecoCompleto += ` - ${uf}`;
+                    document.getElementById('endereco').value = enderecoCompleto;
                 }
 
-                // Telefone
-                if (data.telefone1) {
-                    document.getElementById('telefone').value = data.telefone1;
-                } else if (data.telefone) {
-                    document.getElementById('telefone').value = data.telefone;
+                // Telefone (prioriza telefone_1)
+                if (data.telefone_1) {
+                    let telefone = data.telefone_1;
+                    if (data.ddd1) {
+                        telefone = `(${data.ddd1}) ${telefone}`;
+                    }
+                    document.getElementById('telefone').value = telefone;
+                } else if (data.telefone_2) {
+                    let telefone = data.telefone_2;
+                    if (data.ddd2) {
+                        telefone = `(${data.ddd2}) ${telefone}`;
+                    }
+                    document.getElementById('telefone').value = telefone;
                 }
 
                 // E-mail
-                if (data.email) {
-                    document.getElementById('email').value = data.email;
+                if (data.correio_eletronico) {
+                    document.getElementById('email').value = data.correio_eletronico;
                 }
 
-                // Inscrição Estadual
-                if (data.inscricao_estadual) {
-                    document.getElementById('ie').value = data.inscricao_estadual;
+                // Inscrição Estadual - não está no schema principal, mas pode estar em campos adicionais
+                // A API não retorna IE diretamente, então deixamos em branco ou tentamos buscar de outra forma
+                // Mantemos o campo IE como estava
+
+                // Se a empresa estiver inativa, exibe aviso
+                if (situacao && (situacao === 3 || situacao === 4 || situacao === 8)) {
+                    mostrarToast('⚠️ Atenção: Empresa com situação ' + (data.situacao_cadastral_descricao || 'inválida'),
+                        'error');
+                } else {
+                    mostrarToast('✅ Dados do CNPJ carregados com sucesso!', 'success');
                 }
 
-                mostrarToast('Dados do CNPJ carregados com sucesso!', 'success');
             } catch (error) {
-                mostrarToast('Erro ao buscar CNPJ: ' + error.message, 'error');
-                campo.value = original; // restaura o que foi digitado
+                console.error('Erro na busca do CNPJ:', error);
+                mostrarToast('❌ Erro: ' + error.message, 'error');
+                campo.value = original;
             } finally {
                 campo.disabled = false;
-                // Mantém o CNPJ sem formatação (pode ser melhorado com máscara)
+                campo.style.color = '#000';
+                // Mantém o CNPJ sem formatação (apenas números)
                 campo.value = cnpj;
             }
         }
