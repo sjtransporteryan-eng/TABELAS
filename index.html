@@ -561,51 +561,33 @@
             }
 
             #modalImprimir .window-body .rodape-print {
-                margin-top: 12px;
-                padding-top: 10px;
-                display: flex;
-                justify-content: flex-start;
-                font-size: 11px;
+                margin-top: 20px;
+                padding-top: 12px;
                 border-top: 2px solid #333;
-            }
-
-            #modalImprimir .window-body .rodape-print .campos-impressao {
                 display: flex;
-                flex-direction: column;
-                gap: 6px;
-                width: 100%;
+                justify-content: space-between;
+                align-items: flex-end;
+                font-size: 11px;
             }
 
-            #modalImprimir .window-body .rodape-print .linha-campo {
+            #modalImprimir .window-body .rodape-print .linha-rodape {
                 display: flex;
                 align-items: center;
                 gap: 8px;
                 font-size: 11px;
             }
 
-            #modalImprimir .window-body .rodape-print .linha-campo .linha {
-                border-bottom: 1px solid #333;
-                flex: 1;
-                min-width: 80px;
-            }
-
-            #modalImprimir .window-body .rodape-print .linha-campo .linha-menor {
-                border-bottom: 1px solid #333;
-                width: 100px;
-                flex-shrink: 0;
-            }
-
-            #modalImprimir .window-body .rodape-print .linha-campo .label {
+            #modalImprimir .window-body .rodape-print .linha-rodape .label {
                 font-weight: bold;
                 color: #333;
                 white-space: nowrap;
             }
 
-            #modalImprimir .window-body .rodape-print .linha-campo .label-hora {
-                font-weight: bold;
+            #modalImprimir .window-body .rodape-print .linha-rodape .data-hora-auto {
+                font-weight: normal;
                 color: #333;
                 white-space: nowrap;
-                margin-left: 20px;
+                font-size: 11px;
             }
         }
 
@@ -847,7 +829,7 @@
                     </table>
                 </div>
                 <div style="margin-top:8px; text-align:center; font-size:11px; color:#333;">
-                    Contato / WhatsApp: (93) 8418-4950 &nbsp;|&nbsp;
+                    Contato / WhatsApp: (93) 8418-4950 &nbsp;|&nbsp; Gelheta: 130
                 </div>
             </div>
             <div class="modal-footer">
@@ -1790,7 +1772,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         }
 
         // ============================================================
-        // PRÉ-VISUALIZAÇÃO E IMPRESSÃO (com novo rodapé)
+        // PRÉ-VISUALIZAÇÃO E IMPRESSÃO (com rodapé ajustado)
         // ============================================================
         function atualizarPreview() {
             const exemplo = {
@@ -1860,8 +1842,8 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             const logoUrl = cfg.logoUrl || 'https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png';
             const logoTamanho = cfg.logoMaxHeight || 80;
 
-            // Data para o rodapé (apenas para referência)
-            const dataAtual = new Date().toLocaleDateString('pt-BR');
+            // Data e hora atuais para o rodapé
+            const dataHoraAtual = new Date().toLocaleString('pt-BR');
 
             const html = `
                 <div style="max-width:${cfg.larguraMaxima}px; margin:0 auto; font-family:'Tahoma','Geneva',sans-serif; background:#fff; padding:${preview ? '4px' : '10px'};">
@@ -1914,24 +1896,14 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                     <!-- Observacao -->
                     ${tabela.observacao ? `<div class="observacao-print" style="font-size:11px; padding:4px 10px; border:1px solid #ccc; background:#f9f9f9; margin-top:6px;"><strong>Observacao:</strong> ${tabela.observacao}</div>` : ''}
 
-                    <!-- Rodape com campos para preencher com caneta -->
-                    <div class="rodape-print" style="margin-top:12px; padding-top:12px; border-top:2px solid #333; display:flex; justify-content:flex-start; font-size:11px;">
-                        <div class="campos-impressao" style="display:flex; flex-direction:column; gap:8px; width:100%;">
-                            <!-- Linha: SINOP-MT + linhas para data -->
-                            <div class="linha-campo" style="display:flex; align-items:center; gap:6px; font-size:11px;">
-                                <span class="label" style="font-weight:bold; color:#333; white-space:nowrap;">SINOP-MT</span>
-                                <span style="color:#333;">/</span>
-                                <span class="linha-menor" style="border-bottom:1px solid #333; width:70px; flex-shrink:0; display:inline-block;">&nbsp;</span>
-                                <span style="color:#333;">/</span>
-                                <span class="linha-menor" style="border-bottom:1px solid #333; width:70px; flex-shrink:0; display:inline-block;">&nbsp;</span>
-                                <span style="color:#333;">/</span>
-                                <span class="linha-menor" style="border-bottom:1px solid #333; width:70px; flex-shrink:0; display:inline-block;">&nbsp;</span>
-                                <span class="label-hora" style="font-weight:bold; color:#333; white-space:nowrap; margin-left:15px;">HORA:</span>
-                                <span class="linha-menor" style="border-bottom:1px solid #333; width:80px; flex-shrink:0; display:inline-block;">&nbsp;</span>
-                                <span style="margin-left:10px; font-size:10px; color:#999;"</span>
-                            </div>
-                            <!-- Linha: Contato (opcional) -->
-                           
+                    <!-- Rodape: SINOP-MT + DATA + HORA automáticos -->
+                    <div class="rodape-print" style="margin-top:20px; padding-top:12px; border-top:2px solid #333; display:flex; justify-content:flex-start; align-items:flex-end; font-size:11px;">
+                        <div class="linha-rodape" style="display:flex; align-items:center; gap:8px; font-size:11px;">
+                            <span class="label" style="font-weight:bold; color:#333; white-space:nowrap;">SINOP-MT</span>
+                            <span style="color:#333; white-space:nowrap;">-</span>
+                            <span class="data-hora-auto" style="font-weight:normal; color:#333; white-space:nowrap; font-size:11px;">
+                                ${dataHoraAtual}
+                            </span>
                         </div>
                     </div>
                 </div>
