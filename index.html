@@ -571,7 +571,6 @@
                 background: #f5f5f0;
             }
 
-            /* Observação */
             #modalImprimir .window-body .observacao-print {
                 font-size: 11px;
                 padding: 4px 10px;
@@ -581,18 +580,18 @@
             }
 
             /* ============================================================
-               RODAPÉ COM ASSINATURAS - 5cm da borda inferior
+               RODAPÉ COM ASSINATURAS - mais abaixo
                ============================================================ */
             #modalImprimir .window-body .rodape-assinaturas {
                 margin-top: auto;
-                padding-top: 15px;
+                padding-top: 30px;
                 border-top: 2px solid #333;
                 display: flex;
                 justify-content: space-between;
                 align-items: flex-end;
                 padding-bottom: 0;
                 margin-bottom: 0;
-                min-height: 80px;
+                min-height: 100px;
             }
 
             #modalImprimir .window-body .rodape-assinaturas .assinatura-cliente {
@@ -620,33 +619,23 @@
                 font-weight: bold;
             }
 
-            #modalImprimir .window-body .rodape-assinaturas .label-assinatura {
-                font-size: 9px;
-                color: #888;
-                display: block;
-                margin-top: 2px;
-            }
-
-            /* SINOP-MT - Data/Hora no canto inferior esquerdo */
+            /* SINOP-MT - Data/Hora - MANTIDO COMO ANTES */
             #modalImprimir .window-body .rodape-info {
                 display: flex;
-                justify-content: space-between;
+                justify-content: flex-start;
                 align-items: center;
-                margin-top: 8px;
+                margin-top: 10px;
                 padding-top: 8px;
                 border-top: 1px solid #ddd;
                 font-size: 10px;
                 color: #999;
             }
 
-            #modalImprimir .window-body .rodape-info .data-hora {
+            #modalImprimir .window-body .rodape-info .sinop-data {
                 text-align: left;
-            }
-
-            #modalImprimir .window-body .rodape-info .sinop {
-                text-align: right;
                 font-weight: bold;
                 color: #333;
+                font-size: 10px;
             }
         }
 
@@ -1963,28 +1952,25 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                     </div>
 
                     <!-- ============================================================
-                         RODAPÉ COM ASSINATURAS - 5cm da borda inferior
+                         RODAPÉ COM ASSINATURAS - mais abaixo
                          ============================================================ -->
-                    <div class="rodape-assinaturas" style="margin-top:auto; padding-top:15px; border-top:2px solid #333; display:flex; justify-content:space-between; align-items:flex-end; padding-bottom:0; margin-bottom:0; min-height:80px;">
+                    <div class="rodape-assinaturas" style="margin-top:auto; padding-top:30px; border-top:2px solid #333; display:flex; justify-content:space-between; align-items:flex-end; padding-bottom:0; margin-bottom:0; min-height:100px;">
                         <!-- Assinatura do Cliente (esquerda) -->
                         <div class="assinatura-cliente" style="flex:1; text-align:left; padding-right:20px;">
                             <div class="linha-assinatura" style="border-bottom:1px solid #333; width:100%; height:1px; margin-bottom:4px;"></div>
                             <span class="nome-assinatura" style="font-size:11px; color:#333; font-weight:bold;">${nomeCliente}</span>
-                            <span class="label-assinatura" style="font-size:9px; color:#888; display:block; margin-top:2px;">Assinatura do Cliente</span>
                         </div>
 
                         <!-- Assinatura da Empresa (direita) -->
                         <div class="assinatura-empresa" style="flex:1; text-align:right; padding-left:20px;">
                             <div class="linha-assinatura" style="border-bottom:1px solid #333; width:100%; height:1px; margin-bottom:4px;"></div>
                             <span class="nome-assinatura" style="font-size:11px; color:#333; font-weight:bold;">SJ Transportes e Logística</span>
-                            <span class="label-assinatura" style="font-size:9px; color:#888; display:block; margin-top:2px;">Assinatura da Empresa</span>
                         </div>
                     </div>
 
-                    <!-- Rodapé com SINOP-MT e Data/Hora -->
-                    <div class="rodape-info" style="display:flex; justify-content:space-between; align-items:center; margin-top:8px; padding-top:8px; border-top:1px solid #ddd; font-size:10px; color:#999;">
-                        <span class="data-hora" style="text-align:left;">${dataHoraAtual}</span>
-                        <span class="sinop" style="text-align:right; font-weight:bold; color:#333;">SINOP-MT</span>
+                    <!-- SINOP-MT - Data/Hora - MANTIDO COMO ANTES -->
+                    <div class="rodape-info" style="display:flex; justify-content:flex-start; align-items:center; margin-top:10px; padding-top:8px; border-top:1px solid #ddd; font-size:10px; color:#999;">
+                        <span class="sinop-data" style="text-align:left; font-weight:bold; color:#333; font-size:10px;">SINOP-MT - ${dataHoraAtual}</span>
                     </div>
                 </div>
             `;
