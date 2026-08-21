@@ -446,7 +446,9 @@
             border-top: 2px solid #06458F;
         }
 
-        /* ===== IMPRESSÃO ===== */
+        /* ============================================================
+           IMPRESSÃO - com assinaturas no rodapé
+           ============================================================ */
         @media print {
             body.retro-system * { visibility: hidden; }
             #modalImprimir,
@@ -483,6 +485,14 @@
                 padding: 10px;
                 overflow: visible;
                 background: #fff;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+            }
+
+            #modalImprimir .window-body .conteudo-impressao {
+                flex: 1;
             }
 
             #modalImprimir .window-body .sj-logo-print {
@@ -541,6 +551,7 @@
                 width: 100%;
                 border-collapse: collapse;
                 font-size: 11px;
+                margin-bottom: 10px;
             }
 
             #modalImprimir .window-body .table-print th {
@@ -560,34 +571,82 @@
                 background: #f5f5f0;
             }
 
-            #modalImprimir .window-body .rodape-print {
-                margin-top: 20px;
-                padding-top: 12px;
+            /* Observação */
+            #modalImprimir .window-body .observacao-print {
+                font-size: 11px;
+                padding: 4px 10px;
+                border: 1px solid #ccc;
+                background: #f9f9f9;
+                margin-bottom: 15px;
+            }
+
+            /* ============================================================
+               RODAPÉ COM ASSINATURAS - 5cm da borda inferior
+               ============================================================ */
+            #modalImprimir .window-body .rodape-assinaturas {
+                margin-top: auto;
+                padding-top: 15px;
                 border-top: 2px solid #333;
                 display: flex;
                 justify-content: space-between;
                 align-items: flex-end;
-                font-size: 11px;
+                padding-bottom: 0;
+                margin-bottom: 0;
+                min-height: 80px;
             }
 
-            #modalImprimir .window-body .rodape-print .linha-rodape {
+            #modalImprimir .window-body .rodape-assinaturas .assinatura-cliente {
+                flex: 1;
+                text-align: left;
+                padding-right: 20px;
+            }
+
+            #modalImprimir .window-body .rodape-assinaturas .assinatura-empresa {
+                flex: 1;
+                text-align: right;
+                padding-left: 20px;
+            }
+
+            #modalImprimir .window-body .rodape-assinaturas .linha-assinatura {
+                border-bottom: 1px solid #333;
+                width: 100%;
+                height: 1px;
+                margin-bottom: 4px;
+            }
+
+            #modalImprimir .window-body .rodape-assinaturas .nome-assinatura {
+                font-size: 11px;
+                color: #333;
+                font-weight: bold;
+            }
+
+            #modalImprimir .window-body .rodape-assinaturas .label-assinatura {
+                font-size: 9px;
+                color: #888;
+                display: block;
+                margin-top: 2px;
+            }
+
+            /* SINOP-MT - Data/Hora no canto inferior esquerdo */
+            #modalImprimir .window-body .rodape-info {
                 display: flex;
+                justify-content: space-between;
                 align-items: center;
-                gap: 8px;
-                font-size: 11px;
+                margin-top: 8px;
+                padding-top: 8px;
+                border-top: 1px solid #ddd;
+                font-size: 10px;
+                color: #999;
             }
 
-            #modalImprimir .window-body .rodape-print .linha-rodape .label {
+            #modalImprimir .window-body .rodape-info .data-hora {
+                text-align: left;
+            }
+
+            #modalImprimir .window-body .rodape-info .sinop {
+                text-align: right;
                 font-weight: bold;
                 color: #333;
-                white-space: nowrap;
-            }
-
-            #modalImprimir .window-body .rodape-print .linha-rodape .data-hora-auto {
-                font-weight: normal;
-                color: #333;
-                white-space: nowrap;
-                font-size: 11px;
             }
         }
 
@@ -1772,7 +1831,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         }
 
         // ============================================================
-        // PRÉ-VISUALIZAÇÃO E IMPRESSÃO (com rodapé ajustado)
+        // PRÉ-VISUALIZAÇÃO E IMPRESSÃO (com assinaturas no rodapé)
         // ============================================================
         function atualizarPreview() {
             const exemplo = {
@@ -1842,69 +1901,90 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             const logoUrl = cfg.logoUrl || 'https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png';
             const logoTamanho = cfg.logoMaxHeight || 80;
 
-            // Data e hora atuais para o rodapé
+            // Data e hora atuais
             const dataHoraAtual = new Date().toLocaleString('pt-BR');
 
+            // Nome do cliente para a assinatura
+            const nomeCliente = tabela.cliente || 'Cliente';
+
             const html = `
-                <div style="max-width:${cfg.larguraMaxima}px; margin:0 auto; font-family:'Tahoma','Geneva',sans-serif; background:#fff; padding:${preview ? '4px' : '10px'};">
+                <div style="max-width:${cfg.larguraMaxima}px; margin:0 auto; font-family:'Tahoma','Geneva',sans-serif; background:#fff; padding:${preview ? '4px' : '10px'}; display:flex; flex-direction:column; min-height:100%;">
 
-                    <!-- Logo -->
-                    <div class="sj-logo-print" style="display:flex; justify-content:center; align-items:center; margin-bottom:${preview ? '8px' : '14px'}; border-bottom:2px solid #06458F; padding-bottom:${preview ? '6px' : '10px'};">
-                        <img src="${logoUrl}" alt="SJ Transportes e Logistica" style="max-height:${preview ? Math.min(logoTamanho * 0.6, 60) : logoTamanho}px; width:auto; object-fit:contain;">
-                    </div>
+                    <!-- Conteúdo principal -->
+                    <div class="conteudo-impressao" style="flex:1;">
 
-                    <!-- Endereco -->
-                    <div class="endereco-print" style="text-align:center; font-size:${preview ? '10px' : '12px'}; margin-bottom:${preview ? '6px' : '14px'}; color:#333;">
-                        ${enderecoHTML}
-                    </div>
-
-                    <!-- Informacoes do cliente -->
-                    <div class="info-cliente-print" style="display:grid; grid-template-columns:1fr 1fr; gap:2px 20px; font-size:11px; background:#f5f5f0; padding:6px 12px; border:1px solid #a0a0a0; margin-bottom:10px;">
-                        ${camposHTML}
-                    </div>
-
-                    <!-- Origem / Destino -->
-                    <div class="origem-destino-print" style="display:flex; justify-content:space-between; background:#e9ecef; padding:4px 12px; font-weight:bold; font-size:12px; margin-bottom:10px; border:1px solid #a0a0a0;">
-                        <span>ORIGEM: ${tabela.origem}</span>
-                        <span>DESTINO: ${tabela.destino}</span>
-                    </div>
-
-                    <!-- Tabela -->
-                    <table class="table-print" style="width:100%; border-collapse:collapse; ${styleTable}">
-                        <thead>
-                            <tr>
-                                <th style="${styleTh}">Cidades</th>
-                                <th style="${styleTh}">UF</th>
-                                <th style="${styleTh}">Frete</th>
-                                <th style="${styleTh}">Preco KG</th>
-                                <th style="${styleTh}">% NF</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${tabela.cidades.map((c, idx) => `
-                                <tr style="background:${idx % 2 === 0 ? cfg.tabelaLinhaPar : cfg.tabelaLinhaImpar};">
-                                    <td style="${styleTd}">${c.nome}</td>
-                                    <td style="${styleTd}">PA</td>
-                                    <td style="${styleTd}">R$ ${c.frete.toFixed(2)}</td>
-                                    <td style="${styleTd}">R$ ${c.kg.toFixed(2)}/kg</td>
-                                    <td style="${styleTd}">${c.percentual.toFixed(2)}%</td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-
-                    <!-- Observacao -->
-                    ${tabela.observacao ? `<div class="observacao-print" style="font-size:11px; padding:4px 10px; border:1px solid #ccc; background:#f9f9f9; margin-top:6px;"><strong>Observacao:</strong> ${tabela.observacao}</div>` : ''}
-
-                    <!-- Rodape: SINOP-MT + DATA + HORA automáticos -->
-                    <div class="rodape-print" style="margin-top:20px; padding-top:12px; border-top:2px solid #333; display:flex; justify-content:flex-start; align-items:flex-end; font-size:11px;">
-                        <div class="linha-rodape" style="display:flex; align-items:center; gap:8px; font-size:11px;">
-                            <span class="label" style="font-weight:bold; color:#333; white-space:nowrap;">SINOP-MT</span>
-                            <span style="color:#333; white-space:nowrap;">-</span>
-                            <span class="data-hora-auto" style="font-weight:normal; color:#333; white-space:nowrap; font-size:11px;">
-                                ${dataHoraAtual}
-                            </span>
+                        <!-- Logo -->
+                        <div class="sj-logo-print" style="display:flex; justify-content:center; align-items:center; margin-bottom:${preview ? '8px' : '14px'}; border-bottom:2px solid #06458F; padding-bottom:${preview ? '6px' : '10px'};">
+                            <img src="${logoUrl}" alt="SJ Transportes e Logistica" style="max-height:${preview ? Math.min(logoTamanho * 0.6, 60) : logoTamanho}px; width:auto; object-fit:contain;">
                         </div>
+
+                        <!-- Endereco -->
+                        <div class="endereco-print" style="text-align:center; font-size:${preview ? '10px' : '12px'}; margin-bottom:${preview ? '6px' : '14px'}; color:#333;">
+                            ${enderecoHTML}
+                        </div>
+
+                        <!-- Informacoes do cliente -->
+                        <div class="info-cliente-print" style="display:grid; grid-template-columns:1fr 1fr; gap:2px 20px; font-size:11px; background:#f5f5f0; padding:6px 12px; border:1px solid #a0a0a0; margin-bottom:10px;">
+                            ${camposHTML}
+                        </div>
+
+                        <!-- Origem / Destino -->
+                        <div class="origem-destino-print" style="display:flex; justify-content:space-between; background:#e9ecef; padding:4px 12px; font-weight:bold; font-size:12px; margin-bottom:10px; border:1px solid #a0a0a0;">
+                            <span>ORIGEM: ${tabela.origem}</span>
+                            <span>DESTINO: ${tabela.destino}</span>
+                        </div>
+
+                        <!-- Tabela -->
+                        <table class="table-print" style="width:100%; border-collapse:collapse; ${styleTable}">
+                            <thead>
+                                <tr>
+                                    <th style="${styleTh}">Cidades</th>
+                                    <th style="${styleTh}">UF</th>
+                                    <th style="${styleTh}">Frete</th>
+                                    <th style="${styleTh}">Preco KG</th>
+                                    <th style="${styleTh}">% NF</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${tabela.cidades.map((c, idx) => `
+                                    <tr style="background:${idx % 2 === 0 ? cfg.tabelaLinhaPar : cfg.tabelaLinhaImpar};">
+                                        <td style="${styleTd}">${c.nome}</td>
+                                        <td style="${styleTd}">PA</td>
+                                        <td style="${styleTd}">R$ ${c.frete.toFixed(2)}</td>
+                                        <td style="${styleTd}">R$ ${c.kg.toFixed(2)}/kg</td>
+                                        <td style="${styleTd}">${c.percentual.toFixed(2)}%</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+
+                        <!-- Observacao -->
+                        ${tabela.observacao ? `<div class="observacao-print" style="font-size:11px; padding:4px 10px; border:1px solid #ccc; background:#f9f9f9; margin-bottom:15px;"><strong>Observacao:</strong> ${tabela.observacao}</div>` : ''}
+                    </div>
+
+                    <!-- ============================================================
+                         RODAPÉ COM ASSINATURAS - 5cm da borda inferior
+                         ============================================================ -->
+                    <div class="rodape-assinaturas" style="margin-top:auto; padding-top:15px; border-top:2px solid #333; display:flex; justify-content:space-between; align-items:flex-end; padding-bottom:0; margin-bottom:0; min-height:80px;">
+                        <!-- Assinatura do Cliente (esquerda) -->
+                        <div class="assinatura-cliente" style="flex:1; text-align:left; padding-right:20px;">
+                            <div class="linha-assinatura" style="border-bottom:1px solid #333; width:100%; height:1px; margin-bottom:4px;"></div>
+                            <span class="nome-assinatura" style="font-size:11px; color:#333; font-weight:bold;">${nomeCliente}</span>
+                            <span class="label-assinatura" style="font-size:9px; color:#888; display:block; margin-top:2px;">Assinatura do Cliente</span>
+                        </div>
+
+                        <!-- Assinatura da Empresa (direita) -->
+                        <div class="assinatura-empresa" style="flex:1; text-align:right; padding-left:20px;">
+                            <div class="linha-assinatura" style="border-bottom:1px solid #333; width:100%; height:1px; margin-bottom:4px;"></div>
+                            <span class="nome-assinatura" style="font-size:11px; color:#333; font-weight:bold;">SJ Transportes e Logística</span>
+                            <span class="label-assinatura" style="font-size:9px; color:#888; display:block; margin-top:2px;">Assinatura da Empresa</span>
+                        </div>
+                    </div>
+
+                    <!-- Rodapé com SINOP-MT e Data/Hora -->
+                    <div class="rodape-info" style="display:flex; justify-content:space-between; align-items:center; margin-top:8px; padding-top:8px; border-top:1px solid #ddd; font-size:10px; color:#999;">
+                        <span class="data-hora" style="text-align:left;">${dataHoraAtual}</span>
+                        <span class="sinop" style="text-align:right; font-weight:bold; color:#333;">SINOP-MT</span>
                     </div>
                 </div>
             `;
