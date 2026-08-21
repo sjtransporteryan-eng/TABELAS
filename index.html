@@ -1837,7 +1837,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         }
 
         // ============================================================
-        // MAPEAMENTO DE CAMPOS - VERSÃO MELHORADA COM LOGS
+        // MAPEAMENTO DE CAMPOS - VERSÃO CORRIGIDA
         // ============================================================
         function mapearCampos(tabela) {
             const campos = configImpressao.campos;
@@ -1888,13 +1888,17 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             // Se ainda assim ficou vazio, coloca um placeholder
             if (!enderecoCompleto) enderecoCompleto = 'Endereço não informado';
 
-            // Dicionário de dados para os campos da impressão
+            // ✅ Dicionário com TODOS os campos que podem aparecer na impressão
             const dadosCliente = {
                 'NOME': tabela.cliente || '-',
                 'CNPJ': tabela.cnpj || '-',
                 'TELEFONE': tabela.telefone || '-',
                 'PEDIDO': tabela.id || '-',
                 'ENDERECO': enderecoCompleto,
+                // 🔽 NOVOS CAMPOS ADICIONADOS PARA SUPORTAR RUA/LOGRADOURO
+                'RUA': tabela.logradouro || '-',
+                'LOGRADOURO': tabela.logradouro || '-',
+                'NUMERO': tabela.numero || '-',
                 'BAIRRO': tabela.bairro || '-',
                 'CIDADE': cidadeUf || '-',
                 'UF': tabela.uf || '-',
