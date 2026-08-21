@@ -268,6 +268,15 @@
         .form-row .field label { font-weight: bold; font-size: 11px; }
         .form-row .field label .required { color: #c00; }
 
+        .form-row .field-small {
+            flex: 1 0 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .form-row .field-small label { font-weight: bold; font-size: 11px; }
+
         .cidades-list {
             border: 1px solid #a0a0a0;
             background: #fff;
@@ -744,7 +753,6 @@
             object-fit: contain;
         }
 
-        /* Loading animation for CNPJ search */
         .cnpj-loading {
             position: relative;
         }
@@ -946,12 +954,41 @@
                         </div>
                         <div class="form-row">
                             <div class="field">
-                                <label>Endereco</label>
-                                <input type="text" id="endereco" class="input" placeholder="Rua, numero, bairro">
-                            </div>
-                            <div class="field">
                                 <label>IE</label>
                                 <input type="text" id="ie" class="input" placeholder="Inscricao Estadual">
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- ENDEREÇO SEPARADO EM CAMPOS INDIVIDUAIS -->
+                    <fieldset class="group-box">
+                        <legend>Endereço</legend>
+                        <div class="form-row">
+                            <div class="field" style="flex:2;">
+                                <label>Logradouro <span class="required">*</span></label>
+                                <input type="text" id="logradouro" class="input" placeholder="Rua, Avenida, etc." required>
+                            </div>
+                            <div class="field-small">
+                                <label>Número</label>
+                                <input type="text" id="numero" class="input" placeholder="s/n">
+                            </div>
+                            <div class="field">
+                                <label>Bairro</label>
+                                <input type="text" id="bairro" class="input" placeholder="Bairro">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="field" style="flex:2;">
+                                <label>Cidade</label>
+                                <input type="text" id="cidade" class="input" placeholder="Cidade">
+                            </div>
+                            <div class="field-small">
+                                <label>UF</label>
+                                <input type="text" id="uf" class="input" placeholder="MT" maxlength="2" style="text-transform:uppercase;">
+                            </div>
+                            <div class="field">
+                                <label>CEP</label>
+                                <input type="text" id="cep" class="input" placeholder="78556-788">
                             </div>
                         </div>
                     </fieldset>
@@ -1375,10 +1412,11 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             { id: 'CNPJ', label: 'CNPJ/CPF', enabled: true },
             { id: 'TELEFONE', label: 'TELEFONE', enabled: true },
             { id: 'PEDIDO', label: 'N. Pedido', enabled: true },
+            { id: 'ENDERECO', label: 'ENDEREÇO', enabled: true },
             { id: 'BAIRRO', label: 'BAIRRO', enabled: true },
-            { id: 'RUA', label: 'RUA', enabled: true },
-            { id: 'CEP', label: 'CEP', enabled: true },
             { id: 'CIDADE', label: 'CIDADE', enabled: true },
+            { id: 'UF', label: 'UF', enabled: true },
+            { id: 'CEP', label: 'CEP', enabled: true },
             { id: 'IE', label: 'IE', enabled: true },
             { id: 'EMAIL', label: 'EMAIL', enabled: true }
         ];
@@ -1447,8 +1485,13 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             cnpj: document.getElementById('cnpj'),
             telefone: document.getElementById('telefone'),
             email: document.getElementById('email'),
-            endereco: document.getElementById('endereco'),
             ie: document.getElementById('ie'),
+            logradouro: document.getElementById('logradouro'),
+            numero: document.getElementById('numero'),
+            bairro: document.getElementById('bairro'),
+            cidade: document.getElementById('cidade'),
+            uf: document.getElementById('uf'),
+            cep: document.getElementById('cep'),
             origem: document.getElementById('origem'),
             destino: document.getElementById('destino'),
             observacao: document.getElementById('observacao'),
@@ -1810,15 +1853,37 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         // ============================================================
         function mapearCampos(tabela) {
             const campos = configImpressao.campos;
+            
+            // Monta endereço completo a partir dos campos separados
+            let enderecoCompleto = '';
+            if (tabela.logradouro) {
+                enderecoCompleto = tabela.logradouro;
+                if (tabela.numero) {
+                    enderecoCompleto += `, ${tabela.numero}`;
+                }
+                if (tabela.bairro) {
+                    enderecoCompleto += ` - ${tabela.bairro}`;
+                }
+            }
+            
+            let cidadeUf = '';
+            if (tabela.cidade) {
+                cidadeUf = tabela.cidade;
+                if (tabela.uf) {
+                    cidadeUf += ` - ${tabela.uf}`;
+                }
+            }
+            
             const dadosCliente = {
                 'NOME': tabela.cliente || '-',
                 'CNPJ': tabela.cnpj || '-',
                 'TELEFONE': tabela.telefone || '-',
                 'PEDIDO': tabela.id || '-',
-                'BAIRRO': tabela.endereco ? tabela.endereco.split(',')[1]?.trim() || '-' : '-',
-                'RUA': tabela.endereco ? tabela.endereco.split(',')[0] || '-' : '-',
-                'CEP': '78557-171',
-                'CIDADE': 'SINOP MT',
+                'ENDERECO': enderecoCompleto || '-',
+                'BAIRRO': tabela.bairro || '-',
+                'CIDADE': cidadeUf || '-',
+                'UF': tabela.uf || '-',
+                'CEP': tabela.cep || '-',
                 'IE': tabela.ie || '-',
                 'EMAIL': tabela.email || '-'
             };
@@ -1844,7 +1909,12 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 cnpj: '7306297000167',
                 telefone: '(66) 3515-9853',
                 email: 'contato@molasmt.com.br',
-                endereco: 'RUA VALDIR DOERNER, 666 - DIST. INDL.',
+                logradouro: 'RUA VALDIR DOERNER',
+                numero: '666',
+                bairro: 'DIST. INDL.',
+                cidade: 'SINOP',
+                uf: 'MT',
+                cep: '78556-788',
                 ie: '132989689',
                 origem: 'SINOP - MT',
                 destino: 'DIVERSOS (PA)',
@@ -2113,7 +2183,12 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 cnpj: '7306297000167',
                 telefone: '(66) 3515-9853',
                 email: '',
-                endereco: 'RUA VALDIR DOERNER, 666 - DIST. INDL.',
+                logradouro: 'RUA VALDIR DOERNER',
+                numero: '666',
+                bairro: 'DIST. INDL.',
+                cidade: 'SINOP',
+                uf: 'MT',
+                cep: '78556-788',
                 ie: '132989689',
                 origem: 'SINOP - MT',
                 destino: 'DIVERSOS (PA)',
@@ -2267,8 +2342,13 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             elements.cnpj.value = tabela.cnpj || '';
             elements.telefone.value = tabela.telefone || '';
             elements.email.value = tabela.email || '';
-            elements.endereco.value = tabela.endereco || '';
             elements.ie.value = tabela.ie || '';
+            elements.logradouro.value = tabela.logradouro || '';
+            elements.numero.value = tabela.numero || '';
+            elements.bairro.value = tabela.bairro || '';
+            elements.cidade.value = tabela.cidade || '';
+            elements.uf.value = tabela.uf || '';
+            elements.cep.value = tabela.cep || '';
             elements.origem.value = tabela.origem;
             elements.destino.value = tabela.destino;
             elements.observacao.value = tabela.observacao || '';
@@ -2302,16 +2382,21 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 cnpj: elements.cnpj.value.trim() || '',
                 telefone: elements.telefone.value.trim() || '',
                 email: elements.email.value.trim() || '',
-                endereco: elements.endereco.value.trim() || '',
                 ie: elements.ie.value.trim() || '',
+                logradouro: elements.logradouro.value.trim() || '',
+                numero: elements.numero.value.trim() || '',
+                bairro: elements.bairro.value.trim() || '',
+                cidade: elements.cidade.value.trim() || '',
+                uf: elements.uf.value.trim().toUpperCase() || '',
+                cep: elements.cep.value.trim() || '',
                 origem: elements.origem.value.trim(),
                 destino: elements.destino.value.trim(),
                 observacao: elements.observacao.value.trim() || '',
                 data: new Date().toISOString().split('T')[0],
                 cidades: JSON.parse(JSON.stringify(cidadesTemp))
             };
-            if (!dados.cliente || !dados.origem || !dados.destino) {
-                mostrarToast('Preencha os campos obrigatorios!', 'error');
+            if (!dados.cliente || !dados.origem || !dados.destino || !dados.logradouro) {
+                mostrarToast('Preencha os campos obrigatorios: Cliente, Origem, Destino e Logradouro!', 'error');
                 return;
             }
             if (editandoId) {
@@ -2466,10 +2551,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         }
 
         // ============================================================
-        // INTEGRAÇÃO COM CNPJ.PW - CORRIGIDA
-        // Baseada na documentação oficial: https://api.cnpj.pw/docs
-        // Endpoint: GET /cnpj/{cnpj}
-        // Rate limit: 10 req/IP/segundo
+        // INTEGRAÇÃO COM CNPJ.PW - CORRIGIDA COM ENDEREÇO SEPARADO
         // ============================================================
         const campoCnpj = document.getElementById('cnpj');
 
@@ -2480,7 +2562,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             }
         });
 
-        // Também permite buscar com Enter
         campoCnpj.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 e.preventDefault();
@@ -2497,7 +2578,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             const campo = document.getElementById('cnpj');
             const original = campo.value;
 
-            // Validação básica
             if (cnpj.length !== 14 || !/^\d{14}$/.test(cnpj)) {
                 mostrarToast('CNPJ inválido. Digite 14 números.', 'error');
                 return;
@@ -2508,11 +2588,8 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 campo.disabled = true;
                 campo.style.color = '#666';
 
-                // Endpoint correto conforme documentação oficial
-                // https://api.cnpj.pw/cnpj/{cnpj}
                 const response = await fetch(`https://api.cnpj.pw/cnpj/${cnpj}`);
 
-                // Se o rate limit for excedido, a API retorna 503
                 if (response.status === 503) {
                     throw new Error('Limite de requisições excedido. Aguarde um momento e tente novamente.');
                 }
@@ -2523,16 +2600,13 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
 
                 const data = await response.json();
 
-                // Verifica se o CNPJ está ativo (situacao_cadastral = 1 ou 2)
-                // 1 = Ativa, 2 = Ativa (com problemas), 3 = Suspensa, 4 = Inapta, 8 = Baixada
+                // Verifica situação cadastral
                 const situacao = data.situacao_cadastral;
                 if (situacao && (situacao === 3 || situacao === 4 || situacao === 8)) {
-                    mostrarToast('⚠️ Empresa com situação cadastral: ' + (data.situacao_cadastral_descricao || 'inválida'),
+                    mostrarToast('⚠️ Empresa com situação: ' + (data.situacao_cadastral_descricao || 'inválida'),
                         'error');
-                    // Mesmo assim, preenche os dados
                 }
 
-                // --- Mapeamento dos campos conforme schema da API ---
                 // Nome Empresarial (Razão Social)
                 if (data.nome_empresarial) {
                     document.getElementById('cliente').value = data.nome_empresarial;
@@ -2540,23 +2614,32 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                     document.getElementById('cliente').value = data.nome_fantasia;
                 }
 
-                // Endereço: monta com logradouro, numero, bairro, municipio_desc, uf
-                const logradouro = data.logradouro || '';
-                const numero = data.numero || 's/n';
-                const bairro = data.bairro || '';
-                const municipio = data.municipio_desc || '';
-                const uf = data.uf || '';
-
-                let enderecoCompleto = '';
-                if (logradouro || numero || bairro || municipio || uf) {
-                    enderecoCompleto = `${logradouro}, ${numero}`;
-                    if (bairro) enderecoCompleto += ` - ${bairro}`;
-                    if (municipio) enderecoCompleto += `, ${municipio}`;
-                    if (uf) enderecoCompleto += ` - ${uf}`;
-                    document.getElementById('endereco').value = enderecoCompleto;
+                // ENDEREÇO SEPARADO
+                if (data.logradouro) {
+                    document.getElementById('logradouro').value = data.logradouro;
+                }
+                if (data.numero) {
+                    document.getElementById('numero').value = data.numero;
+                } else {
+                    document.getElementById('numero').value = 's/n';
+                }
+                if (data.bairro) {
+                    document.getElementById('bairro').value = data.bairro;
+                }
+                if (data.municipio_desc) {
+                    document.getElementById('cidade').value = data.municipio_desc;
+                }
+                if (data.uf) {
+                    document.getElementById('uf').value = data.uf;
+                }
+                // CEP - a API pode retornar cep ou codigo_cep
+                if (data.cep) {
+                    document.getElementById('cep').value = data.cep;
+                } else if (data.codigo_cep) {
+                    document.getElementById('cep').value = data.codigo_cep;
                 }
 
-                // Telefone (prioriza telefone_1)
+                // Telefone
                 if (data.telefone_1) {
                     let telefone = data.telefone_1;
                     if (data.ddd1) {
@@ -2576,11 +2659,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                     document.getElementById('email').value = data.correio_eletronico;
                 }
 
-                // Inscrição Estadual - não está no schema principal, mas pode estar em campos adicionais
-                // A API não retorna IE diretamente, então deixamos em branco ou tentamos buscar de outra forma
-                // Mantemos o campo IE como estava
-
-                // Se a empresa estiver inativa, exibe aviso
                 if (situacao && (situacao === 3 || situacao === 4 || situacao === 8)) {
                     mostrarToast('⚠️ Atenção: Empresa com situação ' + (data.situacao_cadastral_descricao || 'inválida'),
                         'error');
@@ -2595,7 +2673,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             } finally {
                 campo.disabled = false;
                 campo.style.color = '#000';
-                // Mantém o CNPJ sem formatação (apenas números)
                 campo.value = cnpj;
             }
         }
