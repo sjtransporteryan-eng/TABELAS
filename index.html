@@ -1837,12 +1837,12 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         }
 
         // ============================================================
-        // MAPEAMENTO DE CAMPOS - VERSÃO MELHORADA
+        // MAPEAMENTO DE CAMPOS - VERSÃO MELHORADA COM LOGS
         // ============================================================
         function mapearCampos(tabela) {
             const campos = configImpressao.campos;
 
-            // --- Montagem do endereço completo com fallback ---
+            // --- Montagem do endereço completo com múltiplos fallbacks ---
             let enderecoCompleto = '';
 
             // 1. Tenta usar os campos separados (novo formato)
@@ -1859,8 +1859,18 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             else if (tabela.endereco) {
                 enderecoCompleto = tabela.endereco;
             }
+            // 3. Fallback extremo: monta a partir de cidade/UF/CEP
+            else {
+                let partes = [];
+                if (tabela.cidade) partes.push(tabela.cidade);
+                if (tabela.uf) partes.push(tabela.uf);
+                if (tabela.cep) partes.push('CEP: ' + tabela.cep);
+                if (partes.length > 0) {
+                    enderecoCompleto = partes.join(' - ');
+                }
+            }
 
-            // 3. Adiciona cidade/UF e CEP se disponíveis (para complementar)
+            // 4. Adiciona cidade/UF e CEP se disponíveis e se não estiverem já incluídos
             let cidadeUf = '';
             if (tabela.cidade) {
                 cidadeUf = tabela.cidade;
@@ -1868,14 +1878,15 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                     cidadeUf += ` - ${tabela.uf}`;
                 }
             }
-            // Se o endereço já não contém a cidade, adiciona ao final
             if (cidadeUf && !enderecoCompleto.includes(cidadeUf)) {
                 enderecoCompleto += (enderecoCompleto ? ', ' : '') + cidadeUf;
             }
-            // Adiciona CEP
             if (tabela.cep && !enderecoCompleto.includes(tabela.cep)) {
                 enderecoCompleto += (enderecoCompleto ? ' - CEP: ' : 'CEP: ') + tabela.cep;
             }
+
+            // Se ainda assim ficou vazio, coloca um placeholder
+            if (!enderecoCompleto) enderecoCompleto = 'Endereço não informado';
 
             // Dicionário de dados para os campos da impressão
             const dadosCliente = {
@@ -1883,7 +1894,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 'CNPJ': tabela.cnpj || '-',
                 'TELEFONE': tabela.telefone || '-',
                 'PEDIDO': tabela.id || '-',
-                'ENDERECO': enderecoCompleto || '-',
+                'ENDERECO': enderecoCompleto,
                 'BAIRRO': tabela.bairro || '-',
                 'CIDADE': cidadeUf || '-',
                 'UF': tabela.uf || '-',
@@ -1892,7 +1903,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 'EMAIL': tabela.email || '-'
             };
 
-            // Mapeia cada campo configurado
             const mapa = {};
             campos.forEach(campo => {
                 const id = campo.id;
@@ -1903,9 +1913,10 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 }
             });
 
-            // Log para depuração
-            console.log('Endereço montado:', enderecoCompleto);
-            console.log('Mapa de campos:', mapa);
+            // Logs detalhados para depuração
+            console.log('🔍 Objeto tabela recebido:', tabela);
+            console.log('🏠 Endereço montado:', enderecoCompleto);
+            console.log('📋 Mapa de campos:', mapa);
 
             return mapa;
         }
