@@ -2451,6 +2451,74 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         }
 
         // ============================================================
+        // INTEGRAÇÃO COM CNPJ.PW
+        // ============================================================
+        const campoCnpj = document.getElementById('cnpj');
+
+        campoCnpj.addEventListener('blur', function() {
+            const cnpj = this.value.replace(/\D/g, '');
+            if (cnpj.length === 14) {
+                buscarCnpj(cnpj);
+            }
+        });
+
+        async function buscarCnpj(cnpj) {
+            const campo = document.getElementById('cnpj');
+            const original = campo.value;
+
+            try {
+                campo.value = 'Buscando...';
+                campo.disabled = true;
+
+                const response = await fetch(`https://cnpj.pw/api/cnpj/${cnpj}`);
+                if (!response.ok) throw new Error('CNPJ não encontrado');
+
+                const data = await response.json();
+
+                // Cliente (razão social)
+                if (data.razao_social) {
+                    document.getElementById('cliente').value = data.razao_social;
+                } else if (data.nome_fantasia) {
+                    document.getElementById('cliente').value = data.nome_fantasia;
+                }
+
+                // Endereço
+                if (data.logradouro && data.numero && data.bairro && data.municipio && data.uf) {
+                    const endereco = `${data.logradouro}, ${data.numero} - ${data.bairro}, ${data.municipio} - ${data.uf}`;
+                    document.getElementById('endereco').value = endereco;
+                } else if (data.endereco) {
+                    document.getElementById('endereco').value = data.endereco;
+                }
+
+                // Telefone
+                if (data.telefone1) {
+                    document.getElementById('telefone').value = data.telefone1;
+                } else if (data.telefone) {
+                    document.getElementById('telefone').value = data.telefone;
+                }
+
+                // E-mail
+                if (data.email) {
+                    document.getElementById('email').value = data.email;
+                }
+
+                // Inscrição Estadual
+                if (data.inscricao_estadual) {
+                    document.getElementById('ie').value = data.inscricao_estadual;
+                }
+
+                mostrarToast('Dados do CNPJ carregados com sucesso!', 'success');
+            } catch (error) {
+                mostrarToast('Erro ao buscar CNPJ: ' + error.message, 'error');
+                campo.value = original; // restaura o que foi digitado
+            } finally {
+                campo.disabled = false;
+                // Mantém o CNPJ sem formatação (pode ser melhorado com máscara)
+                campo.value = cnpj;
+            }
+        }
+
+        // ============================================================
         // EVENTOS
         // ============================================================
         elements.btnNovo.addEventListener('click', abrirModalNovo);
