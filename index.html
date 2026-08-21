@@ -752,18 +752,6 @@
             max-width: 130px;
             object-fit: contain;
         }
-
-        .cnpj-loading {
-            position: relative;
-        }
-        .cnpj-loading::after {
-            content: '⏳';
-            position: absolute;
-            right: 8px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 14px;
-        }
     </style>
 </head>
 <body class="retro-system">
@@ -1849,13 +1837,15 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         }
 
         // ============================================================
-        // MAPEAMENTO DE CAMPOS
+        // MAPEAMENTO DE CAMPOS - VERSÃO MELHORADA
         // ============================================================
         function mapearCampos(tabela) {
             const campos = configImpressao.campos;
-            
-            // Monta endereço completo a partir dos campos separados
+
+            // --- Montagem do endereço completo com fallback ---
             let enderecoCompleto = '';
+
+            // 1. Tenta usar os campos separados (novo formato)
             if (tabela.logradouro) {
                 enderecoCompleto = tabela.logradouro;
                 if (tabela.numero) {
@@ -1864,8 +1854,13 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 if (tabela.bairro) {
                     enderecoCompleto += ` - ${tabela.bairro}`;
                 }
+            } 
+            // 2. Fallback: se não tiver logradouro, tenta o campo antigo 'endereco'
+            else if (tabela.endereco) {
+                enderecoCompleto = tabela.endereco;
             }
-            
+
+            // 3. Adiciona cidade/UF e CEP se disponíveis (para complementar)
             let cidadeUf = '';
             if (tabela.cidade) {
                 cidadeUf = tabela.cidade;
@@ -1873,7 +1868,16 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                     cidadeUf += ` - ${tabela.uf}`;
                 }
             }
-            
+            // Se o endereço já não contém a cidade, adiciona ao final
+            if (cidadeUf && !enderecoCompleto.includes(cidadeUf)) {
+                enderecoCompleto += (enderecoCompleto ? ', ' : '') + cidadeUf;
+            }
+            // Adiciona CEP
+            if (tabela.cep && !enderecoCompleto.includes(tabela.cep)) {
+                enderecoCompleto += (enderecoCompleto ? ' - CEP: ' : 'CEP: ') + tabela.cep;
+            }
+
+            // Dicionário de dados para os campos da impressão
             const dadosCliente = {
                 'NOME': tabela.cliente || '-',
                 'CNPJ': tabela.cnpj || '-',
@@ -1887,6 +1891,8 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 'IE': tabela.ie || '-',
                 'EMAIL': tabela.email || '-'
             };
+
+            // Mapeia cada campo configurado
             const mapa = {};
             campos.forEach(campo => {
                 const id = campo.id;
@@ -1896,11 +1902,16 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                     mapa[id] = tabela[campo.id] || '-';
                 }
             });
+
+            // Log para depuração
+            console.log('Endereço montado:', enderecoCompleto);
+            console.log('Mapa de campos:', mapa);
+
             return mapa;
         }
 
         // ============================================================
-        // PRÉ-VISUALIZAÇÃO E IMPRESSÃO (com assinaturas no rodapé)
+        // PRÉ-VISUALIZAÇÃO E IMPRESSÃO
         // ============================================================
         function atualizarPreview() {
             const exemplo = {
@@ -2551,7 +2562,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         }
 
         // ============================================================
-        // INTEGRAÇÃO COM CNPJ.PW - CORRIGIDA COM ENDEREÇO SEPARADO
+        // INTEGRAÇÃO COM CNPJ.PW - COM FALLBACK PARA ENDEREÇO
         // ============================================================
         const campoCnpj = document.getElementById('cnpj');
 
@@ -2603,41 +2614,55 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 // Verifica situação cadastral
                 const situacao = data.situacao_cadastral;
                 if (situacao && (situacao === 3 || situacao === 4 || situacao === 8)) {
-                    mostrarToast('⚠️ Empresa com situação: ' + (data.situacao_cadastral_descricao || 'inválida'),
-                        'error');
+                    mostrarToast('⚠️ Empresa com situação: ' + (data.situacao_cadastral_descricao || 'inválida'), 'error');
                 }
 
-                // Nome Empresarial (Razão Social)
+                // --- Nome Empresarial ---
                 if (data.nome_empresarial) {
                     document.getElementById('cliente').value = data.nome_empresarial;
                 } else if (data.nome_fantasia) {
                     document.getElementById('cliente').value = data.nome_fantasia;
                 }
 
-                // ENDEREÇO SEPARADO
-                if (data.logradouro) {
-                    document.getElementById('logradouro').value = data.logradouro;
+                // --- Endereço separado com fallback ---
+                let logradouro = data.logradouro || '';
+                let numero = data.numero || '';
+                let bairro = data.bairro || '';
+                let cidade = data.municipio_desc || '';
+                let uf = data.uf || '';
+                let cep = data.cep || data.codigo_cep || '';
+
+                // Se não veio logradouro, tenta extrair do campo 'endereco' (caso exista)
+                if (!logradouro && data.endereco) {
+                    const partes = data.endereco.split(',');
+                    if (partes.length > 0) {
+                        logradouro = partes[0].trim();
+                    }
+                    // tenta extrair número
+                    if (!numero) {
+                        const match = data.endereco.match(/,?\s*(\d+)\s*/);
+                        if (match) numero = match[1];
+                    }
+                    // tenta extrair bairro (após '-' ou ',')
+                    if (!bairro) {
+                        const partes2 = data.endereco.split('-');
+                        if (partes2.length > 1) {
+                            bairro = partes2[1].trim();
+                        } else {
+                            const partes3 = data.endereco.split(',');
+                            if (partes3.length > 2) {
+                                bairro = partes3[2].trim();
+                            }
+                        }
+                    }
                 }
-                if (data.numero) {
-                    document.getElementById('numero').value = data.numero;
-                } else {
-                    document.getElementById('numero').value = 's/n';
-                }
-                if (data.bairro) {
-                    document.getElementById('bairro').value = data.bairro;
-                }
-                if (data.municipio_desc) {
-                    document.getElementById('cidade').value = data.municipio_desc;
-                }
-                if (data.uf) {
-                    document.getElementById('uf').value = data.uf;
-                }
-                // CEP - a API pode retornar cep ou codigo_cep
-                if (data.cep) {
-                    document.getElementById('cep').value = data.cep;
-                } else if (data.codigo_cep) {
-                    document.getElementById('cep').value = data.codigo_cep;
-                }
+
+                document.getElementById('logradouro').value = logradouro || '';
+                document.getElementById('numero').value = numero || 's/n';
+                document.getElementById('bairro').value = bairro || '';
+                document.getElementById('cidade').value = cidade || '';
+                document.getElementById('uf').value = uf || '';
+                document.getElementById('cep').value = cep || '';
 
                 // Telefone
                 if (data.telefone_1) {
@@ -2660,11 +2685,13 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 }
 
                 if (situacao && (situacao === 3 || situacao === 4 || situacao === 8)) {
-                    mostrarToast('⚠️ Atenção: Empresa com situação ' + (data.situacao_cadastral_descricao || 'inválida'),
-                        'error');
+                    mostrarToast('⚠️ Atenção: Empresa com situação ' + (data.situacao_cadastral_descricao || 'inválida'), 'error');
                 } else {
                     mostrarToast('✅ Dados do CNPJ carregados com sucesso!', 'success');
                 }
+
+                // Log para depuração
+                console.log('Dados recebidos da API:', data);
 
             } catch (error) {
                 console.error('Erro na busca do CNPJ:', error);
