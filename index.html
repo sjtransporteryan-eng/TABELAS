@@ -2967,7 +2967,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         });
 
         // ============================================================
-        // FUNÇÕES SUPABASE - CLIENTES E COLETAS
+        // FUNÇÕES SUPABASE - CLIENTES E COLETAS (CORRIGIDAS)
         // ============================================================
         const supabaseHeaders = {
             'apikey': SUPABASE_ANON_KEY,
@@ -2980,7 +2980,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 const response = await fetch(`${SUPABASE_URL}/rest/v1/clientes_coleta?select=*&order=id.asc`, {
                     headers: supabaseHeaders
                 });
-                if (!response.ok) throw new Error('Erro ao carregar clientes');
+                if (!response.ok) throw new Error(`Erro ${response.status}: ${response.statusText}`);
                 clientesColeta = await response.json();
                 return clientesColeta;
             } catch (error) {
@@ -2996,7 +2996,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 const response = await fetch(url, {
                     headers: supabaseHeaders
                 });
-                if (!response.ok) throw new Error('Erro ao carregar coletas');
+                if (!response.ok) throw new Error(`Erro ${response.status}: ${response.statusText}`);
                 coletas = await response.json();
                 return coletas;
             } catch (error) {
@@ -3013,12 +3013,18 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                     headers: supabaseHeaders,
                     body: JSON.stringify(dados)
                 });
-                if (!response.ok) throw new Error('Erro ao criar cliente');
-                const novo = await response.json();
-                return novo[0];
+                const text = await response.text(); // ler corpo como texto primeiro
+                if (!response.ok) {
+                    console.error('Erro resposta:', text);
+                    throw new Error(`Erro ${response.status}: ${text || response.statusText}`);
+                }
+                // Se a resposta não for JSON, retorna vazio
+                if (!text) return null;
+                const json = JSON.parse(text);
+                return json[0] || json; // Supabase retorna array com o objeto criado
             } catch (error) {
                 console.error('Erro criar cliente:', error);
-                mostrarToast('Erro ao criar cliente.', 'error');
+                mostrarToast('Erro ao criar cliente: ' + error.message, 'error');
                 return null;
             }
         }
@@ -3030,12 +3036,17 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                     headers: supabaseHeaders,
                     body: JSON.stringify(dados)
                 });
-                if (!response.ok) throw new Error('Erro ao criar coleta');
-                const nova = await response.json();
-                return nova[0];
+                const text = await response.text();
+                if (!response.ok) {
+                    console.error('Erro resposta:', text);
+                    throw new Error(`Erro ${response.status}: ${text || response.statusText}`);
+                }
+                if (!text) return null;
+                const json = JSON.parse(text);
+                return json[0] || json;
             } catch (error) {
                 console.error('Erro criar coleta:', error);
-                mostrarToast('Erro ao criar coleta.', 'error');
+                mostrarToast('Erro ao criar coleta: ' + error.message, 'error');
                 return null;
             }
         }
@@ -3047,12 +3058,15 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                     headers: supabaseHeaders,
                     body: JSON.stringify({ status })
                 });
-                if (!response.ok) throw new Error('Erro ao atualizar coleta');
+                if (!response.ok) {
+                    const text = await response.text();
+                    throw new Error(`Erro ${response.status}: ${text}`);
+                }
                 mostrarToast('Status da coleta atualizado!', 'success');
                 return true;
             } catch (error) {
                 console.error('Erro atualizar coleta:', error);
-                mostrarToast('Erro ao atualizar coleta.', 'error');
+                mostrarToast('Erro ao atualizar coleta: ' + error.message, 'error');
                 return false;
             }
         }
