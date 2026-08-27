@@ -7,7 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         /* ============================================================
-           LEGACY SYSTEM UI DESIGNER - CSS
+           LAYOUT EM TELA CHEIA - SEM JANELA
            ============================================================ */
         * {
             margin: 0;
@@ -16,55 +16,39 @@
         }
 
         body.retro-system {
-            background: #008080;
+            background: #f0f0f0;
             font-family: 'Tahoma', 'Geneva', 'MS Sans Serif', sans-serif;
             font-size: 12px;
             color: #000;
-            padding: 20px;
-            cursor: default;
             min-height: 100vh;
             display: flex;
-            justify-content: center;
-            align-items: flex-start;
-        }
-
-        .window {
-            background: #ece9d8;
-            border: 2px solid;
-            border-color: #fff #404040 #404040 #fff;
-            box-shadow: 4px 4px 10px rgba(0,0,0,0.5);
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
             flex-direction: column;
-            min-height: 80vh;
+            cursor: default;
         }
 
-        .window-title {
+        /* Barra superior fixa (título) */
+        .app-header {
             background: linear-gradient(180deg, #6b9fd4 0%, #3a6ea5 100%);
             color: #fff;
             font-weight: bold;
-            padding: 4px 8px;
+            padding: 6px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            cursor: default;
             user-select: none;
-            font-size: 13px;
-            letter-spacing: 0.5px;
+            font-size: 14px;
             border-bottom: 1px solid #404040;
+            flex-shrink: 0;
         }
 
-        .window-title .title-text {
+        .app-header .title-text {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
-        .window-title .title-text .sj-logo-img {
+        .app-header .title-text .sj-logo-img {
             height: 40px;
-            width: auto;
             background: #fff;
             padding: 4px 12px 4px 8px;
             border: 1px solid;
@@ -73,19 +57,18 @@
             align-items: center;
         }
 
-        .window-title .title-text .sj-logo-img img {
+        .app-header .title-text .sj-logo-img img {
             height: 100%;
-            width: auto;
             max-height: 36px;
             object-fit: contain;
         }
 
-        .window-title .controls {
+        .app-header .controls {
             display: flex;
             gap: 4px;
         }
 
-        .window-title .controls span {
+        .app-header .controls span {
             display: inline-block;
             width: 18px;
             height: 18px;
@@ -100,18 +83,18 @@
             cursor: default;
         }
 
-        .window-title .controls span:hover {
+        .app-header .controls span:hover {
             background: #c0c0c0;
         }
 
         .menu-bar {
             background: #ece9d8;
-            padding: 2px 8px;
+            padding: 2px 16px;
             border-bottom: 1px solid #a0a0a0;
             display: flex;
             gap: 16px;
             font-size: 12px;
-            cursor: default;
+            flex-shrink: 0;
         }
 
         .menu-bar .menu-item {
@@ -124,22 +107,24 @@
             color: #fff;
         }
 
-        .window-body {
-            padding: 12px;
+        .app-body {
+            padding: 16px;
             flex: 1;
             overflow-y: auto;
+            background: #fff;
         }
 
         .status-bar {
             background: #ece9d8;
             border-top: 1px solid #a0a0a0;
-            padding: 2px 8px;
+            padding: 2px 16px;
             display: flex;
             justify-content: space-between;
             font-size: 11px;
             color: #000;
-            min-height: 22px;
+            min-height: 24px;
             align-items: center;
+            flex-shrink: 0;
         }
 
         .status-bar .status-left { display: flex; align-items: center; gap: 12px; }
@@ -157,7 +142,7 @@
             color: #000;
             padding: 0 6px;
             font-size: 12px;
-            background: #ece9d8;
+            background: #fff;
         }
 
         .input {
@@ -381,10 +366,15 @@
             min-height: auto;
             width: 100%;
             margin: 0;
-            box-shadow: 6px 6px 15px rgba(0,0,0,0.6);
+            background: #ece9d8;
+            border: 2px solid;
+            border-color: #fff #404040 #404040 #fff;
+            box-shadow: 4px 4px 10px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
         }
 
-        .modal-overlay .window .window-body { overflow-y: auto; }
+        .modal-overlay .window .window-body { overflow-y: auto; padding: 12px; }
 
         .table-fixed {
             font-size: 12px;
@@ -456,9 +446,7 @@
             border-top: 2px solid #06458F;
         }
 
-        /* ============================================================
-           IMPRESSÃO - com assinaturas no rodapé
-           ============================================================ */
+        /* Impressão - mantido igual */
         @media print {
             body.retro-system * { visibility: hidden; }
             #modalImprimir,
@@ -589,9 +577,6 @@
                 margin-bottom: 15px;
             }
 
-            /* ============================================================
-               RODAPÉ COM ASSINATURAS - mais abaixo
-               ============================================================ */
             #modalImprimir .window-body .rodape-assinaturas {
                 margin-top: auto;
                 padding-top: 30px;
@@ -629,7 +614,6 @@
                 font-weight: bold;
             }
 
-            /* SINOP-MT - Data/Hora - MANTIDO COMO ANTES */
             #modalImprimir .window-body .rodape-info {
                 display: flex;
                 justify-content: flex-start;
@@ -650,13 +634,12 @@
         }
 
         @media (max-width: 640px) {
-            body.retro-system { padding: 8px; }
-            .window { max-width: 100%; min-height: auto; }
+            .app-body { padding: 8px; }
             .form-row .field { flex: 1 0 100%; }
             .add-cidade-row select,
             .add-cidade-row input { flex: 1 0 80px; }
-            .window-title .title-text .sj-logo-img { height: 30px; padding: 2px 8px; }
-            .window-title .title-text .sj-logo-img img { max-height: 26px; }
+            .app-header .title-text .sj-logo-img { height: 30px; padding: 2px 8px; }
+            .app-header .title-text .sj-logo-img img { max-height: 26px; }
             .fab { bottom: 16px; right: 16px; padding: 8px 12px; font-size: 16px; }
             .modal-overlay { padding: 8px; }
             .modal-overlay .window { max-width: 100%; max-height: 100vh; border-radius: 0; }
@@ -752,79 +735,128 @@
             max-width: 130px;
             object-fit: contain;
         }
+
+        /* Títulos dos modais (janelas internas) */
+        .modal-overlay .window-title {
+            background: linear-gradient(180deg, #6b9fd4 0%, #3a6ea5 100%);
+            color: #fff;
+            font-weight: bold;
+            padding: 4px 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            border-bottom: 1px solid #404040;
+            flex-shrink: 0;
+        }
+
+        .modal-overlay .window-title .title-text {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-overlay .window-title .controls {
+            display: flex;
+            gap: 4px;
+        }
+
+        .modal-overlay .window-title .controls span {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            background: #ece9d8;
+            color: #000;
+            text-align: center;
+            line-height: 18px;
+            font-size: 12px;
+            font-weight: bold;
+            border: 1px solid;
+            border-color: #fff #404040 #404040 #fff;
+            cursor: default;
+        }
+
+        .modal-overlay .window-title .controls span:hover {
+            background: #c0c0c0;
+        }
     </style>
 </head>
 <body class="retro-system">
 
     <!-- ============================================================
-         JANELA PRINCIPAL
+         CABEÇALHO PRINCIPAL (TELA CHEIA)
          ============================================================ -->
-    <div class="window">
-        <div class="window-title">
-            <div class="title-text">
-                <div class="sj-logo-img" id="headerLogo">
-                    <img src="https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png" alt="SJ Transportes e Logistica" id="headerLogoImg">
-                </div>
+    <header class="app-header">
+        <div class="title-text">
+            <div class="sj-logo-img" id="headerLogo">
+                <img src="https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png" alt="SJ Transportes e Logistica" id="headerLogoImg">
             </div>
-            <div class="controls">
-                <span>_</span>
-                <span>□</span>
-                <span>X</span>
-            </div>
+            <span>Sistema de Tabela de Fretes</span>
+        </div>
+        <div class="controls">
+            <span>_</span>
+            <span>□</span>
+            <span>X</span>
+        </div>
+    </header>
+
+    <div class="menu-bar">
+        <span class="menu-item">Arquivo</span>
+        <span class="menu-item">Editar</span>
+        <span class="menu-item">Consultas</span>
+        <span class="menu-item">Ajuda</span>
+    </div>
+
+    <!-- ============================================================
+         CORPO PRINCIPAL
+         ============================================================ -->
+    <div class="app-body">
+        <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
+            <button class="btn btn-primary" id="btnNovo">Nova Tabela</button>
+            <button class="btn" id="btnConfigurar">Configurar Impressao</button>
         </div>
 
-        <div class="menu-bar">
-            <span class="menu-item">Arquivo</span>
-            <span class="menu-item">Editar</span>
-            <span class="menu-item">Consultas</span>
-            <span class="menu-item">Ajuda</span>
+        <div class="search-row">
+            <input type="text" id="searchInput" class="input" placeholder="Buscar por cliente, origem ou destino..." style="flex:1;">
+            <button class="btn" id="btnBuscar">Buscar</button>
+            <button class="btn" id="btnLimpar">Limpar</button>
         </div>
 
-        <div class="window-body">
-            <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
-                <button class="btn btn-primary" id="btnNovo">Nova Tabela</button>
-                <button class="btn" id="btnConfigurar">Configurar Impressao</button>
-            </div>
-
-            <div class="search-row">
-                <input type="text" id="searchInput" class="input" placeholder="Buscar por cliente, origem ou destino..." style="flex:1;">
-                <button class="btn" id="btnBuscar">Buscar</button>
-                <button class="btn" id="btnLimpar">Limpar</button>
-            </div>
-
-            <div class="table-wrap">
-                <table class="table" id="tabelaPrincipal">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Cliente</th>
-                            <th>Origem</th>
-                            <th>Destino</th>
-                            <th>Cidades</th>
-                            <th>Data</th>
-                            <th>Acoes</th>
-                        </tr>
-                    </thead>
-                    <tbody id="corpoTabela">
-                        <tr>
-                            <td colspan="7" style="text-align:center; padding:20px; color:#666;">
-                                Nenhuma tabela encontrada
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <div class="table-wrap">
+            <table class="table" id="tabelaPrincipal">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Cliente</th>
+                        <th>Origem</th>
+                        <th>Destino</th>
+                        <th>Cidades</th>
+                        <th>Data</th>
+                        <th>Acoes</th>
+                    </tr>
+                </thead>
+                <tbody id="corpoTabela">
+                    <tr>
+                        <td colspan="7" style="text-align:center; padding:20px; color:#666;">
+                            Nenhuma tabela encontrada
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
+    </div>
 
-        <div class="status-bar">
-            <div class="status-left">
-                <span>Pronto</span>
-                <span>|</span>
-                <span>Registros: <strong id="totalTabelas">0</strong></span>
-            </div>
-            <div class="status-right">
-                <span>Ultima atualizacao: <strong id="ultimaAtualizacao">-</strong></span>
-            </div>
+    <!-- ============================================================
+         RODAPÉ
+         ============================================================ -->
+    <div class="status-bar">
+        <div class="status-left">
+            <span>Pronto</span>
+            <span>|</span>
+            <span>Registros: <strong id="totalTabelas">0</strong></span>
+        </div>
+        <div class="status-right">
+            <span>Ultima atualizacao: <strong id="ultimaAtualizacao">-</strong></span>
         </div>
     </div>
 
@@ -948,7 +980,6 @@
                         </div>
                     </fieldset>
 
-                    <!-- ENDEREÇO SEPARADO EM CAMPOS INDIVIDUAIS -->
                     <fieldset class="group-box">
                         <legend>Endereço</legend>
                         <div class="form-row">
@@ -1895,7 +1926,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 'TELEFONE': tabela.telefone || '-',
                 'PEDIDO': tabela.id || '-',
                 'ENDERECO': enderecoCompleto,
-                // 🔽 NOVOS CAMPOS ADICIONADOS PARA SUPORTAR RUA/LOGRADOURO
                 'RUA': tabela.logradouro || '-',
                 'LOGRADOURO': tabela.logradouro || '-',
                 'NUMERO': tabela.numero || '-',
@@ -1917,7 +1947,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 }
             });
 
-            // Logs detalhados para depuração
             console.log('🔍 Objeto tabela recebido:', tabela);
             console.log('🏠 Endereço montado:', enderecoCompleto);
             console.log('📋 Mapa de campos:', mapa);
@@ -2001,40 +2030,30 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             const logoUrl = cfg.logoUrl || 'https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png';
             const logoTamanho = cfg.logoMaxHeight || 80;
 
-            // Data e hora atuais
             const dataHoraAtual = new Date().toLocaleString('pt-BR');
-
-            // Nome do cliente para a assinatura
             const nomeCliente = tabela.cliente || 'Cliente';
 
             const html = `
                 <div style="max-width:${cfg.larguraMaxima}px; margin:0 auto; font-family:'Tahoma','Geneva',sans-serif; background:#fff; padding:${preview ? '4px' : '10px'}; display:flex; flex-direction:column; min-height:100%;">
 
-                    <!-- Conteúdo principal -->
                     <div class="conteudo-impressao" style="flex:1;">
-
-                        <!-- Logo -->
                         <div class="sj-logo-print" style="display:flex; justify-content:center; align-items:center; margin-bottom:${preview ? '8px' : '14px'}; border-bottom:2px solid #06458F; padding-bottom:${preview ? '6px' : '10px'};">
                             <img src="${logoUrl}" alt="SJ Transportes e Logistica" style="max-height:${preview ? Math.min(logoTamanho * 0.6, 60) : logoTamanho}px; width:auto; object-fit:contain;">
                         </div>
 
-                        <!-- Endereco -->
                         <div class="endereco-print" style="text-align:center; font-size:${preview ? '10px' : '12px'}; margin-bottom:${preview ? '6px' : '14px'}; color:#333;">
                             ${enderecoHTML}
                         </div>
 
-                        <!-- Informacoes do cliente -->
                         <div class="info-cliente-print" style="display:grid; grid-template-columns:1fr 1fr; gap:2px 20px; font-size:11px; background:#f5f5f0; padding:6px 12px; border:1px solid #a0a0a0; margin-bottom:10px;">
                             ${camposHTML}
                         </div>
 
-                        <!-- Origem / Destino -->
                         <div class="origem-destino-print" style="display:flex; justify-content:space-between; background:#e9ecef; padding:4px 12px; font-weight:bold; font-size:12px; margin-bottom:10px; border:1px solid #a0a0a0;">
                             <span>ORIGEM: ${tabela.origem}</span>
                             <span>DESTINO: ${tabela.destino}</span>
                         </div>
 
-                        <!-- Tabela -->
                         <table class="table-print" style="width:100%; border-collapse:collapse; ${styleTable}">
                             <thead>
                                 <tr>
@@ -2058,28 +2077,20 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                             </tbody>
                         </table>
 
-                        <!-- Observacao -->
                         ${tabela.observacao ? `<div class="observacao-print" style="font-size:11px; padding:4px 10px; border:1px solid #ccc; background:#f9f9f9; margin-bottom:15px;"><strong>Observacao:</strong> ${tabela.observacao}</div>` : ''}
                     </div>
 
-                    <!-- ============================================================
-                         RODAPÉ COM ASSINATURAS - mais abaixo
-                         ============================================================ -->
                     <div class="rodape-assinaturas" style="margin-top:auto; padding-top:30px; border-top:2px solid #333; display:flex; justify-content:space-between; align-items:flex-end; padding-bottom:0; margin-bottom:0; min-height:100px;">
-                        <!-- Assinatura do Cliente (esquerda) -->
                         <div class="assinatura-cliente" style="flex:1; text-align:left; padding-right:20px;">
                             <div class="linha-assinatura" style="border-bottom:1px solid #333; width:100%; height:1px; margin-bottom:4px;"></div>
                             <span class="nome-assinatura" style="font-size:11px; color:#333; font-weight:bold;">${nomeCliente}</span>
                         </div>
-
-                        <!-- Assinatura da Empresa (direita) -->
                         <div class="assinatura-empresa" style="flex:1; text-align:right; padding-left:20px;">
                             <div class="linha-assinatura" style="border-bottom:1px solid #333; width:100%; height:1px; margin-bottom:4px;"></div>
                             <span class="nome-assinatura" style="font-size:11px; color:#333; font-weight:bold;">SJ Transportes e Logística</span>
                         </div>
                     </div>
 
-                    <!-- SINOP-MT - Data/Hora - MANTIDO COMO ANTES -->
                     <div class="rodape-info" style="display:flex; justify-content:flex-start; align-items:center; margin-top:10px; padding-top:8px; border-top:1px solid #ddd; font-size:10px; color:#999;">
                         <span class="sinop-data" style="text-align:left; font-weight:bold; color:#333; font-size:10px;">SINOP-MT - ${dataHoraAtual}</span>
                     </div>
@@ -2577,7 +2588,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         }
 
         // ============================================================
-        // INTEGRAÇÃO COM CNPJ.PW - COM FALLBACK PARA ENDEREÇO
+        // INTEGRAÇÃO COM CNPJ - BRASILAPI PRINCIPAL + CNPJ.PW FALLBACK
         // ============================================================
         const campoCnpj = document.getElementById('cnpj');
 
@@ -2600,6 +2611,10 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             }
         });
 
+        /**
+         * Busca dados do CNPJ usando BrasilAPI como principal,
+         * e cnpj.pw como fallback em caso de falha.
+         */
         async function buscarCnpj(cnpj) {
             const campo = document.getElementById('cnpj');
             const original = campo.value;
@@ -2609,68 +2624,95 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 return;
             }
 
+            campo.value = '⏳ Buscando...';
+            campo.disabled = true;
+            campo.style.color = '#666';
+
+            let data = null;
+            let origem = '';
+
+            // 1. Tenta BrasilAPI primeiro
             try {
-                campo.value = '⏳ Buscando...';
-                campo.disabled = true;
-                campo.style.color = '#666';
-
-                const response = await fetch(`https://api.cnpj.pw/cnpj/${cnpj}`);
-
-                if (response.status === 503) {
-                    throw new Error('Limite de requisições excedido. Aguarde um momento e tente novamente.');
+                const response = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`);
+                if (response.ok) {
+                    data = await response.json();
+                    origem = 'BrasilAPI';
+                } else if (response.status === 429) {
+                    mostrarToast('⚠️ Limite da BrasilAPI excedido, tentando fallback...', 'error');
+                } else {
+                    throw new Error(`BrasilAPI retornou status ${response.status}`);
                 }
+            } catch (error) {
+                console.warn('BrasilAPI falhou:', error.message);
+                mostrarToast('⚠️ BrasilAPI indisponível, usando fallback...', 'error');
+            }
 
-                if (!response.ok) {
-                    throw new Error(`CNPJ não encontrado (status ${response.status})`);
+            // 2. Se BrasilAPI falhou, tenta cnpj.pw
+            if (!data) {
+                try {
+                    const response = await fetch(`https://api.cnpj.pw/cnpj/${cnpj}`);
+                    if (response.status === 503) {
+                        throw new Error('Limite de requisições do cnpj.pw excedido.');
+                    }
+                    if (!response.ok) throw new Error(`cnpj.pw retornou status ${response.status}`);
+                    data = await response.json();
+                    origem = 'cnpj.pw';
+                } catch (error) {
+                    console.error('Fallback cnpj.pw também falhou:', error);
+                    mostrarToast('❌ Ambas as APIs falharam. Verifique sua conexão.', 'error');
+                    campo.value = original;
+                    campo.disabled = false;
+                    campo.style.color = '#000';
+                    return;
                 }
+            }
 
-                const data = await response.json();
+            // Se ainda não temos dados, abortar
+            if (!data) {
+                mostrarToast('❌ Não foi possível obter dados do CNPJ.', 'error');
+                campo.value = original;
+                campo.disabled = false;
+                campo.style.color = '#000';
+                return;
+            }
 
-                // Verifica situação cadastral
-                const situacao = data.situacao_cadastral;
-                if (situacao && (situacao === 3 || situacao === 4 || situacao === 8)) {
-                    mostrarToast('⚠️ Empresa com situação: ' + (data.situacao_cadastral_descricao || 'inválida'), 'error');
-                }
-
-                // --- Nome Empresarial ---
-                if (data.nome_empresarial) {
-                    document.getElementById('cliente').value = data.nome_empresarial;
+            // 3. Preencher os campos com os dados obtidos
+            try {
+                // Nome
+                if (data.razao_social || data.nome_empresarial) {
+                    document.getElementById('cliente').value = data.razao_social || data.nome_empresarial || '';
                 } else if (data.nome_fantasia) {
                     document.getElementById('cliente').value = data.nome_fantasia;
                 }
 
-                // --- Endereço separado com fallback ---
+                // IE (Inscrição Estadual)
+                let ie = data.inscricao_estadual || data.ie || '';
+                if (ie) {
+                    document.getElementById('ie').value = ie;
+                } else {
+                    document.getElementById('ie').value = '';
+                    mostrarToast('⚠️ IE não encontrada nesta fonte.', 'error');
+                }
+
+                // Endereço
                 let logradouro = data.logradouro || '';
                 let numero = data.numero || '';
                 let bairro = data.bairro || '';
-                let cidade = data.municipio_desc || '';
+                let cidade = data.municipio || data.municipio_desc || '';
                 let uf = data.uf || '';
                 let cep = data.cep || data.codigo_cep || '';
 
-                // Se não veio logradouro, tenta extrair do campo 'endereco' (caso exista)
+                // Fallback para campos vazios (caso venha do cnpj.pw com nomes diferentes)
                 if (!logradouro && data.endereco) {
                     const partes = data.endereco.split(',');
-                    if (partes.length > 0) {
-                        logradouro = partes[0].trim();
-                    }
-                    // tenta extrair número
+                    if (partes.length > 0) logradouro = partes[0].trim();
                     if (!numero) {
                         const match = data.endereco.match(/,?\s*(\d+)\s*/);
                         if (match) numero = match[1];
                     }
-                    // tenta extrair bairro (após '-' ou ',')
-                    if (!bairro) {
-                        const partes2 = data.endereco.split('-');
-                        if (partes2.length > 1) {
-                            bairro = partes2[1].trim();
-                        } else {
-                            const partes3 = data.endereco.split(',');
-                            if (partes3.length > 2) {
-                                bairro = partes3[2].trim();
-                            }
-                        }
-                    }
                 }
+                if (!bairro && data.bairro_desc) bairro = data.bairro_desc;
+                if (!cidade && data.municipio_desc) cidade = data.municipio_desc;
 
                 document.getElementById('logradouro').value = logradouro || '';
                 document.getElementById('numero').value = numero || 's/n';
@@ -2680,42 +2722,25 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 document.getElementById('cep').value = cep || '';
 
                 // Telefone
-                if (data.telefone_1) {
-                    let telefone = data.telefone_1;
-                    if (data.ddd1) {
-                        telefone = `(${data.ddd1}) ${telefone}`;
-                    }
-                    document.getElementById('telefone').value = telefone;
-                } else if (data.telefone_2) {
-                    let telefone = data.telefone_2;
-                    if (data.ddd2) {
-                        telefone = `(${data.ddd2}) ${telefone}`;
-                    }
-                    document.getElementById('telefone').value = telefone;
+                let telefone = data.telefone_1 || data.telefone || '';
+                if (telefone && data.ddd1) {
+                    telefone = `(${data.ddd1}) ${telefone}`;
                 }
+                document.getElementById('telefone').value = telefone;
 
-                // E-mail
-                if (data.correio_eletronico) {
-                    document.getElementById('email').value = data.correio_eletronico;
-                }
+                // Email
+                document.getElementById('email').value = data.correio_eletronico || data.email || '';
 
-                if (situacao && (situacao === 3 || situacao === 4 || situacao === 8)) {
-                    mostrarToast('⚠️ Atenção: Empresa com situação ' + (data.situacao_cadastral_descricao || 'inválida'), 'error');
-                } else {
-                    mostrarToast('✅ Dados do CNPJ carregados com sucesso!', 'success');
-                }
-
-                // Log para depuração
-                console.log('Dados recebidos da API:', data);
+                mostrarToast(`✅ Dados carregados via ${origem}!`, 'success');
+                console.log(`Dados obtidos via ${origem}:`, data);
 
             } catch (error) {
-                console.error('Erro na busca do CNPJ:', error);
-                mostrarToast('❌ Erro: ' + error.message, 'error');
-                campo.value = original;
+                console.error('Erro ao preencher campos:', error);
+                mostrarToast('❌ Erro ao processar os dados.', 'error');
             } finally {
+                campo.value = cnpj;
                 campo.disabled = false;
                 campo.style.color = '#000';
-                campo.value = cnpj;
             }
         }
 
