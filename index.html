@@ -26,7 +26,6 @@
             cursor: default;
         }
 
-        /* Barra superior fixa (título) */
         .app-header {
             background: linear-gradient(180deg, #6b9fd4 0%, #3a6ea5 100%);
             color: #fff;
@@ -130,7 +129,6 @@
         .status-bar .status-left { display: flex; align-items: center; gap: 12px; }
         .status-bar .status-right { text-align: right; }
 
-        /* Restante dos estilos (mantido igual) */
         .group-box {
             border: 1px solid;
             border-color: #404040 #fff #fff #404040;
@@ -780,7 +778,6 @@
             background: #c0c0c0;
         }
 
-        /* Estilos específicos para Coleta */
         .status-pendente { color: #c00; font-weight: bold; }
         .status-feita { color: #060; font-weight: bold; }
     </style>
@@ -804,12 +801,9 @@
         </div>
     </header>
 
+    <!-- MENU - APENAS "COLETA" -->
     <div class="menu-bar">
-        <span class="menu-item">Arquivo</span>
-        <span class="menu-item">Editar</span>
-        <span class="menu-item">Consultas</span>
         <span class="menu-item" id="menuColeta" style="font-weight:bold; color:#06458F;">Coleta</span>
-        <span class="menu-item">Ajuda</span>
     </div>
 
     <!-- ============================================================
@@ -1407,7 +1401,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
     </div>
 
     <!-- ============================================================
-         MODAL - COLETA (NOVO)
+         MODAL - COLETA
          ============================================================ -->
     <div class="modal-overlay" id="modalColeta">
         <div class="window" style="max-width:950px;">
@@ -1456,7 +1450,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
     </div>
 
     <!-- ============================================================
-         MODAL - CADASTRO DE CLIENTE PARA COLETA
+         MODAL - CADASTRO DE CLIENTE PARA COLETA (COM BUSCA DE CNPJ)
          ============================================================ -->
     <div class="modal-overlay" id="modalClienteColeta">
         <div class="window" style="max-width:760px;">
@@ -1483,7 +1477,8 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                             </div>
                             <div class="field">
                                 <label>CNPJ/CPF</label>
-                                <input type="text" id="cnpjClienteColeta" class="input">
+                                <input type="text" id="cnpjClienteColeta" class="input" placeholder="Digite o CNPJ e saia do campo para buscar dados">
+                                <small style="color:#666; font-size:10px;">Digite o CNPJ e saia do campo para buscar dados automaticamente</small>
                             </div>
                         </div>
                         <div class="form-row">
@@ -2780,41 +2775,13 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         }
 
         // ============================================================
-        // INTEGRAÇÃO COM CNPJ (BrasilAPI + fallback) - mantida
+        // BUSCA DE CNPJ - REUTILIZÁVEL PARA COLETA
         // ============================================================
-        const campoCnpj = document.getElementById('cnpj');
-
-        campoCnpj.addEventListener('blur', function() {
-            const cnpj = this.value.replace(/\D/g, '');
-            if (cnpj.length === 14) {
-                buscarCnpj(cnpj);
-            }
-        });
-
-        campoCnpj.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                const cnpj = this.value.replace(/\D/g, '');
-                if (cnpj.length === 14) {
-                    buscarCnpj(cnpj);
-                } else {
-                    mostrarToast('Digite um CNPJ válido com 14 dígitos', 'error');
-                }
-            }
-        });
-
-        async function buscarCnpj(cnpj) {
-            const campo = document.getElementById('cnpj');
-            const original = campo.value;
-
+        async function buscarCnpjGenerico(cnpj, campos) {
             if (cnpj.length !== 14 || !/^\d{14}$/.test(cnpj)) {
                 mostrarToast('CNPJ inválido. Digite 14 números.', 'error');
-                return;
+                return null;
             }
-
-            campo.value = '⏳ Buscando...';
-            campo.disabled = true;
-            campo.style.color = '#666';
 
             let data = null;
             let origem = '';
@@ -2846,81 +2813,158 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 } catch (error) {
                     console.error('Fallback cnpj.pw também falhou:', error);
                     mostrarToast('❌ Ambas as APIs falharam. Verifique sua conexão.', 'error');
-                    campo.value = original;
-                    campo.disabled = false;
-                    campo.style.color = '#000';
-                    return;
+                    return null;
                 }
             }
 
             if (!data) {
                 mostrarToast('❌ Não foi possível obter dados do CNPJ.', 'error');
-                campo.value = original;
-                campo.disabled = false;
-                campo.style.color = '#000';
-                return;
+                return null;
             }
 
-            try {
-                if (data.razao_social || data.nome_empresarial) {
-                    document.getElementById('cliente').value = data.razao_social || data.nome_empresarial || '';
-                } else if (data.nome_fantasia) {
-                    document.getElementById('cliente').value = data.nome_fantasia;
-                }
-
-                let ie = data.inscricao_estadual || data.ie || '';
-                if (ie) {
-                    document.getElementById('ie').value = ie;
-                } else {
-                    document.getElementById('ie').value = '';
-                    mostrarToast('⚠️ IE não encontrada nesta fonte.', 'error');
-                }
-
-                let logradouro = data.logradouro || '';
-                let numero = data.numero || '';
-                let bairro = data.bairro || '';
-                let cidade = data.municipio || data.municipio_desc || '';
-                let uf = data.uf || '';
-                let cep = data.cep || data.codigo_cep || '';
-
-                if (!logradouro && data.endereco) {
-                    const partes = data.endereco.split(',');
-                    if (partes.length > 0) logradouro = partes[0].trim();
-                    if (!numero) {
-                        const match = data.endereco.match(/,?\s*(\d+)\s*/);
-                        if (match) numero = match[1];
-                    }
-                }
-                if (!bairro && data.bairro_desc) bairro = data.bairro_desc;
-                if (!cidade && data.municipio_desc) cidade = data.municipio_desc;
-
-                document.getElementById('logradouro').value = logradouro || '';
-                document.getElementById('numero').value = numero || 's/n';
-                document.getElementById('bairro').value = bairro || '';
-                document.getElementById('cidade').value = cidade || '';
-                document.getElementById('uf').value = uf || '';
-                document.getElementById('cep').value = cep || '';
-
-                let telefone = data.telefone_1 || data.telefone || '';
-                if (telefone && data.ddd1) {
-                    telefone = `(${data.ddd1}) ${telefone}`;
-                }
-                document.getElementById('telefone').value = telefone;
-
-                document.getElementById('email').value = data.correio_eletronico || data.email || '';
-
-                mostrarToast(`✅ Dados carregados via ${origem}!`, 'success');
-                console.log(`Dados obtidos via ${origem}:`, data);
-
-            } catch (error) {
-                console.error('Erro ao preencher campos:', error);
-                mostrarToast('❌ Erro ao processar os dados.', 'error');
-            } finally {
-                campo.value = cnpj;
-                campo.disabled = false;
-                campo.style.color = '#000';
+            // Preencher campos
+            if (campos.nome && (data.razao_social || data.nome_empresarial)) {
+                campos.nome.value = data.razao_social || data.nome_empresarial || '';
+            } else if (campos.nome && data.nome_fantasia) {
+                campos.nome.value = data.nome_fantasia;
             }
+
+            let ie = data.inscricao_estadual || data.ie || '';
+            if (campos.ie) campos.ie.value = ie;
+
+            let logradouro = data.logradouro || '';
+            let numero = data.numero || '';
+            let bairro = data.bairro || '';
+            let cidade = data.municipio || data.municipio_desc || '';
+            let uf = data.uf || '';
+            let cep = data.cep || data.codigo_cep || '';
+
+            if (!logradouro && data.endereco) {
+                const partes = data.endereco.split(',');
+                if (partes.length > 0) logradouro = partes[0].trim();
+                if (!numero) {
+                    const match = data.endereco.match(/,?\s*(\d+)\s*/);
+                    if (match) numero = match[1];
+                }
+            }
+            if (!bairro && data.bairro_desc) bairro = data.bairro_desc;
+            if (!cidade && data.municipio_desc) cidade = data.municipio_desc;
+
+            if (campos.logradouro) campos.logradouro.value = logradouro || '';
+            if (campos.numero) campos.numero.value = numero || 's/n';
+            if (campos.bairro) campos.bairro.value = bairro || '';
+            if (campos.cidade) campos.cidade.value = cidade || '';
+            if (campos.uf) campos.uf.value = uf || '';
+            if (campos.cep) campos.cep.value = cep || '';
+
+            let telefone = data.telefone_1 || data.telefone || '';
+            if (telefone && data.ddd1) {
+                telefone = `(${data.ddd1}) ${telefone}`;
+            }
+            if (campos.telefone) campos.telefone.value = telefone;
+
+            if (campos.email) campos.email.value = data.correio_eletronico || data.email || '';
+
+            mostrarToast(`✅ Dados carregados via ${origem}!`, 'success');
+            console.log(`Dados obtidos via ${origem}:`, data);
+            return data;
         }
+
+        // ============================================================
+        // BUSCA CNPJ PARA TABELA DE FRETE (mantida)
+        // ============================================================
+        const campoCnpj = document.getElementById('cnpj');
+
+        campoCnpj.addEventListener('blur', function() {
+            const cnpj = this.value.replace(/\D/g, '');
+            if (cnpj.length === 14) {
+                const campos = {
+                    nome: document.getElementById('cliente'),
+                    ie: document.getElementById('ie'),
+                    logradouro: document.getElementById('logradouro'),
+                    numero: document.getElementById('numero'),
+                    bairro: document.getElementById('bairro'),
+                    cidade: document.getElementById('cidade'),
+                    uf: document.getElementById('uf'),
+                    cep: document.getElementById('cep'),
+                    telefone: document.getElementById('telefone'),
+                    email: document.getElementById('email')
+                };
+                buscarCnpjGenerico(cnpj, campos);
+            }
+        });
+
+        campoCnpj.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const cnpj = this.value.replace(/\D/g, '');
+                if (cnpj.length === 14) {
+                    const campos = {
+                        nome: document.getElementById('cliente'),
+                        ie: document.getElementById('ie'),
+                        logradouro: document.getElementById('logradouro'),
+                        numero: document.getElementById('numero'),
+                        bairro: document.getElementById('bairro'),
+                        cidade: document.getElementById('cidade'),
+                        uf: document.getElementById('uf'),
+                        cep: document.getElementById('cep'),
+                        telefone: document.getElementById('telefone'),
+                        email: document.getElementById('email')
+                    };
+                    buscarCnpjGenerico(cnpj, campos);
+                } else {
+                    mostrarToast('Digite um CNPJ válido com 14 dígitos', 'error');
+                }
+            }
+        });
+
+        // ============================================================
+        // BUSCA CNPJ PARA CLIENTE DE COLETA (NOVO)
+        // ============================================================
+        const campoCnpjColeta = document.getElementById('cnpjClienteColeta');
+
+        campoCnpjColeta.addEventListener('blur', function() {
+            const cnpj = this.value.replace(/\D/g, '');
+            if (cnpj.length === 14) {
+                const campos = {
+                    nome: document.getElementById('nomeClienteColeta'),
+                    ie: document.getElementById('ieClienteColeta'),
+                    logradouro: document.getElementById('logradouroClienteColeta'),
+                    numero: document.getElementById('numeroClienteColeta'),
+                    bairro: document.getElementById('bairroClienteColeta'),
+                    cidade: document.getElementById('cidadeClienteColeta'),
+                    uf: document.getElementById('ufClienteColeta'),
+                    cep: document.getElementById('cepClienteColeta'),
+                    telefone: document.getElementById('telefoneClienteColeta'),
+                    email: document.getElementById('emailClienteColeta')
+                };
+                buscarCnpjGenerico(cnpj, campos);
+            }
+        });
+
+        campoCnpjColeta.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const cnpj = this.value.replace(/\D/g, '');
+                if (cnpj.length === 14) {
+                    const campos = {
+                        nome: document.getElementById('nomeClienteColeta'),
+                        ie: document.getElementById('ieClienteColeta'),
+                        logradouro: document.getElementById('logradouroClienteColeta'),
+                        numero: document.getElementById('numeroClienteColeta'),
+                        bairro: document.getElementById('bairroClienteColeta'),
+                        cidade: document.getElementById('cidadeClienteColeta'),
+                        uf: document.getElementById('ufClienteColeta'),
+                        cep: document.getElementById('cepClienteColeta'),
+                        telefone: document.getElementById('telefoneClienteColeta'),
+                        email: document.getElementById('emailClienteColeta')
+                    };
+                    buscarCnpjGenerico(cnpj, campos);
+                } else {
+                    mostrarToast('Digite um CNPJ válido com 14 dígitos', 'error');
+                }
+            }
+        });
 
         // ============================================================
         // FUNÇÕES SUPABASE - CLIENTES E COLETAS
@@ -2948,7 +2992,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
 
         async function carregarColetas() {
             try {
-                // Buscar coletas com join no cliente
                 const url = `${SUPABASE_URL}/rest/v1/coletas?select=*,clientes_coleta(nome)&order=id.desc`;
                 const response = await fetch(url, {
                     headers: supabaseHeaders
@@ -3116,7 +3159,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 closeModal(elements.modalClienteColeta);
                 await carregarClientesColeta();
                 preencherSelectClientes();
-                // Selecionar o cliente recém-criado
                 elements.clienteColetaSelect.value = novo.id;
             }
         }
@@ -3160,21 +3202,18 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             mostrarToast('Coletas atualizadas!', 'success');
         });
 
-        // Botão "Novo Cliente" dentro do modal de nova coleta
         elements.btnNovoClienteColeta.addEventListener('click', function() {
             elements.formClienteColeta.reset();
             elements.clienteColetaId.value = '';
             openModal(elements.modalClienteColeta);
         });
 
-        // Formulário de cliente de coleta
         elements.formClienteColeta.addEventListener('submit', salvarClienteColeta);
 
-        // Formulário de nova coleta
         elements.formNovaColeta.addEventListener('submit', publicarColeta);
 
         // ============================================================
-        // EVENTOS GERAIS (mantidos)
+        // EVENTOS GERAIS
         // ============================================================
         elements.btnNovo.addEventListener('click', abrirModalNovo);
         elements.btnConfigurar.addEventListener('click', function() {
@@ -3213,7 +3252,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 el.addEventListener('change', atualizarPreview);
             });
             atualizarPreview();
-            // Inicializa o módulo de coleta carregando dados em background
             carregarClientesColeta();
             carregarColetas();
         });
