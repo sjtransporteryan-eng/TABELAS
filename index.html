@@ -1417,8 +1417,9 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 </div>
             </div>
             <div class="window-body">
-                <div style="display:flex; gap:8px; margin-bottom:12px;">
+                <div style="display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap;">
                     <button class="btn btn-primary" id="btnNovaColeta">Nova Coleta</button>
+                    <button class="btn" id="btnGerenciarClientes">Gerenciar Clientes</button>
                     <button class="btn" id="btnAtualizarColeta">Atualizar</button>
                 </div>
                 <div class="table-wrap">
@@ -1445,6 +1446,54 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             </div>
             <div class="modal-footer">
                 <button class="btn close-coleta">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         MODAL - GERENCIAR CLIENTES DE COLETA
+         ============================================================ -->
+    <div class="modal-overlay" id="modalGerenciarClientes">
+        <div class="window" style="max-width:800px;">
+            <div class="window-title">
+                <div class="title-text">
+                    <span class="icon">👥</span>
+                    <span>Gerenciar Clientes - Coleta</span>
+                </div>
+                <div class="controls">
+                    <span>_</span>
+                    <span>□</span>
+                    <span class="close-gerenciar-clientes" style="cursor:pointer;">X</span>
+                </div>
+            </div>
+            <div class="window-body">
+                <div style="display:flex; gap:8px; margin-bottom:12px;">
+                    <button class="btn btn-primary" id="btnNovoClienteGerenciar">+ Novo Cliente</button>
+                    <button class="btn" id="btnAtualizarClientes">Atualizar</button>
+                </div>
+                <div class="table-wrap">
+                    <table class="table" id="tabelaClientes">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>CNPJ</th>
+                                <th>Telefone</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="corpoClientes">
+                            <tr>
+                                <td colspan="5" style="text-align:center;padding:20px;color:#666;">
+                                    Nenhum cliente cadastrado
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn close-gerenciar-clientes">Fechar</button>
             </div>
         </div>
     </div>
@@ -1731,6 +1780,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             modalColeta: document.getElementById('modalColeta'),
             corpoColeta: document.getElementById('corpoColeta'),
             btnNovaColeta: document.getElementById('btnNovaColeta'),
+            btnGerenciarClientes: document.getElementById('btnGerenciarClientes'),
             btnAtualizarColeta: document.getElementById('btnAtualizarColeta'),
             closeColeta: document.querySelectorAll('.close-coleta'),
             modalClienteColeta: document.getElementById('modalClienteColeta'),
@@ -1754,6 +1804,12 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             volumesColeta: document.getElementById('volumesColeta'),
             btnNovoClienteColeta: document.getElementById('btnNovoClienteColeta'),
             closeNovaColeta: document.querySelectorAll('.close-nova-coleta'),
+            // Gerenciar Clientes
+            modalGerenciarClientes: document.getElementById('modalGerenciarClientes'),
+            corpoClientes: document.getElementById('corpoClientes'),
+            btnNovoClienteGerenciar: document.getElementById('btnNovoClienteGerenciar'),
+            btnAtualizarClientes: document.getElementById('btnAtualizarClientes'),
+            closeGerenciarClientes: document.querySelectorAll('.close-gerenciar-clientes'),
         };
 
         // ============================================================
@@ -1834,6 +1890,12 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             });
         });
         elements.closeNovaColeta.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const modal = this.closest('.modal-overlay');
+                if (modal) closeModal(modal);
+            });
+        });
+        elements.closeGerenciarClientes.forEach(btn => {
             btn.addEventListener('click', function() {
                 const modal = this.closest('.modal-overlay');
                 if (modal) closeModal(modal);
@@ -2919,7 +2981,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         });
 
         // ============================================================
-        // BUSCA CNPJ PARA CLIENTE DE COLETA (NOVO)
+        // BUSCA CNPJ PARA CLIENTE DE COLETA
         // ============================================================
         const campoCnpjColeta = document.getElementById('cnpjClienteColeta');
 
@@ -3013,15 +3075,14 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                     headers: supabaseHeaders,
                     body: JSON.stringify(dados)
                 });
-                const text = await response.text(); // ler corpo como texto primeiro
+                const text = await response.text();
                 if (!response.ok) {
                     console.error('Erro resposta:', text);
                     throw new Error(`Erro ${response.status}: ${text || response.statusText}`);
                 }
-                // Se a resposta não for JSON, retorna vazio
                 if (!text) return null;
                 const json = JSON.parse(text);
-                return json[0] || json; // Supabase retorna array com o objeto criado
+                return json[0] || json;
             } catch (error) {
                 console.error('Erro criar cliente:', error);
                 mostrarToast('Erro ao criar cliente: ' + error.message, 'error');
@@ -3072,6 +3133,53 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         }
 
         // ============================================================
+        // EXCLUIR COLETA E CLIENTE (NOVAS FUNÇÕES)
+        // ============================================================
+        async function deletarColeta(id) {
+            if (!confirm('Tem certeza que deseja excluir esta coleta?')) return;
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/coletas?id=eq.${id}`, {
+                    method: 'DELETE',
+                    headers: supabaseHeaders
+                });
+                if (!response.ok) {
+                    const text = await response.text();
+                    throw new Error(`Erro ${response.status}: ${text}`);
+                }
+                mostrarToast('Coleta excluída com sucesso!', 'success');
+                await carregarColetas();
+                renderizarColetas();
+            } catch (error) {
+                console.error('Erro deletar coleta:', error);
+                mostrarToast('Erro ao excluir coleta: ' + error.message, 'error');
+            }
+        }
+
+        async function deletarClienteColeta(id) {
+            if (!confirm('Tem certeza que deseja excluir este cliente? Todas as coletas associadas também serão excluídas (CASCADE).')) return;
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/clientes_coleta?id=eq.${id}`, {
+                    method: 'DELETE',
+                    headers: supabaseHeaders
+                });
+                if (!response.ok) {
+                    const text = await response.text();
+                    throw new Error(`Erro ${response.status}: ${text}`);
+                }
+                mostrarToast('Cliente excluído com sucesso!', 'success');
+                await carregarClientesColeta();
+                await carregarColetas();
+                renderizarClientesColeta();
+                renderizarColetas();
+                // Atualiza o select de clientes se estiver aberto
+                preencherSelectClientes();
+            } catch (error) {
+                console.error('Erro deletar cliente:', error);
+                mostrarToast('Erro ao excluir cliente: ' + error.message, 'error');
+            }
+        }
+
+        // ============================================================
         // RENDERIZAÇÃO DA LISTA DE COLETAS
         // ============================================================
         function renderizarColetas() {
@@ -3096,10 +3204,33 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                                 `<button class="btn btn-sm btn-primary" onclick="marcarColetaFeita(${coleta.id})">Concluir</button>` : 
                                 `<span style="color:#060;">✓ Concluída</span>`
                             }
+                            <button class="btn btn-sm btn-danger" onclick="deletarColeta(${coleta.id})">Excluir</button>
                         </div>
                     </td>
                 </tr>
             `}).join('');
+        }
+
+        // ============================================================
+        // RENDERIZAÇÃO DA LISTA DE CLIENTES (GERENCIAR)
+        // ============================================================
+        function renderizarClientesColeta() {
+            if (clientesColeta.length === 0) {
+                elements.corpoClientes.innerHTML =
+                    `<tr><td colspan="5" style="text-align:center;padding:20px;color:#666;">Nenhum cliente cadastrado</td></tr>`;
+                return;
+            }
+            elements.corpoClientes.innerHTML = clientesColeta.map(cliente => `
+                <tr>
+                    <td><strong>#${cliente.id}</strong></td>
+                    <td>${cliente.nome}</td>
+                    <td>${cliente.cnpj || '-'}</td>
+                    <td>${cliente.telefone || '-'}</td>
+                    <td>
+                        <button class="btn btn-sm btn-danger" onclick="deletarClienteColeta(${cliente.id})">Excluir</button>
+                    </td>
+                </tr>
+            `).join('');
         }
 
         // ============================================================
@@ -3146,6 +3277,15 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         }
 
         // ============================================================
+        // GERENCIAR CLIENTES
+        // ============================================================
+        async function abrirGerenciarClientes() {
+            await carregarClientesColeta();
+            renderizarClientesColeta();
+            openModal(elements.modalGerenciarClientes);
+        }
+
+        // ============================================================
         // SALVAR CLIENTE DE COLETA
         // ============================================================
         async function salvarClienteColeta(event) {
@@ -3173,6 +3313,9 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 closeModal(elements.modalClienteColeta);
                 await carregarClientesColeta();
                 preencherSelectClientes();
+                if (elements.modalGerenciarClientes.classList.contains('active')) {
+                    renderizarClientesColeta();
+                }
                 elements.clienteColetaSelect.value = novo.id;
             }
         }
@@ -3210,6 +3353,8 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
 
         elements.btnNovaColeta.addEventListener('click', abrirModalNovaColeta);
 
+        elements.btnGerenciarClientes.addEventListener('click', abrirGerenciarClientes);
+
         elements.btnAtualizarColeta.addEventListener('click', async function() {
             await carregarColetas();
             renderizarColetas();
@@ -3220,6 +3365,18 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
             elements.formClienteColeta.reset();
             elements.clienteColetaId.value = '';
             openModal(elements.modalClienteColeta);
+        });
+
+        elements.btnNovoClienteGerenciar.addEventListener('click', function() {
+            elements.formClienteColeta.reset();
+            elements.clienteColetaId.value = '';
+            openModal(elements.modalClienteColeta);
+        });
+
+        elements.btnAtualizarClientes.addEventListener('click', async function() {
+            await carregarClientesColeta();
+            renderizarClientesColeta();
+            mostrarToast('Clientes atualizados!', 'success');
         });
 
         elements.formClienteColeta.addEventListener('submit', salvarClienteColeta);
