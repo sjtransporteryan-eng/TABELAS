@@ -4,789 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Tabela de Fretes - SJ Transportes</title>
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <style>
-        /* ============================================================
-           LAYOUT EM TELA CHEIA - SEM JANELA
-           ============================================================ */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body.retro-system {
-            background: #f0f0f0;
-            font-family: 'Tahoma', 'Geneva', 'MS Sans Serif', sans-serif;
-            font-size: 12px;
-            color: #000;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            cursor: default;
-        }
-
-        .app-header {
-            background: linear-gradient(180deg, #6b9fd4 0%, #3a6ea5 100%);
-            color: #fff;
-            font-weight: bold;
-            padding: 6px 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            user-select: none;
-            font-size: 14px;
-            border-bottom: 1px solid #404040;
-            flex-shrink: 0;
-        }
-
-        .app-header .title-text {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .app-header .title-text .sj-logo-img {
-            height: 40px;
-            background: #fff;
-            padding: 4px 12px 4px 8px;
-            border: 1px solid;
-            border-color: #fff #808080 #808080 #fff;
-            display: flex;
-            align-items: center;
-        }
-
-        .app-header .title-text .sj-logo-img img {
-            height: 100%;
-            max-height: 36px;
-            object-fit: contain;
-        }
-
-        .app-header .controls {
-            display: flex;
-            gap: 4px;
-        }
-
-        .app-header .controls span {
-            display: inline-block;
-            width: 18px;
-            height: 18px;
-            background: #ece9d8;
-            color: #000;
-            text-align: center;
-            line-height: 18px;
-            font-size: 12px;
-            font-weight: bold;
-            border: 1px solid;
-            border-color: #fff #404040 #404040 #fff;
-            cursor: default;
-        }
-
-        .app-header .controls span:hover {
-            background: #c0c0c0;
-        }
-
-        .menu-bar {
-            background: #ece9d8;
-            padding: 2px 16px;
-            border-bottom: 1px solid #a0a0a0;
-            display: flex;
-            gap: 16px;
-            font-size: 12px;
-            flex-shrink: 0;
-        }
-
-        .menu-bar .menu-item {
-            padding: 2px 6px;
-            cursor: default;
-        }
-
-        .menu-bar .menu-item:hover {
-            background: #6b9fd4;
-            color: #fff;
-        }
-
-        .app-body {
-            padding: 16px;
-            flex: 1;
-            overflow-y: auto;
-            background: #fff;
-        }
-
-        .status-bar {
-            background: #ece9d8;
-            border-top: 1px solid #a0a0a0;
-            padding: 2px 16px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 11px;
-            color: #000;
-            min-height: 24px;
-            align-items: center;
-            flex-shrink: 0;
-        }
-
-        .status-bar .status-left { display: flex; align-items: center; gap: 12px; }
-        .status-bar .status-right { text-align: right; }
-
-        .group-box {
-            border: 1px solid;
-            border-color: #404040 #fff #fff #404040;
-            padding: 8px 12px;
-            margin-bottom: 12px;
-        }
-
-        .group-box legend {
-            font-weight: bold;
-            color: #000;
-            padding: 0 6px;
-            font-size: 12px;
-            background: #fff;
-        }
-
-        .input {
-            border: 2px solid;
-            border-color: #404040 #fff #fff #404040;
-            background: #fff;
-            padding: 3px 5px;
-            font-family: 'Tahoma', 'Geneva', sans-serif;
-            font-size: 12px;
-            color: #000;
-            outline: none;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .input:focus { border-color: #3a6ea5 #fff #fff #3a6ea5; }
-        .input:disabled { background: #e8e8e0; color: #666; }
-        select.input { background: #fff; appearance: none; -webkit-appearance: none; padding-right: 18px; }
-        textarea.input { resize: vertical; min-height: 60px; }
-
-        .btn {
-            background: #ece9d8;
-            border: 2px solid;
-            border-color: #fff #404040 #404040 #fff;
-            padding: 4px 16px;
-            font-family: 'Tahoma', 'Geneva', sans-serif;
-            font-size: 12px;
-            font-weight: bold;
-            color: #000;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            min-height: 28px;
-            transition: none;
-        }
-
-        .btn:active { border-color: #404040 #fff #fff #404040; }
-
-        .btn-primary {
-            background: #06458F;
-            color: #fff;
-            border-color: #3a7ab5 #002a5c #002a5c #3a7ab5;
-        }
-
-        .btn-primary:active { border-color: #002a5c #3a7ab5 #3a7ab5 #002a5c; }
-
-        .btn-sm { padding: 2px 10px; font-size: 11px; min-height: 22px; }
-
-        .btn-danger {
-            background: #c00;
-            color: #fff;
-            border-color: #f66 #800 #800 #f66;
-        }
-
-        .btn-danger:active { border-color: #800 #f66 #f66 #800; }
-
-        .btn-secondary {
-            background: #e0e0d0;
-            color: #000;
-            border-color: #fff #808080 #808080 #fff;
-        }
-
-        .btn-secondary:active { border-color: #808080 #fff #fff #808080; }
-
-        .table-wrap { overflow-x: auto; margin: 8px 0; }
-
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 12px;
-            background: #fff;
-            border: 1px solid #a0a0a0;
-        }
-
-        .table th {
-            background: #06458F;
-            color: #fff;
-            padding: 4px 8px;
-            text-align: left;
-            font-weight: bold;
-            border: 1px solid #002a5c;
-        }
-
-        .table td {
-            padding: 4px 8px;
-            border: 1px solid #a0a0a0;
-        }
-
-        .table tr:nth-child(even) td { background: #f0f0e8; }
-        .table tr:hover td { background: #d4e0f0; }
-        .table .actions { display: flex; gap: 4px; flex-wrap: wrap; }
-
-        .form-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px 12px;
-            margin-bottom: 8px;
-        }
-
-        .form-row .field {
-            flex: 1 0 180px;
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .form-row .field label { font-weight: bold; font-size: 11px; }
-        .form-row .field label .required { color: #c00; }
-
-        .form-row .field-small {
-            flex: 1 0 80px;
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .form-row .field-small label { font-weight: bold; font-size: 11px; }
-
-        .cidades-list {
-            border: 1px solid #a0a0a0;
-            background: #fff;
-            padding: 4px;
-            max-height: 150px;
-            overflow-y: auto;
-            margin-bottom: 6px;
-        }
-
-        .cidade-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 2px 4px;
-            border-bottom: 1px solid #d0d0d0;
-        }
-
-        .cidade-item:last-child { border-bottom: none; }
-        .cidade-item .info { font-size: 12px; }
-
-        .cidade-item .btn-remove {
-            background: #c00;
-            color: #fff;
-            border: 1px solid #800;
-            padding: 0 6px;
-            font-size: 11px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .cidade-item .btn-remove:hover { background: #a00; }
-
-        .cidades-empty { text-align: center; color: #666; padding: 12px; }
-
-        .add-cidade-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            align-items: flex-end;
-        }
-
-        .add-cidade-row select,
-        .add-cidade-row input {
-            flex: 1 0 100px;
-            min-width: 80px;
-        }
-
-        .fab {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 500;
-            background: #06458F;
-            color: #fff;
-            border: 2px solid;
-            border-color: #3a7ab5 #002a5c #002a5c #3a7ab5;
-            padding: 10px 14px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 4px 4px 8px rgba(0,0,0,0.5);
-            line-height: 1;
-        }
-
-        .fab:hover { background: #0a5aaf; }
-        .fab:active { border-color: #002a5c #3a7ab5 #3a7ab5 #002a5c; }
-
-        .fab .tooltip {
-            display: none;
-            position: absolute;
-            right: 60px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: #ece9d8;
-            color: #000;
-            border: 1px solid #404040;
-            padding: 4px 10px;
-            font-size: 11px;
-            white-space: nowrap;
-            font-weight: normal;
-            box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .fab:hover .tooltip { display: block; }
-
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.4);
-            z-index: 999;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .modal-overlay.active { display: flex; }
-
-        .modal-overlay .window {
-            max-width: 900px;
-            max-height: 90vh;
-            min-height: auto;
-            width: 100%;
-            margin: 0;
-            background: #ece9d8;
-            border: 2px solid;
-            border-color: #fff #404040 #404040 #fff;
-            box-shadow: 4px 4px 10px rgba(0,0,0,0.5);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .modal-overlay .window .window-body { overflow-y: auto; padding: 12px; }
-
-        .table-fixed {
-            font-size: 12px;
-            width: 100%;
-            border-collapse: collapse;
-            background: #fff;
-            border: 1px solid #a0a0a0;
-        }
-
-        .table-fixed th {
-            background: #06458F;
-            color: #fff;
-            padding: 4px 8px;
-            border: 1px solid #002a5c;
-            text-align: left;
-        }
-
-        .table-fixed td {
-            padding: 4px 8px;
-            border: 1px solid #a0a0a0;
-        }
-
-        .table-fixed tr:nth-child(even) td { background: #f0f0e8; }
-        .table-fixed .total-row td { background: #d0d0c0; font-weight: bold; text-align: center; }
-
-        .campo-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 4px 8px;
-            border-bottom: 1px solid #d0d0d0;
-            background: #fff;
-        }
-
-        .campo-item .campo-label {
-            flex: 1;
-            font-weight: bold;
-            font-size: 12px;
-        }
-
-        .campo-item .campo-input {
-            flex: 1;
-            padding: 2px 4px;
-            border: 1px solid #a0a0a0;
-            font-family: 'Tahoma', 'Geneva', sans-serif;
-            font-size: 11px;
-            background: #fff;
-        }
-
-        .campo-item .campo-checkbox {
-            width: 16px;
-            height: 16px;
-            accent-color: #06458F;
-        }
-
-        .campo-item .campo-drag {
-            cursor: move;
-            color: #999;
-            font-size: 14px;
-            user-select: none;
-        }
-
-        .campo-item.dragging {
-            opacity: 0.5;
-            background: #e0e0d0;
-        }
-
-        .campo-item.drag-over {
-            border-top: 2px solid #06458F;
-        }
-
-        /* Impressão - mantido igual */
-        @media print {
-            body.retro-system * { visibility: hidden; }
-            #modalImprimir,
-            #modalImprimir * { visibility: visible; }
-
-            #modalImprimir {
-                position: fixed;
-                inset: 0;
-                background: #fff;
-                padding: 20px;
-                width: 100%;
-                height: 100%;
-                overflow: auto;
-            }
-
-            #modalImprimir .window {
-                box-shadow: none;
-                border: none;
-                background: #fff;
-                max-width: 100%;
-                min-height: auto;
-            }
-
-            #modalImprimir .window-title,
-            #modalImprimir .menu-bar,
-            #modalImprimir .status-bar,
-            #modalImprimir .modal-footer,
-            #modalImprimir .btn,
-            #modalImprimir .close-print {
-                display: none !important;
-            }
-
-            #modalImprimir .window-body {
-                padding: 10px;
-                overflow: visible;
-                background: #fff;
-                min-height: 100vh;
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-start;
-            }
-
-            #modalImprimir .window-body .conteudo-impressao {
-                flex: 1;
-            }
-
-            #modalImprimir .window-body .sj-logo-print {
-                display: flex !important;
-                justify-content: center;
-                align-items: center;
-                margin-bottom: 14px;
-                border-bottom: 2px solid #06458F;
-                padding-bottom: 10px;
-            }
-
-            #modalImprimir .window-body .sj-logo-print img {
-                width: auto;
-                object-fit: contain;
-            }
-
-            #modalImprimir .window-body .endereco-print {
-                text-align: center;
-                font-size: 12px;
-                margin-bottom: 14px;
-                color: #333;
-            }
-
-            #modalImprimir .window-body .info-cliente-print {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 2px 20px;
-                font-size: 11px;
-                background: #f5f5f0;
-                padding: 8px 12px;
-                border: 1px solid #a0a0a0;
-                margin-bottom: 10px;
-            }
-
-            #modalImprimir .window-body .info-cliente-print .item {
-                display: flex;
-                gap: 4px;
-            }
-
-            #modalImprimir .window-body .info-cliente-print .item strong {
-                min-width: 70px;
-            }
-
-            #modalImprimir .window-body .origem-destino-print {
-                display: flex;
-                justify-content: space-between;
-                background: #e9ecef;
-                padding: 4px 12px;
-                font-weight: bold;
-                font-size: 12px;
-                margin-bottom: 10px;
-                border: 1px solid #a0a0a0;
-            }
-
-            #modalImprimir .window-body .table-print {
-                width: 100%;
-                border-collapse: collapse;
-                font-size: 11px;
-                margin-bottom: 10px;
-            }
-
-            #modalImprimir .window-body .table-print th {
-                background: #06458F;
-                color: #fff;
-                padding: 4px 8px;
-                border: 1px solid #002a5c;
-                text-align: left;
-            }
-
-            #modalImprimir .window-body .table-print td {
-                padding: 4px 8px;
-                border: 1px solid #a0a0a0;
-            }
-
-            #modalImprimir .window-body .table-print tr:nth-child(even) td {
-                background: #f5f5f0;
-            }
-
-            #modalImprimir .window-body .observacao-print {
-                font-size: 11px;
-                padding: 4px 10px;
-                border: 1px solid #ccc;
-                background: #f9f9f9;
-                margin-bottom: 15px;
-            }
-
-            #modalImprimir .window-body .rodape-assinaturas {
-                margin-top: auto;
-                padding-top: 30px;
-                border-top: 2px solid #333;
-                display: flex;
-                justify-content: space-between;
-                align-items: flex-end;
-                padding-bottom: 0;
-                margin-bottom: 0;
-                min-height: 100px;
-            }
-
-            #modalImprimir .window-body .rodape-assinaturas .assinatura-cliente {
-                flex: 1;
-                text-align: left;
-                padding-right: 20px;
-            }
-
-            #modalImprimir .window-body .rodape-assinaturas .assinatura-empresa {
-                flex: 1;
-                text-align: right;
-                padding-left: 20px;
-            }
-
-            #modalImprimir .window-body .rodape-assinaturas .linha-assinatura {
-                border-bottom: 1px solid #333;
-                width: 100%;
-                height: 1px;
-                margin-bottom: 4px;
-            }
-
-            #modalImprimir .window-body .rodape-assinaturas .nome-assinatura {
-                font-size: 11px;
-                color: #333;
-                font-weight: bold;
-            }
-
-            #modalImprimir .window-body .rodape-info {
-                display: flex;
-                justify-content: flex-start;
-                align-items: center;
-                margin-top: 10px;
-                padding-top: 8px;
-                border-top: 1px solid #ddd;
-                font-size: 10px;
-                color: #999;
-            }
-
-            #modalImprimir .window-body .rodape-info .sinop-data {
-                text-align: left;
-                font-weight: bold;
-                color: #333;
-                font-size: 10px;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .app-body { padding: 8px; }
-            .form-row .field { flex: 1 0 100%; }
-            .add-cidade-row select,
-            .add-cidade-row input { flex: 1 0 80px; }
-            .app-header .title-text .sj-logo-img { height: 30px; padding: 2px 8px; }
-            .app-header .title-text .sj-logo-img img { max-height: 26px; }
-            .fab { bottom: 16px; right: 16px; padding: 8px 12px; font-size: 16px; }
-            .modal-overlay { padding: 8px; }
-            .modal-overlay .window { max-width: 100%; max-height: 100vh; border-radius: 0; }
-        }
-
-        .table .actions .btn {
-            min-height: 20px;
-            padding: 1px 8px;
-            font-size: 11px;
-        }
-
-        .search-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 12px;
-            align-items: center;
-        }
-
-        .search-row .input { flex: 1; min-width: 180px; }
-
-        .config-section { margin-bottom: 12px; }
-        .config-section .config-title {
-            font-weight: bold;
-            background: #d0d0c0;
-            padding: 2px 8px;
-            border: 1px solid #a0a0a0;
-            margin-bottom: 6px;
-        }
-
-        .config-section .form-row .field { flex: 1 0 140px; }
-        .config-section .form-row .field input[type="color"] { padding: 1px; height: 28px; }
-        .config-section .form-row .field input[type="number"] { width: 100%; }
-        .config-section .form-row .field input[type="file"] { padding: 4px; }
-
-        .config-actions {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-top: 12px;
-        }
-
-        .preview-box {
-            border: 1px solid #404040;
-            background: #fff;
-            padding: 8px;
-            margin-top: 8px;
-            max-height: 400px;
-            overflow: auto;
-        }
-
-        .preview-box .preview-content {
-            font-family: 'Courier New', monospace;
-            font-size: 11px;
-            transform: scale(0.65);
-            transform-origin: top left;
-            width: 100%;
-            background: #fff;
-            padding: 4px;
-        }
-
-        .modal-footer {
-            display: flex;
-            justify-content: flex-end;
-            gap: 8px;
-            padding: 8px 12px;
-            border-top: 1px solid #a0a0a0;
-            background: #ece9d8;
-        }
-
-        .modal-footer .btn { min-height: 26px; }
-
-        .campos-container {
-            max-height: 250px;
-            overflow-y: auto;
-            border: 1px solid #a0a0a0;
-            background: #f5f5f0;
-        }
-
-        .logo-preview-mini {
-            max-height: 60px;
-            max-width: 150px;
-            border: 1px solid #a0a0a0;
-            padding: 4px;
-            background: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .logo-preview-mini img {
-            max-height: 50px;
-            max-width: 130px;
-            object-fit: contain;
-        }
-
-        .modal-overlay .window-title {
-            background: linear-gradient(180deg, #6b9fd4 0%, #3a6ea5 100%);
-            color: #fff;
-            font-weight: bold;
-            padding: 4px 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 13px;
-            border-bottom: 1px solid #404040;
-            flex-shrink: 0;
-        }
-
-        .modal-overlay .window-title .title-text {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .modal-overlay .window-title .controls {
-            display: flex;
-            gap: 4px;
-        }
-
-        .modal-overlay .window-title .controls span {
-            display: inline-block;
-            width: 18px;
-            height: 18px;
-            background: #ece9d8;
-            color: #000;
-            text-align: center;
-            line-height: 18px;
-            font-size: 12px;
-            font-weight: bold;
-            border: 1px solid;
-            border-color: #fff #404040 #404040 #fff;
-            cursor: default;
-        }
-
-        .modal-overlay .window-title .controls span:hover {
-            background: #c0c0c0;
-        }
-
-        .status-pendente { color: #c00; font-weight: bold; }
-        .status-feita { color: #060; font-weight: bold; }
-    </style>
 </head>
 <body class="retro-system">
 
-    <!-- ============================================================
-         CABEÇALHO PRINCIPAL (TELA CHEIA)
-         ============================================================ -->
+    <!-- ======== CABEÇALHO ======== -->
     <header class="app-header">
         <div class="title-text">
             <div class="sj-logo-img" id="headerLogo">
@@ -801,54 +24,32 @@
         </div>
     </header>
 
-    <!-- MENU - COM "COLETA" E "CRM" -->
+    <!-- ======== MENU ======== -->
     <div class="menu-bar">
         <span class="menu-item" id="menuColeta" style="font-weight:bold; color:#06458F;">Coleta</span>
         <span class="menu-item" id="menuCRM" style="font-weight:bold; color:#06458F;">CRM</span>
     </div>
 
-    <!-- ============================================================
-         CORPO PRINCIPAL
-         ============================================================ -->
+    <!-- ======== CORPO ======== -->
     <div class="app-body">
         <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
             <button class="btn btn-primary" id="btnNovo">Nova Tabela</button>
-            <button class="btn" id="btnConfigurar">Configurar Impressao</button>
+            <button class="btn" id="btnConfigurar">Configurar Impressão</button>
         </div>
-
         <div class="search-row">
             <input type="text" id="searchInput" class="input" placeholder="Buscar por cliente, origem ou destino..." style="flex:1;">
             <button class="btn" id="btnBuscar">Buscar</button>
             <button class="btn" id="btnLimpar">Limpar</button>
         </div>
-
         <div class="table-wrap">
             <table class="table" id="tabelaPrincipal">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Cliente</th>
-                        <th>Origem</th>
-                        <th>Destino</th>
-                        <th>Cidades</th>
-                        <th>Data</th>
-                        <th>Acoes</th>
-                    </tr>
-                </thead>
-                <tbody id="corpoTabela">
-                    <tr>
-                        <td colspan="7" style="text-align:center; padding:20px; color:#666;">
-                            Nenhuma tabela encontrada
-                        </td>
-                    </tr>
-                </tbody>
+                <thead><tr><th>ID</th><th>Cliente</th><th>Origem</th><th>Destino</th><th>Cidades</th><th>Data</th><th>Ações</th></tr></thead>
+                <tbody id="corpoTabela"><tr><td colspan="7" style="text-align:center;padding:20px;color:#666;">Nenhuma tabela encontrada</td></tr></tbody>
             </table>
         </div>
     </div>
 
-    <!-- ============================================================
-         RODAPÉ
-         ============================================================ -->
+    <!-- ======== RODAPÉ ======== -->
     <div class="status-bar">
         <div class="status-left">
             <span>Pronto</span>
@@ -856,71 +57,50 @@
             <span>Registros: <strong id="totalTabelas">0</strong></span>
         </div>
         <div class="status-right">
-            <span>Ultima atualizacao: <strong id="ultimaAtualizacao">-</strong></span>
+            <span>Última atualização: <strong id="ultimaAtualizacao">-</strong></span>
         </div>
     </div>
 
-    <!-- ============================================================
-         BOTAO FLUTUANTE - TABELA COMPLETA
-         ============================================================ -->
+    <!-- ======== BOTÃO FLUTUANTE ======== -->
     <button class="fab" id="btnTabelaFixa" title="Tabela de fretes">
         Tabela
         <span class="tooltip">Tabela de Fretes</span>
     </button>
 
     <!-- ============================================================
-         MODAL - TABELA FIXA DE FRETES
+         MODAIS (TODOS COMPLETOS)
          ============================================================ -->
+
+    <!-- MODAL - TABELA FIXA -->
     <div class="modal-overlay" id="modalTabelaFixa">
         <div class="window">
             <div class="window-title">
-                <div class="title-text">
-                    <span class="icon">T</span>
-                    <span>Tabela Completa de Fretes</span>
-                </div>
-                <div class="controls">
-                    <span>_</span>
-                    <span>□</span>
-                    <span class="close-modal-fixa" style="cursor:pointer;">X</span>
-                </div>
+                <div class="title-text"><span class="icon">T</span><span>Tabela Completa de Fretes</span></div>
+                <div class="controls"><span>_</span><span>□</span><span class="close-modal-fixa" style="cursor:pointer;">X</span></div>
             </div>
             <div class="window-body">
-                <div style="margin-bottom:8px;">
-                    <strong>Origem:</strong> SINOP - MT &nbsp;|&nbsp; <strong>Destino:</strong> DIVERSOS (PA)
-                </div>
+                <div style="margin-bottom:8px;"><strong>Origem:</strong> SINOP - MT &nbsp;|&nbsp; <strong>Destino:</strong> DIVERSOS (PA)</div>
                 <div class="table-wrap">
                     <table class="table-fixed">
-                        <thead>
-                            <tr>
-                                <th>Cidades Atendidas</th>
-                                <th>UF</th>
-                                <th>Frete</th>
-                                <th>Preco por KG / TON</th>
-                                <th>% Sobre Valor NF</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th>Cidades Atendidas</th><th>UF</th><th>Frete</th><th>Preço KG</th><th>% NF</th></tr></thead>
                         <tbody>
                             <tr><td>Cachoeira da Serra</td><td>PA</td><td>R$ 75,00</td><td>R$ 650,00/kg</td><td>3,00%</td></tr>
                             <tr><td>Castelo dos Sonhos</td><td>PA</td><td>R$ 75,00</td><td>R$ 650,00/kg</td><td>3,00%</td></tr>
                             <tr><td>Novo Progresso</td><td>PA</td><td>R$ 80,00</td><td>R$ 700,00/kg</td><td>3,50%</td></tr>
                             <tr><td>Moraes Almeida</td><td>PA</td><td>R$ 90,00</td><td>R$ 800,00/kg</td><td>4,00%</td></tr>
                             <tr><td>Bela Vista do Caracol</td><td>PA</td><td>R$ 100,00</td><td>R$ 900,00/kg</td><td>4,00%</td></tr>
-                            <tr><td>Trairao</td><td>PA</td><td>R$ 100,00</td><td>R$ 900,00/kg</td><td>4,00%</td></tr>
+                            <tr><td>Trairão</td><td>PA</td><td>R$ 100,00</td><td>R$ 900,00/kg</td><td>4,00%</td></tr>
                             <tr><td>Km 30 / Campo Verde</td><td>PA</td><td>R$ 100,00</td><td>R$ 900,00/kg</td><td>4,00%</td></tr>
                             <tr><td>Mirituba</td><td>PA</td><td>R$ 110,00</td><td>R$ 900,00/kg</td><td>4,00%</td></tr>
                             <tr><td>Itaituba</td><td>PA</td><td>R$ 110,00</td><td>R$ 900,00/kg</td><td>4,00%</td></tr>
-                            <tr><td>Ruropolis</td><td>PA</td><td>R$ 120,00</td><td>R$ 1.000,00/kg</td><td>4,50%</td></tr>
-                            <tr><td>Mojul dos Campos</td><td>PA</td><td>R$ 130,00</td><td>R$ 1.100,00/kg</td><td>4,50%</td></tr>
-                            <tr><td>Santarem</td><td>PA</td><td>R$ 130,00</td><td>R$ 1.100,00/kg</td><td>4,50%</td></tr>
-                            <tr class="total-row">
-                                <td colspan="5"><strong>Total de 12 cidades atendidas</strong></td>
-                            </tr>
+                            <tr><td>Rurópolis</td><td>PA</td><td>R$ 120,00</td><td>R$ 1.000,00/kg</td><td>4,50%</td></tr>
+                            <tr><td>Mojuí dos Campos</td><td>PA</td><td>R$ 130,00</td><td>R$ 1.100,00/kg</td><td>4,50%</td></tr>
+                            <tr><td>Santarém</td><td>PA</td><td>R$ 130,00</td><td>R$ 1.100,00/kg</td><td>4,50%</td></tr>
+                            <tr class="total-row"><td colspan="5"><strong>Total de 12 cidades atendidas</strong></td></tr>
                         </tbody>
                     </table>
                 </div>
-                <div style="margin-top:8px; text-align:center; font-size:11px; color:#333;">
-                    Contato / WhatsApp: (93) 8418-4950 &nbsp;|&nbsp; Gelheta: 130
-                </div>
+                <div style="margin-top:8px;text-align:center;font-size:11px;color:#333;">Contato / WhatsApp: (93) 8418-4950 &nbsp;|&nbsp; Gelheta: 130</div>
             </div>
             <div class="modal-footer">
                 <button class="btn close-modal-fixa">Fechar</button>
@@ -929,108 +109,47 @@
         </div>
     </div>
 
-    <!-- ============================================================
-         MODAL - CADASTRO/EDIÇÃO DE TABELA DE FRETE
-         ============================================================ -->
+    <!-- MODAL - CADASTRO/EDIÇÃO DE TABELA DE FRETE -->
     <div class="modal-overlay" id="modalTabela">
         <div class="window" style="max-width:760px;">
             <div class="window-title">
-                <div class="title-text">
-                    <span class="icon">P</span>
-                    <span id="modalTitle">Nova Tabela de Frete</span>
-                </div>
-                <div class="controls">
-                    <span>_</span>
-                    <span>□</span>
-                    <span class="close-modal" style="cursor:pointer;">X</span>
-                </div>
+                <div class="title-text"><span class="icon">P</span><span id="modalTitle">Nova Tabela de Frete</span></div>
+                <div class="controls"><span>_</span><span>□</span><span class="close-modal" style="cursor:pointer;">X</span></div>
             </div>
             <div class="window-body">
                 <form id="formTabela">
                     <input type="hidden" id="tabelaId">
-
-                    <fieldset class="group-box">
-                        <legend>Dados do Cliente</legend>
+                    <fieldset class="group-box"><legend>Dados do Cliente</legend>
                         <div class="form-row">
-                            <div class="field">
-                                <label>Cliente <span class="required">*</span></label>
-                                <input type="text" id="cliente" class="input" placeholder="Nome do cliente" required>
-                            </div>
-                            <div class="field">
-                                <label>CNPJ/CPF</label>
-                                <input type="text" id="cnpj" class="input" placeholder="7306297000167">
-                                <small style="color:#666; font-size:10px;">Digite o CNPJ e saia do campo para buscar dados automaticamente</small>
-                            </div>
+                            <div class="field"><label>Cliente <span class="required">*</span></label><input type="text" id="cliente" class="input" required></div>
+                            <div class="field"><label>CNPJ/CPF</label><input type="text" id="cnpj" class="input" placeholder="7306297000167"><small style="color:#666;font-size:10px;">Digite o CNPJ e saia do campo para buscar dados</small></div>
                         </div>
                         <div class="form-row">
-                            <div class="field">
-                                <label>Telefone</label>
-                                <input type="text" id="telefone" class="input" placeholder="(66) 3515-9853">
-                            </div>
-                            <div class="field">
-                                <label>Email</label>
-                                <input type="email" id="email" class="input" placeholder="cliente@email.com">
-                            </div>
+                            <div class="field"><label>Telefone</label><input type="text" id="telefone" class="input"></div>
+                            <div class="field"><label>Email</label><input type="email" id="email" class="input"></div>
+                        </div>
+                        <div class="form-row"><div class="field"><label>IE</label><input type="text" id="ie" class="input"></div></div>
+                    </fieldset>
+                    <fieldset class="group-box"><legend>Endereço</legend>
+                        <div class="form-row">
+                            <div class="field" style="flex:2;"><label>Logradouro <span class="required">*</span></label><input type="text" id="logradouro" class="input" required></div>
+                            <div class="field-small"><label>Número</label><input type="text" id="numero" class="input"></div>
+                            <div class="field"><label>Bairro</label><input type="text" id="bairro" class="input"></div>
                         </div>
                         <div class="form-row">
-                            <div class="field">
-                                <label>IE</label>
-                                <input type="text" id="ie" class="input" placeholder="Inscricao Estadual">
-                            </div>
+                            <div class="field" style="flex:2;"><label>Cidade</label><input type="text" id="cidade" class="input"></div>
+                            <div class="field-small"><label>UF</label><input type="text" id="uf" class="input" maxlength="2" style="text-transform:uppercase;"></div>
+                            <div class="field"><label>CEP</label><input type="text" id="cep" class="input"></div>
                         </div>
                     </fieldset>
-
-                    <fieldset class="group-box">
-                        <legend>Endereço</legend>
+                    <fieldset class="group-box"><legend>Origem / Destino</legend>
                         <div class="form-row">
-                            <div class="field" style="flex:2;">
-                                <label>Logradouro <span class="required">*</span></label>
-                                <input type="text" id="logradouro" class="input" placeholder="Rua, Avenida, etc." required>
-                            </div>
-                            <div class="field-small">
-                                <label>Número</label>
-                                <input type="text" id="numero" class="input" placeholder="s/n">
-                            </div>
-                            <div class="field">
-                                <label>Bairro</label>
-                                <input type="text" id="bairro" class="input" placeholder="Bairro">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="field" style="flex:2;">
-                                <label>Cidade</label>
-                                <input type="text" id="cidade" class="input" placeholder="Cidade">
-                            </div>
-                            <div class="field-small">
-                                <label>UF</label>
-                                <input type="text" id="uf" class="input" placeholder="MT" maxlength="2" style="text-transform:uppercase;">
-                            </div>
-                            <div class="field">
-                                <label>CEP</label>
-                                <input type="text" id="cep" class="input" placeholder="78556-788">
-                            </div>
+                            <div class="field"><label>Origem <span class="required">*</span></label><input type="text" id="origem" class="input" value="SINOP - MT" required></div>
+                            <div class="field"><label>Destino <span class="required">*</span></label><input type="text" id="destino" class="input" placeholder="DIVERSOS (PA)" required></div>
                         </div>
                     </fieldset>
-
-                    <fieldset class="group-box">
-                        <legend>Origem / Destino</legend>
-                        <div class="form-row">
-                            <div class="field">
-                                <label>Origem <span class="required">*</span></label>
-                                <input type="text" id="origem" class="input" value="SINOP - MT" required>
-                            </div>
-                            <div class="field">
-                                <label>Destino <span class="required">*</span></label>
-                                <input type="text" id="destino" class="input" placeholder="DIVERSOS (PA)" required>
-                            </div>
-                        </div>
-                    </fieldset>
-
-                    <fieldset class="group-box">
-                        <legend>Cidades Atendidas <span class="cidade-count" id="cidadeCount">(0 adicionadas)</span></legend>
-                        <div class="cidades-list" id="cidadesList">
-                            <div class="cidades-empty">Nenhuma cidade adicionada</div>
-                        </div>
+                    <fieldset class="group-box"><legend>Cidades Atendidas <span class="cidade-count" id="cidadeCount">(0 adicionadas)</span></legend>
+                        <div class="cidades-list" id="cidadesList"><div class="cidades-empty">Nenhuma cidade adicionada</div></div>
                         <div class="add-cidade-row">
                             <select id="selectCidade" class="input" style="flex:2;">
                                 <option value="">Selecione uma cidade</option>
@@ -1039,28 +158,25 @@
                                 <option value="Novo Progresso">Novo Progresso</option>
                                 <option value="Moraes Almeida">Moraes Almeida</option>
                                 <option value="Bela Vista do Caracol">Bela Vista do Caracol</option>
-                                <option value="Trairao">Trairao</option>
+                                <option value="Trairão">Trairão</option>
                                 <option value="Km 30 / Campo Verde">Km 30 / Campo Verde</option>
                                 <option value="Mirituba">Mirituba</option>
                                 <option value="Itaituba">Itaituba</option>
-                                <option value="Ruropolis">Ruropolis</option>
-                                <option value="Mojul dos Campos">Mojul dos Campos</option>
-                                <option value="Santarem">Santarem</option>
+                                <option value="Rurópolis">Rurópolis</option>
+                                <option value="Mojuí dos Campos">Mojuí dos Campos</option>
+                                <option value="Santarém">Santarém</option>
                                 <option value="OUTRA">Outra cidade...</option>
                             </select>
                             <input type="text" id="cidadePersonalizada" class="input" placeholder="Nome da cidade" style="display:none; flex:1.5;">
                             <input type="number" id="freteCidade" class="input" placeholder="Frete R$" step="0.01" style="flex:1;">
-                            <input type="number" id="kgCidade" class="input" placeholder="Preco KG" step="0.01" style="flex:1;">
+                            <input type="number" id="kgCidade" class="input" placeholder="Preço KG" step="0.01" style="flex:1;">
                             <input type="number" id="percentualCidade" class="input" placeholder="% NF" step="0.01" style="flex:1;">
                             <button type="button" class="btn btn-primary btn-sm" id="btnAddCidade">Adicionar</button>
                         </div>
                     </fieldset>
-
-                    <fieldset class="group-box">
-                        <legend>Observacao</legend>
-                        <textarea id="observacao" class="input" rows="2" placeholder="Informacoes adicionais..."></textarea>
+                    <fieldset class="group-box"><legend>Observação</legend>
+                        <textarea id="observacao" class="input" rows="2"></textarea>
                     </fieldset>
-
                     <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:8px;">
                         <button type="button" class="btn close-modal">Cancelar</button>
                         <button type="submit" class="btn btn-primary">Salvar</button>
@@ -1070,304 +186,83 @@
         </div>
     </div>
 
-    <!-- ============================================================
-         MODAL - CONFIGURAÇÃO DE IMPRESSÃO
-         ============================================================ -->
+    <!-- MODAL - CONFIGURAÇÃO DE IMPRESSÃO -->
     <div class="modal-overlay" id="modalConfig">
         <div class="window" style="max-width:900px;">
-            <div class="window-title">
-                <div class="title-text">
-                    <span class="icon">C</span>
-                    <span>Configuracao de Impressao</span>
-                </div>
-                <div class="controls">
-                    <span>_</span>
-                    <span>□</span>
-                    <span class="close-config" style="cursor:pointer;">X</span>
-                </div>
-            </div>
+            <div class="window-title"><div class="title-text"><span class="icon">C</span><span>Configuração de Impressão</span></div><div class="controls"><span>_</span><span>□</span><span class="close-config" style="cursor:pointer;">X</span></div></div>
             <div class="window-body">
                 <form id="formConfig">
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
                         <div style="max-height:500px; overflow-y:auto; padding-right:8px;">
                             <!-- Cabeçalho -->
-                            <div class="config-section">
-                                <div class="config-title">Cabecalho</div>
+                            <div class="config-section"><div class="config-title">Cabeçalho</div>
                                 <div class="form-row">
-                                    <div class="field">
-                                        <label>Cor de Fundo</label>
-                                        <input type="color" id="headerBgColor" class="input" value="#1a3a5c">
-                                    </div>
-                                    <div class="field">
-                                        <label>Cor do Texto</label>
-                                        <input type="color" id="headerTextColor" class="input" value="#ffffff">
-                                    </div>
+                                    <div class="field"><label>Cor de Fundo</label><input type="color" id="headerBgColor" class="input" value="#1a3a5c"></div>
+                                    <div class="field"><label>Cor do Texto</label><input type="color" id="headerTextColor" class="input" value="#ffffff"></div>
                                 </div>
                                 <div class="form-row">
-                                    <div class="field">
-                                        <label>Cor da Borda</label>
-                                        <input type="color" id="headerBorderColor" class="input" value="#ffd700">
-                                    </div>
-                                    <div class="field">
-                                        <label>Altura da Logo (px)</label>
-                                        <input type="number" id="logoMaxHeight" class="input" value="80" min="30" max="250">
-                                    </div>
+                                    <div class="field"><label>Cor da Borda</label><input type="color" id="headerBorderColor" class="input" value="#ffd700"></div>
+                                    <div class="field"><label>Altura da Logo (px)</label><input type="number" id="logoMaxHeight" class="input" value="80" min="30" max="250"></div>
                                 </div>
                                 <div class="form-row">
-                                    <div class="field">
-                                        <label>Espacamento (px)</label>
-                                        <input type="number" id="headerPadding" class="input" value="30" min="10" max="60">
-                                    </div>
-                                    <div class="field">
-                                        <label>Fonte</label>
-                                        <select id="headerFont" class="input">
-                                            <option value="Arial, sans-serif">Arial</option>
-                                            <option value="'Times New Roman', serif">Times New Roman</option>
-                                            <option value="'Courier New', monospace" selected>Courier New</option>
-                                            <option value="Georgia, serif">Georgia</option>
-                                            <option value="Verdana, sans-serif">Verdana</option>
-                                        </select>
-                                    </div>
+                                    <div class="field"><label>Espaçamento (px)</label><input type="number" id="headerPadding" class="input" value="30" min="10" max="60"></div>
+                                    <div class="field"><label>Fonte</label><select id="headerFont" class="input"><option value="Arial, sans-serif">Arial</option><option value="'Times New Roman', serif">Times New Roman</option><option value="'Courier New', monospace" selected>Courier New</option><option value="Georgia, serif">Georgia</option><option value="Verdana, sans-serif">Verdana</option></select></div>
                                 </div>
                                 <div class="form-row">
-                                    <div class="field">
-                                        <label>Tamanho (px)</label>
-                                        <input type="number" id="headerFontSize" class="input" value="13" min="8" max="24">
-                                    </div>
-                                    <div class="field">
-                                        <label>Alinhamento</label>
-                                        <select id="headerAlign" class="input">
-                                            <option value="center">Centro</option>
-                                            <option value="left">Esquerda</option>
-                                            <option value="right">Direita</option>
-                                        </select>
-                                    </div>
+                                    <div class="field"><label>Tamanho (px)</label><input type="number" id="headerFontSize" class="input" value="13" min="8" max="24"></div>
+                                    <div class="field"><label>Alinhamento</label><select id="headerAlign" class="input"><option value="center">Centro</option><option value="left">Esquerda</option><option value="right">Direita</option></select></div>
                                 </div>
-                                <div class="form-row">
-                                    <div class="field" style="flex:1 0 100%;">
-                                        <label>Endereco da Empresa</label>
-                                        <textarea id="enderecoEmpresa" class="input" rows="2">RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NUMERO: 129
-CIDADE: SINOP-MT | CEP: 78556-788</textarea>
-                                    </div>
-                                </div>
+                                <div class="form-row"><div class="field" style="flex:1 0 100%;"><label>Endereço da Empresa</label><textarea id="enderecoEmpresa" class="input" rows="2">RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NUMERO: 129
+CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
                             </div>
-
-                            <!-- LOGO -->
-                            <div class="config-section">
-                                <div class="config-title">Logo Personalizada</div>
-                                <div class="form-row">
-                                    <div class="field" style="flex:1 0 100%;">
-                                        <label>URL da Logo</label>
-                                        <input type="text" id="logoUrl" class="input" placeholder="https://seusite.com/logo.png" value="https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png">
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="field" style="flex:1 0 100%;">
-                                        <label>Ou faca upload de uma imagem</label>
-                                        <input type="file" id="logoUpload" class="input" accept="image/*" style="padding:6px;">
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="field" style="flex:1 0 100%;">
-                                        <label>Pre-visualizacao da Logo</label>
-                                        <div class="logo-preview-mini" id="logoPreviewMini">
-                                            <img src="https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png" alt="Logo" id="logoPreviewImg">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div style="font-size:11px; color:#666; margin-top:4px;">
-                                    A logo aparecera no cabecalho da impressao e no topo do sistema.
-                                </div>
+                            <!-- Logo -->
+                            <div class="config-section"><div class="config-title">Logo Personalizada</div>
+                                <div class="form-row"><div class="field" style="flex:1 0 100%;"><label>URL da Logo</label><input type="text" id="logoUrl" class="input" value="https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png"></div></div>
+                                <div class="form-row"><div class="field" style="flex:1 0 100%;"><label>Ou faça upload</label><input type="file" id="logoUpload" class="input" accept="image/*" style="padding:6px;"></div></div>
+                                <div class="form-row"><div class="field" style="flex:1 0 100%;"><label>Pré-visualização</label><div class="logo-preview-mini" id="logoPreviewMini"><img src="https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png" alt="Logo" id="logoPreviewImg"></div></div></div>
+                                <div style="font-size:11px; color:#666;">A logo aparecerá no cabeçalho da impressão e no topo do sistema.</div>
                             </div>
-
                             <!-- Cliente -->
-                            <div class="config-section">
-                                <div class="config-title">Informacoes do Cliente</div>
-                                <div class="form-row">
-                                    <div class="field">
-                                        <label>Cor de Fundo</label>
-                                        <input type="color" id="clienteBgColor" class="input" value="#f8f9fa">
-                                    </div>
-                                    <div class="field">
-                                        <label>Cor do Texto</label>
-                                        <input type="color" id="clienteTextColor" class="input" value="#333333">
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="field">
-                                        <label>Tamanho (px)</label>
-                                        <input type="number" id="clienteFontSize" class="input" value="12" min="8" max="20">
-                                    </div>
-                                    <div class="field">
-                                        <label>Fonte</label>
-                                        <select id="clienteFont" class="input">
-                                            <option value="Arial, sans-serif">Arial</option>
-                                            <option value="'Times New Roman', serif">Times New Roman</option>
-                                            <option value="'Courier New', monospace" selected>Courier New</option>
-                                            <option value="Georgia, serif">Georgia</option>
-                                            <option value="Verdana, sans-serif">Verdana</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="field">
-                                        <label>Espacamento (px)</label>
-                                        <input type="number" id="clientePadding" class="input" value="15" min="5" max="30">
-                                    </div>
-                                    <div class="field">
-                                        <label>Alinhamento</label>
-                                        <select id="clienteAlign" class="input">
-                                            <option value="left">Esquerda</option>
-                                            <option value="center">Centro</option>
-                                            <option value="right">Direita</option>
-                                        </select>
-                                    </div>
-                                </div>
+                            <div class="config-section"><div class="config-title">Informações do Cliente</div>
+                                <div class="form-row"><div class="field"><label>Cor de Fundo</label><input type="color" id="clienteBgColor" class="input" value="#f8f9fa"></div><div class="field"><label>Cor do Texto</label><input type="color" id="clienteTextColor" class="input" value="#333333"></div></div>
+                                <div class="form-row"><div class="field"><label>Tamanho (px)</label><input type="number" id="clienteFontSize" class="input" value="12" min="8" max="20"></div><div class="field"><label>Fonte</label><select id="clienteFont" class="input"><option value="Arial, sans-serif">Arial</option><option value="'Times New Roman', serif">Times New Roman</option><option value="'Courier New', monospace" selected>Courier New</option><option value="Georgia, serif">Georgia</option><option value="Verdana, sans-serif">Verdana</option></select></div></div>
+                                <div class="form-row"><div class="field"><label>Espaçamento (px)</label><input type="number" id="clientePadding" class="input" value="15" min="5" max="30"></div><div class="field"><label>Alinhamento</label><select id="clienteAlign" class="input"><option value="left">Esquerda</option><option value="center">Centro</option><option value="right">Direita</option></select></div></div>
                             </div>
-
-                            <!-- EDIÇÃO DE CAMPOS -->
-                            <div class="config-section">
-                                <div class="config-title">Edicao de Campos (Impressao)</div>
-                                <div style="font-size:11px; color:#333; margin-bottom:6px;">
-                                    Arraste para reordenar. Marque para exibir.
-                                </div>
+                            <!-- Campos -->
+                            <div class="config-section"><div class="config-title">Edição de Campos (Impressão)</div>
+                                <div style="font-size:11px; color:#333; margin-bottom:6px;">Arraste para reordenar. Marque para exibir.</div>
                                 <div class="campos-container" id="camposContainer"></div>
-                                <div style="margin-top:6px;">
-                                    <button type="button" class="btn btn-sm btn-secondary" id="btnAdicionarCampo">Adicionar Campo</button>
-                                </div>
+                                <div style="margin-top:6px;"><button type="button" class="btn btn-sm btn-secondary" id="btnAdicionarCampo">Adicionar Campo</button></div>
                             </div>
-
                             <!-- Tabela -->
-                            <div class="config-section">
-                                <div class="config-title">Tabela de Fretes</div>
-                                <div class="form-row">
-                                    <div class="field">
-                                        <label>Cor do Cabecalho</label>
-                                        <input type="color" id="tabelaHeaderBg" class="input" value="#1a3a5c">
-                                    </div>
-                                    <div class="field">
-                                        <label>Cor do Texto</label>
-                                        <input type="color" id="tabelaHeaderText" class="input" value="#ffffff">
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="field">
-                                        <label>Tamanho (px)</label>
-                                        <input type="number" id="tabelaHeaderFontSize" class="input" value="12" min="8" max="20">
-                                    </div>
-                                    <div class="field">
-                                        <label>Tamanho Dados (px)</label>
-                                        <input type="number" id="tabelaDataFontSize" class="input" value="12" min="8" max="20">
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="field">
-                                        <label>Fonte</label>
-                                        <select id="tabelaFont" class="input">
-                                            <option value="Arial, sans-serif">Arial</option>
-                                            <option value="'Times New Roman', serif">Times New Roman</option>
-                                            <option value="'Courier New', monospace" selected>Courier New</option>
-                                            <option value="Georgia, serif">Georgia</option>
-                                            <option value="Verdana, sans-serif">Verdana</option>
-                                        </select>
-                                    </div>
-                                    <div class="field">
-                                        <label>Alinhamento</label>
-                                        <select id="tabelaAlign" class="input">
-                                            <option value="left">Esquerda</option>
-                                            <option value="center">Centro</option>
-                                            <option value="right">Direita</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="field">
-                                        <label>Cor Linha Par</label>
-                                        <input type="color" id="tabelaLinhaPar" class="input" value="#f8f9fa">
-                                    </div>
-                                    <div class="field">
-                                        <label>Cor Linha Impar</label>
-                                        <input type="color" id="tabelaLinhaImpar" class="input" value="#ffffff">
-                                    </div>
-                                </div>
+                            <div class="config-section"><div class="config-title">Tabela de Fretes</div>
+                                <div class="form-row"><div class="field"><label>Cor do Cabeçalho</label><input type="color" id="tabelaHeaderBg" class="input" value="#1a3a5c"></div><div class="field"><label>Cor do Texto</label><input type="color" id="tabelaHeaderText" class="input" value="#ffffff"></div></div>
+                                <div class="form-row"><div class="field"><label>Tamanho (px)</label><input type="number" id="tabelaHeaderFontSize" class="input" value="12" min="8" max="20"></div><div class="field"><label>Tamanho Dados (px)</label><input type="number" id="tabelaDataFontSize" class="input" value="12" min="8" max="20"></div></div>
+                                <div class="form-row"><div class="field"><label>Fonte</label><select id="tabelaFont" class="input"><option value="Arial, sans-serif">Arial</option><option value="'Times New Roman', serif">Times New Roman</option><option value="'Courier New', monospace" selected>Courier New</option><option value="Georgia, serif">Georgia</option><option value="Verdana, sans-serif">Verdana</option></select></div><div class="field"><label>Alinhamento</label><select id="tabelaAlign" class="input"><option value="left">Esquerda</option><option value="center">Centro</option><option value="right">Direita</option></select></div></div>
+                                <div class="form-row"><div class="field"><label>Cor Linha Par</label><input type="color" id="tabelaLinhaPar" class="input" value="#f8f9fa"></div><div class="field"><label>Cor Linha Ímpar</label><input type="color" id="tabelaLinhaImpar" class="input" value="#ffffff"></div></div>
                             </div>
-
                             <!-- Rodapé -->
-                            <div class="config-section">
-                                <div class="config-title">Rodape</div>
-                                <div class="form-row">
-                                    <div class="field">
-                                        <label>Texto do Contato</label>
-                                        <input type="text" id="textoContato" class="input" value="CONTATO / WHATSAPP: (93) 8418-4950">
-                                    </div>
-                                    <div class="field">
-                                        <label>Tamanho (px)</label>
-                                        <input type="number" id="rodapeFontSize" class="input" value="13" min="8" max="20">
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="field">
-                                        <label>Fonte</label>
-                                        <select id="rodapeFont" class="input">
-                                            <option value="Arial, sans-serif">Arial</option>
-                                            <option value="'Times New Roman', serif">Times New Roman</option>
-                                            <option value="'Courier New', monospace" selected>Courier New</option>
-                                            <option value="Georgia, serif">Georgia</option>
-                                            <option value="Verdana, sans-serif">Verdana</option>
-                                        </select>
-                                    </div>
-                                    <div class="field">
-                                        <label>Alinhamento</label>
-                                        <select id="rodapeAlign" class="input">
-                                            <option value="center">Centro</option>
-                                            <option value="left">Esquerda</option>
-                                            <option value="right">Direita</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="field">
-                                        <label>Assinatura 1</label>
-                                        <input type="text" id="assinatura1" class="input" value="SINOP-MT">
-                                    </div>
-                                    <div class="field">
-                                        <label>Assinatura 2</label>
-                                        <input type="text" id="assinatura2" class="input" value="ASSINATURA">
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="field">
-                                        <label>Mostrar Data</label>
-                                        <select id="mostrarDataEmissao" class="input">
-                                            <option value="true">Sim</option>
-                                            <option value="false">Nao</option>
-                                        </select>
-                                    </div>
-                                    <div class="field">
-                                        <label>Largura Maxima (px)</label>
-                                        <input type="number" id="larguraMaxima" class="input" value="1000" min="600" max="1200">
-                                    </div>
-                                </div>
+                            <div class="config-section"><div class="config-title">Rodapé</div>
+                                <div class="form-row"><div class="field"><label>Texto do Contato</label><input type="text" id="textoContato" class="input" value="CONTATO / WHATSAPP: (93) 8418-4950"></div><div class="field"><label>Tamanho (px)</label><input type="number" id="rodapeFontSize" class="input" value="13" min="8" max="20"></div></div>
+                                <div class="form-row"><div class="field"><label>Fonte</label><select id="rodapeFont" class="input"><option value="Arial, sans-serif">Arial</option><option value="'Times New Roman', serif">Times New Roman</option><option value="'Courier New', monospace" selected>Courier New</option><option value="Georgia, serif">Georgia</option><option value="Verdana, sans-serif">Verdana</option></select></div><div class="field"><label>Alinhamento</label><select id="rodapeAlign" class="input"><option value="center">Centro</option><option value="left">Esquerda</option><option value="right">Direita</option></select></div></div>
+                                <div class="form-row"><div class="field"><label>Assinatura 1</label><input type="text" id="assinatura1" class="input" value="SINOP-MT"></div><div class="field"><label>Assinatura 2</label><input type="text" id="assinatura2" class="input" value="ASSINATURA"></div></div>
+                                <div class="form-row"><div class="field"><label>Mostrar Data</label><select id="mostrarDataEmissao" class="input"><option value="true">Sim</option><option value="false">Não</option></select></div><div class="field"><label>Largura Máxima (px)</label><input type="number" id="larguraMaxima" class="input" value="1000" min="600" max="1200"></div></div>
                             </div>
-
                             <div class="config-actions">
                                 <button type="submit" class="btn btn-primary">Salvar</button>
                                 <button type="button" class="btn" id="btnResetConfig">Restaurar</button>
                                 <button type="button" class="btn close-config">Fechar</button>
                             </div>
                         </div>
-
                         <div>
                             <div class="config-section" style="height:100%;">
-                                <div class="config-title">Pre-visualizacao</div>
+                                <div class="config-title">Pré-visualização</div>
                                 <div style="font-size:11px; color:#333; background:#d0d0c0; padding:2px 8px; margin-bottom:4px;">
                                     <span id="previewFonteInfo">Fonte: Courier New</span> &nbsp;|&nbsp;
                                     <span id="previewAlignInfo">Alinhamento: Centro</span>
                                     <span style="margin-left:15px;" id="previewLogoTamanho">Logo: 80px</span>
                                 </div>
-                                <div class="preview-box">
-                                    <div class="preview-content" id="previewContent"></div>
-                                </div>
+                                <div class="preview-box"><div class="preview-content" id="previewContent"></div></div>
                             </div>
                         </div>
                     </div>
@@ -1376,22 +271,10 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         </div>
     </div>
 
-    <!-- ============================================================
-         MODAL - IMPRESSÃO
-         ============================================================ -->
+    <!-- MODAL - IMPRESSÃO -->
     <div class="modal-overlay" id="modalImprimir">
         <div class="window" style="max-width:950px;">
-            <div class="window-title">
-                <div class="title-text">
-                    <span class="icon">P</span>
-                    <span>Impressao - Tabela de Fretes</span>
-                </div>
-                <div class="controls">
-                    <span>_</span>
-                    <span>□</span>
-                    <span class="close-print" style="cursor:pointer;">X</span>
-                </div>
-            </div>
+            <div class="window-title"><div class="title-text"><span class="icon">P</span><span>Impressão - Tabela de Fretes</span></div><div class="controls"><span>_</span><span>□</span><span class="close-print" style="cursor:pointer;">X</span></div></div>
             <div class="window-body" id="conteudoImpressao"></div>
             <div class="modal-footer">
                 <button class="btn close-print">Fechar</button>
@@ -1401,22 +284,10 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         </div>
     </div>
 
-    <!-- ============================================================
-         MODAL - COLETA
-         ============================================================ -->
+    <!-- MODAL - COLETA -->
     <div class="modal-overlay" id="modalColeta">
         <div class="window" style="max-width:950px;">
-            <div class="window-title">
-                <div class="title-text">
-                    <span class="icon">📦</span>
-                    <span>Gerenciamento de Coletas</span>
-                </div>
-                <div class="controls">
-                    <span>_</span>
-                    <span>□</span>
-                    <span class="close-coleta" style="cursor:pointer;">X</span>
-                </div>
-            </div>
+            <div class="window-title"><div class="title-text"><span class="icon">📦</span><span>Gerenciamento de Coletas</span></div><div class="controls"><span>_</span><span>□</span><span class="close-coleta" style="cursor:pointer;">X</span></div></div>
             <div class="window-body">
                 <div style="display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap;">
                     <button class="btn btn-primary" id="btnNovaColeta">Nova Coleta</button>
@@ -1425,48 +296,19 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 </div>
                 <div class="table-wrap">
                     <table class="table" id="tabelaColeta">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Cliente</th>
-                                <th>Volumes</th>
-                                <th>Data</th>
-                                <th>Status</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody id="corpoColeta">
-                            <tr>
-                                <td colspan="6" style="text-align:center; padding:20px; color:#666;">
-                                    Nenhuma coleta encontrada
-                                </td>
-                            </tr>
-                        </tbody>
+                        <thead><tr><th>ID</th><th>Cliente</th><th>Volumes</th><th>Data</th><th>Status</th><th>Ações</th></tr></thead>
+                        <tbody id="corpoColeta"><tr><td colspan="6" style="text-align:center;padding:20px;color:#666;">Nenhuma coleta encontrada</td></tr></tbody>
                     </table>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button class="btn close-coleta">Fechar</button>
-            </div>
+            <div class="modal-footer"><button class="btn close-coleta">Fechar</button></div>
         </div>
     </div>
 
-    <!-- ============================================================
-         MODAL - GERENCIAR CLIENTES DE COLETA (usado também pelo CRM)
-         ============================================================ -->
+    <!-- MODAL - GERENCIAR CLIENTES (lista rápida) -->
     <div class="modal-overlay" id="modalGerenciarClientes">
         <div class="window" style="max-width:800px;">
-            <div class="window-title">
-                <div class="title-text">
-                    <span class="icon">👥</span>
-                    <span>Gerenciar Clientes - Coleta</span>
-                </div>
-                <div class="controls">
-                    <span>_</span>
-                    <span>□</span>
-                    <span class="close-gerenciar-clientes" style="cursor:pointer;">X</span>
-                </div>
-            </div>
+            <div class="window-title"><div class="title-text"><span class="icon">👥</span><span>Gerenciar Clientes - Coleta</span></div><div class="controls"><span>_</span><span>□</span><span class="close-gerenciar-clientes" style="cursor:pointer;">X</span></div></div>
             <div class="window-body">
                 <div style="display:flex; gap:8px; margin-bottom:12px;">
                     <button class="btn btn-primary" id="btnNovoClienteGerenciar">+ Novo Cliente</button>
@@ -1474,163 +316,71 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
                 </div>
                 <div class="table-wrap">
                     <table class="table" id="tabelaClientes">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nome</th>
-                                <th>CNPJ</th>
-                                <th>Telefone</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody id="corpoClientes">
-                            <tr>
-                                <td colspan="5" style="text-align:center;padding:20px;color:#666;">
-                                    Nenhum cliente cadastrado
-                                </td>
-                            </tr>
-                        </tbody>
+                        <thead><tr><th>ID</th><th>Nome</th><th>CNPJ</th><th>Telefone</th><th>Ações</th></tr></thead>
+                        <tbody id="corpoClientes"><tr><td colspan="5" style="text-align:center;padding:20px;color:#666;">Nenhum cliente cadastrado</td></tr></tbody>
                     </table>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button class="btn close-gerenciar-clientes">Fechar</button>
-            </div>
+            <div class="modal-footer"><button class="btn close-gerenciar-clientes">Fechar</button></div>
         </div>
     </div>
 
-    <!-- ============================================================
-         MODAL - CRM (NOVO)
-         ============================================================ -->
+    <!-- MODAL - CRM (com coluna Observação) -->
     <div class="modal-overlay" id="modalCRM">
-        <div class="window" style="max-width:900px;">
-            <div class="window-title">
-                <div class="title-text">
-                    <span class="icon">📇</span>
-                    <span>CRM - Cadastro de Clientes</span>
-                </div>
-                <div class="controls">
-                    <span>_</span>
-                    <span>□</span>
-                    <span class="close-crm" style="cursor:pointer;">X</span>
-                </div>
-            </div>
+        <div class="window" style="max-width:950px;">
+            <div class="window-title"><div class="title-text"><span class="icon">📇</span><span>CRM - Cadastro de Clientes</span></div><div class="controls"><span>_</span><span>□</span><span class="close-crm" style="cursor:pointer;">X</span></div></div>
             <div class="window-body">
                 <div style="display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap;">
                     <button class="btn btn-primary" id="btnNovoClienteCRM">+ Novo Cliente</button>
                     <button class="btn" id="btnAtualizarCRM">Atualizar</button>
-                    <div style="flex:1; min-width:200px;">
-                        <input type="text" id="buscaCRM" class="input" placeholder="Buscar por nome ou CNPJ..." style="width:100%;">
-                    </div>
+                    <div style="flex:1; min-width:200px;"><input type="text" id="buscaCRM" class="input" placeholder="Buscar por nome ou CNPJ..." style="width:100%;"></div>
                 </div>
                 <div class="table-wrap">
                     <table class="table" id="tabelaCRM">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nome</th>
-                                <th>CNPJ</th>
-                                <th>Telefone</th>
-                                <th>Email</th>
-                                <th>UF</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody id="corpoCRM">
-                            <tr>
-                                <td colspan="7" style="text-align:center;padding:20px;color:#666;">
-                                    Nenhum cliente cadastrado
-                                </td>
-                            </tr>
-                        </tbody>
+                        <thead><tr><th>ID</th><th>Nome</th><th>CNPJ</th><th>Telefone</th><th>Email</th><th>UF</th><th>Observação</th><th>Ações</th></tr></thead>
+                        <tbody id="corpoCRM"><tr><td colspan="8" style="text-align:center;padding:20px;color:#666;">Nenhum cliente cadastrado</td></tr></tbody>
                     </table>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button class="btn close-crm">Fechar</button>
-            </div>
+            <div class="modal-footer"><button class="btn close-crm">Fechar</button></div>
         </div>
     </div>
 
-    <!-- ============================================================
-         MODAL - CADASTRO DE CLIENTE PARA COLETA (reutilizado pelo CRM)
-         ============================================================ -->
+    <!-- MODAL - CADASTRO DE CLIENTE (com Observação) -->
     <div class="modal-overlay" id="modalClienteColeta">
         <div class="window" style="max-width:760px;">
             <div class="window-title">
-                <div class="title-text">
-                    <span class="icon">👤</span>
-                    <span id="modalClienteColetaTitle">Cadastrar Cliente</span>
-                </div>
-                <div class="controls">
-                    <span>_</span>
-                    <span>□</span>
-                    <span class="close-cliente-coleta" style="cursor:pointer;">X</span>
-                </div>
+                <div class="title-text"><span class="icon">👤</span><span id="modalClienteColetaTitle">Cadastrar Cliente</span></div>
+                <div class="controls"><span>_</span><span>□</span><span class="close-cliente-coleta" style="cursor:pointer;">X</span></div>
             </div>
             <div class="window-body">
                 <form id="formClienteColeta">
                     <input type="hidden" id="clienteColetaId">
-                    <fieldset class="group-box">
-                        <legend>Dados do Cliente</legend>
+                    <fieldset class="group-box"><legend>Dados do Cliente</legend>
                         <div class="form-row">
-                            <div class="field">
-                                <label>Nome <span class="required">*</span></label>
-                                <input type="text" id="nomeClienteColeta" class="input" required>
-                            </div>
-                            <div class="field">
-                                <label>CNPJ/CPF</label>
-                                <input type="text" id="cnpjClienteColeta" class="input" placeholder="Digite o CNPJ e saia do campo para buscar dados">
-                                <small style="color:#666; font-size:10px;">Digite o CNPJ e saia do campo para buscar dados automaticamente</small>
-                            </div>
+                            <div class="field"><label>Nome <span class="required">*</span></label><input type="text" id="nomeClienteColeta" class="input" required></div>
+                            <div class="field"><label>CNPJ/CPF</label><input type="text" id="cnpjClienteColeta" class="input" placeholder="Digite o CNPJ e saia do campo para buscar dados"><small style="color:#666;font-size:10px;">Digite o CNPJ e saia do campo para buscar dados automaticamente</small></div>
                         </div>
                         <div class="form-row">
-                            <div class="field">
-                                <label>Telefone</label>
-                                <input type="text" id="telefoneClienteColeta" class="input">
-                            </div>
-                            <div class="field">
-                                <label>Email</label>
-                                <input type="email" id="emailClienteColeta" class="input">
-                            </div>
+                            <div class="field"><label>Telefone</label><input type="text" id="telefoneClienteColeta" class="input"></div>
+                            <div class="field"><label>Email</label><input type="email" id="emailClienteColeta" class="input"></div>
+                        </div>
+                        <div class="form-row"><div class="field"><label>IE</label><input type="text" id="ieClienteColeta" class="input"></div></div>
+                    </fieldset>
+                    <fieldset class="group-box"><legend>Endereço</legend>
+                        <div class="form-row">
+                            <div class="field" style="flex:2;"><label>Logradouro</label><input type="text" id="logradouroClienteColeta" class="input"></div>
+                            <div class="field-small"><label>Número</label><input type="text" id="numeroClienteColeta" class="input"></div>
+                            <div class="field"><label>Bairro</label><input type="text" id="bairroClienteColeta" class="input"></div>
                         </div>
                         <div class="form-row">
-                            <div class="field">
-                                <label>IE</label>
-                                <input type="text" id="ieClienteColeta" class="input">
-                            </div>
+                            <div class="field" style="flex:2;"><label>Cidade</label><input type="text" id="cidadeClienteColeta" class="input"></div>
+                            <div class="field-small"><label>UF</label><input type="text" id="ufClienteColeta" class="input" maxlength="2" style="text-transform:uppercase;"></div>
+                            <div class="field"><label>CEP</label><input type="text" id="cepClienteColeta" class="input"></div>
                         </div>
                     </fieldset>
-                    <fieldset class="group-box">
-                        <legend>Endereço</legend>
-                        <div class="form-row">
-                            <div class="field" style="flex:2;">
-                                <label>Logradouro</label>
-                                <input type="text" id="logradouroClienteColeta" class="input">
-                            </div>
-                            <div class="field-small">
-                                <label>Número</label>
-                                <input type="text" id="numeroClienteColeta" class="input">
-                            </div>
-                            <div class="field">
-                                <label>Bairro</label>
-                                <input type="text" id="bairroClienteColeta" class="input">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="field" style="flex:2;">
-                                <label>Cidade</label>
-                                <input type="text" id="cidadeClienteColeta" class="input">
-                            </div>
-                            <div class="field-small">
-                                <label>UF</label>
-                                <input type="text" id="ufClienteColeta" class="input" maxlength="2" style="text-transform:uppercase;">
-                            </div>
-                            <div class="field">
-                                <label>CEP</label>
-                                <input type="text" id="cepClienteColeta" class="input">
-                            </div>
-                        </div>
+                    <fieldset class="group-box"><legend>Observação</legend>
+                        <textarea id="observacaoClienteColeta" class="input" rows="3" placeholder="Observações sobre o cliente..."></textarea>
                     </fieldset>
                     <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:8px;">
                         <button type="button" class="btn close-cliente-coleta">Cancelar</button>
@@ -1641,38 +391,19 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         </div>
     </div>
 
-    <!-- ============================================================
-         MODAL - NOVA COLETA
-         ============================================================ -->
+    <!-- MODAL - NOVA COLETA -->
     <div class="modal-overlay" id="modalNovaColeta">
         <div class="window" style="max-width:700px;">
-            <div class="window-title">
-                <div class="title-text">
-                    <span class="icon">📦</span>
-                    <span>Publicar Coleta</span>
-                </div>
-                <div class="controls">
-                    <span>_</span>
-                    <span>□</span>
-                    <span class="close-nova-coleta" style="cursor:pointer;">X</span>
-                </div>
-            </div>
+            <div class="window-title"><div class="title-text"><span class="icon">📦</span><span>Publicar Coleta</span></div><div class="controls"><span>_</span><span>□</span><span class="close-nova-coleta" style="cursor:pointer;">X</span></div></div>
             <div class="window-body">
                 <form id="formNovaColeta">
-                    <fieldset class="group-box">
-                        <legend>Dados da Coleta</legend>
+                    <fieldset class="group-box"><legend>Dados da Coleta</legend>
                         <div class="form-row">
-                            <div class="field" style="flex:2;">
-                                <label>Cliente <span class="required">*</span></label>
-                                <select id="clienteColetaSelect" class="input" required>
-                                    <option value="">Selecione um cliente</option>
-                                </select>
+                            <div class="field" style="flex:2;"><label>Cliente <span class="required">*</span></label>
+                                <select id="clienteColetaSelect" class="input" required><option value="">Selecione um cliente</option></select>
                                 <button type="button" class="btn btn-sm" id="btnNovoClienteColeta" style="margin-top:4px;">+ Novo Cliente</button>
                             </div>
-                            <div class="field">
-                                <label>Volumes</label>
-                                <input type="number" id="volumesColeta" class="input" value="1" min="1">
-                            </div>
+                            <div class="field"><label>Volumes</label><input type="number" id="volumesColeta" class="input" value="1" min="1"></div>
                         </div>
                     </fieldset>
                     <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:8px;">
@@ -1684,1938 +415,7 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea>
         </div>
     </div>
 
-    <!-- ============================================================
-         JAVASCRIPT
-         ============================================================ -->
-    <script>
-        // ============================================================
-        // CONFIGURAÇÃO JSONBIN (Tabelas de Frete)
-        // ============================================================
-        const CONFIG = {
-            BIN_ID: '6a708f6af5f4af5e29e50603',
-            MASTER_KEY: '$2a$10$XHYsaSwZh2v6lebsk9vvEugA6omdPattDTtGC3BPZP1FauxoGHy72'
-        };
-        const API_URL = `https://api.jsonbin.io/v3/b/${CONFIG.BIN_ID}`;
-
-        // ============================================================
-        // CONFIGURAÇÃO SUPABASE (Coletas e Clientes)
-        // ============================================================
-        const SUPABASE_URL = 'https://jdvdkvbaffpzvbpmvisb.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_2Ve4n-K446YAquI080OpuA_yUI1zh0o';
-
-        // ============================================================
-        // CONFIGURAÇÕES DE IMPRESSÃO (mantidas)
-        // ============================================================
-        const CAMPOS_PADRAO = [
-            { id: 'NOME', label: 'NOME', enabled: true },
-            { id: 'CNPJ', label: 'CNPJ/CPF', enabled: true },
-            { id: 'TELEFONE', label: 'TELEFONE', enabled: true },
-            { id: 'PEDIDO', label: 'N. Pedido', enabled: true },
-            { id: 'ENDERECO', label: 'ENDEREÇO', enabled: true },
-            { id: 'BAIRRO', label: 'BAIRRO', enabled: true },
-            { id: 'CIDADE', label: 'CIDADE', enabled: true },
-            { id: 'UF', label: 'UF', enabled: true },
-            { id: 'CEP', label: 'CEP', enabled: true },
-            { id: 'IE', label: 'IE', enabled: true },
-            { id: 'EMAIL', label: 'EMAIL', enabled: true }
-        ];
-
-        let configImpressao = {
-            headerBgColor: '#1a3a5c',
-            headerTextColor: '#ffffff',
-            headerBorderColor: '#ffd700',
-            headerFontSize: 13,
-            headerFont: "'Courier New', monospace",
-            headerAlign: 'center',
-            headerPadding: 30,
-            logoMaxHeight: 80,
-            logoUrl: 'https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png',
-            enderecoEmpresa: 'RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NUMERO: 129\nCIDADE: SINOP-MT | CEP: 78556-788',
-            clienteBgColor: '#f8f9fa',
-            clienteTextColor: '#333333',
-            clienteFontSize: 12,
-            clienteFont: "'Courier New', monospace",
-            clienteAlign: 'left',
-            clientePadding: 15,
-            tabelaHeaderBg: '#1a3a5c',
-            tabelaHeaderText: '#ffffff',
-            tabelaHeaderFontSize: 12,
-            tabelaDataFontSize: 12,
-            tabelaFont: "'Courier New', monospace",
-            tabelaAlign: 'left',
-            tabelaLinhaPar: '#f8f9fa',
-            tabelaLinhaImpar: '#ffffff',
-            textoContato: 'CONTATO / WHATSAPP: (93) 8418-4950',
-            rodapeFontSize: 13,
-            rodapeFont: "'Courier New', monospace",
-            rodapeAlign: 'center',
-            assinatura1: 'SINOP-MT',
-            assinatura2: 'ASSINATURA',
-            mostrarDataEmissao: true,
-            larguraMaxima: 1000,
-            campos: JSON.parse(JSON.stringify(CAMPOS_PADRAO))
-        };
-
-        // ============================================================
-        // ESTADO GLOBAL
-        // ============================================================
-        let tabelas = [];
-        let editandoId = null;
-        let cidadesTemp = [];
-        let tabelaImpressaoAtual = null;
-
-        // Coletas e Clientes
-        let clientesColeta = [];
-        let coletas = [];
-
-        // ============================================================
-        // REFERÊNCIAS DOM
-        // ============================================================
-        const elements = {
-            corpoTabela: document.getElementById('corpoTabela'),
-            totalTabelas: document.getElementById('totalTabelas'),
-            ultimaAtualizacao: document.getElementById('ultimaAtualizacao'),
-            searchInput: document.getElementById('searchInput'),
-            btnNovo: document.getElementById('btnNovo'),
-            btnConfigurar: document.getElementById('btnConfigurar'),
-            btnBuscar: document.getElementById('btnBuscar'),
-            btnLimpar: document.getElementById('btnLimpar'),
-            modal: document.getElementById('modalTabela'),
-            modalTitle: document.getElementById('modalTitle'),
-            form: document.getElementById('formTabela'),
-            tabelaId: document.getElementById('tabelaId'),
-            cliente: document.getElementById('cliente'),
-            cnpj: document.getElementById('cnpj'),
-            telefone: document.getElementById('telefone'),
-            email: document.getElementById('email'),
-            ie: document.getElementById('ie'),
-            logradouro: document.getElementById('logradouro'),
-            numero: document.getElementById('numero'),
-            bairro: document.getElementById('bairro'),
-            cidade: document.getElementById('cidade'),
-            uf: document.getElementById('uf'),
-            cep: document.getElementById('cep'),
-            origem: document.getElementById('origem'),
-            destino: document.getElementById('destino'),
-            observacao: document.getElementById('observacao'),
-            cidadesList: document.getElementById('cidadesList'),
-            cidadeCount: document.getElementById('cidadeCount'),
-            selectCidade: document.getElementById('selectCidade'),
-            cidadePersonalizada: document.getElementById('cidadePersonalizada'),
-            freteCidade: document.getElementById('freteCidade'),
-            kgCidade: document.getElementById('kgCidade'),
-            percentualCidade: document.getElementById('percentualCidade'),
-            btnAddCidade: document.getElementById('btnAddCidade'),
-            closeModal: document.querySelectorAll('.close-modal'),
-            modalPrint: document.getElementById('modalImprimir'),
-            conteudoImpressao: document.getElementById('conteudoImpressao'),
-            closePrint: document.querySelector('.close-print'),
-            btnGerarPDF: document.getElementById('btnGerarPDF'),
-            modalConfig: document.getElementById('modalConfig'),
-            closeConfig: document.querySelectorAll('.close-config'),
-            btnResetConfig: document.getElementById('btnResetConfig'),
-            formConfig: document.getElementById('formConfig'),
-            previewContent: document.getElementById('previewContent'),
-            previewFonteInfo: document.getElementById('previewFonteInfo'),
-            previewAlignInfo: document.getElementById('previewAlignInfo'),
-            previewLogoTamanho: document.getElementById('previewLogoTamanho'),
-            btnTabelaFixa: document.getElementById('btnTabelaFixa'),
-            modalTabelaFixa: document.getElementById('modalTabelaFixa'),
-            closeTabelaFixa: document.querySelectorAll('.close-modal-fixa'),
-            btnImprimirFixa: document.getElementById('btnImprimirFixa'),
-            camposContainer: document.getElementById('camposContainer'),
-            btnAdicionarCampo: document.getElementById('btnAdicionarCampo'),
-            logoUrl: document.getElementById('logoUrl'),
-            logoUpload: document.getElementById('logoUpload'),
-            logoPreviewImg: document.getElementById('logoPreviewImg'),
-            headerLogoImg: document.getElementById('headerLogoImg'),
-            // Coleta
-            menuColeta: document.getElementById('menuColeta'),
-            modalColeta: document.getElementById('modalColeta'),
-            corpoColeta: document.getElementById('corpoColeta'),
-            btnNovaColeta: document.getElementById('btnNovaColeta'),
-            btnGerenciarClientes: document.getElementById('btnGerenciarClientes'),
-            btnAtualizarColeta: document.getElementById('btnAtualizarColeta'),
-            closeColeta: document.querySelectorAll('.close-coleta'),
-            // Cliente (formulário)
-            modalClienteColeta: document.getElementById('modalClienteColeta'),
-            formClienteColeta: document.getElementById('formClienteColeta'),
-            clienteColetaId: document.getElementById('clienteColetaId'),
-            nomeClienteColeta: document.getElementById('nomeClienteColeta'),
-            cnpjClienteColeta: document.getElementById('cnpjClienteColeta'),
-            telefoneClienteColeta: document.getElementById('telefoneClienteColeta'),
-            emailClienteColeta: document.getElementById('emailClienteColeta'),
-            ieClienteColeta: document.getElementById('ieClienteColeta'),
-            logradouroClienteColeta: document.getElementById('logradouroClienteColeta'),
-            numeroClienteColeta: document.getElementById('numeroClienteColeta'),
-            bairroClienteColeta: document.getElementById('bairroClienteColeta'),
-            cidadeClienteColeta: document.getElementById('cidadeClienteColeta'),
-            ufClienteColeta: document.getElementById('ufClienteColeta'),
-            cepClienteColeta: document.getElementById('cepClienteColeta'),
-            closeClienteColeta: document.querySelectorAll('.close-cliente-coleta'),
-            // Nova Coleta
-            modalNovaColeta: document.getElementById('modalNovaColeta'),
-            formNovaColeta: document.getElementById('formNovaColeta'),
-            clienteColetaSelect: document.getElementById('clienteColetaSelect'),
-            volumesColeta: document.getElementById('volumesColeta'),
-            btnNovoClienteColeta: document.getElementById('btnNovoClienteColeta'),
-            closeNovaColeta: document.querySelectorAll('.close-nova-coleta'),
-            // Gerenciar Clientes (lista rápida)
-            modalGerenciarClientes: document.getElementById('modalGerenciarClientes'),
-            corpoClientes: document.getElementById('corpoClientes'),
-            btnNovoClienteGerenciar: document.getElementById('btnNovoClienteGerenciar'),
-            btnAtualizarClientes: document.getElementById('btnAtualizarClientes'),
-            closeGerenciarClientes: document.querySelectorAll('.close-gerenciar-clientes'),
-            // CRM
-            menuCRM: document.getElementById('menuCRM'),
-            modalCRM: document.getElementById('modalCRM'),
-            corpoCRM: document.getElementById('corpoCRM'),
-            btnNovoClienteCRM: document.getElementById('btnNovoClienteCRM'),
-            btnAtualizarCRM: document.getElementById('btnAtualizarCRM'),
-            buscaCRM: document.getElementById('buscaCRM'),
-            closeCRM: document.querySelectorAll('.close-crm'),
-        };
-
-        // ============================================================
-        // FUNÇÕES PARA LOGO (mantidas)
-        // ============================================================
-        function atualizarLogo(url) {
-            if (!url) return;
-            elements.headerLogoImg.src = url;
-            elements.logoPreviewImg.src = url;
-            configImpressao.logoUrl = url;
-            atualizarPreview();
-        }
-
-        elements.logoUpload.addEventListener('change', function(e) {
-            const file = this.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const base64 = event.target.result;
-                elements.logoUrl.value = base64;
-                atualizarLogo(base64);
-                mostrarToast('Logo atualizada por upload!', 'success');
-            };
-            reader.readAsDataURL(file);
-        });
-
-        elements.logoUrl.addEventListener('change', function() {
-            const url = this.value.trim();
-            if (url) {
-                atualizarLogo(url);
-                mostrarToast('Logo atualizada por URL!', 'success');
-            }
-        });
-
-        // ============================================================
-        // UTILIDADES DE MODAL
-        // ============================================================
-        function openModal(modal) { modal.classList.add('active'); }
-
-        function closeModal(modal) { modal.classList.remove('active'); }
-
-        document.querySelectorAll('.modal-overlay').forEach(overlay => {
-            overlay.addEventListener('click', function(e) {
-                if (e.target === this) this.classList.remove('active');
-            });
-        });
-
-        // Fechar modais específicos
-        elements.closeModal.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const modal = this.closest('.modal-overlay');
-                if (modal) closeModal(modal);
-            });
-        });
-        elements.closeConfig.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const modal = this.closest('.modal-overlay');
-                if (modal) closeModal(modal);
-            });
-        });
-        elements.closePrint.addEventListener('click', function() {
-            closeModal(elements.modalPrint);
-        });
-        elements.closeTabelaFixa.forEach(btn => {
-            btn.addEventListener('click', function() {
-                closeModal(elements.modalTabelaFixa);
-            });
-        });
-        elements.closeColeta.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const modal = this.closest('.modal-overlay');
-                if (modal) closeModal(modal);
-            });
-        });
-        elements.closeClienteColeta.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const modal = this.closest('.modal-overlay');
-                if (modal) closeModal(modal);
-            });
-        });
-        elements.closeNovaColeta.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const modal = this.closest('.modal-overlay');
-                if (modal) closeModal(modal);
-            });
-        });
-        elements.closeGerenciarClientes.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const modal = this.closest('.modal-overlay');
-                if (modal) closeModal(modal);
-            });
-        });
-        elements.closeCRM.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const modal = this.closest('.modal-overlay');
-                if (modal) closeModal(modal);
-            });
-        });
-
-        // ============================================================
-        // GERENCIAMENTO DE CAMPOS DE IMPRESSÃO (mantido)
-        // ============================================================
-        let dragItem = null;
-
-        function renderizarCampos() {
-            const container = elements.camposContainer;
-            const campos = configImpressao.campos;
-
-            if (!campos || campos.length === 0) {
-                container.innerHTML =
-                    `<div style="text-align:center; padding:20px; color:#666;">Nenhum campo configurado. Clique em "Adicionar Campo".</div>`;
-                return;
-            }
-
-            container.innerHTML = campos.map((campo, index) => `
-                <div class="campo-item" draggable="true" data-index="${index}">
-                    <span class="campo-drag">::</span>
-                    <input type="checkbox" class="campo-checkbox" ${campo.enabled ? 'checked' : ''} data-index="${index}">
-                    <span class="campo-label">${campo.label || campo.id}</span>
-                    <input type="text" class="campo-input" value="${campo.label || campo.id}" data-index="${index}" placeholder="Nome do campo">
-                    <button type="button" class="btn btn-sm btn-danger" style="padding:0 6px;min-height:18px;font-size:10px;" onclick="removerCampo(${index})">X</button>
-                </div>
-            `).join('');
-
-            const items = container.querySelectorAll('.campo-item');
-            items.forEach(item => {
-                item.addEventListener('dragstart', handleDragStart);
-                item.addEventListener('dragend', handleDragEnd);
-                item.addEventListener('dragover', handleDragOver);
-                item.addEventListener('dragenter', handleDragEnter);
-                item.addEventListener('dragleave', handleDragLeave);
-                item.addEventListener('drop', handleDrop);
-            });
-
-            container.querySelectorAll('.campo-checkbox').forEach(cb => {
-                cb.addEventListener('change', function() {
-                    const idx = parseInt(this.dataset.index);
-                    configImpressao.campos[idx].enabled = this.checked;
-                    atualizarPreview();
-                });
-            });
-
-            container.querySelectorAll('.campo-input').forEach(inp => {
-                inp.addEventListener('change', function() {
-                    const idx = parseInt(this.dataset.index);
-                    configImpressao.campos[idx].label = this.value.trim() || configImpressao.campos[idx].id;
-                    const labelSpan = this.parentElement.querySelector('.campo-label');
-                    if (labelSpan) labelSpan.textContent = configImpressao.campos[idx].label;
-                    atualizarPreview();
-                });
-            });
-        }
-
-        function handleDragStart(e) {
-            const item = e.target.closest('.campo-item');
-            if (!item) return;
-            dragItem = parseInt(item.dataset.index);
-            item.classList.add('dragging');
-            e.dataTransfer.effectAllowed = 'move';
-            e.dataTransfer.setData('text/plain', dragItem);
-        }
-
-        function handleDragEnd(e) {
-            const item = e.target.closest('.campo-item');
-            if (item) item.classList.remove('dragging');
-            document.querySelectorAll('.campo-item').forEach(el => el.classList.remove('drag-over'));
-        }
-
-        function handleDragOver(e) { e.preventDefault();
-            e.dataTransfer.dropEffect = 'move'; }
-
-        function handleDragEnter(e) { const item = e.target.closest('.campo-item'); if (item) item.classList.add('drag-over'); }
-
-        function handleDragLeave(e) { const item = e.target.closest('.campo-item'); if (item) item.classList.remove('drag-over'); }
-
-        function handleDrop(e) {
-            e.preventDefault();
-            const target = e.target.closest('.campo-item');
-            if (!target) return;
-            const targetIndex = parseInt(target.dataset.index);
-            if (dragItem === null || dragItem === targetIndex) return;
-
-            const campos = configImpressao.campos;
-            const [removed] = campos.splice(dragItem, 1);
-            campos.splice(targetIndex, 0, removed);
-
-            renderizarCampos();
-            atualizarPreview();
-            dragItem = null;
-        }
-
-        function removerCampo(index) {
-            if (!confirm(`Remover o campo "${configImpressao.campos[index].label}"?`)) return;
-            configImpressao.campos.splice(index, 1);
-            renderizarCampos();
-            atualizarPreview();
-            mostrarToast('Campo removido!', 'success');
-        }
-
-        function adicionarCampo() {
-            const novoId = 'CAMPO_' + (configImpressao.campos.length + 1);
-            configImpressao.campos.push({
-                id: novoId,
-                label: 'Novo Campo',
-                enabled: true
-            });
-            renderizarCampos();
-            const inputs = elements.camposContainer.querySelectorAll('.campo-input');
-            const lastInput = inputs[inputs.length - 1];
-            if (lastInput) { lastInput.focus();
-                lastInput.select(); }
-            atualizarPreview();
-            mostrarToast('Campo adicionado!', 'success');
-        }
-
-        elements.btnAdicionarCampo.addEventListener('click', adicionarCampo);
-
-        // ============================================================
-        // TABELA FIXA (mantida)
-        // ============================================================
-        elements.btnTabelaFixa.addEventListener('click', function() {
-            openModal(elements.modalTabelaFixa);
-        });
-
-        elements.btnImprimirFixa.addEventListener('click', function() {
-            const conteudo = document.querySelector('.table-fixed').outerHTML;
-            const origem = document.querySelector('#modalTabelaFixa .window-body > div:first-child')?.textContent || '';
-            const contato = document.querySelector('#modalTabelaFixa .window-body > div:last-child')?.textContent || '';
-
-            const printWindow = window.open('', '_blank', 'width=800,height=600');
-            printWindow.document.write(`
-                <html><head><title>Tabela de Fretes</title>
-                <style>
-                    body { font-family: 'Tahoma','Geneva',sans-serif; padding:20px; background:#fff; }
-                    .header { text-align:center; border-bottom:2px solid #06458F; padding-bottom:10px; margin-bottom:15px; }
-                    .header .sj-logo { display:flex; align-items:center; justify-content:center; gap:10px; }
-                    .header .sj-logo .monograma { font-size:32px; font-weight:900; font-family:'Segoe UI','Arial Black',sans-serif; letter-spacing:-3px; }
-                    .header .sj-logo .monograma .s { color:#06458F; }
-                    .header .sj-logo .monograma .j { color:#000; }
-                    .header .sj-logo .texto-empresa { font-size:14px; font-weight:700; color:#06458F; font-family:'Segoe UI','Arial Black',sans-serif; text-transform:uppercase; border-left:1px solid #ccc; padding-left:10px; }
-                    table { width:100%; border-collapse:collapse; font-size:12px; }
-                    th { background:#06458F; color:white; padding:6px; border:1px solid #002a5c; text-align:left; }
-                    td { padding:5px; border:1px solid #a0a0a0; }
-                    tr:nth-child(even) td { background:#f0f0e8; }
-                    .footer { margin-top:20px; border-top:2px solid #333; padding-top:12px; display:flex; justify-content:space-between; }
-                    .assinaturas { display:flex; gap:40px; text-align:center; }
-                    .assinaturas div { min-width:120px; }
-                    .linha { border-top:1px solid #333; width:100%; margin-bottom:5px; }
-                    @media print { body { padding:10px; } }
-                </style>
-                </head><body>
-                <div class="header">
-                    <div class="sj-logo">
-                        <div class="monograma">
-                            <span class="s">S</span><span class="j">J</span>
-                        </div>
-                        <div class="texto-empresa">
-                            Transportes e Logistica
-                        </div>
-                    </div>
-                    <p style="margin-top:6px;font-size:12px;">RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NUMERO: 129<br>CIDADE: SINOP-MT | CEP: 78556-788</p>
-                </div>
-                <div style="margin:8px 0;font-weight:bold;">${origem}</div>
-                ${conteudo}
-                <div style="margin-top:10px;text-align:center;">${contato}</div>
-                <div class="footer">
-                    <div></div>
-                    <div class="assinaturas">
-                        <div><div class="linha"></div><small>SINOP-MT</small></div>
-                        <div><div class="linha"></div><small>ASSINATURA</small></div>
-                    </div>
-                </div>
-                <div style="text-align:center;color:#999;font-size:10px;margin-top:10px;">
-                    Documento emitido em ${new Date().toLocaleString('pt-BR')}
-                </div>
-                <script>window.print();<\/script>
-                </body></html>
-            `);
-            printWindow.document.close();
-        });
-
-        // ============================================================
-        // CONFIGURAÇÕES DE IMPRESSÃO (mantidas)
-        // ============================================================
-        function carregarConfiguracoes() {
-            const salvo = localStorage.getItem('configImpressao');
-            if (salvo) {
-                try {
-                    const parsed = JSON.parse(salvo);
-                    if (!parsed.campos || parsed.campos.length === 0) {
-                        parsed.campos = JSON.parse(JSON.stringify(CAMPOS_PADRAO));
-                    }
-                    configImpressao = { ...configImpressao, ...parsed };
-                } catch (e) {}
-            }
-            if (configImpressao.logoUrl) {
-                atualizarLogo(configImpressao.logoUrl);
-            }
-        }
-
-        function salvarConfiguracoesLocal() {
-            localStorage.setItem('configImpressao', JSON.stringify(configImpressao));
-        }
-
-        function preencherFormConfig() {
-            document.getElementById('headerBgColor').value = configImpressao.headerBgColor;
-            document.getElementById('headerTextColor').value = configImpressao.headerTextColor;
-            document.getElementById('headerBorderColor').value = configImpressao.headerBorderColor;
-            document.getElementById('headerFontSize').value = configImpressao.headerFontSize;
-            document.getElementById('headerFont').value = configImpressao.headerFont;
-            document.getElementById('headerAlign').value = configImpressao.headerAlign;
-            document.getElementById('headerPadding').value = configImpressao.headerPadding;
-            document.getElementById('logoMaxHeight').value = configImpressao.logoMaxHeight;
-            document.getElementById('logoUrl').value = configImpressao.logoUrl || '';
-            document.getElementById('enderecoEmpresa').value = configImpressao.enderecoEmpresa;
-            document.getElementById('clienteBgColor').value = configImpressao.clienteBgColor;
-            document.getElementById('clienteTextColor').value = configImpressao.clienteTextColor;
-            document.getElementById('clienteFontSize').value = configImpressao.clienteFontSize;
-            document.getElementById('clienteFont').value = configImpressao.clienteFont;
-            document.getElementById('clienteAlign').value = configImpressao.clienteAlign;
-            document.getElementById('clientePadding').value = configImpressao.clientePadding;
-            document.getElementById('tabelaHeaderBg').value = configImpressao.tabelaHeaderBg;
-            document.getElementById('tabelaHeaderText').value = configImpressao.tabelaHeaderText;
-            document.getElementById('tabelaHeaderFontSize').value = configImpressao.tabelaHeaderFontSize;
-            document.getElementById('tabelaDataFontSize').value = configImpressao.tabelaDataFontSize;
-            document.getElementById('tabelaFont').value = configImpressao.tabelaFont;
-            document.getElementById('tabelaAlign').value = configImpressao.tabelaAlign;
-            document.getElementById('tabelaLinhaPar').value = configImpressao.tabelaLinhaPar;
-            document.getElementById('tabelaLinhaImpar').value = configImpressao.tabelaLinhaImpar;
-            document.getElementById('textoContato').value = configImpressao.textoContato;
-            document.getElementById('rodapeFontSize').value = configImpressao.rodapeFontSize;
-            document.getElementById('rodapeFont').value = configImpressao.rodapeFont;
-            document.getElementById('rodapeAlign').value = configImpressao.rodapeAlign;
-            document.getElementById('assinatura1').value = configImpressao.assinatura1;
-            document.getElementById('assinatura2').value = configImpressao.assinatura2;
-            document.getElementById('mostrarDataEmissao').value = configImpressao.mostrarDataEmissao ? 'true' : 'false';
-            document.getElementById('larguraMaxima').value = configImpressao.larguraMaxima;
-            renderizarCampos();
-            atualizarPreview();
-        }
-
-        // ============================================================
-        // MAPEAMENTO DE CAMPOS (mantido)
-        // ============================================================
-        function mapearCampos(tabela) {
-            const campos = configImpressao.campos;
-            let enderecoCompleto = '';
-
-            if (tabela.logradouro) {
-                enderecoCompleto = tabela.logradouro;
-                if (tabela.numero) enderecoCompleto += `, ${tabela.numero}`;
-                if (tabela.bairro) enderecoCompleto += ` - ${tabela.bairro}`;
-            } else if (tabela.endereco) {
-                enderecoCompleto = tabela.endereco;
-            } else {
-                let partes = [];
-                if (tabela.cidade) partes.push(tabela.cidade);
-                if (tabela.uf) partes.push(tabela.uf);
-                if (tabela.cep) partes.push('CEP: ' + tabela.cep);
-                if (partes.length > 0) enderecoCompleto = partes.join(' - ');
-            }
-            let cidadeUf = '';
-            if (tabela.cidade) {
-                cidadeUf = tabela.cidade;
-                if (tabela.uf) cidadeUf += ` - ${tabela.uf}`;
-            }
-            if (cidadeUf && !enderecoCompleto.includes(cidadeUf)) {
-                enderecoCompleto += (enderecoCompleto ? ', ' : '') + cidadeUf;
-            }
-            if (tabela.cep && !enderecoCompleto.includes(tabela.cep)) {
-                enderecoCompleto += (enderecoCompleto ? ' - CEP: ' : 'CEP: ') + tabela.cep;
-            }
-            if (!enderecoCompleto) enderecoCompleto = 'Endereço não informado';
-
-            const dadosCliente = {
-                'NOME': tabela.cliente || '-',
-                'CNPJ': tabela.cnpj || '-',
-                'TELEFONE': tabela.telefone || '-',
-                'PEDIDO': tabela.id || '-',
-                'ENDERECO': enderecoCompleto,
-                'RUA': tabela.logradouro || '-',
-                'LOGRADOURO': tabela.logradouro || '-',
-                'NUMERO': tabela.numero || '-',
-                'BAIRRO': tabela.bairro || '-',
-                'CIDADE': cidadeUf || '-',
-                'UF': tabela.uf || '-',
-                'CEP': tabela.cep || '-',
-                'IE': tabela.ie || '-',
-                'EMAIL': tabela.email || '-'
-            };
-
-            const mapa = {};
-            campos.forEach(campo => {
-                const id = campo.id;
-                if (dadosCliente.hasOwnProperty(id)) {
-                    mapa[id] = dadosCliente[id];
-                } else {
-                    mapa[id] = tabela[campo.id] || '-';
-                }
-            });
-            return mapa;
-        }
-
-        // ============================================================
-        // PRÉ-VISUALIZAÇÃO E IMPRESSÃO (mantidas)
-        // ============================================================
-        function atualizarPreview() {
-            const exemplo = {
-                id: 1,
-                cliente: 'DISTRIBUIDORA DE MOLAS MATO GROSSO LTDA',
-                cnpj: '7306297000167',
-                telefone: '(66) 3515-9853',
-                email: 'contato@molasmt.com.br',
-                logradouro: 'RUA VALDIR DOERNER',
-                numero: '666',
-                bairro: 'DIST. INDL.',
-                cidade: 'SINOP',
-                uf: 'MT',
-                cep: '78556-788',
-                ie: '132989689',
-                origem: 'SINOP - MT',
-                destino: 'DIVERSOS (PA)',
-                observacao: 'Tabela de fretes para o Para',
-                cidades: [
-                    { nome: 'Cachoeira da Serra', frete: 75.00, kg: 650.00, percentual: 3.00 },
-                    { nome: 'Castelo dos Sonhos', frete: 75.00, kg: 650.00, percentual: 3.00 },
-                    { nome: 'Novo Progresso', frete: 80.00, kg: 700.00, percentual: 3.50 },
-                    { nome: 'Santarem', frete: 130.00, kg: 1100.00, percentual: 4.50 }
-                ]
-            };
-            const html = gerarHTMLImpressao(exemplo, true);
-            elements.previewContent.innerHTML = html;
-            const nomeFonte = configImpressao.headerFont.replace(/'/g, '').replace(/,.*$/, '').trim() || 'Courier New';
-            elements.previewFonteInfo.textContent = 'Fonte: ' + nomeFonte;
-            elements.previewAlignInfo.textContent = 'Alinhamento: ' + configImpressao.headerAlign.charAt(0).toUpperCase() +
-                configImpressao.headerAlign.slice(1);
-            elements.previewLogoTamanho.textContent = 'Logo: ' + configImpressao.logoMaxHeight + 'px';
-        }
-
-        function gerarHTMLImpressao(tabela, preview = false) {
-            const cfg = configImpressao;
-            const camposMap = mapearCampos(tabela);
-
-            const camposHTML = cfg.campos
-                .filter(c => c.enabled)
-                .map(c => {
-                    const valor = camposMap[c.id] || '-';
-                    return `<div class="item"><strong>${c.label || c.id}:</strong> ${valor}</div>`;
-                })
-                .join('');
-
-            const cidadesHTML = tabela.cidades.map(c => `
-                <tr>
-                    <td>${c.nome}</td>
-                    <td>PA</td>
-                    <td>R$ ${c.frete.toFixed(2)}</td>
-                    <td>R$ ${c.kg.toFixed(2)}/kg</td>
-                    <td>${c.percentual.toFixed(2)}%</td>
-                </tr>
-            `).join('');
-
-            const enderecoHTML = cfg.enderecoEmpresa.replace(/\n/g, '<br>');
-
-            const styleHeader =
-                `background:${cfg.headerBgColor};color:${cfg.headerTextColor};border-bottom:2px solid ${cfg.headerBorderColor};padding:${cfg.headerPadding}px 15px;text-align:${cfg.headerAlign};font-size:${cfg.headerFontSize}px;font-family:${cfg.headerFont};`;
-            const styleCliente =
-                `background:${cfg.clienteBgColor};color:${cfg.clienteTextColor};padding:${cfg.clientePadding}px 15px;font-size:${cfg.clienteFontSize}px;font-family:${cfg.clienteFont};text-align:${cfg.clienteAlign};`;
-            const styleOrigem =
-                `font-size:${Math.max(12, cfg.clienteFontSize + 2)}px;background:#e9ecef;color:#1a3a5c;font-family:${cfg.tabelaFont};`;
-            const styleTable =
-                `font-size:${cfg.tabelaDataFontSize}px;font-family:${cfg.tabelaFont};text-align:${cfg.tabelaAlign};`;
-            const styleTh =
-                `background:${cfg.tabelaHeaderBg};color:${cfg.tabelaHeaderText};padding:4px 8px;border:1px solid #002a5c;font-size:${cfg.tabelaHeaderFontSize}px;text-align:${cfg.tabelaAlign};`;
-            const styleTd =
-                `padding:4px 8px;border:1px solid #a0a0a0;text-align:${cfg.tabelaAlign};`;
-
-            const logoUrl = cfg.logoUrl || 'https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png';
-            const logoTamanho = cfg.logoMaxHeight || 80;
-
-            const dataHoraAtual = new Date().toLocaleString('pt-BR');
-            const nomeCliente = tabela.cliente || 'Cliente';
-
-            const html = `
-                <div style="max-width:${cfg.larguraMaxima}px; margin:0 auto; font-family:'Tahoma','Geneva',sans-serif; background:#fff; padding:${preview ? '4px' : '10px'}; display:flex; flex-direction:column; min-height:100%;">
-
-                    <div class="conteudo-impressao" style="flex:1;">
-                        <div class="sj-logo-print" style="display:flex; justify-content:center; align-items:center; margin-bottom:${preview ? '8px' : '14px'}; border-bottom:2px solid #06458F; padding-bottom:${preview ? '6px' : '10px'};">
-                            <img src="${logoUrl}" alt="SJ Transportes e Logistica" style="max-height:${preview ? Math.min(logoTamanho * 0.6, 60) : logoTamanho}px; width:auto; object-fit:contain;">
-                        </div>
-
-                        <div class="endereco-print" style="text-align:center; font-size:${preview ? '10px' : '12px'}; margin-bottom:${preview ? '6px' : '14px'}; color:#333;">
-                            ${enderecoHTML}
-                        </div>
-
-                        <div class="info-cliente-print" style="display:grid; grid-template-columns:1fr 1fr; gap:2px 20px; font-size:11px; background:#f5f5f0; padding:6px 12px; border:1px solid #a0a0a0; margin-bottom:10px;">
-                            ${camposHTML}
-                        </div>
-
-                        <div class="origem-destino-print" style="display:flex; justify-content:space-between; background:#e9ecef; padding:4px 12px; font-weight:bold; font-size:12px; margin-bottom:10px; border:1px solid #a0a0a0;">
-                            <span>ORIGEM: ${tabela.origem}</span>
-                            <span>DESTINO: ${tabela.destino}</span>
-                        </div>
-
-                        <table class="table-print" style="width:100%; border-collapse:collapse; ${styleTable}">
-                            <thead>
-                                <tr>
-                                    <th style="${styleTh}">Cidades</th>
-                                    <th style="${styleTh}">UF</th>
-                                    <th style="${styleTh}">Frete</th>
-                                    <th style="${styleTh}">Preco KG</th>
-                                    <th style="${styleTh}">% NF</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${tabela.cidades.map((c, idx) => `
-                                    <tr style="background:${idx % 2 === 0 ? cfg.tabelaLinhaPar : cfg.tabelaLinhaImpar};">
-                                        <td style="${styleTd}">${c.nome}</td>
-                                        <td style="${styleTd}">PA</td>
-                                        <td style="${styleTd}">R$ ${c.frete.toFixed(2)}</td>
-                                        <td style="${styleTd}">R$ ${c.kg.toFixed(2)}/kg</td>
-                                        <td style="${styleTd}">${c.percentual.toFixed(2)}%</td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-
-                        ${tabela.observacao ? `<div class="observacao-print" style="font-size:11px; padding:4px 10px; border:1px solid #ccc; background:#f9f9f9; margin-bottom:15px;"><strong>Observacao:</strong> ${tabela.observacao}</div>` : ''}
-                    </div>
-
-                    <div class="rodape-assinaturas" style="margin-top:auto; padding-top:30px; border-top:2px solid #333; display:flex; justify-content:space-between; align-items:flex-end; padding-bottom:0; margin-bottom:0; min-height:100px;">
-                        <div class="assinatura-cliente" style="flex:1; text-align:left; padding-right:20px;">
-                            <div class="linha-assinatura" style="border-bottom:1px solid #333; width:100%; height:1px; margin-bottom:4px;"></div>
-                            <span class="nome-assinatura" style="font-size:11px; color:#333; font-weight:bold;">${nomeCliente}</span>
-                        </div>
-                        <div class="assinatura-empresa" style="flex:1; text-align:right; padding-left:20px;">
-                            <div class="linha-assinatura" style="border-bottom:1px solid #333; width:100%; height:1px; margin-bottom:4px;"></div>
-                            <span class="nome-assinatura" style="font-size:11px; color:#333; font-weight:bold;">SJ Transportes e Logística</span>
-                        </div>
-                    </div>
-
-                    <div class="rodape-info" style="display:flex; justify-content:flex-start; align-items:center; margin-top:10px; padding-top:8px; border-top:1px solid #ddd; font-size:10px; color:#999;">
-                        <span class="sinop-data" style="text-align:left; font-weight:bold; color:#333; font-size:10px;">SINOP-MT - ${dataHoraAtual}</span>
-                    </div>
-                </div>
-            `;
-            return html;
-        }
-
-        // ============================================================
-        // IMPRESSÃO E PDF (mantidos)
-        // ============================================================
-        function abrirImpressao(id) {
-            const tabela = tabelas.find(t => t.id === id);
-            if (!tabela) { mostrarToast('Tabela nao encontrada!', 'error'); return; }
-            tabelaImpressaoAtual = tabela;
-            const html = gerarHTMLImpressao(tabela, false);
-            elements.conteudoImpressao.innerHTML = html;
-            openModal(elements.modalPrint);
-        }
-
-        function imprimirRecibo() {
-            window.print();
-        }
-
-        function gerarPDF() {
-            const btn = elements.btnGerarPDF;
-            const original = btn.innerHTML;
-            btn.innerHTML = 'Gerando...';
-            btn.disabled = true;
-
-            if (!elements.modalPrint.classList.contains('active')) {
-                if (tabelaImpressaoAtual) {
-                    const html = gerarHTMLImpressao(tabelaImpressaoAtual, false);
-                    elements.conteudoImpressao.innerHTML = html;
-                    openModal(elements.modalPrint);
-                } else if (tabelas.length > 0) {
-                    const primeira = tabelas[0];
-                    tabelaImpressaoAtual = primeira;
-                    const html = gerarHTMLImpressao(primeira, false);
-                    elements.conteudoImpressao.innerHTML = html;
-                    openModal(elements.modalPrint);
-                } else {
-                    mostrarToast('Nenhuma tabela para gerar PDF.', 'error');
-                    btn.innerHTML = original;
-                    btn.disabled = false;
-                    return;
-                }
-            }
-
-            setTimeout(() => {
-                const element = document.querySelector('#modalImprimir .window-body');
-                const opt = {
-                    margin: [0, 0, 0, 0],
-                    filename: `tabela_frete_${tabelaImpressaoAtual?.id || 'sem_id'}.pdf`,
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2, useCORS: true, letterRendering: true },
-                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-                };
-                html2pdf().set(opt).from(element).save()
-                    .then(() => {
-                        btn.innerHTML = original;
-                        btn.disabled = false;
-                        mostrarToast('PDF gerado com sucesso!', 'success');
-                    })
-                    .catch((err) => {
-                        console.error(err);
-                        btn.innerHTML = original;
-                        btn.disabled = false;
-                        mostrarToast('Erro ao gerar PDF: ' + err.message, 'error');
-                    });
-            }, 300);
-        }
-
-        // ============================================================
-        // JSONBIN - TABELAS DE FRETE (mantido)
-        // ============================================================
-        async function carregarDados() {
-            try {
-                const response = await fetch(API_URL, {
-                    headers: { 'X-Master-Key': CONFIG.MASTER_KEY }
-                });
-                if (!response.ok) throw new Error('Erro ao carregar dados');
-                const data = await response.json();
-                tabelas = data.record || [];
-                renderizarTabelas();
-                atualizarTotalizadores();
-                return tabelas;
-            } catch (error) {
-                console.error('Erro ao carregar:', error);
-                tabelas = getDadosExemplo();
-                renderizarTabelas();
-                atualizarTotalizadores();
-                mostrarToast('Usando dados de exemplo (offline)', 'error');
-                return tabelas;
-            }
-        }
-
-        async function salvarDados() {
-            try {
-                if (!tabelas || tabelas.length === 0) tabelas = [];
-                const response = await fetch(API_URL, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Master-Key': CONFIG.MASTER_KEY
-                    },
-                    body: JSON.stringify(tabelas)
-                });
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`Erro ${response.status}: ${errorText}`);
-                }
-                mostrarToast('Dados salvos com sucesso!', 'success');
-                return true;
-            } catch (error) {
-                console.error('Erro ao salvar:', error);
-                mostrarToast('Erro ao salvar: ' + error.message, 'error');
-                return false;
-            }
-        }
-
-        function getDadosExemplo() {
-            const hoje = new Date().toISOString().split('T')[0];
-            return [{
-                id: 1,
-                cliente: 'DISTRIBUIDORA DE MOLAS MATO GROSSO LTDA',
-                cnpj: '7306297000167',
-                telefone: '(66) 3515-9853',
-                email: '',
-                logradouro: 'RUA VALDIR DOERNER',
-                numero: '666',
-                bairro: 'DIST. INDL.',
-                cidade: 'SINOP',
-                uf: 'MT',
-                cep: '78556-788',
-                ie: '132989689',
-                origem: 'SINOP - MT',
-                destino: 'DIVERSOS (PA)',
-                observacao: 'Tabela de fretes para o Para',
-                data: hoje,
-                cidades: [
-                    { nome: 'Cachoeira da Serra', frete: 75.00, kg: 650.00, percentual: 3.00 },
-                    { nome: 'Castelo dos Sonhos', frete: 75.00, kg: 650.00, percentual: 3.00 },
-                    { nome: 'Novo Progresso', frete: 80.00, kg: 700.00, percentual: 3.50 },
-                    { nome: 'Moraes Almeida', frete: 90.00, kg: 800.00, percentual: 4.00 },
-                    { nome: 'Santarem', frete: 130.00, kg: 1100.00, percentual: 4.50 }
-                ]
-            }];
-        }
-
-        function renderizarTabelas(filtro = '') {
-            let dados = filtro ? tabelas.filter(t =>
-                t.cliente.toLowerCase().includes(filtro.toLowerCase()) ||
-                t.origem.toLowerCase().includes(filtro.toLowerCase()) ||
-                t.destino.toLowerCase().includes(filtro.toLowerCase())
-            ) : tabelas;
-            if (dados.length === 0) {
-                elements.corpoTabela.innerHTML =
-                    `<tr><td colspan="7" style="text-align:center;padding:20px;color:#666;">Nenhuma tabela encontrada</td></tr>`;
-                return;
-            }
-            elements.corpoTabela.innerHTML = dados.map(tabela => `
-                <tr>
-                    <td><strong>#${tabela.id}</strong></td>
-                    <td>${tabela.cliente}</td>
-                    <td>${tabela.origem}</td>
-                    <td>${tabela.destino}</td>
-                    <td>${tabela.cidades.length}</td>
-                    <td>${formatarData(tabela.data)}</td>
-                    <td>
-                        <div class="actions">
-                            <button class="btn btn-sm" onclick="abrirImpressao(${tabela.id})">P</button>
-                            <button class="btn btn-sm btn-primary" onclick="editarTabela(${tabela.id})">E</button>
-                            <button class="btn btn-sm btn-danger" onclick="excluirTabela(${tabela.id})">X</button>
-                        </div>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        function atualizarTotalizadores() {
-            elements.totalTabelas.textContent = tabelas.length;
-            const agora = new Date();
-            elements.ultimaAtualizacao.textContent = agora.toLocaleString('pt-BR');
-        }
-
-        function formatarData(data) {
-            if (!data) return '-';
-            const d = new Date(data + 'T00:00:00');
-            return d.toLocaleDateString('pt-BR');
-        }
-
-        // ============================================================
-        // CRUD DE TABELAS DE FRETE (mantido)
-        // ============================================================
-        function abrirModalNovo() {
-            editandoId = null;
-            elements.modalTitle.textContent = 'Nova Tabela de Frete';
-            elements.form.reset();
-            elements.tabelaId.value = '';
-            elements.origem.value = 'SINOP - MT';
-            elements.destino.value = 'DIVERSOS (PA)';
-            cidadesTemp = [];
-            renderizarCidadesForm();
-            openModal(elements.modal);
-        }
-
-        function editarTabela(id) {
-            const tabela = tabelas.find(t => t.id === id);
-            if (!tabela) return;
-            editandoId = id;
-            elements.modalTitle.textContent = 'Editar Tabela de Frete';
-            elements.tabelaId.value = tabela.id;
-            elements.cliente.value = tabela.cliente;
-            elements.cnpj.value = tabela.cnpj || '';
-            elements.telefone.value = tabela.telefone || '';
-            elements.email.value = tabela.email || '';
-            elements.ie.value = tabela.ie || '';
-            elements.logradouro.value = tabela.logradouro || '';
-            elements.numero.value = tabela.numero || '';
-            elements.bairro.value = tabela.bairro || '';
-            elements.cidade.value = tabela.cidade || '';
-            elements.uf.value = tabela.uf || '';
-            elements.cep.value = tabela.cep || '';
-            elements.origem.value = tabela.origem;
-            elements.destino.value = tabela.destino;
-            elements.observacao.value = tabela.observacao || '';
-            cidadesTemp = JSON.parse(JSON.stringify(tabela.cidades));
-            renderizarCidadesForm();
-            openModal(elements.modal);
-        }
-
-        async function excluirTabela(id) {
-            if (!confirm('Tem certeza que deseja excluir esta tabela?')) return;
-            tabelas = tabelas.filter(t => t.id !== id);
-            const salvou = await salvarDados();
-            if (salvou) {
-                renderizarTabelas();
-                atualizarTotalizadores();
-                mostrarToast('Tabela excluida!', 'success');
-            } else {
-                await carregarDados();
-                mostrarToast('Erro ao excluir.', 'error');
-            }
-        }
-
-        async function salvarTabela(event) {
-            event.preventDefault();
-            if (cidadesTemp.length === 0) {
-                mostrarToast('Adicione pelo menos uma cidade!', 'error');
-                return;
-            }
-            const dados = {
-                cliente: elements.cliente.value.trim(),
-                cnpj: elements.cnpj.value.trim() || '',
-                telefone: elements.telefone.value.trim() || '',
-                email: elements.email.value.trim() || '',
-                ie: elements.ie.value.trim() || '',
-                logradouro: elements.logradouro.value.trim() || '',
-                numero: elements.numero.value.trim() || '',
-                bairro: elements.bairro.value.trim() || '',
-                cidade: elements.cidade.value.trim() || '',
-                uf: elements.uf.value.trim().toUpperCase() || '',
-                cep: elements.cep.value.trim() || '',
-                origem: elements.origem.value.trim(),
-                destino: elements.destino.value.trim(),
-                observacao: elements.observacao.value.trim() || '',
-                data: new Date().toISOString().split('T')[0],
-                cidades: JSON.parse(JSON.stringify(cidadesTemp))
-            };
-            if (!dados.cliente || !dados.origem || !dados.destino || !dados.logradouro) {
-                mostrarToast('Preencha os campos obrigatorios: Cliente, Origem, Destino e Logradouro!', 'error');
-                return;
-            }
-            if (editandoId) {
-                const index = tabelas.findIndex(t => t.id === editandoId);
-                if (index !== -1) tabelas[index] = { ...tabelas[index], ...dados };
-            } else {
-                const novoId = tabelas.length > 0 ? Math.max(...tabelas.map(t => t.id)) + 1 : 1;
-                tabelas.push({ id: novoId, ...dados });
-            }
-            const salvou = await salvarDados();
-            if (salvou) {
-                renderizarTabelas();
-                atualizarTotalizadores();
-                closeModal(elements.modal);
-                mostrarToast('Tabela ' + (editandoId ? 'atualizada' : 'criada') + '!', 'success');
-            } else {
-                await carregarDados();
-                mostrarToast('Erro ao salvar.', 'error');
-            }
-        }
-
-        // ============================================================
-        // CIDADES (FORM) - mantido
-        // ============================================================
-        function renderizarCidadesForm() {
-            elements.cidadeCount.textContent = `(${cidadesTemp.length} adicionadas)`;
-            if (cidadesTemp.length === 0) {
-                elements.cidadesList.innerHTML =
-                `<div class="cidades-empty">Nenhuma cidade adicionada</div>`;
-                return;
-            }
-            elements.cidadesList.innerHTML = cidadesTemp.map((c, idx) => `
-                <div class="cidade-item">
-                    <span class="info"><strong>${c.nome}</strong> | Frete: R$ ${c.frete.toFixed(2)} | KG: R$ ${c.kg.toFixed(2)} | %: ${c.percentual.toFixed(2)}%</span>
-                    <button class="btn-remove" onclick="removerCidade(${idx})">X</button>
-                </div>
-            `).join('');
-        }
-
-        function adicionarCidade() {
-            let nome = elements.selectCidade.value;
-            if (nome === 'OUTRA') {
-                nome = elements.cidadePersonalizada.value.trim();
-                if (!nome) { mostrarToast('Digite o nome da cidade!', 'error'); return; }
-            }
-            const frete = parseFloat(elements.freteCidade.value);
-            const kg = parseFloat(elements.kgCidade.value);
-            const percentual = parseFloat(elements.percentualCidade.value);
-            if (!nome) { mostrarToast('Selecione ou digite uma cidade!', 'error'); return; }
-            if (isNaN(frete) || isNaN(kg) || isNaN(percentual)) { mostrarToast('Preencha todos os valores!', 'error'); return; }
-            if (frete <= 0 || kg <= 0 || percentual <= 0) { mostrarToast('Valores devem ser > zero!', 'error'); return; }
-            if (cidadesTemp.some(c => c.nome.toLowerCase() === nome.toLowerCase())) { mostrarToast('Cidade ja adicionada!',
-                    'error'); return; }
-            cidadesTemp.push({ nome, frete, kg, percentual });
-            renderizarCidadesForm();
-            elements.selectCidade.value = '';
-            elements.cidadePersonalizada.value = '';
-            elements.cidadePersonalizada.style.display = 'none';
-            elements.freteCidade.value = '';
-            elements.kgCidade.value = '';
-            elements.percentualCidade.value = '';
-            mostrarToast('Cidade "' + nome + '" adicionada!', 'success');
-        }
-
-        function removerCidade(index) {
-            cidadesTemp.splice(index, 1);
-            renderizarCidadesForm();
-        }
-
-        elements.selectCidade.addEventListener('change', function() {
-            if (this.value === 'OUTRA') {
-                elements.cidadePersonalizada.style.display = 'inline-block';
-                elements.cidadePersonalizada.focus();
-            } else {
-                elements.cidadePersonalizada.style.display = 'none';
-                elements.cidadePersonalizada.value = '';
-            }
-        });
-
-        elements.btnAddCidade.addEventListener('click', adicionarCidade);
-        ['selectCidade', 'cidadePersonalizada', 'freteCidade', 'kgCidade', 'percentualCidade'].forEach(id => {
-            document.getElementById(id).addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    adicionarCidade();
-                }
-            });
-        });
-
-        // ============================================================
-        // CONFIGURAÇÕES - SALVAR (mantido)
-        // ============================================================
-        function salvarConfiguracoes(event) {
-            event.preventDefault();
-
-            const inputs = elements.camposContainer.querySelectorAll('.campo-input');
-            inputs.forEach(inp => {
-                const idx = parseInt(inp.dataset.index);
-                if (configImpressao.campos[idx]) {
-                    configImpressao.campos[idx].label = inp.value.trim() || configImpressao.campos[idx].id;
-                }
-            });
-
-            const checkbox = elements.camposContainer.querySelectorAll('.campo-checkbox');
-            checkbox.forEach(cb => {
-                const idx = parseInt(cb.dataset.index);
-                if (configImpressao.campos[idx]) {
-                    configImpressao.campos[idx].enabled = cb.checked;
-                }
-            });
-
-            configImpressao = {
-                headerBgColor: document.getElementById('headerBgColor').value,
-                headerTextColor: document.getElementById('headerTextColor').value,
-                headerBorderColor: document.getElementById('headerBorderColor').value,
-                headerFontSize: parseInt(document.getElementById('headerFontSize').value) || 13,
-                headerFont: document.getElementById('headerFont').value,
-                headerAlign: document.getElementById('headerAlign').value,
-                headerPadding: parseInt(document.getElementById('headerPadding').value) || 30,
-                logoMaxHeight: parseInt(document.getElementById('logoMaxHeight').value) || 80,
-                logoUrl: document.getElementById('logoUrl').value.trim() || configImpressao.logoUrl,
-                enderecoEmpresa: document.getElementById('enderecoEmpresa').value,
-                clienteBgColor: document.getElementById('clienteBgColor').value,
-                clienteTextColor: document.getElementById('clienteTextColor').value,
-                clienteFontSize: parseInt(document.getElementById('clienteFontSize').value) || 12,
-                clienteFont: document.getElementById('clienteFont').value,
-                clienteAlign: document.getElementById('clienteAlign').value,
-                clientePadding: parseInt(document.getElementById('clientePadding').value) || 15,
-                tabelaHeaderBg: document.getElementById('tabelaHeaderBg').value,
-                tabelaHeaderText: document.getElementById('tabelaHeaderText').value,
-                tabelaHeaderFontSize: parseInt(document.getElementById('tabelaHeaderFontSize').value) || 12,
-                tabelaDataFontSize: parseInt(document.getElementById('tabelaDataFontSize').value) || 12,
-                tabelaFont: document.getElementById('tabelaFont').value,
-                tabelaAlign: document.getElementById('tabelaAlign').value,
-                tabelaLinhaPar: document.getElementById('tabelaLinhaPar').value,
-                tabelaLinhaImpar: document.getElementById('tabelaLinhaImpar').value,
-                textoContato: document.getElementById('textoContato').value,
-                rodapeFontSize: parseInt(document.getElementById('rodapeFontSize').value) || 13,
-                rodapeFont: document.getElementById('rodapeFont').value,
-                rodapeAlign: document.getElementById('rodapeAlign').value,
-                assinatura1: document.getElementById('assinatura1').value,
-                assinatura2: document.getElementById('assinatura2').value,
-                mostrarDataEmissao: document.getElementById('mostrarDataEmissao').value === 'true',
-                larguraMaxima: parseInt(document.getElementById('larguraMaxima').value) || 1000,
-                campos: configImpressao.campos
-            };
-
-            if (configImpressao.logoUrl) {
-                atualizarLogo(configImpressao.logoUrl);
-            }
-
-            salvarConfiguracoesLocal();
-            closeModal(elements.modalConfig);
-            mostrarToast('Configuracoes salvas!', 'success');
-        }
-
-        function restaurarConfiguracoes() {
-            if (!confirm('Restaurar padroes?')) return;
-            configImpressao = {
-                headerBgColor: '#1a3a5c',
-                headerTextColor: '#ffffff',
-                headerBorderColor: '#ffd700',
-                headerFontSize: 13,
-                headerFont: "'Courier New', monospace",
-                headerAlign: 'center',
-                headerPadding: 30,
-                logoMaxHeight: 80,
-                logoUrl: 'https://i.ibb.co/678L9Rqt/Chat-GPT-Image-31-de-jul-de-2026-18-54-24.png',
-                enderecoEmpresa: 'RUA: INTERLAGOS | BAIRRO: IBERAPUERA | NUMERO: 129\nCIDADE: SINOP-MT | CEP: 78556-788',
-                clienteBgColor: '#f8f9fa',
-                clienteTextColor: '#333333',
-                clienteFontSize: 12,
-                clienteFont: "'Courier New', monospace",
-                clienteAlign: 'left',
-                clientePadding: 15,
-                tabelaHeaderBg: '#1a3a5c',
-                tabelaHeaderText: '#ffffff',
-                tabelaHeaderFontSize: 12,
-                tabelaDataFontSize: 12,
-                tabelaFont: "'Courier New', monospace",
-                tabelaAlign: 'left',
-                tabelaLinhaPar: '#f8f9fa',
-                tabelaLinhaImpar: '#ffffff',
-                textoContato: 'CONTATO / WHATSAPP: (93) 8418-4950',
-                rodapeFontSize: 13,
-                rodapeFont: "'Courier New', monospace",
-                rodapeAlign: 'center',
-                assinatura1: 'SINOP-MT',
-                assinatura2: 'ASSINATURA',
-                mostrarDataEmissao: true,
-                larguraMaxima: 1000,
-                campos: JSON.parse(JSON.stringify(CAMPOS_PADRAO))
-            };
-            atualizarLogo(configImpressao.logoUrl);
-            salvarConfiguracoesLocal();
-            preencherFormConfig();
-            mostrarToast('Configuracoes restauradas!', 'success');
-        }
-
-        // ============================================================
-        // TOAST
-        // ============================================================
-        function mostrarToast(mensagem, tipo = 'success') {
-            const toast = document.createElement('div');
-            toast.style.cssText = `
-                position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-                background: #ece9d8; border: 2px solid; border-color: #fff #404040 #404040 #fff;
-                padding: 6px 20px; font-family: 'Tahoma','Geneva',sans-serif; font-size: 12px;
-                box-shadow: 4px 4px 10px rgba(0,0,0,0.4); z-index: 9999;
-                color: ${tipo === 'success' ? '#000' : '#c00'};
-                font-weight: bold;
-            `;
-            toast.textContent = (tipo === 'success' ? '' : '') + mensagem;
-            document.body.appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transition = 'opacity 0.5s';
-                setTimeout(() => toast.remove(), 500);
-            }, 3000);
-        }
-
-        // ============================================================
-        // BUSCA DE CNPJ - REUTILIZÁVEL PARA COLETA
-        // ============================================================
-        async function buscarCnpjGenerico(cnpj, campos) {
-            if (cnpj.length !== 14 || !/^\d{14}$/.test(cnpj)) {
-                mostrarToast('CNPJ inválido. Digite 14 números.', 'error');
-                return null;
-            }
-
-            let data = null;
-            let origem = '';
-
-            try {
-                const response = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`);
-                if (response.ok) {
-                    data = await response.json();
-                    origem = 'BrasilAPI';
-                } else if (response.status === 429) {
-                    mostrarToast('⚠️ Limite da BrasilAPI excedido, tentando fallback...', 'error');
-                } else {
-                    throw new Error(`BrasilAPI retornou status ${response.status}`);
-                }
-            } catch (error) {
-                console.warn('BrasilAPI falhou:', error.message);
-                mostrarToast('⚠️ BrasilAPI indisponível, usando fallback...', 'error');
-            }
-
-            if (!data) {
-                try {
-                    const response = await fetch(`https://api.cnpj.pw/cnpj/${cnpj}`);
-                    if (response.status === 503) {
-                        throw new Error('Limite de requisições do cnpj.pw excedido.');
-                    }
-                    if (!response.ok) throw new Error(`cnpj.pw retornou status ${response.status}`);
-                    data = await response.json();
-                    origem = 'cnpj.pw';
-                } catch (error) {
-                    console.error('Fallback cnpj.pw também falhou:', error);
-                    mostrarToast('❌ Ambas as APIs falharam. Verifique sua conexão.', 'error');
-                    return null;
-                }
-            }
-
-            if (!data) {
-                mostrarToast('❌ Não foi possível obter dados do CNPJ.', 'error');
-                return null;
-            }
-
-            // Preencher campos
-            if (campos.nome && (data.razao_social || data.nome_empresarial)) {
-                campos.nome.value = data.razao_social || data.nome_empresarial || '';
-            } else if (campos.nome && data.nome_fantasia) {
-                campos.nome.value = data.nome_fantasia;
-            }
-
-            let ie = data.inscricao_estadual || data.ie || '';
-            if (campos.ie) campos.ie.value = ie;
-
-            let logradouro = data.logradouro || '';
-            let numero = data.numero || '';
-            let bairro = data.bairro || '';
-            let cidade = data.municipio || data.municipio_desc || '';
-            let uf = data.uf || '';
-            let cep = data.cep || data.codigo_cep || '';
-
-            if (!logradouro && data.endereco) {
-                const partes = data.endereco.split(',');
-                if (partes.length > 0) logradouro = partes[0].trim();
-                if (!numero) {
-                    const match = data.endereco.match(/,?\s*(\d+)\s*/);
-                    if (match) numero = match[1];
-                }
-            }
-            if (!bairro && data.bairro_desc) bairro = data.bairro_desc;
-            if (!cidade && data.municipio_desc) cidade = data.municipio_desc;
-
-            if (campos.logradouro) campos.logradouro.value = logradouro || '';
-            if (campos.numero) campos.numero.value = numero || 's/n';
-            if (campos.bairro) campos.bairro.value = bairro || '';
-            if (campos.cidade) campos.cidade.value = cidade || '';
-            if (campos.uf) campos.uf.value = uf || '';
-            if (campos.cep) campos.cep.value = cep || '';
-
-            let telefone = data.telefone_1 || data.telefone || '';
-            if (telefone && data.ddd1) {
-                telefone = `(${data.ddd1}) ${telefone}`;
-            }
-            if (campos.telefone) campos.telefone.value = telefone;
-
-            if (campos.email) campos.email.value = data.correio_eletronico || data.email || '';
-
-            mostrarToast(`✅ Dados carregados via ${origem}!`, 'success');
-            console.log(`Dados obtidos via ${origem}:`, data);
-            return data;
-        }
-
-        // ============================================================
-        // BUSCA CNPJ PARA TABELA DE FRETE (mantida)
-        // ============================================================
-        const campoCnpj = document.getElementById('cnpj');
-
-        campoCnpj.addEventListener('blur', function() {
-            const cnpj = this.value.replace(/\D/g, '');
-            if (cnpj.length === 14) {
-                const campos = {
-                    nome: document.getElementById('cliente'),
-                    ie: document.getElementById('ie'),
-                    logradouro: document.getElementById('logradouro'),
-                    numero: document.getElementById('numero'),
-                    bairro: document.getElementById('bairro'),
-                    cidade: document.getElementById('cidade'),
-                    uf: document.getElementById('uf'),
-                    cep: document.getElementById('cep'),
-                    telefone: document.getElementById('telefone'),
-                    email: document.getElementById('email')
-                };
-                buscarCnpjGenerico(cnpj, campos);
-            }
-        });
-
-        campoCnpj.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                const cnpj = this.value.replace(/\D/g, '');
-                if (cnpj.length === 14) {
-                    const campos = {
-                        nome: document.getElementById('cliente'),
-                        ie: document.getElementById('ie'),
-                        logradouro: document.getElementById('logradouro'),
-                        numero: document.getElementById('numero'),
-                        bairro: document.getElementById('bairro'),
-                        cidade: document.getElementById('cidade'),
-                        uf: document.getElementById('uf'),
-                        cep: document.getElementById('cep'),
-                        telefone: document.getElementById('telefone'),
-                        email: document.getElementById('email')
-                    };
-                    buscarCnpjGenerico(cnpj, campos);
-                } else {
-                    mostrarToast('Digite um CNPJ válido com 14 dígitos', 'error');
-                }
-            }
-        });
-
-        // ============================================================
-        // BUSCA CNPJ PARA CLIENTE DE COLETA
-        // ============================================================
-        const campoCnpjColeta = document.getElementById('cnpjClienteColeta');
-
-        campoCnpjColeta.addEventListener('blur', function() {
-            const cnpj = this.value.replace(/\D/g, '');
-            if (cnpj.length === 14) {
-                const campos = {
-                    nome: document.getElementById('nomeClienteColeta'),
-                    ie: document.getElementById('ieClienteColeta'),
-                    logradouro: document.getElementById('logradouroClienteColeta'),
-                    numero: document.getElementById('numeroClienteColeta'),
-                    bairro: document.getElementById('bairroClienteColeta'),
-                    cidade: document.getElementById('cidadeClienteColeta'),
-                    uf: document.getElementById('ufClienteColeta'),
-                    cep: document.getElementById('cepClienteColeta'),
-                    telefone: document.getElementById('telefoneClienteColeta'),
-                    email: document.getElementById('emailClienteColeta')
-                };
-                buscarCnpjGenerico(cnpj, campos);
-            }
-        });
-
-        campoCnpjColeta.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                const cnpj = this.value.replace(/\D/g, '');
-                if (cnpj.length === 14) {
-                    const campos = {
-                        nome: document.getElementById('nomeClienteColeta'),
-                        ie: document.getElementById('ieClienteColeta'),
-                        logradouro: document.getElementById('logradouroClienteColeta'),
-                        numero: document.getElementById('numeroClienteColeta'),
-                        bairro: document.getElementById('bairroClienteColeta'),
-                        cidade: document.getElementById('cidadeClienteColeta'),
-                        uf: document.getElementById('ufClienteColeta'),
-                        cep: document.getElementById('cepClienteColeta'),
-                        telefone: document.getElementById('telefoneClienteColeta'),
-                        email: document.getElementById('emailClienteColeta')
-                    };
-                    buscarCnpjGenerico(cnpj, campos);
-                } else {
-                    mostrarToast('Digite um CNPJ válido com 14 dígitos', 'error');
-                }
-            }
-        });
-
-        // ============================================================
-        // FUNÇÕES SUPABASE - CLIENTES E COLETAS (CORRIGIDAS)
-        // ============================================================
-        const supabaseHeaders = {
-            'apikey': SUPABASE_ANON_KEY,
-            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-            'Content-Type': 'application/json'
-        };
-
-        async function carregarClientesColeta() {
-            try {
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/clientes_coleta?select=*&order=id.asc`, {
-                    headers: supabaseHeaders
-                });
-                if (!response.ok) throw new Error(`Erro ${response.status}: ${response.statusText}`);
-                clientesColeta = await response.json();
-                return clientesColeta;
-            } catch (error) {
-                console.error('Erro carregar clientes:', error);
-                mostrarToast('Erro ao carregar clientes de coleta.', 'error');
-                return [];
-            }
-        }
-
-        async function carregarColetas() {
-            try {
-                const url = `${SUPABASE_URL}/rest/v1/coletas?select=*,clientes_coleta(nome)&order=id.desc`;
-                const response = await fetch(url, {
-                    headers: supabaseHeaders
-                });
-                if (!response.ok) throw new Error(`Erro ${response.status}: ${response.statusText}`);
-                coletas = await response.json();
-                return coletas;
-            } catch (error) {
-                console.error('Erro carregar coletas:', error);
-                mostrarToast('Erro ao carregar coletas.', 'error');
-                return [];
-            }
-        }
-
-        async function criarClienteColeta(dados) {
-            try {
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/clientes_coleta`, {
-                    method: 'POST',
-                    headers: supabaseHeaders,
-                    body: JSON.stringify(dados)
-                });
-                const text = await response.text();
-                if (!response.ok) {
-                    console.error('Erro resposta:', text);
-                    throw new Error(`Erro ${response.status}: ${text || response.statusText}`);
-                }
-                if (!text) return null;
-                const json = JSON.parse(text);
-                return json[0] || json;
-            } catch (error) {
-                console.error('Erro criar cliente:', error);
-                mostrarToast('Erro ao criar cliente: ' + error.message, 'error');
-                return null;
-            }
-        }
-
-        async function criarColeta(dados) {
-            try {
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/coletas`, {
-                    method: 'POST',
-                    headers: supabaseHeaders,
-                    body: JSON.stringify(dados)
-                });
-                const text = await response.text();
-                if (!response.ok) {
-                    console.error('Erro resposta:', text);
-                    throw new Error(`Erro ${response.status}: ${text || response.statusText}`);
-                }
-                if (!text) return null;
-                const json = JSON.parse(text);
-                return json[0] || json;
-            } catch (error) {
-                console.error('Erro criar coleta:', error);
-                mostrarToast('Erro ao criar coleta: ' + error.message, 'error');
-                return null;
-            }
-        }
-
-        async function atualizarColeta(id, status) {
-            try {
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/coletas?id=eq.${id}`, {
-                    method: 'PATCH',
-                    headers: supabaseHeaders,
-                    body: JSON.stringify({ status })
-                });
-                if (!response.ok) {
-                    const text = await response.text();
-                    throw new Error(`Erro ${response.status}: ${text}`);
-                }
-                mostrarToast('Status da coleta atualizado!', 'success');
-                return true;
-            } catch (error) {
-                console.error('Erro atualizar coleta:', error);
-                mostrarToast('Erro ao atualizar coleta: ' + error.message, 'error');
-                return false;
-            }
-        }
-
-        async function deletarColeta(id) {
-            if (!confirm('Tem certeza que deseja excluir esta coleta?')) return;
-            try {
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/coletas?id=eq.${id}`, {
-                    method: 'DELETE',
-                    headers: supabaseHeaders
-                });
-                if (!response.ok) {
-                    const text = await response.text();
-                    throw new Error(`Erro ${response.status}: ${text}`);
-                }
-                mostrarToast('Coleta excluída com sucesso!', 'success');
-                await carregarColetas();
-                renderizarColetas();
-            } catch (error) {
-                console.error('Erro deletar coleta:', error);
-                mostrarToast('Erro ao excluir coleta: ' + error.message, 'error');
-            }
-        }
-
-        async function deletarClienteColeta(id) {
-            if (!confirm('Tem certeza que deseja excluir este cliente? Todas as coletas associadas também serão excluídas (CASCADE).')) return;
-            try {
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/clientes_coleta?id=eq.${id}`, {
-                    method: 'DELETE',
-                    headers: supabaseHeaders
-                });
-                if (!response.ok) {
-                    const text = await response.text();
-                    throw new Error(`Erro ${response.status}: ${text}`);
-                }
-                mostrarToast('Cliente excluído com sucesso!', 'success');
-                await carregarClientesColeta();
-                await carregarColetas();
-                renderizarClientesColeta();
-                renderizarColetas();
-                renderizarCRM(); // Atualiza o CRM
-                preencherSelectClientes();
-            } catch (error) {
-                console.error('Erro deletar cliente:', error);
-                mostrarToast('Erro ao excluir cliente: ' + error.message, 'error');
-            }
-        }
-
-        // ============================================================
-        // RENDERIZAÇÃO DA LISTA DE COLETAS
-        // ============================================================
-        function renderizarColetas() {
-            if (coletas.length === 0) {
-                elements.corpoColeta.innerHTML =
-                    `<tr><td colspan="6" style="text-align:center;padding:20px;color:#666;">Nenhuma coleta encontrada</td></tr>`;
-                return;
-            }
-            elements.corpoColeta.innerHTML = coletas.map(coleta => {
-                const nomeCliente = coleta.clientes_coleta?.nome || 'Cliente não informado';
-                const statusClass = coleta.status === 'pendente' ? 'status-pendente' : 'status-feita';
-                return `
-                <tr>
-                    <td><strong>#${coleta.id}</strong></td>
-                    <td>${nomeCliente}</td>
-                    <td>${coleta.volumes || 1}</td>
-                    <td>${new Date(coleta.data_publicacao).toLocaleDateString('pt-BR')}</td>
-                    <td class="${statusClass}">${coleta.status.toUpperCase()}</td>
-                    <td>
-                        <div class="actions">
-                            ${coleta.status === 'pendente' ? 
-                                `<button class="btn btn-sm btn-primary" onclick="marcarColetaFeita(${coleta.id})">Concluir</button>` : 
-                                `<span style="color:#060;">✓ Concluída</span>`
-                            }
-                            <button class="btn btn-sm btn-danger" onclick="deletarColeta(${coleta.id})">Excluir</button>
-                        </div>
-                    </td>
-                </tr>
-            `}).join('');
-        }
-
-        // ============================================================
-        // RENDERIZAÇÃO DA LISTA DE CLIENTES (GERENCIAR)
-        // ============================================================
-        function renderizarClientesColeta() {
-            if (clientesColeta.length === 0) {
-                elements.corpoClientes.innerHTML =
-                    `<tr><td colspan="5" style="text-align:center;padding:20px;color:#666;">Nenhum cliente cadastrado</td></tr>`;
-                return;
-            }
-            elements.corpoClientes.innerHTML = clientesColeta.map(cliente => `
-                <tr>
-                    <td><strong>#${cliente.id}</strong></td>
-                    <td>${cliente.nome}</td>
-                    <td>${cliente.cnpj || '-'}</td>
-                    <td>${cliente.telefone || '-'}</td>
-                    <td>
-                        <button class="btn btn-sm btn-danger" onclick="deletarClienteColeta(${cliente.id})">Excluir</button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        // ============================================================
-        // RENDERIZAÇÃO DO CRM - Lista completa de clientes com busca
-        // ============================================================
-        function renderizarCRM(filtro = '') {
-            let lista = clientesColeta;
-            if (filtro) {
-                const f = filtro.toLowerCase();
-                lista = lista.filter(c =>
-                    c.nome.toLowerCase().includes(f) ||
-                    (c.cnpj && c.cnpj.includes(f))
-                );
-            }
-            if (lista.length === 0) {
-                elements.corpoCRM.innerHTML =
-                    `<tr><td colspan="7" style="text-align:center;padding:20px;color:#666;">Nenhum cliente encontrado</td></tr>`;
-                return;
-            }
-            elements.corpoCRM.innerHTML = lista.map(cliente => `
-                <tr>
-                    <td><strong>#${cliente.id}</strong></td>
-                    <td>${cliente.nome}</td>
-                    <td>${cliente.cnpj || '-'}</td>
-                    <td>${cliente.telefone || '-'}</td>
-                    <td>${cliente.email || '-'}</td>
-                    <td>${cliente.uf || '-'}</td>
-                    <td>
-                        <div class="actions">
-                            <button class="btn btn-sm btn-primary" onclick="editarClienteCRM(${cliente.id})">Editar</button>
-                            <button class="btn btn-sm btn-danger" onclick="deletarClienteColeta(${cliente.id})">Excluir</button>
-                        </div>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        // ============================================================
-        // EDIÇÃO DE CLIENTE NO CRM
-        // ============================================================
-        function editarClienteCRM(id) {
-            const cliente = clientesColeta.find(c => c.id === id);
-            if (!cliente) return;
-            // Preencher formulário
-            elements.clienteColetaId.value = cliente.id;
-            elements.nomeClienteColeta.value = cliente.nome;
-            elements.cnpjClienteColeta.value = cliente.cnpj || '';
-            elements.telefoneClienteColeta.value = cliente.telefone || '';
-            elements.emailClienteColeta.value = cliente.email || '';
-            elements.ieClienteColeta.value = cliente.ie || '';
-            elements.logradouroClienteColeta.value = cliente.logradouro || '';
-            elements.numeroClienteColeta.value = cliente.numero || '';
-            elements.bairroClienteColeta.value = cliente.bairro || '';
-            elements.cidadeClienteColeta.value = cliente.cidade || '';
-            elements.ufClienteColeta.value = cliente.uf || '';
-            elements.cepClienteColeta.value = cliente.cep || '';
-            elements.modalClienteColetaTitle.textContent = 'Editar Cliente';
-            openModal(elements.modalClienteColeta);
-        }
-
-        // ============================================================
-        // AÇÕES DE COLETA
-        // ============================================================
-        async function marcarColetaFeita(id) {
-            if (!confirm('Marcar esta coleta como FEITA?')) return;
-            const ok = await atualizarColeta(id, 'feita');
-            if (ok) {
-                await carregarColetas();
-                renderizarColetas();
-            }
-        }
-
-        // ============================================================
-        // ABRIR MODAL DE COLETA
-        // ============================================================
-        async function abrirModalColeta() {
-            await carregarClientesColeta();
-            await carregarColetas();
-            renderizarColetas();
-            openModal(elements.modalColeta);
-        }
-
-        // ============================================================
-        // ABRIR MODAL DE NOVA COLETA
-        // ============================================================
-        async function abrirModalNovaColeta() {
-            await carregarClientesColeta();
-            preencherSelectClientes();
-            elements.formNovaColeta.reset();
-            openModal(elements.modalNovaColeta);
-        }
-
-        function preencherSelectClientes() {
-            const select = elements.clienteColetaSelect;
-            select.innerHTML = '<option value="">Selecione um cliente</option>';
-            clientesColeta.forEach(cliente => {
-                const option = document.createElement('option');
-                option.value = cliente.id;
-                option.textContent = cliente.nome + (cliente.cnpj ? ` (${cliente.cnpj})` : '');
-                select.appendChild(option);
-            });
-        }
-
-        // ============================================================
-        // GERENCIAR CLIENTES
-        // ============================================================
-        async function abrirGerenciarClientes() {
-            await carregarClientesColeta();
-            renderizarClientesColeta();
-            openModal(elements.modalGerenciarClientes);
-        }
-
-        // ============================================================
-        // ABRIR CRM
-        // ============================================================
-        async function abrirCRM() {
-            await carregarClientesColeta();
-            renderizarCRM(elements.buscaCRM.value);
-            openModal(elements.modalCRM);
-        }
-
-        // ============================================================
-        // SALVAR CLIENTE DE COLETA (reutilizado pelo CRM)
-        // ============================================================
-        async function salvarClienteColeta(event) {
-            event.preventDefault();
-            const dados = {
-                nome: elements.nomeClienteColeta.value.trim(),
-                cnpj: elements.cnpjClienteColeta.value.trim(),
-                telefone: elements.telefoneClienteColeta.value.trim(),
-                email: elements.emailClienteColeta.value.trim(),
-                ie: elements.ieClienteColeta.value.trim(),
-                logradouro: elements.logradouroClienteColeta.value.trim(),
-                numero: elements.numeroClienteColeta.value.trim(),
-                bairro: elements.bairroClienteColeta.value.trim(),
-                cidade: elements.cidadeClienteColeta.value.trim(),
-                uf: elements.ufClienteColeta.value.trim().toUpperCase(),
-                cep: elements.cepClienteColeta.value.trim()
-            };
-            if (!dados.nome) {
-                mostrarToast('Nome do cliente é obrigatório!', 'error');
-                return;
-            }
-            const id = parseInt(elements.clienteColetaId.value);
-            let novo = null;
-            if (id) {
-                // Edição - atualizar cliente
-                try {
-                    const response = await fetch(`${SUPABASE_URL}/rest/v1/clientes_coleta?id=eq.${id}`, {
-                        method: 'PATCH',
-                        headers: supabaseHeaders,
-                        body: JSON.stringify(dados)
-                    });
-                    if (!response.ok) {
-                        const text = await response.text();
-                        throw new Error(`Erro ${response.status}: ${text}`);
-                    }
-                    mostrarToast('Cliente atualizado com sucesso!', 'success');
-                    novo = { id, ...dados };
-                } catch (error) {
-                    console.error('Erro atualizar cliente:', error);
-                    mostrarToast('Erro ao atualizar cliente: ' + error.message, 'error');
-                    return;
-                }
-            } else {
-                novo = await criarClienteColeta(dados);
-                if (!novo) return;
-                mostrarToast('Cliente criado com sucesso!', 'success');
-            }
-            // Atualizar listas
-            await carregarClientesColeta();
-            preencherSelectClientes();
-            if (elements.modalGerenciarClientes.classList.contains('active')) {
-                renderizarClientesColeta();
-            }
-            if (elements.modalCRM.classList.contains('active')) {
-                renderizarCRM(elements.buscaCRM.value);
-            }
-            closeModal(elements.modalClienteColeta);
-            // Se veio do modal de nova coleta, selecionar o cliente criado/editado
-            if (elements.modalNovaColeta.classList.contains('active') && novo) {
-                elements.clienteColetaSelect.value = novo.id;
-            }
-        }
-
-        // ============================================================
-        // PUBLICAR COLETA
-        // ============================================================
-        async function publicarColeta(event) {
-            event.preventDefault();
-            const clienteId = parseInt(elements.clienteColetaSelect.value);
-            const volumes = parseInt(elements.volumesColeta.value) || 1;
-            if (!clienteId) {
-                mostrarToast('Selecione um cliente!', 'error');
-                return;
-            }
-            const dados = {
-                cliente_id: clienteId,
-                volumes: volumes,
-                status: 'pendente',
-                data_publicacao: new Date().toISOString().split('T')[0]
-            };
-            const nova = await criarColeta(dados);
-            if (nova) {
-                mostrarToast('Coleta publicada com sucesso!', 'success');
-                closeModal(elements.modalNovaColeta);
-                await carregarColetas();
-                renderizarColetas();
-            }
-        }
-
-        // ============================================================
-        // EVENTOS DO MÓDULO COLETA
-        // ============================================================
-        elements.menuColeta.addEventListener('click', abrirModalColeta);
-
-        elements.btnNovaColeta.addEventListener('click', abrirModalNovaColeta);
-
-        elements.btnGerenciarClientes.addEventListener('click', abrirGerenciarClientes);
-
-        elements.btnAtualizarColeta.addEventListener('click', async function() {
-            await carregarColetas();
-            renderizarColetas();
-            mostrarToast('Coletas atualizadas!', 'success');
-        });
-
-        elements.btnNovoClienteColeta.addEventListener('click', function() {
-            elements.formClienteColeta.reset();
-            elements.clienteColetaId.value = '';
-            elements.modalClienteColetaTitle.textContent = 'Cadastrar Cliente';
-            openModal(elements.modalClienteColeta);
-        });
-
-        elements.btnNovoClienteGerenciar.addEventListener('click', function() {
-            elements.formClienteColeta.reset();
-            elements.clienteColetaId.value = '';
-            elements.modalClienteColetaTitle.textContent = 'Cadastrar Cliente';
-            openModal(elements.modalClienteColeta);
-        });
-
-        elements.btnAtualizarClientes.addEventListener('click', async function() {
-            await carregarClientesColeta();
-            renderizarClientesColeta();
-            mostrarToast('Clientes atualizados!', 'success');
-        });
-
-        // ============================================================
-        // EVENTOS DO CRM
-        // ============================================================
-        elements.menuCRM.addEventListener('click', abrirCRM);
-
-        elements.btnNovoClienteCRM.addEventListener('click', function() {
-            elements.formClienteColeta.reset();
-            elements.clienteColetaId.value = '';
-            elements.modalClienteColetaTitle.textContent = 'Cadastrar Cliente';
-            openModal(elements.modalClienteColeta);
-        });
-
-        elements.btnAtualizarCRM.addEventListener('click', async function() {
-            await carregarClientesColeta();
-            renderizarCRM(elements.buscaCRM.value);
-            mostrarToast('Clientes atualizados!', 'success');
-        });
-
-        elements.buscaCRM.addEventListener('input', function() {
-            renderizarCRM(this.value);
-        });
-
-        // ============================================================
-        // FORMULÁRIOS
-        // ============================================================
-        elements.formClienteColeta.addEventListener('submit', salvarClienteColeta);
-        elements.formNovaColeta.addEventListener('submit', publicarColeta);
-
-        // ============================================================
-        // EVENTOS GERAIS
-        // ============================================================
-        elements.btnNovo.addEventListener('click', abrirModalNovo);
-        elements.btnConfigurar.addEventListener('click', function() {
-            preencherFormConfig();
-            openModal(elements.modalConfig);
-        });
-        elements.btnBuscar.addEventListener('click', function() {
-            renderizarTabelas(elements.searchInput.value);
-        });
-        elements.searchInput.addEventListener('keyup', function(e) {
-            if (e.key === 'Enter') renderizarTabelas(this.value);
-        });
-        elements.btnLimpar.addEventListener('click', function() {
-            elements.searchInput.value = '';
-            renderizarTabelas();
-        });
-        elements.form.addEventListener('submit', salvarTabela);
-        elements.formConfig.addEventListener('submit', salvarConfiguracoes);
-        elements.btnResetConfig.addEventListener('click', restaurarConfiguracoes);
-
-        document.getElementById('logoMaxHeight').addEventListener('input', function() {
-            const val = parseInt(this.value) || 80;
-            configImpressao.logoMaxHeight = val;
-            elements.previewLogoTamanho.textContent = 'Logo: ' + val + 'px';
-            atualizarPreview();
-        });
-
-        // ============================================================
-        // INICIALIZAÇÃO
-        // ============================================================
-        document.addEventListener('DOMContentLoaded', async function() {
-            carregarConfiguracoes();
-            await carregarDados();
-            document.querySelectorAll('#formConfig input, #formConfig select, #formConfig textarea').forEach(el => {
-                el.addEventListener('input', atualizarPreview);
-                el.addEventListener('change', atualizarPreview);
-            });
-            atualizarPreview();
-            carregarClientesColeta();
-            carregarColetas();
-        });
-    </script>
+    <!-- ======== SCRIPTS ======== -->
+    <script src="script.js"></script>
 </body>
 </html>
