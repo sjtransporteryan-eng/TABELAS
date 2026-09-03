@@ -1,0 +1,818 @@
+/* ============================================================
+   ESTILOS GLOBAIS - SISTEMA SJ TRANSPORTES
+   ============================================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body.retro-system {
+    background: #f0f0f0;
+    font-family: 'Tahoma', 'Geneva', 'MS Sans Serif', sans-serif;
+    font-size: 12px;
+    color: #000;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    cursor: default;
+}
+
+/* CABEÇALHO */
+.app-header {
+    background: linear-gradient(180deg, #6b9fd4 0%, #3a6ea5 100%);
+    color: #fff;
+    font-weight: bold;
+    padding: 6px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+    font-size: 14px;
+    border-bottom: 1px solid #404040;
+    flex-shrink: 0;
+}
+.app-header .title-text {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.app-header .title-text .sj-logo-img {
+    height: 40px;
+    background: #fff;
+    padding: 4px 12px 4px 8px;
+    border: 1px solid;
+    border-color: #fff #808080 #808080 #fff;
+    display: flex;
+    align-items: center;
+}
+.app-header .title-text .sj-logo-img img {
+    height: 100%;
+    max-height: 36px;
+    object-fit: contain;
+}
+.app-header .controls {
+    display: flex;
+    gap: 4px;
+}
+.app-header .controls span {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background: #ece9d8;
+    color: #000;
+    text-align: center;
+    line-height: 18px;
+    font-size: 12px;
+    font-weight: bold;
+    border: 1px solid;
+    border-color: #fff #404040 #404040 #fff;
+    cursor: default;
+}
+.app-header .controls span:hover {
+    background: #c0c0c0;
+}
+
+/* MENU */
+.menu-bar {
+    background: #ece9d8;
+    padding: 2px 16px;
+    border-bottom: 1px solid #a0a0a0;
+    display: flex;
+    gap: 16px;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+.menu-bar .menu-item {
+    padding: 2px 6px;
+    cursor: default;
+}
+.menu-bar .menu-item:hover {
+    background: #6b9fd4;
+    color: #fff;
+}
+
+/* CORPO PRINCIPAL */
+.app-body {
+    padding: 16px;
+    flex: 1;
+    overflow-y: auto;
+    background: #fff;
+}
+
+/* RODAPÉ */
+.status-bar {
+    background: #ece9d8;
+    border-top: 1px solid #a0a0a0;
+    padding: 2px 16px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #000;
+    min-height: 24px;
+    align-items: center;
+    flex-shrink: 0;
+}
+.status-bar .status-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.status-bar .status-right {
+    text-align: right;
+}
+
+/* COMPONENTES */
+.group-box {
+    border: 1px solid;
+    border-color: #404040 #fff #fff #404040;
+    padding: 8px 12px;
+    margin-bottom: 12px;
+}
+.group-box legend {
+    font-weight: bold;
+    color: #000;
+    padding: 0 6px;
+    font-size: 12px;
+    background: #fff;
+}
+
+.input {
+    border: 2px solid;
+    border-color: #404040 #fff #fff #404040;
+    background: #fff;
+    padding: 3px 5px;
+    font-family: 'Tahoma', 'Geneva', sans-serif;
+    font-size: 12px;
+    color: #000;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+.input:focus {
+    border-color: #3a6ea5 #fff #fff #3a6ea5;
+}
+.input:disabled {
+    background: #e8e8e0;
+    color: #666;
+}
+select.input {
+    background: #fff;
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 18px;
+}
+textarea.input {
+    resize: vertical;
+    min-height: 60px;
+}
+
+.btn {
+    background: #ece9d8;
+    border: 2px solid;
+    border-color: #fff #404040 #404040 #fff;
+    padding: 4px 16px;
+    font-family: 'Tahoma', 'Geneva', sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    color: #000;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 28px;
+    transition: none;
+}
+.btn:active {
+    border-color: #404040 #fff #fff #404040;
+}
+.btn-primary {
+    background: #06458F;
+    color: #fff;
+    border-color: #3a7ab5 #002a5c #002a5c #3a7ab5;
+}
+.btn-primary:active {
+    border-color: #002a5c #3a7ab5 #3a7ab5 #002a5c;
+}
+.btn-sm {
+    padding: 2px 10px;
+    font-size: 11px;
+    min-height: 22px;
+}
+.btn-danger {
+    background: #c00;
+    color: #fff;
+    border-color: #f66 #800 #800 #f66;
+}
+.btn-danger:active {
+    border-color: #800 #f66 #f66 #800;
+}
+.btn-secondary {
+    background: #e0e0d0;
+    color: #000;
+    border-color: #fff #808080 #808080 #fff;
+}
+.btn-secondary:active {
+    border-color: #808080 #fff #fff #808080;
+}
+
+.table-wrap {
+    overflow-x: auto;
+    margin: 8px 0;
+}
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    background: #fff;
+    border: 1px solid #a0a0a0;
+}
+.table th {
+    background: #06458F;
+    color: #fff;
+    padding: 4px 8px;
+    text-align: left;
+    font-weight: bold;
+    border: 1px solid #002a5c;
+}
+.table td {
+    padding: 4px 8px;
+    border: 1px solid #a0a0a0;
+}
+.table tr:nth-child(even) td {
+    background: #f0f0e8;
+}
+.table tr:hover td {
+    background: #d4e0f0;
+}
+.table .actions {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    margin-bottom: 8px;
+}
+.form-row .field {
+    flex: 1 0 180px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.form-row .field label {
+    font-weight: bold;
+    font-size: 11px;
+}
+.form-row .field label .required {
+    color: #c00;
+}
+.form-row .field-small {
+    flex: 1 0 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.form-row .field-small label {
+    font-weight: bold;
+    font-size: 11px;
+}
+
+.cidades-list {
+    border: 1px solid #a0a0a0;
+    background: #fff;
+    padding: 4px;
+    max-height: 150px;
+    overflow-y: auto;
+    margin-bottom: 6px;
+}
+.cidade-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2px 4px;
+    border-bottom: 1px solid #d0d0d0;
+}
+.cidade-item:last-child {
+    border-bottom: none;
+}
+.cidade-item .info {
+    font-size: 12px;
+}
+.cidade-item .btn-remove {
+    background: #c00;
+    color: #fff;
+    border: 1px solid #800;
+    padding: 0 6px;
+    font-size: 11px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.cidade-item .btn-remove:hover {
+    background: #a00;
+}
+.cidades-empty {
+    text-align: center;
+    color: #666;
+    padding: 12px;
+}
+.add-cidade-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: flex-end;
+}
+.add-cidade-row select,
+.add-cidade-row input {
+    flex: 1 0 100px;
+    min-width: 80px;
+}
+
+/* BOTÃO FLUTUANTE */
+.fab {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 500;
+    background: #06458F;
+    color: #fff;
+    border: 2px solid;
+    border-color: #3a7ab5 #002a5c #002a5c #3a7ab5;
+    padding: 10px 14px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+    line-height: 1;
+}
+.fab:hover {
+    background: #0a5aaf;
+}
+.fab:active {
+    border-color: #002a5c #3a7ab5 #3a7ab5 #002a5c;
+}
+.fab .tooltip {
+    display: none;
+    position: absolute;
+    right: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #ece9d8;
+    color: #000;
+    border: 1px solid #404040;
+    padding: 4px 10px;
+    font-size: 11px;
+    white-space: nowrap;
+    font-weight: normal;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+.fab:hover .tooltip {
+    display: block;
+}
+
+/* MODAIS */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 999;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+.modal-overlay.active {
+    display: flex;
+}
+.modal-overlay .window {
+    max-width: 900px;
+    max-height: 90vh;
+    min-height: auto;
+    width: 100%;
+    margin: 0;
+    background: #ece9d8;
+    border: 2px solid;
+    border-color: #fff #404040 #404040 #fff;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+}
+.modal-overlay .window .window-body {
+    overflow-y: auto;
+    padding: 12px;
+}
+.modal-overlay .window-title {
+    background: linear-gradient(180deg, #6b9fd4 0%, #3a6ea5 100%);
+    color: #fff;
+    font-weight: bold;
+    padding: 4px 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    border-bottom: 1px solid #404040;
+    flex-shrink: 0;
+}
+.modal-overlay .window-title .title-text {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.modal-overlay .window-title .controls {
+    display: flex;
+    gap: 4px;
+}
+.modal-overlay .window-title .controls span {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background: #ece9d8;
+    color: #000;
+    text-align: center;
+    line-height: 18px;
+    font-size: 12px;
+    font-weight: bold;
+    border: 1px solid;
+    border-color: #fff #404040 #404040 #fff;
+    cursor: default;
+}
+.modal-overlay .window-title .controls span:hover {
+    background: #c0c0c0;
+}
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 8px 12px;
+    border-top: 1px solid #a0a0a0;
+    background: #ece9d8;
+}
+.modal-footer .btn {
+    min-height: 26px;
+}
+
+/* TABELA FIXA */
+.table-fixed {
+    font-size: 12px;
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border: 1px solid #a0a0a0;
+}
+.table-fixed th {
+    background: #06458F;
+    color: #fff;
+    padding: 4px 8px;
+    border: 1px solid #002a5c;
+    text-align: left;
+}
+.table-fixed td {
+    padding: 4px 8px;
+    border: 1px solid #a0a0a0;
+}
+.table-fixed tr:nth-child(even) td {
+    background: #f0f0e8;
+}
+.table-fixed .total-row td {
+    background: #d0d0c0;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* CAMPOS EDITÁVEIS NA IMPRESSÃO */
+.campo-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 8px;
+    border-bottom: 1px solid #d0d0d0;
+    background: #fff;
+}
+.campo-item .campo-label {
+    flex: 1;
+    font-weight: bold;
+    font-size: 12px;
+}
+.campo-item .campo-input {
+    flex: 1;
+    padding: 2px 4px;
+    border: 1px solid #a0a0a0;
+    font-family: 'Tahoma', 'Geneva', sans-serif;
+    font-size: 11px;
+    background: #fff;
+}
+.campo-item .campo-checkbox {
+    width: 16px;
+    height: 16px;
+    accent-color: #06458F;
+}
+.campo-item .campo-drag {
+    cursor: move;
+    color: #999;
+    font-size: 14px;
+    user-select: none;
+}
+.campo-item.dragging {
+    opacity: 0.5;
+    background: #e0e0d0;
+}
+.campo-item.drag-over {
+    border-top: 2px solid #06458F;
+}
+.campos-container {
+    max-height: 250px;
+    overflow-y: auto;
+    border: 1px solid #a0a0a0;
+    background: #f5f5f0;
+}
+
+/* CONFIGURAÇÕES */
+.config-section {
+    margin-bottom: 12px;
+}
+.config-section .config-title {
+    font-weight: bold;
+    background: #d0d0c0;
+    padding: 2px 8px;
+    border: 1px solid #a0a0a0;
+    margin-bottom: 6px;
+}
+.config-section .form-row .field {
+    flex: 1 0 140px;
+}
+.config-section .form-row .field input[type="color"] {
+    padding: 1px;
+    height: 28px;
+}
+.config-section .form-row .field input[type="number"] {
+    width: 100%;
+}
+.config-section .form-row .field input[type="file"] {
+    padding: 4px;
+}
+.config-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+}
+
+.preview-box {
+    border: 1px solid #404040;
+    background: #fff;
+    padding: 8px;
+    margin-top: 8px;
+    max-height: 400px;
+    overflow: auto;
+}
+.preview-box .preview-content {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    transform: scale(0.65);
+    transform-origin: top left;
+    width: 100%;
+    background: #fff;
+    padding: 4px;
+}
+
+.logo-preview-mini {
+    max-height: 60px;
+    max-width: 150px;
+    border: 1px solid #a0a0a0;
+    padding: 4px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.logo-preview-mini img {
+    max-height: 50px;
+    max-width: 130px;
+    object-fit: contain;
+}
+
+.search-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+    align-items: center;
+}
+.search-row .input {
+    flex: 1;
+    min-width: 180px;
+}
+
+.status-pendente {
+    color: #c00;
+    font-weight: bold;
+}
+.status-feita {
+    color: #060;
+    font-weight: bold;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 640px) {
+    .app-body {
+        padding: 8px;
+    }
+    .form-row .field {
+        flex: 1 0 100%;
+    }
+    .add-cidade-row select,
+    .add-cidade-row input {
+        flex: 1 0 80px;
+    }
+    .app-header .title-text .sj-logo-img {
+        height: 30px;
+        padding: 2px 8px;
+    }
+    .app-header .title-text .sj-logo-img img {
+        max-height: 26px;
+    }
+    .fab {
+        bottom: 16px;
+        right: 16px;
+        padding: 8px 12px;
+        font-size: 16px;
+    }
+    .modal-overlay {
+        padding: 8px;
+    }
+    .modal-overlay .window {
+        max-width: 100%;
+        max-height: 100vh;
+        border-radius: 0;
+    }
+}
+
+/* IMPRESSÃO */
+@media print {
+    body.retro-system * {
+        visibility: hidden;
+    }
+    #modalImprimir,
+    #modalImprimir * {
+        visibility: visible;
+    }
+    #modalImprimir {
+        position: fixed;
+        inset: 0;
+        background: #fff;
+        padding: 20px;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+    }
+    #modalImprimir .window {
+        box-shadow: none;
+        border: none;
+        background: #fff;
+        max-width: 100%;
+        min-height: auto;
+    }
+    #modalImprimir .window-title,
+    #modalImprimir .menu-bar,
+    #modalImprimir .status-bar,
+    #modalImprimir .modal-footer,
+    #modalImprimir .btn,
+    #modalImprimir .close-print {
+        display: none !important;
+    }
+    #modalImprimir .window-body {
+        padding: 10px;
+        overflow: visible;
+        background: #fff;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+    #modalImprimir .window-body .conteudo-impressao {
+        flex: 1;
+    }
+    #modalImprimir .window-body .sj-logo-print {
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 14px;
+        border-bottom: 2px solid #06458F;
+        padding-bottom: 10px;
+    }
+    #modalImprimir .window-body .sj-logo-print img {
+        width: auto;
+        object-fit: contain;
+    }
+    #modalImprimir .window-body .endereco-print {
+        text-align: center;
+        font-size: 12px;
+        margin-bottom: 14px;
+        color: #333;
+    }
+    #modalImprimir .window-body .info-cliente-print {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2px 20px;
+        font-size: 11px;
+        background: #f5f5f0;
+        padding: 8px 12px;
+        border: 1px solid #a0a0a0;
+        margin-bottom: 10px;
+    }
+    #modalImprimir .window-body .info-cliente-print .item {
+        display: flex;
+        gap: 4px;
+    }
+    #modalImprimir .window-body .info-cliente-print .item strong {
+        min-width: 70px;
+    }
+    #modalImprimir .window-body .origem-destino-print {
+        display: flex;
+        justify-content: space-between;
+        background: #e9ecef;
+        padding: 4px 12px;
+        font-weight: bold;
+        font-size: 12px;
+        margin-bottom: 10px;
+        border: 1px solid #a0a0a0;
+    }
+    #modalImprimir .window-body .table-print {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 11px;
+        margin-bottom: 10px;
+    }
+    #modalImprimir .window-body .table-print th {
+        background: #06458F;
+        color: #fff;
+        padding: 4px 8px;
+        border: 1px solid #002a5c;
+        text-align: left;
+    }
+    #modalImprimir .window-body .table-print td {
+        padding: 4px 8px;
+        border: 1px solid #a0a0a0;
+    }
+    #modalImprimir .window-body .table-print tr:nth-child(even) td {
+        background: #f5f5f0;
+    }
+    #modalImprimir .window-body .observacao-print {
+        font-size: 11px;
+        padding: 4px 10px;
+        border: 1px solid #ccc;
+        background: #f9f9f9;
+        margin-bottom: 15px;
+    }
+    #modalImprimir .window-body .rodape-assinaturas {
+        margin-top: auto;
+        padding-top: 30px;
+        border-top: 2px solid #333;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        padding-bottom: 0;
+        margin-bottom: 0;
+        min-height: 100px;
+    }
+    #modalImprimir .window-body .rodape-assinaturas .assinatura-cliente {
+        flex: 1;
+        text-align: left;
+        padding-right: 20px;
+    }
+    #modalImprimir .window-body .rodape-assinaturas .assinatura-empresa {
+        flex: 1;
+        text-align: right;
+        padding-left: 20px;
+    }
+    #modalImprimir .window-body .rodape-assinaturas .linha-assinatura {
+        border-bottom: 1px solid #333;
+        width: 100%;
+        height: 1px;
+        margin-bottom: 4px;
+    }
+    #modalImprimir .window-body .rodape-assinaturas .nome-assinatura {
+        font-size: 11px;
+        color: #333;
+        font-weight: bold;
+    }
+    #modalImprimir .window-body .rodape-info {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-top: 10px;
+        padding-top: 8px;
+        border-top: 1px solid #ddd;
+        font-size: 10px;
+        color: #999;
+    }
+    #modalImprimir .window-body .rodape-info .sinop-data {
+        text-align: left;
+        font-weight: bold;
+        color: #333;
+        font-size: 10px;
+    }
+}
