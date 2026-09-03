@@ -1519,3 +1519,292 @@ function renderizarClientesColeta() {
         </tr>
     `).join('');
 }
+
+function renderizarCRM(filtro = '') {
+    let lista = clientesColeta;
+    if (filtro) {
+        const f = filtro.toLowerCase();
+        lista = lista.filter(c =>
+            c.nome.toLowerCase().includes(f) ||
+            (c.cnpj && c.cnpj.includes(f))
+        );
+    }
+    if (lista.length === 0) {
+        elements.corpoCRM.innerHTML =
+            `<tr><td colspan="8" style="text-align:center;padding:20px;color:#666;">Nenhum cliente encontrado</td></tr>`;
+        return;
+    }
+    elements.corpoCRM.innerHTML = lista.map(cliente => `
+        <tr>
+            <td><strong>#${cliente.id}</strong></td>
+            <td>${cliente.nome}</td>
+            <td>${cliente.cnpj || '-'}</td>
+            <td>${cliente.telefone || '-'}</td>
+            <td>${cliente.email || '-'}</td>
+            <td>${cliente.uf || '-'}</td>
+            <td>${cliente.observacao || '-'}</td>
+            <td>
+                <div class="actions">
+                    <button class="btn btn-sm btn-primary" onclick="editarClienteCRM(${cliente.id})">Editar</button>
+                    <button class="btn btn-sm btn-danger" onclick="deletarClienteColeta(${cliente.id})">Excluir</button>
+                </div>
+            </td>
+        </tr>
+    `).join('');
+}
+
+// ============================================================
+// EDIÇÃO DE CLIENTE NO CRM
+// ============================================================
+function editarClienteCRM(id) {
+    const cliente = clientesColeta.find(c => c.id === id);
+    if (!cliente) return;
+    elements.clienteColetaId.value = cliente.id;
+    elements.nomeClienteColeta.value = cliente.nome;
+    elements.cnpjClienteColeta.value = cliente.cnpj || '';
+    elements.telefoneClienteColeta.value = cliente.telefone || '';
+    elements.emailClienteColeta.value = cliente.email || '';
+    elements.ieClienteColeta.value = cliente.ie || '';
+    elements.logradouroClienteColeta.value = cliente.logradouro || '';
+    elements.numeroClienteColeta.value = cliente.numero || '';
+    elements.bairroClienteColeta.value = cliente.bairro || '';
+    elements.cidadeClienteColeta.value = cliente.cidade || '';
+    elements.ufClienteColeta.value = cliente.uf || '';
+    elements.cepClienteColeta.value = cliente.cep || '';
+    elements.observacaoClienteColeta.value = cliente.observacao || '';
+    elements.modalClienteColetaTitle.textContent = 'Editar Cliente';
+    openModal(elements.modalClienteColeta);
+}
+
+// ============================================================
+// AÇÕES DE COLETA
+// ============================================================
+async function marcarColetaFeita(id) {
+    if (!confirm('Marcar esta coleta como FEITA?')) return;
+    const ok = await atualizarColeta(id, 'feita');
+    if (ok) {
+        await carregarColetas();
+        renderizarColetas();
+    }
+}
+
+// ============================================================
+// ABRIR MODAIS
+// ============================================================
+async function abrirModalColeta() {
+    await carregarClientesColeta();
+    await carregarColetas();
+    renderizarColetas();
+    openModal(elements.modalColeta);
+}
+
+async function abrirModalNovaColeta() {
+    await carregarClientesColeta();
+    preencherSelectClientes();
+    elements.formNovaColeta.reset();
+    openModal(elements.modalNovaColeta);
+}
+
+function preencherSelectClientes() {
+    const select = elements.clienteColetaSelect;
+    select.innerHTML = '<option value="">Selecione um cliente</option>';
+    clientesColeta.forEach(cliente => {
+        const option = document.createElement('option');
+        option.value = cliente.id;
+        option.textContent = cliente.nome + (cliente.cnpj ? ` (${cliente.cnpj})` : '');
+        select.appendChild(option);
+    });
+}
+
+async function abrirGerenciarClientes() {
+    await carregarClientesColeta();
+    renderizarClientesColeta();
+    openModal(elements.modalGerenciarClientes);
+}
+
+async function abrirCRM() {
+    await carregarClientesColeta();
+    renderizarCRM(elements.buscaCRM.value);
+    openModal(elements.modalCRM);
+}
+
+// ============================================================
+// SALVAR CLIENTE DE COLETA / CRM
+// ============================================================
+async function salvarClienteColeta(event) {
+    event.preventDefault();
+    const dados = {
+        nome: elements.nomeClienteColeta.value.trim(),
+        cnpj: elements.cnpjClienteColeta.value.trim(),
+        telefone: elements.telefoneClienteColeta.value.trim(),
+        email: elements.emailClienteColeta.value.trim(),
+        ie: elements.ieClienteColeta.value.trim(),
+        logradouro: elements.logradouroClienteColeta.value.trim(),
+        numero: elements.numeroClienteColeta.value.trim(),
+        bairro: elements.bairroClienteColeta.value.trim(),
+        cidade: elements.cidadeClienteColeta.value.trim(),
+        uf: elements.ufClienteColeta.value.trim().toUpperCase(),
+        cep: elements.cepClienteColeta.value.trim(),
+        observacao: elements.observacaoClienteColeta.value.trim()
+    };
+    if (!dados.nome) {
+        mostrarToast('Nome do cliente é obrigatório!', 'error');
+        return;
+    }
+    const id = parseInt(elements.clienteColetaId.value);
+    let novo = null;
+    if (id) {
+        try {
+            const response = await fetch(`${SUPABASE_URL}/rest/v1/clientes_coleta?id=eq.${id}`, {
+                method: 'PATCH',
+                headers: supabaseHeaders,
+                body: JSON.stringify(dados)
+            });
+            if (!response.ok) {
+                const text = await response.text();
+                throw new Error(`Erro ${response.status}: ${text}`);
+            }
+            mostrarToast('Cliente atualizado com sucesso!', 'success');
+            novo = { id, ...dados };
+        } catch (error) {
+            console.error('Erro atualizar cliente:', error);
+            mostrarToast('Erro ao atualizar cliente: ' + error.message, 'error');
+            return;
+        }
+    } else {
+        novo = await criarClienteColeta(dados);
+        if (!novo) return;
+        mostrarToast('Cliente criado com sucesso!', 'success');
+    }
+    await carregarClientesColeta();
+    preencherSelectClientes();
+    if (elements.modalGerenciarClientes.classList.contains('active')) {
+        renderizarClientesColeta();
+    }
+    if (elements.modalCRM.classList.contains('active')) {
+        renderizarCRM(elements.buscaCRM.value);
+    }
+    closeModal(elements.modalClienteColeta);
+    if (elements.modalNovaColeta.classList.contains('active') && novo) {
+        elements.clienteColetaSelect.value = novo.id;
+    }
+}
+
+// ============================================================
+// PUBLICAR COLETA
+// ============================================================
+async function publicarColeta(event) {
+    event.preventDefault();
+    const clienteId = parseInt(elements.clienteColetaSelect.value);
+    const volumes = parseInt(elements.volumesColeta.value) || 1;
+    if (!clienteId) {
+        mostrarToast('Selecione um cliente!', 'error');
+        return;
+    }
+    const dados = {
+        cliente_id: clienteId,
+        volumes: volumes,
+        status: 'pendente',
+        data_publicacao: new Date().toISOString().split('T')[0]
+    };
+    const nova = await criarColeta(dados);
+    if (nova) {
+        mostrarToast('Coleta publicada com sucesso!', 'success');
+        closeModal(elements.modalNovaColeta);
+        await carregarColetas();
+        renderizarColetas();
+    }
+}
+
+// ============================================================
+// EVENTOS DO MÓDULO COLETA E CRM
+// ============================================================
+elements.menuColeta.addEventListener('click', abrirModalColeta);
+elements.btnNovaColeta.addEventListener('click', abrirModalNovaColeta);
+elements.btnGerenciarClientes.addEventListener('click', abrirGerenciarClientes);
+elements.btnAtualizarColeta.addEventListener('click', async function() {
+    await carregarColetas();
+    renderizarColetas();
+    mostrarToast('Coletas atualizadas!', 'success');
+});
+elements.btnNovoClienteColeta.addEventListener('click', function() {
+    elements.formClienteColeta.reset();
+    elements.clienteColetaId.value = '';
+    elements.modalClienteColetaTitle.textContent = 'Cadastrar Cliente';
+    openModal(elements.modalClienteColeta);
+});
+elements.btnNovoClienteGerenciar.addEventListener('click', function() {
+    elements.formClienteColeta.reset();
+    elements.clienteColetaId.value = '';
+    elements.modalClienteColetaTitle.textContent = 'Cadastrar Cliente';
+    openModal(elements.modalClienteColeta);
+});
+elements.btnAtualizarClientes.addEventListener('click', async function() {
+    await carregarClientesColeta();
+    renderizarClientesColeta();
+    mostrarToast('Clientes atualizados!', 'success');
+});
+
+// CRM
+elements.menuCRM.addEventListener('click', abrirCRM);
+elements.btnNovoClienteCRM.addEventListener('click', function() {
+    elements.formClienteColeta.reset();
+    elements.clienteColetaId.value = '';
+    elements.modalClienteColetaTitle.textContent = 'Cadastrar Cliente';
+    openModal(elements.modalClienteColeta);
+});
+elements.btnAtualizarCRM.addEventListener('click', async function() {
+    await carregarClientesColeta();
+    renderizarCRM(elements.buscaCRM.value);
+    mostrarToast('Clientes atualizados!', 'success');
+});
+elements.buscaCRM.addEventListener('input', function() {
+    renderizarCRM(this.value);
+});
+
+// Formulários
+elements.formClienteColeta.addEventListener('submit', salvarClienteColeta);
+elements.formNovaColeta.addEventListener('submit', publicarColeta);
+
+// ============================================================
+// EVENTOS GERAIS
+// ============================================================
+elements.btnNovo.addEventListener('click', abrirModalNovo);
+elements.btnConfigurar.addEventListener('click', function() {
+    preencherFormConfig();
+    openModal(elements.modalConfig);
+});
+elements.btnBuscar.addEventListener('click', function() {
+    renderizarTabelas(elements.searchInput.value);
+});
+elements.searchInput.addEventListener('keyup', function(e) {
+    if (e.key === 'Enter') renderizarTabelas(this.value);
+});
+elements.btnLimpar.addEventListener('click', function() {
+    elements.searchInput.value = '';
+    renderizarTabelas();
+});
+elements.form.addEventListener('submit', salvarTabela);
+elements.formConfig.addEventListener('submit', salvarConfiguracoes);
+elements.btnResetConfig.addEventListener('click', restaurarConfiguracoes);
+document.getElementById('logoMaxHeight').addEventListener('input', function() {
+    const val = parseInt(this.value) || 80;
+    configImpressao.logoMaxHeight = val;
+    elements.previewLogoTamanho.textContent = 'Logo: ' + val + 'px';
+    atualizarPreview();
+});
+
+// ============================================================
+// INICIALIZAÇÃO
+// ============================================================
+document.addEventListener('DOMContentLoaded', async function() {
+    carregarConfiguracoes();
+    await carregarDados();
+    document.querySelectorAll('#formConfig input, #formConfig select, #formConfig textarea').forEach(el => {
+        el.addEventListener('input', atualizarPreview);
+        el.addEventListener('change', atualizarPreview);
+    });
+    atualizarPreview();
+    carregarClientesColeta();
+    carregarColetas();
+});
