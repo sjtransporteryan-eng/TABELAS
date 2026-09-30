@@ -140,34 +140,217 @@
         .campo-item .campo-drag { cursor:move; color:#999; font-size:14px; user-select:none; }
         .campo-item.dragging { opacity:0.5; background:#e0e0d0; }
         .campo-item.drag-over { border-top:2px solid #06458F; }
+
+        /* ============================================================
+           IMPRESSÃO - SEM BARRA DE ROLAGEM
+           ============================================================ */
         @media print {
-            body.retro-system * { visibility:hidden; }
-            #modalImprimir, #modalImprimir * { visibility:visible; }
-            #modalImprimir { position:fixed; inset:0; background:#fff; padding:20px; width:100%; height:100%; overflow:auto; }
-            #modalImprimir .window { box-shadow:none; border:none; background:#fff; max-width:100%; min-height:auto; }
-            #modalImprimir .window-title, #modalImprimir .menu-bar, #modalImprimir .status-bar, #modalImprimir .modal-footer, #modalImprimir .btn, #modalImprimir .close-print { display:none !important; }
-            #modalImprimir .window-body { padding:10px; overflow:visible; background:#fff; min-height:100vh; display:flex; flex-direction:column; justify-content:flex-start; }
-            #modalImprimir .window-body .conteudo-impressao { flex:1; }
-            #modalImprimir .window-body .sj-logo-print { display:flex !important; justify-content:center; align-items:center; margin-bottom:14px; border-bottom:2px solid #06458F; padding-bottom:10px; }
-            #modalImprimir .window-body .sj-logo-print img { width:auto; object-fit:contain; }
-            #modalImprimir .window-body .endereco-print { text-align:center; font-size:12px; margin-bottom:14px; color:#333; }
-            #modalImprimir .window-body .info-cliente-print { display:grid; grid-template-columns:1fr 1fr; gap:2px 20px; font-size:11px; background:#f5f5f0; padding:8px 12px; border:1px solid #a0a0a0; margin-bottom:10px; }
-            #modalImprimir .window-body .info-cliente-print .item { display:flex; gap:4px; }
-            #modalImprimir .window-body .info-cliente-print .item strong { min-width:70px; }
-            #modalImprimir .window-body .origem-destino-print { display:flex; justify-content:space-between; background:#e9ecef; padding:4px 12px; font-weight:bold; font-size:12px; margin-bottom:10px; border:1px solid #a0a0a0; }
-            #modalImprimir .window-body .table-print { width:100%; border-collapse:collapse; font-size:11px; margin-bottom:10px; }
-            #modalImprimir .window-body .table-print th { background:#06458F; color:#fff; padding:4px 8px; border:1px solid #002a5c; text-align:left; }
-            #modalImprimir .window-body .table-print td { padding:4px 8px; border:1px solid #a0a0a0; }
-            #modalImprimir .window-body .table-print tr:nth-child(even) td { background:#f5f5f0; }
-            #modalImprimir .window-body .observacao-print { font-size:11px; padding:4px 10px; border:1px solid #ccc; background:#f9f9f9; margin-bottom:15px; }
-            #modalImprimir .window-body .rodape-assinaturas { margin-top:auto; padding-top:30px; border-top:2px solid #333; display:flex; justify-content:space-between; align-items:flex-end; padding-bottom:0; margin-bottom:0; min-height:100px; }
-            #modalImprimir .window-body .rodape-assinaturas .assinatura-cliente { flex:1; text-align:left; padding-right:20px; }
-            #modalImprimir .window-body .rodape-assinaturas .assinatura-empresa { flex:1; text-align:right; padding-left:20px; }
-            #modalImprimir .window-body .rodape-assinaturas .linha-assinatura { border-bottom:1px solid #333; width:100%; height:1px; margin-bottom:4px; }
-            #modalImprimir .window-body .rodape-assinaturas .nome-assinatura { font-size:11px; color:#333; font-weight:bold; }
-            #modalImprimir .window-body .rodape-info { display:flex; justify-content:flex-start; align-items:center; margin-top:10px; padding-top:8px; border-top:1px solid #ddd; font-size:10px; color:#999; }
-            #modalImprimir .window-body .rodape-info .sinop-data { text-align:left; font-weight:bold; color:#333; font-size:10px; }
+            html, body {
+                overflow: hidden !important;
+                height: auto !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                background: #fff !important;
+            }
+            body.retro-system * { visibility: hidden; }
+            #modalImprimir,
+            #modalImprimir * { visibility: visible; }
+
+            #modalImprimir {
+                position: absolute !important;
+                top: 0 !important;
+                left: 0 !important;
+                inset: auto !important;
+                background: #fff !important;
+                padding: 10mm !important;
+                width: 100% !important;
+                height: auto !important;
+                max-height: none !important;
+                overflow: visible !important;
+                box-shadow: none !important;
+                display: block !important;
+            }
+
+            #modalImprimir .window {
+                box-shadow: none !important;
+                border: none !important;
+                background: #fff !important;
+                max-width: 100% !important;
+                min-height: auto !important;
+                height: auto !important;
+                overflow: visible !important;
+                display: block !important;
+            }
+
+            #modalImprimir .window-title,
+            #modalImprimir .menu-bar,
+            #modalImprimir .status-bar,
+            #modalImprimir .modal-footer,
+            #modalImprimir .btn,
+            #modalImprimir .close-print {
+                display: none !important;
+            }
+
+            #modalImprimir .window-body {
+                padding: 0 !important;
+                overflow: visible !important;
+                background: #fff !important;
+                height: auto !important;
+                max-height: none !important;
+                display: block !important;
+                min-height: auto !important;
+            }
+
+            #modalImprimir .window-body .conteudo-impressao { display: block !important; }
+
+            #modalImprimir .window-body .sj-logo-print {
+                display: flex !important;
+                justify-content: center;
+                align-items: center;
+                margin-bottom: 14px;
+                border-bottom: 2px solid #06458F;
+                padding-bottom: 10px;
+            }
+
+            #modalImprimir .window-body .sj-logo-print img {
+                width: auto;
+                object-fit: contain;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #modalImprimir .window-body .endereco-print {
+                text-align: center;
+                font-size: 12px;
+                margin-bottom: 14px;
+                color: #333;
+            }
+
+            #modalImprimir .window-body .info-cliente-print {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 2px 20px;
+                font-size: 11px;
+                background: #f5f5f0 !important;
+                padding: 8px 12px;
+                border: 1px solid #a0a0a0;
+                margin-bottom: 10px;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #modalImprimir .window-body .info-cliente-print .item { display: flex; gap: 4px; }
+            #modalImprimir .window-body .info-cliente-print .item strong { min-width: 70px; }
+
+            #modalImprimir .window-body .origem-destino-print {
+                display: flex;
+                justify-content: space-between;
+                background: #e9ecef !important;
+                padding: 4px 12px;
+                font-weight: bold;
+                font-size: 12px;
+                margin-bottom: 10px;
+                border: 1px solid #a0a0a0;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #modalImprimir .window-body .table-print {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 11px;
+                margin-bottom: 10px;
+            }
+
+            #modalImprimir .window-body .table-print th {
+                background: #06458F !important;
+                color: #fff !important;
+                padding: 4px 8px;
+                border: 1px solid #002a5c;
+                text-align: left;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #modalImprimir .window-body .table-print td {
+                padding: 4px 8px;
+                border: 1px solid #a0a0a0;
+            }
+
+            #modalImprimir .window-body .table-print tr:nth-child(even) td {
+                background: #f5f5f0 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #modalImprimir .window-body .observacao-print {
+                font-size: 11px;
+                padding: 4px 10px;
+                border: 1px solid #ccc;
+                background: #f9f9f9 !important;
+                margin-bottom: 15px;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #modalImprimir .window-body .rodape-assinaturas {
+                margin-top: 30px;
+                padding-top: 30px;
+                border-top: 2px solid #333;
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-end;
+                min-height: 100px;
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+
+            #modalImprimir .window-body .rodape-assinaturas .assinatura-cliente {
+                flex: 1;
+                text-align: left;
+                padding-right: 20px;
+            }
+
+            #modalImprimir .window-body .rodape-assinaturas .assinatura-empresa {
+                flex: 1;
+                text-align: right;
+                padding-left: 20px;
+            }
+
+            #modalImprimir .window-body .rodape-assinaturas .linha-assinatura {
+                border-bottom: 1px solid #333;
+                width: 100%;
+                height: 1px;
+                margin-bottom: 4px;
+            }
+
+            #modalImprimir .window-body .rodape-assinaturas .nome-assinatura {
+                font-size: 11px;
+                color: #333;
+                font-weight: bold;
+            }
+
+            #modalImprimir .window-body .rodape-info {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                margin-top: 10px;
+                padding-top: 8px;
+                border-top: 1px solid #ddd;
+                font-size: 10px;
+                color: #999;
+            }
+
+            #modalImprimir .window-body .rodape-info .sinop-data {
+                text-align: left;
+                font-weight: bold;
+                color: #333;
+                font-size: 10px;
+            }
+
+            @page { margin: 10mm; size: A4 portrait; }
         }
+
         @media (max-width:640px) {
             .app-body { padding:8px; }
             .form-row .field { flex:1 0 100%; }
@@ -601,30 +784,22 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
         </div>
     </div>
 
-    <!-- ============================================================
-         JAVASCRIPT - 100% JSONBIN (SEM SUPABASE)
-         ============================================================ -->
     <script>
         // ============================================================
         // CONFIGURAÇÕES JSONBIN
         // ============================================================
-        // Bin 1: Tabelas de frete
         const CONFIG_TABELAS = {
             BIN_ID: '6a708f6af5f4af5e29e50603',
             MASTER_KEY: '$2a$10$XHYsaSwZh2v6lebsk9vvEugA6omdPattDTtGC3BPZP1FauxoGHy72'
         };
         const API_URL_TABELAS = `https://api.jsonbin.io/v3/b/${CONFIG_TABELAS.BIN_ID}`;
 
-        // Bin 2: Coletas e Clientes (o ID que você forneceu)
         const CONFIG_COLETAS = {
             BIN_ID: '6aa9cd8aac6210605ad257ae',
             MASTER_KEY: '$2a$10$XHYsaSwZh2v6lebsk9vvEugA6omdPattDTtGC3BPZP1FauxoGHy72'
         };
         const API_URL_COLETAS = `https://api.jsonbin.io/v3/b/${CONFIG_COLETAS.BIN_ID}`;
 
-        // ============================================================
-        // CAMPOS PADRÃO DE IMPRESSÃO
-        // ============================================================
         const CAMPOS_PADRAO = [
             { id: 'NOME', label: 'NOME', enabled: true },
             { id: 'CNPJ', label: 'CNPJ/CPF', enabled: true },
@@ -675,9 +850,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
             campos: JSON.parse(JSON.stringify(CAMPOS_PADRAO))
         };
 
-        // ============================================================
-        // ESTADO GLOBAL
-        // ============================================================
         let tabelas = [];
         let editandoId = null;
         let cidadesTemp = [];
@@ -685,7 +857,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
         let clientesColeta = [];
         let coletas = [];
 
-        // Cache local do bin de coletas
         let dadosColetasCache = {
             clientes: [],
             coletas: [],
@@ -693,9 +864,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
             proximoIdColeta: 1
         };
 
-        // ============================================================
-        // REFERÊNCIAS DOM
-        // ============================================================
         const elements = {
             corpoTabela: document.getElementById('corpoTabela'),
             totalTabelas: document.getElementById('totalTabelas'),
@@ -803,9 +971,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
             closeCRM: document.querySelectorAll('.close-crm'),
         };
 
-        // ============================================================
-        // FUNÇÕES PARA LOGO
-        // ============================================================
         function atualizarLogo(url) {
             if (!url) return;
             elements.headerLogoImg.src = url;
@@ -833,9 +998,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
             }
         });
 
-        // ============================================================
-        // UTILIDADES DE MODAL
-        // ============================================================
         function openModal(modal) { modal.classList.add('active'); }
         function closeModal(modal) { modal.classList.remove('active'); }
 
@@ -896,9 +1058,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
             });
         });
 
-        // ============================================================
-        // GERENCIAMENTO DE CAMPOS DE IMPRESSÃO
-        // ============================================================
         let dragItem = null;
 
         function renderizarCampos() {
@@ -999,9 +1158,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
         }
         elements.btnAdicionarCampo.addEventListener('click', adicionarCampo);
 
-        // ============================================================
-        // TABELA FIXA
-        // ============================================================
         elements.btnTabelaFixa.addEventListener('click', function() {
             openModal(elements.modalTabelaFixa);
         });
@@ -1057,9 +1213,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
             printWindow.document.close();
         });
 
-        // ============================================================
-        // CONFIGURAÇÕES DE IMPRESSÃO
-        // ============================================================
         function carregarConfiguracoes() {
             const salvo = localStorage.getItem('configImpressao');
             if (salvo) {
@@ -1117,9 +1270,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
             atualizarPreview();
         }
 
-        // ============================================================
-        // MAPEAMENTO DE CAMPOS
-        // ============================================================
         function mapearCampos(tabela) {
             const campos = configImpressao.campos;
             let enderecoCompleto = '';
@@ -1178,9 +1328,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
             return mapa;
         }
 
-        // ============================================================
-        // PRÉ-VISUALIZAÇÃO E IMPRESSÃO
-        // ============================================================
         function atualizarPreview() {
             const exemplo = {
                 id: 1,
@@ -1286,9 +1433,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
             return html;
         }
 
-        // ============================================================
-        // IMPRESSÃO E PDF
-        // ============================================================
         function abrirImpressao(id) {
             const tabela = tabelas.find(t => t.id === id);
             if (!tabela) { mostrarToast('Tabela não encontrada!', 'error'); return; }
@@ -1349,9 +1493,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
             }, 300);
         }
 
-        // ============================================================
-        // JSONBIN - TABELAS DE FRETE
-        // ============================================================
         async function carregarDados() {
             try {
                 const response = await fetch(API_URL_TABELAS, {
@@ -1468,9 +1609,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
             return d.toLocaleDateString('pt-BR');
         }
 
-        // ============================================================
-        // CRUD DE TABELAS DE FRETE
-        // ============================================================
         function abrirModalNovo() {
             editandoId = null;
             elements.modalTitle.textContent = 'Nova Tabela de Frete';
@@ -1569,9 +1707,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
             }
         }
 
-        // ============================================================
-        // CIDADES (FORM)
-        // ============================================================
         function renderizarCidadesForm() {
             elements.cidadeCount.textContent = `(${cidadesTemp.length} adicionadas)`;
             if (cidadesTemp.length === 0) {
@@ -1636,9 +1771,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
             });
         });
 
-        // ============================================================
-        // CONFIGURAÇÕES - SALVAR
-        // ============================================================
         function salvarConfiguracoes(event) {
             event.preventDefault();
             const inputs = elements.camposContainer.querySelectorAll('.campo-input');
@@ -1741,9 +1873,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
             mostrarToast('Configurações restauradas!', 'success');
         }
 
-        // ============================================================
-        // TOAST
-        // ============================================================
         function mostrarToast(mensagem, tipo = 'success') {
             const toast = document.createElement('div');
             toast.style.cssText = `
@@ -1763,9 +1892,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
             }, 3000);
         }
 
-        // ============================================================
-        // BUSCA DE CNPJ - REUTILIZÁVEL
-        // ============================================================
         async function buscarCnpjGenerico(cnpj, campos) {
             if (cnpj.length !== 14 || !/^\d{14}$/.test(cnpj)) {
                 mostrarToast('CNPJ inválido. Digite 14 números.', 'error');
@@ -1846,9 +1972,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
             return data;
         }
 
-        // ============================================================
-        // BUSCA CNPJ PARA TABELA DE FRETE
-        // ============================================================
         const campoCnpj = document.getElementById('cnpj');
         campoCnpj.addEventListener('blur', function() {
             const cnpj = this.value.replace(/\D/g, '');
@@ -1892,9 +2015,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
             }
         });
 
-        // ============================================================
-        // BUSCA CNPJ PARA CLIENTE DE COLETA / CRM
-        // ============================================================
         const campoCnpjColeta = document.getElementById('cnpjClienteColeta');
         campoCnpjColeta.addEventListener('blur', function() {
             const cnpj = this.value.replace(/\D/g, '');
@@ -1938,11 +2058,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
             }
         });
 
-        // ============================================================
-        // JSONBIN - COLETAS E CLIENTES (SUBSTITUI SUPABASE)
-        // ============================================================
-
-        // Carrega o conteúdo completo do bin de coletas
         async function carregarBinColetas() {
             try {
                 const response = await fetch(API_URL_COLETAS, {
@@ -1967,7 +2082,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
             }
         }
 
-        // Salva o conteúdo no bin de coletas
         async function salvarBinColetas() {
             try {
                 const response = await fetch(API_URL_COLETAS, {
@@ -1990,9 +2104,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
             }
         }
 
-        // ============================================================
-        // FUNÇÕES DE CLIENTES E COLETAS
-        // ============================================================
         async function carregarClientesColeta() {
             const dados = await carregarBinColetas();
             if (!dados) return [];
@@ -2004,7 +2115,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
             const dados = await carregarBinColetas();
             if (!dados) return [];
             coletas = dados.coletas;
-            // Adiciona o nome do cliente em cada coleta
             coletas = coletas.map(c => {
                 const cliente = clientesColeta.find(cl => cl.id === c.cliente_id);
                 return { ...c, clientes_coleta: { nome: cliente ? cliente.nome : 'Cliente não informado' } };
@@ -2099,9 +2209,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
             renderizarColetas();
         }
 
-        // ============================================================
-        // RENDERIZAÇÕES
-        // ============================================================
         function renderizarColetas() {
             if (coletas.length === 0) {
                 elements.corpoColeta.innerHTML =
@@ -2183,9 +2290,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
             `).join('');
         }
 
-        // ============================================================
-        // EDIÇÃO DE CLIENTE NO CRM
-        // ============================================================
         function editarClienteCRM(id) {
             const cliente = clientesColeta.find(c => c.id === id);
             if (!cliente) return;
@@ -2206,9 +2310,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
             openModal(elements.modalClienteColeta);
         }
 
-        // ============================================================
-        // AÇÕES DE COLETA
-        // ============================================================
         async function marcarColetaFeita(id) {
             if (!confirm('Marcar esta coleta como FEITA?')) return;
             const ok = await atualizarColeta(id, 'feita');
@@ -2218,9 +2319,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
             }
         }
 
-        // ============================================================
-        // ABRIR MODAIS
-        // ============================================================
         async function abrirModalColeta() {
             await carregarClientesColeta();
             await carregarColetas();
@@ -2258,9 +2356,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
             openModal(elements.modalCRM);
         }
 
-        // ============================================================
-        // SALVAR CLIENTE (FECHAMENTO IMEDIATO)
-        // ============================================================
         async function salvarClienteColeta(event) {
             event.preventDefault();
             const dados = {
@@ -2328,9 +2423,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
             }
         }
 
-        // ============================================================
-        // PUBLICAR COLETA
-        // ============================================================
         async function publicarColeta(event) {
             event.preventDefault();
             const clienteId = parseInt(elements.clienteColetaSelect.value);
@@ -2354,9 +2446,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
             }
         }
 
-        // ============================================================
-        // EVENTOS DO MÓDULO COLETA E CRM
-        // ============================================================
         elements.menuColeta.addEventListener('click', abrirModalColeta);
         elements.btnNovaColeta.addEventListener('click', abrirModalNovaColeta);
         elements.btnGerenciarClientes.addEventListener('click', abrirGerenciarClientes);
@@ -2383,7 +2472,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
             mostrarToast('Clientes atualizados!', 'success');
         });
 
-        // CRM
         elements.menuCRM.addEventListener('click', abrirCRM);
         elements.btnNovoClienteCRM.addEventListener('click', function() {
             elements.formClienteColeta.reset();
@@ -2400,13 +2488,9 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
             renderizarCRM(this.value);
         });
 
-        // Formulários
         elements.formClienteColeta.addEventListener('submit', salvarClienteColeta);
         elements.formNovaColeta.addEventListener('submit', publicarColeta);
 
-        // ============================================================
-        // EVENTOS GERAIS
-        // ============================================================
         elements.btnNovo.addEventListener('click', abrirModalNovo);
         elements.btnConfigurar.addEventListener('click', function() {
             preencherFormConfig();
@@ -2432,9 +2516,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
             atualizarPreview();
         });
 
-        // ============================================================
-        // INICIALIZAÇÃO
-        // ============================================================
         document.addEventListener('DOMContentLoaded', async function() {
             carregarConfiguracoes();
             await carregarDados();
@@ -2443,8 +2524,6 @@ CIDADE: SINOP-MT | CEP: 78556-788</textarea></div></div>
                 el.addEventListener('change', atualizarPreview);
             });
             atualizarPreview();
-
-            // Carrega clientes e coletas do JSONBin
             await carregarClientesColeta();
             await carregarColetas();
         });
